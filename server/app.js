@@ -1,15 +1,16 @@
 const express = require("express");
 const path = require("path");
 const dotenv = require("dotenv");
+dotenv.config();
 const cors = require("cors");
-
+const places = require("./routes/places");
 const app = express();
-
 // Bodyparser Middleware  cors
 app.use(cors());
-app.get("/api/places", (req, res) => {
-  res.send("hello places");
-});
+
+const connectDB = require("./config/db");
+connectDB();
+app.use("/api/places", places);
 
 const { Nuxt, Builder } = require("nuxt");
 
