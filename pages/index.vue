@@ -20,7 +20,7 @@
         <b-card title="uploader">
           <b-card-body>
             <client-only>
-              <upload-image is="upload-image" url="https://google.com" :max_files="5" name="files[]" />
+              <UploadImage is="upload-image" url="https://google.com" :max-files="5" name="files[]" />
             </client-only>
           </b-card-body>
         </b-card>
@@ -28,7 +28,7 @@
         <b-card title="Cover blieden">
           <b-card-body>
             <client-only>
-              <upload-image input_id="cover" url="https://google.com" :max_files="5" name="cover[]" />
+              <UploadImage is="upload-image" input-id="cover" url="https://google.com" :max-files="5" name="cover[]" />
             </client-only>
           </b-card-body>
         </b-card>
@@ -97,13 +97,25 @@
             </b-form-group>
           </b-card-body>
         </b-card>
+
+        <b-card title="platz">
+          <b-card-body>
+            <b-form-input v-model="platz" placeholder="platz" />
+          </b-card-body>
+        </b-card>
+
+        <b-card title="Location">
+          <b-card-body>
+            <b-form-input v-model="platz" placeholder="platz" />
+          </b-card-body>
+        </b-card>
       </div>
     </b-container>
   </div>
 </template>
 
 <script>
-import UploadImage from 'vue-upload-image'
+import UploadImage from '@/components/imageUploader'
 
 let VueEditor
 if (process.browser) {
@@ -111,6 +123,7 @@ if (process.browser) {
 }
 
 export default {
+  name: 'ListPlaces',
   layout: 'admin',
   components: {
     VueEditor,
@@ -201,7 +214,8 @@ export default {
         'lol1',
         'lol2',
         'lol3'
-      ]
+      ],
+      platz: null
     }
   }
 }
