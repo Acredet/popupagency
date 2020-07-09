@@ -23,12 +23,12 @@ export default {
     adminSidebar
   },
   mounted () {
+    console.log('ds')
     this.$nextTick(() => {
       this.initApp()
     })
   },
   methods: {
-
     initApp () {
       // eslint-disable-next-line no-unused-expressions
       !(function ($) {
@@ -157,8 +157,7 @@ export default {
         { src: '/js/metisMenu.min.js' },
         { src: '/js/jquery.slimscroll.js' },
         { src: '/js/waves.min.js' },
-        { src: '/plugins/jquery-sparkline/jquery.sparkline.min.js' },
-        { src: '/js/app.js' }
+        { src: '/plugins/jquery-sparkline/jquery.sparkline.min.js' }
       ]
     }
   }
