@@ -1,26 +1,26 @@
-const mongoose = require("mongoose");
-//const geocoder = require("../utils/geocoder");
+const mongoose = require('mongoose')
+// const geocoder = require("../utils/geocoder");
 
 const PlaceSchema = new mongoose.Schema({
   beskreving: {
     type: String,
-    required: [true, "Please add a store ID"],
+    required: [true, 'Please add a store ID'],
     unique: true,
     trim: true,
-    maxlength: [10, "Store ID must be less than 10 chars"]
+    maxlength: [10, 'Store ID must be less than 10 chars']
   },
   address: {
     type: String,
-    required: [true, "Please add an address"]
+    required: [true, 'Please add an address']
   },
   location: {
     type: {
       type: String,
-      enum: ["Point"]
+      enum: ['Point']
     },
     coordinates: {
       type: [Number],
-      index: "2dsphere"
+      index: '2dsphere'
     },
     formattedAddress: String
   },
@@ -28,10 +28,10 @@ const PlaceSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   }
-});
+})
 
 // Geocode & create location
-/*PlaceSchema.pre("save", async function(next) {
+/* PlaceSchema.pre("save", async function(next) {
   const loc = await geocoder.geocode(this.address);
   this.location = {
     type: "Point",
@@ -42,6 +42,6 @@ const PlaceSchema = new mongoose.Schema({
   // Do not save address
   this.address = undefined;
   next();
-});*/
+}); */
 
-module.exports = mongoose.model("Place", PlaceSchema);
+module.exports = mongoose.model('Place', PlaceSchema)
