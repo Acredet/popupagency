@@ -24,7 +24,10 @@ module.export = {
         content: process.env.npm_package_description || ''
       }
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    script: [
+      { src: 'https://kit.fontawesome.com/7ccf14bcd9.js', async: true, crossorigin: 'anonymous' }
+    ]
   },
   /*
    ** Global CSS
@@ -40,6 +43,7 @@ module.export = {
    ** See https://nuxtjs.org/api/configuration-components
    */
   components: true,
+  telemetry: false,
   /*
    ** Nuxt.js dev-modules
    */
@@ -65,5 +69,9 @@ module.export = {
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
    */
-  build: {}
+  build: {},
+  serverMiddleware: [
+    // API middleware
+    '~/server/app.js'
+  ]
 }

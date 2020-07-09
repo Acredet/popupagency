@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "commit": "git add . && git commit -m ",
-    "dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",
+    "dev": "nodemon --watch server -e js,vue --exec \"nuxt\"",
     "generate": "nuxt generate",
     "push": "git push origin master",
     "start": "cross-env NODE_ENV=production node server/app.js",

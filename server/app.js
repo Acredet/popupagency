@@ -4,7 +4,7 @@ const dotenv = require('dotenv')
 dotenv.config()
 const cors = require('cors')
 const { Nuxt, Builder } = require('nuxt')
-const nuxtConfig = require('../nuxt.config')
+const nuxtConfig = require('../nuxt.config.js')
 const places = require('./routes/places')
 const app = express()
 // Bodyparser Middleware  cors
@@ -15,8 +15,8 @@ connectDB()
 app.use('/api/places', places)
 
 // Import and Set Nuxt.js options
-nuxtConfig.dev = process.env.NODE_ENV !== 'production'
-
+nuxtConfig.dev = true
+// process.env.NODE_ENV !== 'production'
 app.use(express.json({ extended: true }))
 app.use(express.urlencoded({ extended: true }))
 
@@ -27,6 +27,7 @@ async function start () {
   await nuxt.ready()
   // Build only in dev mode
   if (nuxtConfig.dev) {
+    console.log('building')
     const builder = new Builder(nuxt)
     await builder.build()
   }
