@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "commit": "git add . && git commit -m ",
-    "dev": "nodemon --watch server -e js,vue --exec \"nuxt\"",
+    "dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",
     "generate": "nuxt generate",
     "push": "git push origin master",
     "start": "cross-env NODE_ENV=production node server/app.js",
@@ -26,7 +26,9 @@
     "mongoose": "^5.9.22",
     "node-geocoder": "^3.27.0",
     "nodemon": "^2.0.4",
-    "nuxt": "^2.13.0"
+    "nuxt": "^2.13.0",
+    "vue-upload-image": "^1.1.5",
+    "vue2-editor": "^2.10.2"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^3.0.0",

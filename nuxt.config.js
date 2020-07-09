@@ -1,4 +1,5 @@
-module.export = {
+// eslint-disable-next-line nuxt/no-cjs-in-config
+module.exports = {
   /*
    ** Nuxt rendering mode
    ** See https://nuxtjs.org/api/configuration-mode
@@ -37,7 +38,9 @@ module.export = {
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
-  plugins: [],
+  plugins: [
+    { src: '~/plugins/vue2-editor', mode: 'client' }
+  ],
   /*
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components
@@ -69,9 +72,5 @@ module.export = {
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
    */
-  build: {},
-  serverMiddleware: [
-    // API middleware
-    '~/server/app.js'
-  ]
+  build: {}
 }

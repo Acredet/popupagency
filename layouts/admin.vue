@@ -3,7 +3,7 @@
     <admin-header />
     <admin-sidebar />
 
-    <div class="content-page">
+    <div class="my-3 content-page">
       <Nuxt />
     </div>
     <admin-footer />
@@ -11,6 +11,7 @@
 </template>
 
 <script>
+/* eslint-disable no-sequences */
 import adminHeader from '@/components/admin/admin-Header'
 import adminFooter from '@/components/admin/adminFooter'
 import adminSidebar from '@/components/admin/admin-Sidebar.vue'
@@ -27,12 +28,14 @@ export default {
     })
   },
   methods: {
+
     initApp () {
       // eslint-disable-next-line no-unused-expressions
       !(function ($) {
         'use strict'
         const MainApp = function () {}
 
+        // eslint-disable-next-line no-unused-expressions
         MainApp.prototype.intSlimscrollmenu = function () {
           $('.slimscroll-menu').slimscroll({
             height: 'auto',
@@ -79,7 +82,7 @@ export default {
           // === following js will activate the menu in left side bar based on url ====
           $('#sidebar-menu a').each(function () {
             const pageUrl = window.location.href.split(/[?#]/)[0]
-            if (this.href == pageUrl) {
+            if (this.href === pageUrl) {
               $(this).addClass('active')
               $(this).parent().addClass('active') // add active to li of the current link
               $(this).parent().parent().addClass('in')
@@ -122,6 +125,7 @@ export default {
           this.initActiveMenu()
           this.initComponents()
           this.initHeaderCharts()
+          // eslint-disable-next-line no-undef
           Waves.init()
         },
 

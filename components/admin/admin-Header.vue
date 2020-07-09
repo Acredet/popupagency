@@ -174,7 +174,7 @@
 <script>
 export default {
   methods: {
-    toggleClass() {
+    toggleClass () {
       document.body.classList.toggle('enlarged')
     }
   }
