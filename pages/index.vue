@@ -1,15 +1,11 @@
 <template>
   <div class="content">
+    <h2 class="my-3">
+      Create a listing
+    </h2>
     <b-container>
       <div>
         <b-card title="text editor">
-          <b-card-header class="d-flex justify-content-end">
-            <b-button class="mr-3">
-              visual
-            </b-button>
-            <b-button>text</b-button>
-          </b-card-header>
-
           <b-card-body>
             <client-only>
               <VueEditor v-model="article.content" />
@@ -20,7 +16,13 @@
         <b-card title="uploader">
           <b-card-body>
             <client-only>
-              <UploadImage is="upload-image" url="https://google.com" :max-files="5" name="files[]" />
+              <UploadImage
+                is="upload-image"
+                :max-filesize="64000"
+                url="https://google.com"
+                :max-files="5"
+                name="files[]"
+              />
             </client-only>
           </b-card-body>
         </b-card>
@@ -177,13 +179,6 @@
         </b-card>
 
         <b-card title="another text editor">
-          <b-card-header class="d-flex justify-content-end">
-            <b-button class="mr-3">
-              visual
-            </b-button>
-            <b-button>text</b-button>
-          </b-card-header>
-
           <b-card-body>
             <client-only>
               <VueEditor v-model="article.content2" />
@@ -277,6 +272,12 @@
                 {{ input }}
               </b-form-radio>
             </b-form-group>
+          </b-card-body>
+        </b-card>
+
+        <b-card title="Listing expiry date">
+          <b-card-body>
+            <b-form-datepicker id="example-datepicker" v-model="expiry" class="mb-2" />
           </b-card-body>
         </b-card>
       </div>
@@ -596,45 +597,45 @@ export default {
       },
       days: {
         Mon: {
-          openTimes: null,
+          openTimes: 'hours',
           hours: [
-            { from: null, to: null }
+            { from: '00:00:00', to: '00:00:00' }
           ]
         },
         Tue: {
-          openTimes: null,
+          openTimes: 'hours',
           hours: [
-            { from: null, to: null }
+            { from: '00:00:00', to: '00:00:00' }
           ]
         },
         Wed: {
-          openTimes: null,
+          openTimes: 'hours',
           hours: [
-            { from: null, to: null }
+            { from: '00:00:00', to: '00:00:00' }
           ]
         },
         Thu: {
-          openTimes: null,
+          openTimes: 'hours',
           hours: [
-            { from: null, to: null }
+            { from: '00:00:00', to: '00:00:00' }
           ]
         },
         Fri: {
-          openTimes: null,
+          openTimes: 'hours',
           hours: [
-            { from: null, to: null }
+            { from: '00:00:00', to: '00:00:00' }
           ]
         },
         Sat: {
-          openTimes: null,
+          openTimes: 'hours',
           hours: [
-            { from: null, to: null }
+            { from: '00:00:00', to: '00:00:00' }
           ]
         },
         Sun: {
-          openTimes: null,
+          openTimes: 'hours',
           hours: [
-            { from: null, to: null }
+            { from: '00:00:00', to: '00:00:00' }
           ]
         }
       },
@@ -667,7 +668,8 @@ export default {
           name: 'Sun',
           active: false
         }
-      ]
+      ],
+      expiry: null
     }
   },
   methods: {
@@ -675,7 +677,7 @@ export default {
       this.days[name].hours.splice(index, 1)
     },
     addTimeRow (name) {
-      this.days[name].hours.push({ from: null, to: null })
+      this.days[name].hours.push({ from: '00:00:00', to: '00:00:00' })
     }
   }
 }

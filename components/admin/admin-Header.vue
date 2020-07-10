@@ -15,17 +15,6 @@
 
     <nav class="navbar-custom">
       <ul class="navbar-right d-flex list-inline float-right mb-0">
-        <li class="dropdown notification-list d-none d-sm-block">
-          <form role="search" class="app-search">
-            <div class="form-group mb-0">
-              <input type="text" class="form-control" placeholder="Search..">
-              <button type="submit">
-                <i class="fa fa-search" />
-              </button>
-            </div>
-          </form>
-        </li>
-
         <li class="dropdown notification-list">
           <a
             class="nav-link dropdown-toggle arrow-none waves-effect"
