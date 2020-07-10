@@ -53,7 +53,7 @@
           </b-card-body>
         </b-card>
 
-        <b-card title="selection">
+        <b-card title="Egenskaper">
           <b-card-body>
             <b-row>
               <b-col v-for="(feat,index) in renderEgensKaper" :key="index" cols="12" md="6">
@@ -100,13 +100,181 @@
 
         <b-card title="platz">
           <b-card-body>
-            <b-form-input v-model="platz" placeholder="platz" />
+            <b-form-select v-model="platz" :options="platzOptions" />
           </b-card-body>
         </b-card>
 
         <b-card title="Location">
           <b-card-body>
-            <b-form-input v-model="platz" placeholder="platz" />
+            <b-form-input v-model="location" placeholder="location" />
+          </b-card-body>
+        </b-card>
+
+        <b-card title="kategori">
+          <b-card-body>
+            <b-row>
+              <b-col v-for="(kati,index) in kategoriOpts" :key="index" cols="12" md="6">
+                <b-form-checkbox
+                  :id="kati"
+                  v-model="kategori[kati]"
+                  class="mb-2"
+                  :name="kati"
+                >
+                  {{ kati }}
+                </b-form-checkbox>
+              </b-col>
+            </b-row>
+          </b-card-body>
+        </b-card>
+
+        <b-card title="Planrinting">
+          <b-card-body>
+            <client-only>
+              <UploadImage is="upload-image" input-id="plan" url="https://google.com" :max-files="5" name="cover[]" />
+            </client-only>
+          </b-card-body>
+        </b-card>
+
+        <b-card title="Minsta hyresperiod">
+          <b-card-body>
+            <b-form-input v-model="minsta" placeholder="Den minsta hyresperiod för lokalen" />
+          </b-card-body>
+        </b-card>
+
+        <b-card title="Längsta hyresperiod">
+          <b-card-body>
+            <b-form-input v-model="längsta" placeholder="Den längsta hyresperiod för lokalen" />
+          </b-card-body>
+        </b-card>
+
+        <b-card v-for="(input) in yesNoInputs" :key="input.name" :title="input.title">
+          <b-card-body>
+            <b-form-group>
+              <b-form-radio v-model="yesNoInputsVal[input.model]" :name="input.name" value="true">
+                Ja
+              </b-form-radio>
+              <b-form-radio v-model="yesNoInputsVal[input.model]" :name="input.name" value="false">
+                Nej
+              </b-form-radio>
+            </b-form-group>
+          </b-card-body>
+        </b-card>
+
+        <b-card title="Säsong Boxen">
+          <b-card-body>
+            <b-form-group>
+              <b-form-radio v-for="input in sasongInputs" :key="input.model" v-model="sasong[input.model]" name="säsong" :value="input.val">
+                {{ input.text }}
+              </b-form-radio>
+            </b-form-group>
+          </b-card-body>
+        </b-card>
+
+        <b-card title="Centrum hamside">
+          <b-card-body>
+            <b-form-input v-model="hamside" placeholder="https://vala.se" />
+          </b-card-body>
+        </b-card>
+
+        <b-card title="another text editor">
+          <b-card-header class="d-flex justify-content-end">
+            <b-button class="mr-3">
+              visual
+            </b-button>
+            <b-button>text</b-button>
+          </b-card-header>
+
+          <b-card-body>
+            <client-only>
+              <VueEditor v-model="article.content2" />
+            </client-only>
+          </b-card-body>
+        </b-card>
+
+        <b-card title="times">
+          <b-tabs content-class="mt-3" fill>
+            <b-tab v-for="(tab) in times" :key="tab.name" :title="tab.name" :active="tab.active">
+              <b-form-radio-group>
+                <b-form-radio
+                  v-model="days[tab.name].openTimes"
+                  value="hours"
+                  :name="tab.name"
+                >
+                  Enter hours
+                </b-form-radio>
+                <b-form-radio
+                  v-model="days[tab.name].openTimes"
+                  value="openAllDay"
+                  :name="tab.name"
+                >
+                  Open all day
+                </b-form-radio>
+                <b-form-radio
+                  v-model="days[tab.name].openTimes"
+                  value="closeAllDay"
+                  :name="tab.name"
+                >
+                  Close all day
+                </b-form-radio>
+                <b-form-radio
+                  v-model="days[tab.name].openTimes"
+                  value="appointment"
+                  :name="tab.name"
+                >
+                  By appointment only
+                </b-form-radio>
+              </b-form-radio-group>
+
+              <div v-if="days[tab.name].openTimes == 'hours'">
+                <b-row v-for="(hours, index) in days[tab.name].hours" :key="'m' + index" class="my-3">
+                  <b-col cols="12" md="5">
+                    <b-form-timepicker v-model="days[tab.name].hours[index].from" locale="en" />
+                  </b-col>
+                  <b-col cols="12" md="5">
+                    <b-form-timepicker v-model="days[tab.name].hours[index].to" locale="en" />
+                  </b-col>
+                  <b-col cols="12" md="2">
+                    <b-button @click="delteTimeRow(tab.name, index)">
+                      <b-icon-trash />
+                    </b-button>
+                  </b-col>
+                </b-row>
+
+                <b-button @click="addTimeRow(tab.name)">
+                  Add Time
+                </b-button>
+              </div>
+            </b-tab>
+          </b-tabs>
+        </b-card>
+
+        <b-card title="Cover blieden">
+          <b-card-body>
+            <client-only>
+              <UploadImage is="upload-image" input-id="cover" url="https://google.com" :max-files="5" name="cover[]" />
+            </client-only>
+          </b-card-body>
+        </b-card>
+
+        <b-card title="Upptagest fries">
+          <b-card-body>
+            <b-form-input v-model="fries" placeholder="ex: example@example.com" />
+          </b-card-body>
+        </b-card>
+
+        <b-card title="Upptagest till">
+          <b-card-body>
+            <b-form-input v-model="till" placeholder="ex: example@example.com" />
+          </b-card-body>
+        </b-card>
+
+        <b-card title="Lokal">
+          <b-card-body>
+            <b-form-group>
+              <b-form-radio v-for="input in lokalOpts" :key="input" v-model="lokal[input]" name="säsong" :value="input">
+                {{ input }}
+              </b-form-radio>
+            </b-form-group>
           </b-card-body>
         </b-card>
       </div>
@@ -115,6 +283,7 @@
 </template>
 
 <script>
+import { BootstrapVue, BIcon, BIconTrash } from 'bootstrap-vue'
 import UploadImage from '@/components/imageUploader'
 
 let VueEditor
@@ -127,12 +296,18 @@ export default {
   layout: 'admin',
   components: {
     VueEditor,
-    UploadImage
+    UploadImage,
+    // eslint-disable-next-line vue/no-unused-components
+    BootstrapVue,
+    // eslint-disable-next-line vue/no-unused-components
+    BIcon,
+    BIconTrash
   },
   data () {
     return {
       article: {
-        content: null
+        content: null,
+        content2: null
       },
       email: null,
       price: {
@@ -200,26 +375,314 @@ export default {
         }
       ],
       features: {
+        Belysning: false,
         El: false,
+        Handikappanpassad: false,
+        Högtalare: false,
+        Inredning: false,
+        Kassasystem: false,
+        Kök: false,
+        Lager: false,
+        Lastkaj: false,
+        Provrum: false,
+        Skyltfönster: false,
+        VVS: false,
+        WC: false,
         'wi-fi': false
       },
       renderEgensKaper: [
+        'Belysning',
         'El',
+        'Handikappanpassad',
+        'Högtalare',
+        'Inredning',
+        'Kassasystem',
+        'Kök',
+        'Lager',
+        'Lastkaj',
+        'Provrum',
+        'Skyltfönster',
+        'VVS',
+        'WC',
         'wi-fi'
       ],
       Yta: null,
       markplan: null,
       city: null,
       cityOptions: [
-        'lol1',
-        'lol2',
-        'lol3'
+        'Borås',
+        'Charlottenberg',
+        'Eskilstuna',
+        'Falköping',
+        'Gotland',
+        'göteborg',
+        'Helsingborg',
+        'Jönköping',
+        'Kalmar',
+        'Karlstad',
+        'Linköping',
+        'Långflon',
+        'Malmö',
+        'Motala',
+        'Norrköping',
+        'Stockholm',
+        'Södertälje',
+        'Trollhättan',
+        'Uppsala',
+        'Väla',
+        'Västra skåna',
+        'växjö',
+        'örebro',
+        'Falkenberg',
+        'Kungsbacka',
+        'Lund',
+        'Burlöv',
+        'Hässleholm',
+        'Uddevalla'
       ],
-      platz: null
+      platz: null,
+      platzOptions: [
+        { value: null, text: 'Please select an option' },
+        { value: 'a', text: 'This is First option' },
+        { value: 'b', text: 'Selected Option' },
+        { value: { C: '3PO' }, text: 'This is an option with object value' },
+        { value: 'd', text: 'This one is disabled', disabled: true }
+      ],
+      kategori: {
+        Butikslokal: false,
+        Event: false,
+        '-- Eventlokal': false,
+        '-- Eventyta': false,
+        '-- Galleri': false,
+        '-- Showroom': false,
+        Foodtruck: false,
+        Köpcentrum: false,
+        Marknad: false,
+        '-- Beach Market': false,
+        '-- Julmarknad': false,
+        'Mat & Dryck': false,
+        'Whote label popup': false
+      },
+      kategoriOpts: [
+        'Butikslokal',
+        'Event',
+        '-- Eventlokal',
+        '-- Eventyta',
+        '-- Galleri',
+        '-- Showroom',
+        'Foodtruck',
+        'Köpcentrum',
+        'Marknad',
+        '-- Beach Market',
+        '-- Julmarknad',
+        'Mat & Dryck',
+        'Whote label popup'
+      ],
+      location: null,
+
+      minsta: null,
+      längsta: null,
+
+      yesNoInputsVal: {
+        oppettider: null,
+        Butik: null,
+        MatDryck: null,
+        Event: null
+      },
+      yesNoInputs: [
+        {
+          title: 'Fasta öppettider',
+          name: 'Fasta-öppettider',
+          model: 'oppettider'
+        },
+        {
+          title: 'Butik "Boxen"',
+          name: 'Butik-"Boxen"',
+          model: 'Butik'
+        },
+        {
+          title: 'Mat & Dryck "Boxen"',
+          name: 'Mat&Dryck',
+          model: 'MatDryck'
+        },
+        {
+          title: 'Event "Boxen"',
+          name: 'Event',
+          model: 'Event'
+        }
+      ],
+      sasongInputs: [
+        {
+          text: 'Sol',
+          model: 'Sol'
+        },
+        {
+          text: 'Solstol',
+          model: 'Solstol'
+        },
+        {
+          text: 'Julgran',
+          model: 'Julgran'
+        },
+        {
+          text: 'Snöflinga',
+          model: 'Snoflinga'
+        },
+        {
+          text: 'Pumpa',
+          model: 'Pumpa'
+        },
+        {
+          text: 'Löv',
+          model: 'Lov'
+        },
+        {
+          text: 'Blommor',
+          model: 'Blommor'
+        },
+        {
+          text: 'Cykel',
+          model: 'Cykel'
+        },
+        {
+          text: 'Tavla',
+          model: 'Tavla'
+        },
+        {
+          text: 'Klåder',
+          model: 'Klader'
+        },
+        {
+          text: 'Året runt (ingenting)',
+          model: 'aret'
+        }
+      ],
+      sasong: {
+        Sol: false,
+        Solstol: false,
+        Julgran: false,
+        Snoflinga: false,
+        Pumpa: false,
+        Lov: false,
+        Blommor: false,
+        Cykel: false,
+        Tavla: false,
+        Klader: false,
+        aret: false
+      },
+
+      hamside: null,
+      lokalOpts: [
+        'Peter',
+        'Rikard',
+        'Terese',
+        'Ylva',
+        'Jasmine',
+        'Helena',
+        'Annika',
+        'Bertil'
+      ],
+      lokal: {
+        Peter: false,
+        Rikard: false,
+        Terese: false,
+        Ylva: false,
+        Jasmine: false,
+        Helena: false,
+        Annika: false,
+        Bertil: false
+      },
+      days: {
+        Mon: {
+          openTimes: null,
+          hours: [
+            { from: null, to: null }
+          ]
+        },
+        Tue: {
+          openTimes: null,
+          hours: [
+            { from: null, to: null }
+          ]
+        },
+        Wed: {
+          openTimes: null,
+          hours: [
+            { from: null, to: null }
+          ]
+        },
+        Thu: {
+          openTimes: null,
+          hours: [
+            { from: null, to: null }
+          ]
+        },
+        Fri: {
+          openTimes: null,
+          hours: [
+            { from: null, to: null }
+          ]
+        },
+        Sat: {
+          openTimes: null,
+          hours: [
+            { from: null, to: null }
+          ]
+        },
+        Sun: {
+          openTimes: null,
+          hours: [
+            { from: null, to: null }
+          ]
+        }
+      },
+      times: [
+        {
+          name: 'Mon',
+          active: true
+        },
+        {
+          name: 'Tue',
+          active: false
+        },
+        {
+          name: 'Wed',
+          active: false
+        },
+        {
+          name: 'Thu',
+          active: false
+        },
+        {
+          name: 'Fri',
+          active: false
+        },
+        {
+          name: 'Sat',
+          active: false
+        },
+        {
+          name: 'Sun',
+          active: false
+        }
+      ]
+    }
+  },
+  methods: {
+    delteTimeRow (name, index) {
+      this.days[name].hours.splice(index, 1)
+    },
+    addTimeRow (name) {
+      this.days[name].hours.push({ from: null, to: null })
     }
   }
 }
 </script>
 
 <style>
+/* ö
+ä
+Å
+Ö
+å */
 </style>
