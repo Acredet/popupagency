@@ -234,24 +234,26 @@
                     <b-form-timepicker v-model="days[tab.name].hours[index].to" locale="en" />
                   </b-col>
                   <b-col cols="12" md="2">
-                    <b-button @click="delteTimeRow(tab.name, index)">
-                      <b-icon-trash />
+                    <b-button variant="outline-light" @click="delteTimeRow(tab.name, index)">
+                      <b-icon-trash variant="dark" class="rounded-circle" />
                     </b-button>
                   </b-col>
                 </b-row>
 
-                <b-button @click="addTimeRow(tab.name)">
-                  Add Time
-                </b-button>
+                <b-col cols="12">
+                  <b-button block variant="primary" @click="addTimeRow(tab.name)">
+                    Add Time
+                  </b-button>
+                </b-col>
               </div>
             </b-tab>
           </b-tabs>
         </b-card>
 
-        <b-card title="Cover blieden">
+        <b-card title="cintrum galeri">
           <b-card-body>
             <client-only>
-              <UploadImage is="upload-image" input-id="cover" url="https://google.com" :max-files="5" name="cover[]" />
+              <UploadImage is="upload-image" input-id="cintrum" url="https://google.com" :max-files="5" name="cover[]" />
             </client-only>
           </b-card-body>
         </b-card>
