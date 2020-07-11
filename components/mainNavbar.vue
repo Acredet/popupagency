@@ -254,11 +254,10 @@ export default {
 .animate__animated.animate__zoomIn
   --animate-duration: 0.4s
 
-ul.dropdown-menu li[role=presentation]
-  a
-    transition: all 0.4s ease
+ul.dropdown-menu li[role=presentation] a
+  transition: all 0.4s ease
   &:hover
-    margin-left: 30px
+    padding-left: 30px
 
 .b-sidebar-body
   a
