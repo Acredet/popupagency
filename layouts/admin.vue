@@ -144,7 +144,6 @@ export default {
   head () {
     return {
       link: [
-        { rel: 'shortcut icon', href: '/images/favicon.ico' },
         { rel: 'stylesheet', href: '/plugins/morris/morris.css' },
         { href: '/css/bootstrap.min.css', rel: 'stylesheet', type: 'text/css' },
         { href: '/css/metismenu.min.css', rel: 'stylesheet', type: 'text/css' },
