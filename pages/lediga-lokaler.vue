@@ -10,7 +10,7 @@
           <b-col cols="12">
             <b-tabs content-class="mt-3" fill>
               <!-- Start first horizontal tab -->
-              <b-tab active title="Plats" @click="show1 = !show1">
+              <b-tab active title="Plats" @click="tabClicked(1)">
                 <div v-if="show1">
                   <b-button class="mb-3 bg-our-primary">
                     Sverige
@@ -79,6 +79,14 @@
                   </div>
                 </div>
               </b-tab>
+              <!-- End first horizontal tab -->
+
+              <!-- Start second horizontal tab -->
+              <b-tab active title="Plats" @click="tabClicked(2)">
+                <div v-if="show2">
+                </div>
+              </b-tab>
+              <!-- End first horizontal tab -->
             </b-tabs>
           </b-col>
 
@@ -164,6 +172,7 @@ export default {
         }
       ],
       show1: false,
+      show2: false,
       cards: [
         {
           images: [
@@ -211,6 +220,29 @@ export default {
           this.tabs[index].allSelected = false
         }
       })
+    },
+    tabClicked (tabNo) {
+      if (tabNo === 1) {
+        this.show1 = !this.show1
+        this.show2 = false
+        this.show3 = false
+        this.show4 = false
+      } else if (tabNo === 2) {
+        this.show1 = false
+        this.show2 = !this.show2
+        this.show3 = false
+        this.show4 = false
+      } else if (tabNo === 3) {
+        this.show1 = false
+        this.show2 = false
+        this.show3 = !this.show3
+        this.show4 = false
+      } else {
+        this.show1 = false
+        this.show2 = false
+        this.show3 = false
+        this.show4 = !this.show3
+      }
     }
   }
 }
