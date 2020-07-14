@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'ListingRegion',
+  name: 'AddUser',
   layout: 'admin'
 }
 </script>

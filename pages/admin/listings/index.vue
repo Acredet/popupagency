@@ -6,6 +6,7 @@
       :sort-by.sync="sortBy"
       :sort-desc.sync="sortDesc"
       responsive="sm"
+      show-empty
     />
 
     <div>
@@ -24,18 +25,20 @@ export default {
       sortBy: 'age',
       sortDesc: false,
       fields: [
-        { key: 'last_name', sortable: true },
-        { key: 'first_name', sortable: true },
-        { key: 'age', sortable: true },
-        { key: 'isActive', sortable: false }
+        { key: 'location', sortable: true },
+        { key: 'expiry', sortable: true },
+        { key: 'stad', sortable: true },
+        { key: 'Epost', sortable: false }
       ],
-      items: [
-        { isActive: true, age: 40, first_name: 'Dickerson', last_name: 'Macdonald' },
-        { isActive: false, age: 21, first_name: 'Larsen', last_name: 'Shaw' },
-        { isActive: false, age: 89, first_name: 'Geneva', last_name: 'Wilson' },
-        { isActive: true, age: 38, first_name: 'Jami', last_name: 'Carney' }
-      ]
+      items: null
     }
+  },
+  async mounted () {
+    await this.$axios.$get('/places')
+      .then((res) => {
+        this.items = res.data
+      })
+      .catch(err => console.log(err))
   }
 }
 </script>

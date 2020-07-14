@@ -1,10 +1,10 @@
-const express = require("express");
-const { getPlaces, addPlace } = require("../controller/places");
-const router = express.Router();
+const express = require('express')
+const { getPlaces, addPlace } = require('../controller/places')
+const router = express.Router()
 
 router
-  .route("/")
+  .route('/')
   .get(getPlaces)
-  .post(addPlace);
+  .post(addPlace)
 
-module.exports = router;
+module.exports = router

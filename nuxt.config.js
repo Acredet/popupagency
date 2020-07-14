@@ -78,7 +78,9 @@ module.exports = {
   env: {
     VUE_APP_GOOGLE_MAPS_API_KEY: process.env.VUE_APP_GOOGLE_MAPS_API_KEY
   },
-  axios: {},
+  axios: {
+    prefix: '/api'
+  },
   /*
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/

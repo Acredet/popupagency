@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-//const { min } = require("~/static/plugins/moment/moment");
+const mongoose = require('mongoose')
+// const { min } = require("~/static/plugins/moment/moment");
 // const geocoder = require("../utils/geocoder");
 
 const PlaceSchema = new mongoose.Schema({
@@ -61,11 +61,11 @@ const PlaceSchema = new mongoose.Schema({
   location: {
     type: {
       type: String,
-      enum: ["Point"]
+      enum: ['Point']
     },
     coordinates: {
       type: [Number],
-      index: "2dsphere"
+      index: '2dsphere'
     },
     formattedAddress: String
   },
@@ -141,7 +141,7 @@ const PlaceSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   }
-});
+})
 
 // Geocode & create location
 /* PlaceSchema.pre("save", async function(next) {
@@ -157,4 +157,4 @@ const PlaceSchema = new mongoose.Schema({
   next();
 }); */
 
-module.exports = mongoose.model("Place", PlaceSchema);
+module.exports = mongoose.model('Place', PlaceSchema)

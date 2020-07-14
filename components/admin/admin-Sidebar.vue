@@ -39,26 +39,22 @@
             </a>
             <ul class="submenu">
               <li>
-                <nuxt-link active-class="active" to="email-inbox">
-                  Inbox
+                <nuxt-link exact to="/admin/users/">
+                  All Users
                 </nuxt-link>
               </li>
               <li>
-                <nuxt-link to="email-read">
-                  Email Read
-                </nuxt-link>
-              </li>
-              <li>
-                <nuxt-link to="email-compose">
-                  Email Compose
+                <nuxt-link exact to="/admin/users/add">
+                  Add User
                 </nuxt-link>
               </li>
             </ul>
           </li>
 
-          <li class="menu-title">
-            <nuxt-link class="waves-effect" to="/settings">
-              site settings <span class="float-right menu-arrow" />
+          <li>
+            <nuxt-link exact class="waves-effect" to="/admin/settings">
+              <i class="mdi mdi-email-outline" />
+              <span> site settings </span>
             </nuxt-link>
           </li>
         </ul>
