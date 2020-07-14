@@ -8,7 +8,7 @@
           </b-col>
 
           <b-col cols="12">
-            <b-tabs content-class="mt-3" fill>
+            <b-tabs content-class="border p-2" fill>
               <!-- Start first horizontal tab -->
               <b-tab active title="Plats" @click="tabClicked(1)">
                 <div v-if="show1">
@@ -63,9 +63,9 @@
                             </div>
                           </b-card-body>
                         </b-tab>
-                      <!-- End First tab -->
+                        <!-- End First tab -->
 
-                      <!-- End tabs -->
+                        <!-- End tabs -->
                       </b-tabs>
                     </div>
                   </div>
@@ -82,14 +82,66 @@
               <!-- End first horizontal tab -->
 
               <!-- Start second horizontal tab -->
-              <b-tab active title="Plats" @click="tabClicked(2)">
-                <div v-if="show2" />
+              <b-tab active title="Lokaltyp" @click="tabClicked(2)">
+                <div v-if="show2">
+                  <b-row>
+                    <b-col cols="6">
+                      <b-button-group vertical class="w-100">
+                        <b-button
+                          v-for="(icon) in icons.slice(0,6)"
+                          :key="icon.model"
+                          :pressed.sync="icon.state"
+                          variant="primary"
+                          class="text-left"
+                        >
+                          <i :class="`fas fa-${icon.icon}`" />
+                          {{ icon.text }}
+                        </b-button>
+                      </b-button-group>
+                    </b-col>
+                    <b-col cols="6">
+                      <b-button-group vertical class="w-100">
+                        <b-button
+                          v-for="(icon) in icons.slice(6,12)"
+                          :key="icon.model"
+                          :pressed.sync="icon.state"
+                          variant="primary"
+                          class="text-left"
+                        >
+                          <i :class="`fas fa-${icon.icon}`" />
+                          {{ icon.text }}
+                        </b-button>
+                      </b-button-group>
+                    </b-col>
+                  </b-row>
+                </div>
               </b-tab>
-              <!-- End first horizontal tab -->
+              <!-- End second horizontal tab -->
+
+              <!-- Start third horizontal tab -->
+              <b-tab active title="Pris" @click="tabClicked(3)">
+                <div v-if="show3">
+                  <div>
+                    <label for="from">From:</label>
+                    <b-form-input id="from" v-model="price.from" type="range" min="0" max="165000 " />
+                    <div class="mt-2">
+                      Value: {{ price.from }}
+                    </div>
+                  </div>
+                  <div>
+                    <label for="to">To:</label>
+                    <b-form-input id="to" v-model="price.to" type="range" :min="price.from" max="165000" />
+                    <div class="mt-2">
+                      Value: {{ price.to }}
+                    </div>
+                  </div>
+                </div>
+              </b-tab>
+              <!-- End third horizontal tab -->
             </b-tabs>
           </b-col>
 
-          <b-col v-for="(card, index) in cards" :key="String(index)" class="my-2" cols="12" md="6">
+          <b-col v-for="(card, index) in cards" :key="String(index)" class="my-2" cols="12" sm="6">
             <listing-card :card="card" />
           </b-col>
         </b-row>
@@ -172,19 +224,88 @@ export default {
       ],
       show1: false,
       show2: false,
+      show3: false,
+      filters: [],
+      price: {
+        from: 0,
+        to: 0
+      },
+      icons: [
+        {
+          text: 'Butikslokal',
+          icon: 'shopping-bag',
+          state: false
+        },
+        {
+          text: 'Event',
+          icon: 'calendar-alt',
+          state: false
+        },
+        {
+          text: 'Eventlokal',
+          icon: 'car ml-2',
+          state: false
+        },
+        {
+          text: 'Eventyta',
+          icon: 'calendar-day ml-2',
+          state: false
+        },
+        {
+          text: 'Galleri',
+          icon: 'image ml-2',
+          state: false
+        },
+        {
+          text: 'Showroom',
+          icon: 'warehouse ml-2',
+          state: false
+        },
+        {
+          text: 'Foodtruck',
+          icon: 'truck',
+          state: false
+        },
+        {
+          text: 'Köpcentrum',
+          icon: 'shopping-basket',
+          state: false
+        },
+        {
+          text: 'Marknad',
+          icon: 'store-alt',
+          state: false
+        },
+        {
+          text: 'Beach Market',
+          icon: 'umbrella-beach ml-2',
+          state: false
+        },
+        {
+          text: 'Julmarknad',
+          icon: 'landmark ml-2',
+          state: false
+        },
+        {
+          text: 'Mat & Dryck',
+          icon: 'hamburger',
+          state: false
+        },
+        {
+          text: 'White label popup',
+          icon: 'tag',
+          state: false
+        }
+      ],
       cards: [
         {
-          images: [
-            'https://picsum.photos/1024/480/?image=10'
-          ],
+          images: ['https://picsum.photos/1024/480/?image=10'],
           place: "'Uppsala'",
           money: "'fr 50 000 kr / månad'",
           text: "'Dragarbrunnstorg 6 ∙ Popup lokal på gågata ∙ ca 163 m²'"
         },
         {
-          images: [
-            'https://picsum.photos/1024/480/?image=10'
-          ],
+          images: ['https://picsum.photos/1024/480/?image=10'],
           place: "'Uppsala'",
           money: "'fr 50 000 kr / månad'",
           text: "'Dragarbrunnstorg 6 ∙ Popup lokal på gågata ∙ ca 163 m²'"
@@ -201,9 +322,9 @@ export default {
   methods: {
     toggleAll (index) {
       this.tabs[index].selected =
-      this.tabs[index].selected.length !== this.tabs[index].options.length
-        ? this.tabs[index].options.slice()
-        : []
+        this.tabs[index].selected.length !== this.tabs[index].options.length
+          ? this.tabs[index].options.slice()
+          : []
     },
     changed (index) {
       console.log(this.tabs[index].selected.length)
@@ -211,7 +332,9 @@ export default {
         if (this.tabs[index].selected.length === 0) {
           this.tabs[index].indeterminate = false
           this.tabs[index].allSelected = false
-        } else if (this.tabs[index].selected.length === this.tabs[index].options.length) {
+        } else if (
+          this.tabs[index].selected.length === this.tabs[index].options.length
+        ) {
           this.tabs[index].indeterminate = false
           this.tabs[index].allSelected = true
         } else {
@@ -242,6 +365,20 @@ export default {
         this.show3 = false
         this.show4 = !this.show3
       }
+    },
+    addToFilters (val, index) {
+      const existing = this.filters.findIndex(x => x === val)
+
+      if (existing === -1) {
+        const length = this.icons[index].icon.length
+        console.log(length)
+        this.filters.push(val)
+        this.icons[index].icon = this.icons[index].icon + ' active'
+      } else {
+        this.filters.splice(existing, existing + 1)
+        const activeIndex = this.icons[index].icon.indexOf(' active')
+        this.icons[index].icon = this.icons[index].icon.slice(0, activeIndex)
+      }
     }
   }
 }
@@ -260,4 +397,7 @@ export default {
   width: 100%
 .choices, .choices *
   height: auto !important
+
+span ~ button.list-group-item
+  background-color: #ddd !important
 </style>
