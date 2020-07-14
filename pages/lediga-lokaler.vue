@@ -83,8 +83,7 @@
 
               <!-- Start second horizontal tab -->
               <b-tab active title="Plats" @click="tabClicked(2)">
-                <div v-if="show2">
-                </div>
+                <div v-if="show2" />
               </b-tab>
               <!-- End first horizontal tab -->
             </b-tabs>
