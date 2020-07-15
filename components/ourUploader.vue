@@ -66,7 +66,7 @@ export default {
       exactImg.style.display = 'block'
       exactImg.setAttribute('src', imageSrc)
       vm.files++
-      vm.inputs = vm.files + 1
+      if (vm.files >= vm.inputs) { vm.inputs++ }
 
       btn.onclick = function (e) {
         e.stopPropagation()
@@ -77,9 +77,7 @@ export default {
         img.removeAttribute('src')
         img.style.display = 'none'
         btn.style.display = 'none'
-        if (vm.inputs > 1) {
-          vm.inputs = vm.inputs - 1
-        }
+        vm.files--
       }
     },
     allowDrop (event) {
@@ -118,10 +116,8 @@ export default {
           exactDelBtn.style.display = 'block'
           exactImg.style.display = 'block'
           exactImg.setAttribute('src', imageSrc)
-          if (i.value !== '') {
-            vm.files++
-            vm.inputs = vm.files + 1
-          }
+          vm.files++
+          if (vm.files >= vm.inputs) { vm.inputs++ }
         }
       })
 
@@ -135,9 +131,7 @@ export default {
           img.removeAttribute('src')
           img.style.display = 'none'
           btn.style.display = 'none'
-          if (vm.inputs > 1) {
-            vm.files--
-          }
+          vm.files--
         }
       })
     }
