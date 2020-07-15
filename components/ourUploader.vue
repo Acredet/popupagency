@@ -88,7 +88,6 @@ export default {
   cursor: pointer
   width: 100%
   height: 150px
-  border: 1px solid #000
   position: relative
   overflow: hidden
   font-family: "Font Awesome 5 Free" !important
@@ -97,7 +96,7 @@ export default {
     background-color: #eeeeee
     border: 2px solid #ddd
     border-radius: 5px
-    content: "f093" !important
+    content: "\f093" !important
     display: flex
     justify-content: center
     align-items: center
