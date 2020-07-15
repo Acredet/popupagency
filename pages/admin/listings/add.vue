@@ -15,14 +15,14 @@
 
         <b-card title="uploader">
           <b-card-body>
-            <our-uploader />
+            <our-uploader :max-file-size="1" />
           </b-card-body>
         </b-card>
 
         <b-card title="Cover blieden">
           <b-card-body>
             <client-only>
-              <UploadImage is="upload-image" input-id="cover" url="https://google.com" :max-files="5" name="cover[]" />
+              <our-uploader :max-file-size="1" />
             </client-only>
           </b-card-body>
         </b-card>
@@ -124,7 +124,7 @@
         <b-card title="Planrinting">
           <b-card-body>
             <client-only>
-              <UploadImage is="upload-image" input-id="plan" url="https://google.com" :max-files="5" name="cover[]" />
+              <our-uploader :max-file-size="64" />
             </client-only>
           </b-card-body>
         </b-card>
@@ -240,7 +240,7 @@
         <b-card title="cintrum galeri">
           <b-card-body>
             <client-only>
-              <UploadImage is="upload-image" input-id="cintrum" url="https://google.com" :max-files="5" name="cover[]" />
+              <our-uploader :max-file-size="64" />
             </client-only>
           </b-card-body>
         </b-card>
@@ -279,7 +279,6 @@
 
 <script>
 import { BootstrapVue, BIcon, BIconTrash } from 'bootstrap-vue'
-import UploadImage from '@/components/imageUploader'
 import ourUploader from '@/components/ourUploader'
 
 let VueEditor
@@ -292,7 +291,6 @@ export default {
   layout: 'admin',
   components: {
     VueEditor,
-    UploadImage,
     ourUploader,
     // eslint-disable-next-line vue/no-unused-components
     BootstrapVue,

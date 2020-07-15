@@ -25,6 +25,12 @@
 
 <script>
 export default {
+  props: {
+    maxFileSize: {
+      type: Number,
+      default: () => 64
+    }
+  },
   data () {
     return {
       inputs: 1,
@@ -44,40 +50,34 @@ export default {
   methods: {
     dropped (event) {
       event.preventDefault()
-
       event.target.classList.remove('drag')
 
       const vm = this
       const inputs = document.querySelectorAll('.input-group--wrapper input')
-      const delBtns = document.querySelectorAll('.input-group--wrapper button.close')
+      const delBtns = document.querySelectorAll(
+        '.input-group--wrapper button.close'
+      )
       const images = document.querySelectorAll('.input-group--wrapper img')
 
       const wrapper = event.target
 
-      const input = [...inputs].find(x => x.getAttribute('data-id') === wrapper.getAttribute('data-id'))
-      const btn = [...delBtns].find(x => x.getAttribute('data-id') === wrapper.getAttribute('data-id'))
-
+      const input = [...inputs].find(
+        x => x.getAttribute('data-id') === wrapper.getAttribute('data-id')
+      )
+      const btn = [...delBtns].find(
+        x => x.getAttribute('data-id') === wrapper.getAttribute('data-id')
+      )
+      const oldVal = input.value
       input.files = event.dataTransfer.files
-      const imageSrc = URL.createObjectURL(input.files[0])
-      const exactImg = [...images].find(img => img.getAttribute('data-id') === input.getAttribute('data-id'))
-      const exactDelBtn = [...delBtns].find(btn => btn.getAttribute('data-id') === input.getAttribute('data-id'))
-
-      exactDelBtn.style.display = 'block'
-      exactImg.style.display = 'block'
-      exactImg.setAttribute('src', imageSrc)
-      vm.files++
-      if (vm.files >= vm.inputs) { vm.inputs++ }
+      if (input.files[0].size / 1024 / 1024 <= vm.maxFileSize) {
+        vm.AddImage(input, delBtns, images, oldVal === '')
+      } else {
+        alert(`Max size is ${vm.maxFileSize} MB`)
+      }
 
       btn.onclick = function (e) {
         e.stopPropagation()
-        const input = [...inputs].find(i => i.getAttribute('data-id') === btn.getAttribute('data-id'))
-        const img = [...images].find(i => i.getAttribute('data-id') === btn.getAttribute('data-id'))
-        input.value = ''
-
-        img.removeAttribute('src')
-        img.style.display = 'none'
-        btn.style.display = 'none'
-        vm.files--
+        vm.deleteImage(btn, inputs, images)
       }
     },
     allowDrop (event) {
@@ -92,46 +92,72 @@ export default {
       event.preventDefault()
       event.target.classList.remove('drag')
     },
+    deleteImage (btn, inputs, images) {
+      const input = [...inputs].find(
+        i => i.getAttribute('data-id') === btn.getAttribute('data-id')
+      )
+      const img = [...images].find(
+        i => i.getAttribute('data-id') === btn.getAttribute('data-id')
+      )
+      input.value = ''
+
+      img.removeAttribute('src')
+      img.style.display = 'none'
+      btn.style.display = 'none'
+      this.files--
+    },
+    AddImage (input, delBtns, images, newOne) {
+      // Add Preview Image
+      const imageSrc = URL.createObjectURL(input.files[0])
+      const exactImg = [...images].find(
+        img => img.getAttribute('data-id') === input.getAttribute('data-id')
+      )
+      const exactDelBtn = [...delBtns].find(
+        btn => btn.getAttribute('data-id') === input.getAttribute('data-id')
+      )
+
+      exactDelBtn.style.display = 'block'
+      exactImg.style.display = 'block'
+      exactImg.setAttribute('src', imageSrc)
+      if (newOne) { this.files++ }
+      if (this.files >= this.inputs) {
+        this.inputs++
+      }
+    },
     initalize () {
       const vm = this
       const wrappers = document.querySelectorAll('.input-group--wrapper')
-      const delBtns = document.querySelectorAll('.input-group--wrapper button.close')
+      const delBtns = document.querySelectorAll(
+        '.input-group--wrapper button.close'
+      )
       const inputs = document.querySelectorAll('.input-group--wrapper input')
       const images = document.querySelectorAll('.input-group--wrapper img')
-
+      let oldVal = null
       wrappers.forEach((w) => {
         const id = w.getAttribute('data-id')
         w.onclick = function () {
-          [...inputs].find(i => i.getAttribute('data-id') === id).click()
+          const input = [...inputs].find(i => i.getAttribute('data-id') === id)
+          oldVal = input.value
+          input.click()
         }
       })
 
       inputs.forEach((i) => {
         i.onchange = function (e) {
-        // Handle File Here
-          const imageSrc = URL.createObjectURL(i.files[0])
-          const exactImg = [...images].find(img => img.getAttribute('data-id') === i.getAttribute('data-id'))
-          const exactDelBtn = [...delBtns].find(btn => btn.getAttribute('data-id') === i.getAttribute('data-id'))
-
-          exactDelBtn.style.display = 'block'
-          exactImg.style.display = 'block'
-          exactImg.setAttribute('src', imageSrc)
-          vm.files++
-          if (vm.files >= vm.inputs) { vm.inputs++ }
+          // Handle File Here
+          if (i.files[0].size / 1024 / 1024 <= vm.maxFileSize) {
+            console.log(oldVal)
+            vm.AddImage(i, delBtns, images, oldVal === '')
+          } else {
+            alert(`Max size is ${vm.maxFileSize} MB`)
+          }
         }
       })
 
       delBtns.forEach((btn) => {
         btn.onclick = function (e) {
           e.stopPropagation()
-          const input = [...inputs].find(i => i.getAttribute('data-id') === btn.getAttribute('data-id'))
-          const img = [...images].find(i => i.getAttribute('data-id') === btn.getAttribute('data-id'))
-          input.value = ''
-
-          img.removeAttribute('src')
-          img.style.display = 'none'
-          btn.style.display = 'none'
-          vm.files--
+          vm.deleteImage(btn, inputs, images)
         }
       })
     }
@@ -187,5 +213,4 @@ export default {
     width: 100%
     height: 100%
     z-index: 2
-
 </style>
