@@ -15,15 +15,7 @@
 
         <b-card title="uploader">
           <b-card-body>
-            <client-only>
-              <UploadImage
-                is="upload-image"
-                :max-filesize="64000"
-                url="https://google.com"
-                :max-files="5"
-                name="files[]"
-              />
-            </client-only>
+            <our-uploader />
           </b-card-body>
         </b-card>
 
@@ -288,6 +280,7 @@
 <script>
 import { BootstrapVue, BIcon, BIconTrash } from 'bootstrap-vue'
 import UploadImage from '@/components/imageUploader'
+import ourUploader from '@/components/ourUploader'
 
 let VueEditor
 if (process.browser) {
@@ -300,6 +293,7 @@ export default {
   components: {
     VueEditor,
     UploadImage,
+    ourUploader,
     // eslint-disable-next-line vue/no-unused-components
     BootstrapVue,
     // eslint-disable-next-line vue/no-unused-components
