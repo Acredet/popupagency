@@ -9,6 +9,7 @@ const places = require("./routes/places");
 const users = require("./routes/users");
 const app = express();
 // Bodyparser Middleware  cors
+app.use(express.json());
 app.use(cors());
 
 const connectDB = require("./config/db");
