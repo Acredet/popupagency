@@ -33,7 +33,6 @@
     "node-geocoder": "^3.27.0",
     "nodemon": "^2.0.4",
     "nuxt": "^2.13.0",
-    "vue-upload-image": "^1.1.5",
     "vue2-editor": "^2.10.2",
     "vue2-google-maps": "^0.10.7"
   },

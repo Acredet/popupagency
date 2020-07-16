@@ -679,4 +679,8 @@ export default {
 Å
 Ö
 å */
+
+.card-title {
+  font-weight: 800;
+}
 </style>

@@ -5,10 +5,10 @@
     <div class="topbar-left">
       <a href="index.html" class="logo">
         <span>
-          <img src="/images/logo-light.png" alt height="18">
+          <img src="/favo.png" alt height="60">
         </span>
         <i>
-          <img src="/images/logo-sm.png" alt height="22">
+          <img src="/favo.png" alt height="30">
         </i>
       </a>
     </div>
@@ -17,14 +17,14 @@
       <ul class="navbar-right d-flex list-inline float-right mb-0">
         <li class="dropdown notification-list">
           <a
-            class="nav-link dropdown-toggle arrow-none waves-effect"
+            class="nav-link dropdown-toggle arrow-none waves-effect text-dark"
             data-toggle="dropdown"
             href="#"
             role="button"
             aria-haspopup="false"
             aria-expanded="false"
           >
-            <i class="ti-bell noti-icon" />
+            <i class="far fa-bell" style="font-size: 23px" />
             <span class="badge badge-pill badge-danger noti-icon-badge">3</span>
           </a>
           <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg">
@@ -130,7 +130,7 @@
       <ul class="list-inline menu-left mb-0">
         <li class="float-left">
           <button class="button-menu-mobile open-left waves-effect">
-            <i class="mdi mdi-menu" />
+            <i class="fas fa-bars" />
           </button>
         </li>
         <li class="d-none d-sm-block">

@@ -11,7 +11,7 @@
           </li>
 
           <li>
-            <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-email-outline" />
+            <a href="javascript:void(0);" class="waves-effect"><i class="far fa-map" />
               <span> Listing <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right" /></span> </span>
             </a>
             <ul class="submenu">
@@ -34,7 +34,7 @@
           </li>
 
           <li>
-            <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-email-outline" />
+            <a href="javascript:void(0);" class="waves-effect"><i class="far fa-user" />
               <span> User <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right" /></span> </span>
             </a>
             <ul class="submenu">
@@ -53,7 +53,7 @@
 
           <li>
             <nuxt-link exact class="waves-effect" to="/admin/settings">
-              <i class="mdi mdi-email-outline" />
+              <i class="fas fa-cog" />
               <span> site settings </span>
             </nuxt-link>
           </li>
