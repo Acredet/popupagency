@@ -11,7 +11,6 @@ const app = express();
 // Bodyparser Middleware  cors
 app.use(express.json());
 app.use(cors());
-
 const connectDB = require("./config/db");
 connectDB();
 app.use("/api/places", places);
@@ -38,6 +37,6 @@ async function start() {
   app.use(nuxt.render);
   // Listen the server
   app.listen(port, host);
-  console.log(`Server listening on http://${host}:${port}`);
+  console.log(`Server listening on port:${port}`);
 }
 start();

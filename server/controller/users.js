@@ -9,20 +9,24 @@ const { User, validate } = require("../models/user");
 // @access Private
 exports.getUser = async (req, res, next) => {
   const user = await User.findById(req.user._id).select("-password");
-  res.send(user);
+  res.status(200).json({
+    success: true,
+    ResultsNumber: user.length,
+    data: user
+  });
 };
 // @desc  Get all users
 // @route GET /api/users
 // @access Private
 exports.getAllUsers = async (req, res, next) => {
   try {
-    const User = await User.find();
-
-    return res.status(200).json({
-      success: true,
-      ResultsNumber: User.length,
-      data: User
-    });
+    User.find().then(users =>
+      res.status(200).json({
+        success: true,
+        ResultsNumber: User.length,
+        data: users
+      })
+    );
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Server error" });
@@ -43,7 +47,6 @@ exports.addUser = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(user.password, salt);
     await user.save();
-
     const token = user.generateAuthToken();
     res
       .header("x-auth-token", token)
