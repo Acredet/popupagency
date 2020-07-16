@@ -3,108 +3,109 @@ const mongoose = require('mongoose')
 // const geocoder = require("../utils/geocoder");
 
 const PlaceSchema = new mongoose.Schema({
-  beskreving: {
+  beskreving: { // ✔
     type: String
   },
-  bildgalleri: {
+  bildgalleri: { // ✔
     type: Array,
     default: []
   },
-  cover: {
+  cover: { // ✔
     type: Array,
     default: []
   },
-  Epost: {
+  epost: { // ✔
     type: String
   },
-  prisperdag: {
+  prisperdag: { // ✔
     type: Number,
     min: 0
   },
-  prisperhelg: {
+  prisperhelg: { // ✔
     type: Number,
     min: 0
   },
-  prisperlanghelg: {
+  prisperlanghelg: { // ✔
     type: Number,
     min: 0
   },
-  prispervecka: {
+  prispervecka: { // ✔
     type: Number,
     min: 0
   },
-  prispermanad: {
+  prispermanad: { // ✔
     type: Number,
     min: 0
   },
-  prioteradpris: {
+  prioteradpris: { // ✔
     type: Number,
     min: 0
   },
-  egenskaper: {
+  egenskaper: { // ✔
     type: Array,
     default: []
   },
-  yta: {
+  yta: { // ✔
     type: Number,
     min: 0
   },
-  placering: {
+  placering: { // ✔
     type: String
   },
-  stad: {
+  stad: { // ✔
     type: String
   },
-  plats: {
+  plats: { // ✔
     type: String
   },
-  location: {
-    type: {
-      type: String,
-      enum: ['Point']
-    },
-    coordinates: {
-      type: [Number],
-      index: '2dsphere'
-    },
-    formattedAddress: String
+  location: { // TODO:
+    // type: {
+    //   type: String,
+    //   enum: ['Point']
+    // },
+    // coordinates: {
+    //   type: [Number],
+    //   index: '2dsphere'
+    // },
+    // formattedAddress: String
+    type: String
   },
-  kategori: {
+  kategori: { // ✔
     type: Array,
     default: []
   },
-  planritning: {
+  planritning: { // ✔
     type: Array,
     default: []
   },
-  minstahyresperiod: {
+  minstahyresperiod: { // ✔
     type: String
   },
-  langstahyresperiod: {
+  langstahyresperiod: { // ✔
     type: String
   },
-  fasta: {
+  fasta: { // ✔
     type: Boolean
   },
-  butik: {
+  butik: { // ✔
     type: Boolean
   },
-  mat: {
+  mat: { // ✔
     type: Boolean
   },
-  event: {
+  event: { // ✔
     type: Boolean
   },
-  SasongBoxen: {
+  sasongBoxen: { // ✔
     type: String
   },
-  hemsida: {
+  hemsida: { // ✔
     type: String
   },
-  centrumtextarea: {
+  centrumtextarea: { // ✔
     type: String
   },
-  oppettider: [
+  oppettider: [ // ✔
     {
       day: String,
       oppettider: String,
@@ -119,22 +120,22 @@ const PlaceSchema = new mongoose.Schema({
   timezone: {
     type: String
   },
-  vagvisningen: {
+  vagvisningen: { // ✔
     type: String
   },
-  centrumgalleri: {
+  centrumgalleri: { // ✔
     type: String
   },
-  fran: {
+  fran: { // ✔
     type: Date
   },
-  till: {
+  till: { // ✔
     type: Date
   },
-  kontaktperson: {
+  kontaktperson: { // ✔
     type: String
   },
-  expiry: {
+  expiry: { // ✔
     type: Date
   },
   createdAt: {
