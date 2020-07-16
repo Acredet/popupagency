@@ -15,15 +15,13 @@
 
         <b-card title="uploader">
           <b-card-body>
-            <our-uploader :max-file-size="1" />
+            <our-uploader :name="'first-uploader'" :max-file-size="1" />
           </b-card-body>
         </b-card>
 
         <b-card title="Cover blieden">
           <b-card-body>
-            <client-only>
-              <our-uploader :max-file-size="1" />
-            </client-only>
+            <our-uploader :name="'cover'" :max-file-size="1" />
           </b-card-body>
         </b-card>
 
@@ -124,7 +122,7 @@
         <b-card title="Planrinting">
           <b-card-body>
             <client-only>
-              <our-uploader :max-file-size="64" />
+              <our-uploader :name="'Planrinting'" :max-file-size="64" />
             </client-only>
           </b-card-body>
         </b-card>
@@ -240,7 +238,7 @@
         <b-card title="cintrum galeri">
           <b-card-body>
             <client-only>
-              <our-uploader :max-file-size="64" />
+              <our-uploader :name="'galeri'" :max-file-size="64" />
             </client-only>
           </b-card-body>
         </b-card>
@@ -291,12 +289,12 @@ export default {
   layout: 'admin',
   components: {
     VueEditor,
-    ourUploader,
     // eslint-disable-next-line vue/no-unused-components
     BootstrapVue,
     // eslint-disable-next-line vue/no-unused-components
     BIcon,
-    BIconTrash
+    BIconTrash,
+    ourUploader
   },
   data () {
     return {

@@ -1,22 +1,30 @@
 <template>
   <div>
     <b-row>
-      <b-col v-for="input in inputs" :key="input" cols="3">
+      <b-col v-for="input in inputs" :key="input" cols="6" md="4">
         <div
-          :data-id="`input-${input}`"
+          :data-id="`${name}-${input}`"
           class="input-group--wrapper"
+          @click="wrapperClicked"
           @drop="dropped"
           @dragenter="dragIn"
           @dragleave="dragOut"
           @dragover="allowDrop"
         >
-          <button type="button" :data-id="`input-${input}`" class="close" aria-label="Close">
+          <button type="button" :data-id="`${name}-${input}`" class="close" aria-label="Close" @click="delBtnClicked">
             <span aria-hidden="true">&times;</span>
           </button>
 
-          <input type="file" accept="image/*" :data-id="`input-${input}`">
+          <input
+            :id="name"
+            :name="name"
+            type="file"
+            accept="image/*"
+            :data-id="`${name}-${input}`"
+            @change="inputChanged"
+          >
 
-          <img :data-id="`input-${input}`">
+          <img :data-id="`${name}-${input}`">
         </div>
       </b-col>
     </b-row>
@@ -25,27 +33,23 @@
 
 <script>
 export default {
+  name: 'ImageUploader',
   props: {
     maxFileSize: {
       type: Number,
       default: () => 64
+    },
+    name: {
+      type: String,
+      default: () => 'input'
     }
   },
-  data () {
+  data: () => {
     return {
       inputs: 1,
-      files: 0
+      files: 0,
+      oldInputValue: null
     }
-  },
-  watch: {
-    inputs (val) {
-      this.$nextTick(() => {
-        this.initalize()
-      })
-    }
-  },
-  mounted () {
-    this.initalize()
   },
   methods: {
     dropped (event) {
@@ -108,6 +112,7 @@ export default {
     },
     AddImage (input, delBtns, images, newOne) {
       // Add Preview Image
+      const vm = this
       const imageSrc = URL.createObjectURL(input.files[0])
       const exactImg = [...images].find(
         img => img.getAttribute('data-id') === input.getAttribute('data-id')
@@ -119,47 +124,38 @@ export default {
       exactDelBtn.style.display = 'block'
       exactImg.style.display = 'block'
       exactImg.setAttribute('src', imageSrc)
-      if (newOne) { this.files++ }
-      if (this.files >= this.inputs) {
-        this.inputs++
+      if (newOne) { vm.files++ }
+      if (vm.files >= vm.inputs) {
+        vm.inputs++
       }
     },
-    initalize () {
-      const vm = this
-      const wrappers = document.querySelectorAll('.input-group--wrapper')
+    wrapperClicked (e) {
+      const inputs = document.querySelectorAll('.input-group--wrapper input')
+      const id = e.target.getAttribute('data-id')
+      const input = [...inputs].find(i => i.getAttribute('data-id') === id)
+      this.oldInputValue = input.value
+      input.click()
+    },
+    inputChanged (e) {
+      const input = e.target
       const delBtns = document.querySelectorAll(
         '.input-group--wrapper button.close'
       )
-      const inputs = document.querySelectorAll('.input-group--wrapper input')
       const images = document.querySelectorAll('.input-group--wrapper img')
-      let oldVal = null
-      wrappers.forEach((w) => {
-        const id = w.getAttribute('data-id')
-        w.onclick = function () {
-          const input = [...inputs].find(i => i.getAttribute('data-id') === id)
-          oldVal = input.value
-          input.click()
-        }
-      })
+      // Handle File Here
 
-      inputs.forEach((i) => {
-        i.onchange = function (e) {
-          // Handle File Here
-          if (i.files[0].size / 1024 / 1024 <= vm.maxFileSize) {
-            console.log(oldVal)
-            vm.AddImage(i, delBtns, images, oldVal === '')
-          } else {
-            alert(`Max size is ${vm.maxFileSize} MB`)
-          }
-        }
-      })
+      if (input.files[0].size / 1024 / 1024 <= this.maxFileSize) {
+        this.AddImage(input, delBtns, images, this.oldInputValue === '')
+      } else {
+        alert(`Max size is ${this.maxFileSize} MB`)
+      }
+    },
+    delBtnClicked (e) {
+      e.stopPropagation()
+      const images = document.querySelectorAll('.input-group--wrapper img')
+      const inputs = document.querySelectorAll('.input-group--wrapper input')
 
-      delBtns.forEach((btn) => {
-        btn.onclick = function (e) {
-          e.stopPropagation()
-          vm.deleteImage(btn, inputs, images)
-        }
-      })
+      this.deleteImage(e.target, inputs, images)
     }
   }
 }
