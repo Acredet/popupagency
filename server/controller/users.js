@@ -20,8 +20,8 @@ exports.getAllUsers = async (req, res, next) => {
 
     return res.status(200).json({
       success: true,
-      ResultsNumber: places.length,
-      data: places
+      ResultsNumber: User.length,
+      data: User
     });
   } catch (err) {
     console.error(err);
