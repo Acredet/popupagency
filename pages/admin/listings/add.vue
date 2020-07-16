@@ -5,7 +5,7 @@
     </h2>
     <b-container>
       <div>
-        <b-card title="text editor">
+        <b-card title="Beskrivning:">
           <b-card-body>
             <client-only>
               <VueEditor v-model="article.content" />
@@ -13,19 +13,19 @@
           </b-card-body>
         </b-card>
 
-        <b-card title="uploader">
+        <b-card title="Bildgalleri:">
           <b-card-body>
             <our-uploader :name="'first-uploader'" :max-file-size="1" />
           </b-card-body>
         </b-card>
 
-        <b-card title="Cover blieden">
+        <b-card title="Cover bilden:">
           <b-card-body>
             <our-uploader :name="'cover'" :max-file-size="1" />
           </b-card-body>
         </b-card>
 
-        <b-card title="Epost kntalt">
+        <b-card title="Epost kontakt:">
           <b-card-body>
             <b-form-input v-model="email" placeholder="ex: example@example.com" />
           </b-card-body>
@@ -45,7 +45,7 @@
           </b-card-body>
         </b-card>
 
-        <b-card title="Egenskaper">
+        <b-card title="Egenskaper:">
           <b-card-body>
             <b-row>
               <b-col v-for="(feat,index) in renderEgensKaper" :key="index" cols="12" md="6">
@@ -62,19 +62,19 @@
           </b-card-body>
         </b-card>
 
-        <b-card title="Yta">
+        <b-card title="Yta:">
           <b-card-body>
             <b-form-input v-model="Yta" placeholder="ex: 190" />
           </b-card-body>
         </b-card>
 
-        <b-card title="markplan">
+        <b-card title="Våning/placering:">
           <b-card-body>
             <b-form-input v-model="markplan" placeholder="markplan" />
           </b-card-body>
         </b-card>
 
-        <b-card title="Stad">
+        <b-card title="Stad:">
           <b-card-body>
             <b-form-group>
               <b-form-radio
@@ -90,19 +90,19 @@
           </b-card-body>
         </b-card>
 
-        <b-card title="platz">
+        <b-card title="Plats:">
           <b-card-body>
             <b-form-select v-model="platz" :options="platzOptions" />
           </b-card-body>
         </b-card>
 
-        <b-card title="Location">
+        <b-card title="Location:">
           <b-card-body>
             <b-form-input v-model="location" placeholder="location" />
           </b-card-body>
         </b-card>
 
-        <b-card title="kategori">
+        <b-card title="Kategori*:">
           <b-card-body>
             <b-row>
               <b-col v-for="(kati,index) in kategoriOpts" :key="index" cols="12" md="6">
@@ -119,7 +119,7 @@
           </b-card-body>
         </b-card>
 
-        <b-card title="Planrinting">
+        <b-card title="Planritning:">
           <b-card-body>
             <client-only>
               <our-uploader :name="'Planrinting'" :max-file-size="64" />
@@ -133,7 +133,7 @@
           </b-card-body>
         </b-card>
 
-        <b-card title="Längsta hyresperiod">
+        <b-card title="Längsta hyresperiod:">
           <b-card-body>
             <b-form-input v-model="längsta" placeholder="Den längsta hyresperiod för lokalen" />
           </b-card-body>
@@ -152,7 +152,7 @@
           </b-card-body>
         </b-card>
 
-        <b-card title="Säsong Boxen">
+        <b-card title="Säsong Boxen:">
           <b-card-body>
             <b-form-group>
               <b-form-radio v-for="input in sasongInputs" :key="input.model" v-model="sasong[input.model]" name="säsong" :value="input.val">
@@ -162,13 +162,13 @@
           </b-card-body>
         </b-card>
 
-        <b-card title="Centrum hamside">
+        <b-card title="Centrum hemsida:">
           <b-card-body>
             <b-form-input v-model="hamside" placeholder="https://vala.se" />
           </b-card-body>
         </b-card>
 
-        <b-card title="another text editor">
+        <b-card title="Centrum textarea:">
           <b-card-body>
             <client-only>
               <VueEditor v-model="article.content2" />
@@ -176,7 +176,7 @@
           </b-card-body>
         </b-card>
 
-        <b-card title="times">
+        <b-card title="Öppettider:">
           <b-tabs content-class="mt-3" fill>
             <b-tab v-for="(tab) in times" :key="tab.name" :title="tab.name" :active="tab.active">
               <b-form-radio-group>
@@ -235,7 +235,13 @@
           </b-tabs>
         </b-card>
 
-        <b-card title="cintrum galeri">
+        <b-card title="Vägvisningen:">
+          <b-card-body>
+            <b-form-input v-model="vagvisningen" placeholder="Vägvisningen" />
+          </b-card-body>
+        </b-card>
+
+        <b-card title="Centrum Galleri:">
           <b-card-body>
             <client-only>
               <our-uploader :name="'galeri'" :max-file-size="64" />
@@ -243,19 +249,19 @@
           </b-card-body>
         </b-card>
 
-        <b-card title="Upptagest fries">
+        <b-card title="Upptaget från:">
           <b-card-body>
-            <b-form-input v-model="fries" placeholder="ex: example@example.com" />
+            <b-form-datepicker id="Upptaget-från" v-model="fries" class="mb-2" />
           </b-card-body>
         </b-card>
 
-        <b-card title="Upptagest till">
+        <b-card title="Upptaget till:">
           <b-card-body>
-            <b-form-input v-model="till" placeholder="ex: example@example.com" />
+            <b-form-datepicker id="Upptaget-till" v-model="till" class="mb-2" />
           </b-card-body>
         </b-card>
 
-        <b-card title="Lokal">
+        <b-card title="Lokalens kontaktperson:">
           <b-card-body>
             <b-form-group>
               <b-form-radio v-for="input in lokalOpts" :key="input" v-model="lokal[input]" name="säsong" :value="input">
@@ -265,7 +271,7 @@
           </b-card-body>
         </b-card>
 
-        <b-card title="Listing expiry date">
+        <b-card title="Listing Expiry Date:">
           <b-card-body>
             <b-form-datepicker id="example-datepicker" v-model="expiry" class="mb-2" />
           </b-card-body>
@@ -332,37 +338,37 @@ export default {
       renderInputs: [
         {
           temporary: true,
-          title: 'price per day:',
+          title: 'Pris per dag:',
           placeholder: 'Daglig pris',
           model: 'day'
         },
         {
           temporary: true,
-          title: 'price per helg:',
+          title: 'Pris per helg:',
           placeholder: 'Helgpris',
           model: 'helg'
         },
         {
           temporary: false,
-          title: 'price per langheig:',
+          title: 'Pris per långhelg:',
           placeholder: 'lagh',
           model: 'langheig'
         },
         {
           temporary: true,
-          title: 'price per veckopris:',
+          title: 'Pris  per vecka:',
           placeholder: 'veckopris',
           model: 'veckopris'
         },
         {
           temporary: true,
-          title: 'price per manad:',
+          title: 'Pris per månad:',
           placeholder: 'manad',
           model: 'manad'
         },
         {
           temporary: false,
-          title: 'prioterad pris:',
+          title: 'Prioterad pris:',
           placeholder: 'prioterad',
           model: 'prioterad'
         }
@@ -484,22 +490,22 @@ export default {
       },
       yesNoInputs: [
         {
-          title: 'Fasta öppettider',
+          title: 'Fasta öppettider:',
           name: 'Fasta-öppettider',
           model: 'oppettider'
         },
         {
-          title: 'Butik "Boxen"',
+          title: 'Butik "Boxen":',
           name: 'Butik-"Boxen"',
           model: 'Butik'
         },
         {
-          title: 'Mat & Dryck "Boxen"',
+          title: 'Mat & Dryck "Boxen":',
           name: 'Mat&Dryck',
           model: 'MatDryck'
         },
         {
-          title: 'Event "Boxen"',
+          title: 'Event "Boxen":',
           name: 'Event',
           model: 'Event'
         }
@@ -575,6 +581,7 @@ export default {
         'Annika',
         'Bertil'
       ],
+      vagvisningen: null,
       lokal: {
         Peter: false,
         Rikard: false,
