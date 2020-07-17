@@ -7,6 +7,9 @@ const { Nuxt, Builder } = require("nuxt");
 const nuxtConfig = require("../nuxt.config.js");
 const places = require("./routes/places");
 const users = require("./routes/users");
+const region = require("./routes/region");
+const tag = require("./routes/tag");
+const category = require("./routes/category");
 const app = express();
 
 // Bodyparser Middleware  cors
@@ -16,6 +19,9 @@ const connectDB = require("./config/db");
 connectDB();
 app.use("/api/places", places);
 app.use("/api/users", users);
+app.use("/api/region", region);
+app.use("/api/category", category);
+app.use("/api/tag", tag);
 
 // Import and Set Nuxt.js options
 nuxtConfig.dev = true;
