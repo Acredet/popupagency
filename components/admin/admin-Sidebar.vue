@@ -15,19 +15,9 @@
               <span> Listing <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right" /></span> </span>
             </a>
             <ul class="submenu">
-              <li>
-                <nuxt-link exact to="/admin/listings/add">
-                  Add new listing
-                </nuxt-link>
-              </li>
-              <li>
-                <nuxt-link exact to="/admin/listings/">
-                  All listings
-                </nuxt-link>
-              </li>
-              <li>
-                <nuxt-link exact to="/admin/listings/region">
-                  Region
+              <li v-for="link in links" :key="link.url">
+                <nuxt-link exact :to="`/admin/listings/${link.url}`">
+                  {{ link.text }}
                 </nuxt-link>
               </li>
             </ul>
@@ -69,7 +59,32 @@
 
 <script>
 export default {
-
+  data () {
+    return {
+      links: [
+        {
+          text: 'Add new listing',
+          url: 'add'
+        },
+        {
+          text: 'All listings',
+          url: ''
+        },
+        {
+          text: 'Region',
+          url: 'region'
+        },
+        {
+          text: 'Tags',
+          url: 'tags'
+        },
+        {
+          text: 'Categories',
+          url: 'categories'
+        }
+      ]
+    }
+  }
 }
 </script>
 

@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <h2>Add Region:</h2>
+    <h2>Add Tag:</h2>
     <b-container>
       <b-row>
         <b-col cols="12" md="4">
