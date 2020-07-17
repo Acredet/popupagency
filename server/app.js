@@ -9,13 +9,12 @@ const places = require('./routes/places')
 const users = require('./routes/users')
 const app = express()
 // Bodyparser Middleware  cors
-app.use(express.json())
-app.use(cors())
-
-const connectDB = require('./config/db')
-connectDB()
-app.use('/api/places', places)
-app.use('/api/users', users)
+app.use(express.json());
+app.use(cors());
+const connectDB = require("./config/db");
+connectDB();
+app.use("/api/places", places);
+app.use("/api/users", users);
 
 // Import and Set Nuxt.js options
 nuxtConfig.dev = true
@@ -37,7 +36,7 @@ async function start () {
   // Give nuxt middleware to express
   app.use(nuxt.render)
   // Listen the server
-  app.listen(port, host)
-  console.log(`Server listening on http://${host}:${port}`)
+  app.listen(port, host);
+  console.log(`Server listening on port:${port}`);
 }
 start()
