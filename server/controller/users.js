@@ -7,7 +7,7 @@ const { User, validate } = require("../models/user");
 // @route GET /api/users/me
 // @access Private
 exports.getUser = async (req, res, next) => {
-  const user = await User.findById(req.user._id).select("-password");
+  const user = await User.findById(req.user.id).select("-password");
   res.status(200).json({
     success: true,
     ResultsNumber: user.length,
@@ -61,7 +61,7 @@ exports.authenticate = async (req, res) => {
   const { email, password } = req.body;
   // Simple validation
   if (!email || !password) {
-    return res.status(200).json({ msg: "Please enter all fields" });
+    return res.status(400).json({ msg: "Please enter all fields" });
   }
 
   // Check for existing user
