@@ -97,7 +97,7 @@ exports.authenticate = async (req, res) => {
 // @access Private
 exports.deleteUser = (req, res) => {
   User.findById(req.params.id)
-    .then(user => user.remove().then(() => res.json({ success: true })))
+    .then(user => user.remove().then(() => res.status(200).json({ success: true })))
     .catch(err => res.status(404).json({ success: false }));
 };
 
