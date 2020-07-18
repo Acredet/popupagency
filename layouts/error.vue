@@ -21,6 +21,7 @@
 
 <script>
 export default {
+  layout: 'auth',
   head () {
     return {
       link: [
