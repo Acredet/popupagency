@@ -94,23 +94,27 @@
         <li class="dropdown notification-list">
           <div class="dropdown notification-list nav-pro-img">
             <a
-              class="dropdown-toggle nav-link arrow-none waves-effect nav-user"
+              v-if="$auth.loggedIn"
+              class="dropdown-toggle nav-link text-dark font-weight-bold font-3 waves-effect nav-user"
               data-toggle="dropdown"
               href="#"
               role="button"
               aria-haspopup="false"
               aria-expanded="false"
             >
-              <img src="/images/users/user-4.jpg" alt="user" class="rounded-circle">
+              {{ $auth.user.name }}
             </a>
-            <div class="dropdown-menu dropdown-menu-right profile-dropdown">
+            <nuxt-link v-else class="dropdown-toggle nav-link text-dark font-weight-bold font-3 waves-effect nav-user" to="/admin/login">
+              login
+            </nuxt-link>
+            <div v-if="$auth.loggedIn" class="dropdown-menu dropdown-menu-right profile-dropdown">
               <!-- item-->
-              <nuxt-link exact class="dropdown-item" to="/users/profile">
-                <i class="mdi mdi-account-circle m-r-5" /> Profile
+              <nuxt-link exact class="dropdown-item" :to="`/admin/users/profile/${$auth.user._id}`">
+                <i class="fas fa-user" /> Profile
               </nuxt-link>
               <div class="dropdown-divider" />
               <button type="button" class="dropdown-item text-danger" @click="$auth.logout()">
-                <i class="mdi mdi-power text-danger" /> Logout
+                <i class="fas fa-power-off text-danger" /> Logout
               </button>
             </div>
           </div>
@@ -160,5 +164,5 @@ export default {
 }
 </script>
 
-<style>
+<style lang="sass">
 </style>

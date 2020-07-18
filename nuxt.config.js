@@ -100,6 +100,9 @@ module.exports = {
   axios: {
     prefix: '/api'
   },
+  router: {
+    linkActiveClass: 'active'
+  },
   /*
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/

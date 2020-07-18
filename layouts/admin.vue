@@ -17,6 +17,8 @@ import adminFooter from '@/components/admin/adminFooter'
 import adminSidebar from '@/components/admin/admin-Sidebar.vue'
 
 export default {
+  name: 'AdminLayout',
+  middleware: 'authenticated',
   components: {
     adminHeader,
     adminFooter,
