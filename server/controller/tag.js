@@ -35,3 +35,21 @@ exports.addtag = async (req, res, next) => {
     res.status(500).json({ error: "Server error" });
   }
 };
+
+// @desc  Delete a Tag
+// @route Delete /api/Tag/id
+// @access Private
+exports.deleteTag = (req, res) => {
+  Tag.findById(req.params.id)
+    .then(tag => tag.remove().then(() => res.json({ success: true })))
+    .catch(err => res.status(404).json({ success: false }));
+};
+
+// @desc  update a Tag
+// @route update /api/Tag/id
+// @access Private
+exports.updateTag = (req, res) => {
+  Tag.updateOne({ _id: req.params.id }, { $set: req.body })
+    .then(tag => res.json({ success: true }))
+    .catch(err => res.status(404).json({ success: false }));
+};

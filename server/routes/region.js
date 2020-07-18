@@ -1,5 +1,11 @@
 const express = require("express");
-const { getregion, addregion } = require("../controller/region");
+const auth = require("../middleware/auth");
+const {
+  getregion,
+  addregion,
+  deleteRegion,
+  updateRegion
+} = require("../controller/region");
 const router = express.Router();
 
 router
@@ -7,4 +13,6 @@ router
   .get(getregion)
   .post(addregion);
 
+router.delete("/:id", auth, deleteRegion);
+router.patch("/:id", auth, updateRegion);
 module.exports = router;

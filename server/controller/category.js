@@ -2,7 +2,7 @@ const Category = require("../models/category");
 
 // @desc  Get all categorys
 // @route GET /api/category
-// @access Public
+// @access Private
 exports.getcategory = async (req, res, next) => {
   try {
     const category = await Category.find();
@@ -19,7 +19,7 @@ exports.getcategory = async (req, res, next) => {
 
 // @desc  Create a category
 // @route POST /api/category
-// @access Public
+// @access Private
 exports.addcategory = async (req, res, next) => {
   try {
     const category = await Category.create(req.body);
@@ -34,4 +34,22 @@ exports.addcategory = async (req, res, next) => {
     }
     res.status(500).json({ error: "Server error" });
   }
+};
+
+// @desc  Delete a category
+// @route Delete /api/category/id
+// @access Private
+exports.deleteCategory = (req, res) => {
+  Category.findById(req.params.id)
+    .then(category => category.remove().then(() => res.json({ success: true })))
+    .catch(err => res.status(404).json({ success: false }));
+};
+
+// @desc  update a category
+// @route update /api/category/id
+// @access Private
+exports.updateCategory = (req, res) => {
+  Category.updateOne({ _id: req.params.id }, { $set: req.body })
+    .then(category => res.json({ success: true }))
+    .catch(err => res.status(404).json({ success: false }));
 };

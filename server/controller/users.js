@@ -1,4 +1,3 @@
-const user = require("../models/user");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const _ = require("lodash");
@@ -68,7 +67,6 @@ exports.authenticate = async (req, res) => {
   // Check for existing user
   User.findOne({ email }).then(user => {
     if (!user) return res.status(400).json({ msg: "User Does not exist" });
-
     // Validate password
     bcrypt.compare(password, user.password).then(isMatch => {
       if (!isMatch) return res.status(400).json({ msg: "Invalid credentials" });
@@ -92,4 +90,22 @@ exports.authenticate = async (req, res) => {
       );
     });
   });
+};
+
+// @desc  Delete a User
+// @route Delete /api/User/id
+// @access Private
+exports.deleteUser = (req, res) => {
+  User.findById(req.params.id)
+    .then(user => user.remove().then(() => res.json({ success: true })))
+    .catch(err => res.status(404).json({ success: false }));
+};
+
+// @desc  update a User
+// @route update /api/User/id
+// @access Private
+exports.updateUser = (req, res) => {
+  User.updateOne({ _id: req.params.id }, { $set: req.body })
+    .then(user => res.json({ success: true }))
+    .catch(err => res.status(404).json({ success: false }));
 };

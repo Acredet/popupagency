@@ -1,10 +1,18 @@
-const express = require('express')
-const { getPlaces, addPlace } = require('../controller/places')
-const router = express.Router()
+const express = require("express");
+const auth = require("../middleware/auth");
+const {
+  getPlaces,
+  addPlace,
+  deletePlace,
+  updatePlace
+} = require("../controller/places");
+const router = express.Router();
 
 router
-  .route('/')
+  .route("/", auth)
   .get(getPlaces)
-  .post(addPlace)
+  .post(addPlace);
 
-module.exports = router
+router.delete("/:id", auth, deletePlace);
+router.patch("/:id", auth, updatePlace);
+module.exports = router;

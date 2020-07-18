@@ -35,3 +35,21 @@ exports.addregion = async (req, res, next) => {
     res.status(500).json({ error: "Server error" });
   }
 };
+
+// @desc  Delete a Region
+// @route Delete /api/Region/id
+// @access Private
+exports.deleteRegion = (req, res) => {
+  Region.findById(req.params.id)
+    .then(region => region.remove().then(() => res.json({ success: true })))
+    .catch(err => res.status(404).json({ success: false }));
+};
+
+// @desc  update a Region
+// @route update /api/Region/id
+// @access Private
+exports.updateRegion = (req, res) => {
+  Region.updateOne({ _id: req.params.id }, { $set: req.body })
+    .then(region => res.json({ success: true }))
+    .catch(err => res.status(404).json({ success: false }));
+};
