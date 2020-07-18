@@ -16,6 +16,7 @@
     "lint": "npm run lint:js"
   },
   "dependencies": {
+    "@nuxtjs/auth": "^4.9.1",
     "@nuxtjs/axios": "^5.11.0",
     "@nuxtjs/dotenv": "^1.4.1",
     "animate.css": "^4.1.0",
