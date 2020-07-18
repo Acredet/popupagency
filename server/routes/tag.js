@@ -4,7 +4,7 @@ const { gettag, addtag, deleteTag, updateTag } = require("../controller/tag");
 const router = express.Router();
 
 router
-  .route("/")
+  .route("/", auth)
   .get(gettag)
   .post(addtag);
 router.delete("/:id", auth, deleteTag);
