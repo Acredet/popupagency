@@ -105,23 +105,13 @@
             </a>
             <div class="dropdown-menu dropdown-menu-right profile-dropdown">
               <!-- item-->
-              <a class="dropdown-item" href="#">
+              <nuxt-link exact class="dropdown-item" to="/users/profile">
                 <i class="mdi mdi-account-circle m-r-5" /> Profile
-              </a>
-              <a class="dropdown-item" href="#">
-                <i class="mdi mdi-wallet m-r-5" /> My Wallet
-              </a>
-              <a class="dropdown-item d-block" href="#">
-                <span class="badge badge-success float-right">11</span>
-                <i class="mdi mdi-settings m-r-5" /> Settings
-              </a>
-              <a class="dropdown-item" href="#">
-                <i class="mdi mdi-lock-open-outline m-r-5" /> Lock screen
-              </a>
+              </nuxt-link>
               <div class="dropdown-divider" />
-              <a class="dropdown-item text-danger" href="#">
+              <button type="button" class="dropdown-item text-danger" @click="$auth.logout()">
                 <i class="mdi mdi-power text-danger" /> Logout
-              </a>
+              </button>
             </div>
           </div>
         </li>
