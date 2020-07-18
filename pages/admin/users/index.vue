@@ -38,10 +38,10 @@
       </p>
 
       <template v-slot:modal-footer="{ ok, cancel }">
-        <b-btn variant="primary" @click="deleteUser(); ok()">
+        <b-btn variant="danger" @click="deleteUser(); ok()">
           Delete
         </b-btn>
-        <b-btn variant="danger" @click="cancel(); Object.assign(user, {})">
+        <b-btn variant="primary" @click="cancel(); Object.assign(user, {})">
           Close
         </b-btn>
       </template>

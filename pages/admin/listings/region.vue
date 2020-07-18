@@ -37,7 +37,7 @@
             id="region"
             v-model="editForm.parent"
             class="mb-2 mr-sm-2 mb-sm-0"
-            :options="[{ text: 'Choose...', value: null }, 'One', 'Two', 'Three']"
+            :options="parentOpts"
           />
         </b-form-group>
 
@@ -57,10 +57,10 @@
       </b-form>
 
       <template v-slot:modal-footer="{ ok, cancel }">
-        <b-btn variant="primary" @click="editRigion(); ok()">
+        <b-btn variant="danger" @click="editRigion(); ok()">
           Edit
         </b-btn>
-        <b-btn variant="danger" @click="cancel(); Object.assign(editForm, {})">
+        <b-btn variant="primary" @click="cancel(); Object.assign(editForm, {})">
           Close
         </b-btn>
       </template>
@@ -121,7 +121,7 @@
                 id="region"
                 v-model="form.parent"
                 class="mb-2 mr-sm-2 mb-sm-0"
-                :options="[{ text: 'Choose...', value: null }, 'One', 'Two', 'Three']"
+                :options="parentOpts"
               />
             </b-form-group>
 
@@ -226,6 +226,7 @@ export default {
       sortBy: 'name',
       sortDesc: false,
       currentPage: 1,
+      parentOpts: [],
       perPage: 5,
       perPageOpts: [
         { value: 1, text: '1' },
@@ -277,6 +278,13 @@ export default {
       await this.$axios.$get('/region')
         .then((res) => {
           this.items = res.data
+          this.parentOpts = this.items.map(function (x) {
+            return {
+              text: x.name,
+              value: x.name
+            }
+          })
+          this.parentOpts.unshift({ text: 'Choose parent..', value: null })
         })
         .catch((err) => {
           this.toast = {
