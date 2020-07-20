@@ -3,20 +3,10 @@ const mongoose = require('mongoose')
 // const geocoder = require("../utils/geocoder");
 
 const PlaceSchema = new mongoose.Schema({
-  beskreving: { // ✔
-    type: String
-  },
-  bildgalleri: { // ✔
-    type: Array,
-    default: []
-  },
-  cover: { // ✔
-    type: Array,
-    default: []
-  },
-  epost: { // ✔
-    type: String
-  },
+  beskreving: String,
+  bildgalleri: Array,
+  cover: Array,
+  epost: String,
   prisperdag: { // ✔
     type: Number,
     min: 0
@@ -41,23 +31,14 @@ const PlaceSchema = new mongoose.Schema({
     type: Number,
     min: 0
   },
-  egenskaper: { // ✔
-    type: Array,
-    default: []
-  },
+  egenskaper: Array,
   yta: { // ✔
     type: Number,
     min: 0
   },
-  placering: { // ✔
-    type: String
-  },
-  stad: { // ✔
-    type: String
-  },
-  plats: { // ✔
-    type: String
-  },
+  placering: String,
+  stad: String,
+  plats: String,
   location: { // TODO:
     // type: {
     //   type: String,
@@ -70,41 +51,17 @@ const PlaceSchema = new mongoose.Schema({
     // formattedAddress: String
     type: String
   },
-  kategori: { // ✔
-    type: Array,
-    default: []
-  },
-  planritning: { // ✔
-    type: Array,
-    default: []
-  },
-  minstahyresperiod: { // ✔
-    type: String
-  },
-  langstahyresperiod: { // ✔
-    type: String
-  },
-  fasta: { // ✔
-    type: Boolean
-  },
-  butik: { // ✔
-    type: Boolean
-  },
-  mat: { // ✔
-    type: Boolean
-  },
-  event: { // ✔
-    type: Boolean
-  },
-  sasongBoxen: { // ✔
-    type: String
-  },
-  hemsida: { // ✔
-    type: String
-  },
-  centrumtextarea: { // ✔
-    type: String
-  },
+  kategori: Array,
+  planritning: Array,
+  minstahyresperiod: String,
+  langstahyresperiod: String,
+  fasta: Boolean,
+  butik: Boolean,
+  mat: Boolean,
+  event: Boolean,
+  sasongBoxen: String,
+  hemsida: String,
+  centrumtextarea: String,
   oppettider: [ // ✔
     {
       day: String,
@@ -117,27 +74,13 @@ const PlaceSchema = new mongoose.Schema({
       ]
     }
   ],
-  timezone: {
-    type: String
-  },
-  vagvisningen: { // ✔
-    type: String
-  },
-  centrumgalleri: { // ✔
-    type: String
-  },
-  fran: { // ✔
-    type: Date
-  },
-  till: { // ✔
-    type: Date
-  },
-  kontaktperson: { // ✔
-    type: String
-  },
-  expiry: { // ✔
-    type: Date
-  },
+  timezone: String,
+  vagvisningen: String,
+  centrumgalleri: Array,
+  fran: Date,
+  till: Date,
+  kontaktperson: String,
+  expiry: Date,
   createdAt: {
     type: Date,
     default: Date.now

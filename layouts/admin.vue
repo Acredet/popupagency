@@ -6,14 +6,14 @@
     <div class="my-3 content-page">
       <Nuxt />
     </div>
-    <admin-footer />
+    <!-- <admin-footer /> -->
   </div>
 </template>
 
 <script>
 /* eslint-disable no-sequences */
 import adminHeader from '@/components/admin/admin-Header'
-import adminFooter from '@/components/admin/adminFooter'
+// import adminFooter from '@/components/admin/adminFooter'
 import adminSidebar from '@/components/admin/admin-Sidebar.vue'
 
 export default {
@@ -21,11 +21,10 @@ export default {
   middleware: 'authenticated',
   components: {
     adminHeader,
-    adminFooter,
+    // adminFooter,
     adminSidebar
   },
   mounted () {
-    console.log('ds')
     this.$nextTick(() => {
       this.initApp()
     })

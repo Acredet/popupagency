@@ -495,7 +495,7 @@ export default {
         {
           title: 'Fasta öppettider:',
           name: 'Fasta-öppettider',
-          model: 'oppettider'
+          model: 'fasta'
         },
         {
           title: 'Butik "Boxen":',

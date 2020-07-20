@@ -1,5 +1,4 @@
 const Place = require("../models/place");
-
 // @desc  Get all places
 // @route GET /api/places
 // @access Public
@@ -22,8 +21,43 @@ exports.getPlaces = async (req, res, next) => {
 // @access Public
 exports.addPlace = async (req, res, next) => {
   try {
-    console.log(req.body);
-    const place = await Place.create(req.body);
+    const place = new Place({
+      beskreving: req.body.beskreving,
+      bildgalleri: req.files['bildgalleri[]'] ? req.files['bildgalleri[]'].map(x => x.filename) : [],
+      cover: req.files['cover[]'] ? req.files['cover[]'].map(x => x.filename) : [],
+      epost: req.body.epost,
+      prisperdag: req.body.prisperdag,
+      prisperhelg: req.body.prisperhelg,
+      prisperlanghelg: req.body.prisperlanghelg,
+      prispervecka: req.body.prispervecka,
+      prispermanad: req.body.prispermanad,
+      prioteradpris: req.body.prioteradpris,
+      egenskaper: req.body.egenskaper,
+      yta: req.body.yta,
+      placering: req.body.placering,
+      stad: req.body.stad,
+      plats: req.body.plats,
+      location: req.body.location,
+      kategori: req.body.kategori,
+      planritning: req.files['planritning[]'] ? req.files['planritning[]'].map(x => x.filename) : [],
+      minstahyresperiod: req.body.minstahyresperiod,
+      langstahyresperiod: req.body.langstahyresperiod,
+      fasta: req.body.fasta,
+      butik: req.body.butik,
+      mat: req.body.mat,
+      event: req.body.event,
+      sasongBoxen: req.body.sasongBoxen,
+      hemsida: req.body.hemsida,
+      centrumtextarea: req.body.centrumtextarea,
+      oppettider: req.body.oppettider.map(x => JSON.parse(x)),
+      timezone: 'timezone',
+      vagvisningen: req.body.vagvisningen,
+      centrumgalleri: req.files['centrumgalleri[]'] ? req.files['centrumgalleri[]'].map(x => x.filename) : [],
+      fran: req.body.fran,
+      till: req.body.till,
+      kontaktperson: req.body.kontaktperson,
+      expiry: req.body.expiry,
+    })
     return res.status(201).json({
       success: true,
       data: place
@@ -36,6 +70,7 @@ exports.addPlace = async (req, res, next) => {
     res.status(500).json({ error: "Server error" });
   }
 };
+
 
 // @desc  Delete a Place
 // @route Delete /api/Place/id
