@@ -4,7 +4,7 @@ const Place = require("../models/place");
 // @access Public
 exports.getPlaces = async (req, res, next) => {
   try {
-    const places = await Place.find();
+    const places = await Place.find({});
     return res.status(200).json({
       success: true,
       ResultsNumber: places.length,
@@ -21,7 +21,7 @@ exports.getPlaces = async (req, res, next) => {
 // @access Public
 exports.addPlace = async (req, res, next) => {
   try {
-    const place = new Place({
+    let place = new Place({
       beskreving: req.body.beskreving,
       bildgalleri: req.files['bildgalleri[]'] ? req.files['bildgalleri[]'].map(x => x.filename) : [],
       cover: req.files['cover[]'] ? req.files['cover[]'].map(x => x.filename) : [],
@@ -58,7 +58,8 @@ exports.addPlace = async (req, res, next) => {
       kontaktperson: req.body.kontaktperson,
       expiry: req.body.expiry,
     })
-    return res.status(201).json({
+    place = await place.save()
+    res.status(201).json({
       success: true,
       data: place
     });

@@ -64,11 +64,8 @@ export default {
       const images = document.querySelectorAll('.input-group--wrapper img')
 
       const wrapper = event.target
-
+      console.log(wrapper)
       const input = [...inputs].find(
-        x => x.getAttribute('data-id') === wrapper.getAttribute('data-id')
-      )
-      const btn = [...delBtns].find(
         x => x.getAttribute('data-id') === wrapper.getAttribute('data-id')
       )
       const oldVal = input.value
@@ -77,11 +74,6 @@ export default {
         vm.AddImage(input, delBtns, images, oldVal === '')
       } else {
         alert(`Max size is ${vm.maxFileSize} MB`)
-      }
-
-      btn.onclick = function (e) {
-        e.stopPropagation()
-        vm.deleteImage(btn, inputs, images)
       }
     },
     allowDrop (event) {
@@ -155,7 +147,7 @@ export default {
       const images = document.querySelectorAll('.input-group--wrapper img')
       const inputs = document.querySelectorAll('.input-group--wrapper input')
 
-      this.deleteImage(e.target, inputs, images)
+      this.deleteImage(e.target.parentElement, inputs, images)
     }
   }
 }

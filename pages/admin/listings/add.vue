@@ -16,13 +16,13 @@
 
           <b-card title="Bildgalleri:">
             <b-card-body>
-              <our-uploader :name="'bildgalleri[]'" :max-file-size="1" />
+              <our-uploader :name="'bildgalleri[]'" :max-file-size="64" />
             </b-card-body>
           </b-card>
 
           <b-card title="Cover bilden:">
             <b-card-body>
-              <our-uploader :name="'cover[]'" :max-file-size="1" />
+              <our-uploader :name="'cover[]'" :max-file-size="64" />
             </b-card-body>
           </b-card>
 
