@@ -85,33 +85,49 @@
               <b-tab active title="Lokaltyp" @click="tabClicked(2)">
                 <div v-if="show2">
                   <b-row>
+                    <!-- Start left buttons -->
                     <b-col cols="6">
                       <b-button-group vertical class="w-100">
                         <b-button
                           v-for="(icon) in icons.slice(0,6)"
-                          :key="icon.model"
+                          :key="icon.text"
                           :pressed.sync="icon.state"
                           variant="primary"
                           class="text-left"
+                          @click="addFilter(icon)"
                         >
                           <i :class="`fas fa-${icon.icon}`" />
                           {{ icon.text }}
                         </b-button>
                       </b-button-group>
                     </b-col>
+                    <!-- End Left buttons -->
+
+                    <!-- Start right buttons -->
                     <b-col cols="6">
                       <b-button-group vertical class="w-100">
                         <b-button
                           v-for="(icon) in icons.slice(6,12)"
-                          :key="icon.model"
+                          :key="icon.text"
                           :pressed.sync="icon.state"
                           variant="primary"
                           class="text-left"
+                          @click="addFilter(icon)"
                         >
                           <i :class="`fas fa-${icon.icon}`" />
                           {{ icon.text }}
                         </b-button>
                       </b-button-group>
+                    </b-col>
+                    <!-- End right buttons -->
+
+                    <b-col cols="12" class="mt-3 d-flex justify-content-end">
+                      <b-button class="mr-1" @click="show2 = !show2">
+                        close
+                      </b-button>
+                      <b-button class="bg-our-primary" @click="show2 = !show2">
+                        ok
+                      </b-button>
                     </b-col>
                   </b-row>
                 </div>
@@ -122,18 +138,22 @@
               <b-tab active title="Pris" @click="tabClicked(3)">
                 <div v-if="show3">
                   <div>
-                    <label for="from">From:</label>
-                    <b-form-input id="from" v-model="price.from" type="range" min="0" max="165000 " />
-                    <div class="mt-2">
-                      Value: {{ price.from }}
-                    </div>
+                    <label for="from">From: {{ price.from }} Kr</label>
+                    <b-form-input v-model="price.from" placeholder="Enter your name" />
+                    <b-form-input id="from" v-model="price.from" type="range" min="0" max="10000000" />
                   </div>
                   <div>
-                    <label for="to">To:</label>
-                    <b-form-input id="to" v-model="price.to" type="range" :min="price.from" max="165000" />
-                    <div class="mt-2">
-                      Value: {{ price.to }}
-                    </div>
+                    <label for="to">To: {{ price.to }} Kr</label>
+                    <b-form-input v-model="price.to" placeholder="Enter your name" />
+                    <b-form-input id="to" v-model="price.to" type="range" :min.sync="price.from" max="100000000" />
+                  </div>
+                  <div cols="12" class="mt-3 d-flex justify-content-end">
+                    <b-button class="mr-1" @click="show3 = !show3">
+                      close
+                    </b-button>
+                    <b-button class="bg-our-primary" @click="show3 = !show3">
+                      ok
+                    </b-button>
                   </div>
                 </div>
               </b-tab>
@@ -226,6 +246,7 @@ export default {
       show2: false,
       show3: false,
       filters: [],
+      LokalFilters: {},
       price: {
         from: 0,
         to: 0
@@ -297,20 +318,7 @@ export default {
           state: false
         }
       ],
-      cards: [
-        {
-          images: ['https://picsum.photos/1024/480/?image=10'],
-          place: "'Uppsala'",
-          money: "'fr 50 000 kr / månad'",
-          text: "'Dragarbrunnstorg 6 ∙ Popup lokal på gågata ∙ ca 163 m²'"
-        },
-        {
-          images: ['https://picsum.photos/1024/480/?image=10'],
-          place: "'Uppsala'",
-          money: "'fr 50 000 kr / månad'",
-          text: "'Dragarbrunnstorg 6 ∙ Popup lokal på gågata ∙ ca 163 m²'"
-        }
-      ],
+      cards: [],
       center: { lat: -3.350235, lng: 111.995865 },
       mapTypeId: 'terrain',
       markers: [
@@ -318,6 +326,20 @@ export default {
         { position: { lat: -6.9127778, lng: 107.6205556 } }
       ]
     }
+  },
+  async mounted () {
+    await this.$axios.$get('/places')
+      .then((res) => {
+        this.cards = res.data.map((x) => {
+          return {
+            images: ['107862309_933915647019504_6298911049464957333_o.jpg-1595253253452.jpg', 'keychron K2 2.jpg-1595253253457.jpg'],
+            place: x.stad,
+            money: `fr ${x.prispermanad} kr / månad`,
+            text: x.beskreving
+          }
+        })
+      })
+      .catch(err => console.log(err))
   },
   methods: {
     toggleAll (index) {
@@ -379,6 +401,15 @@ export default {
         const activeIndex = this.icons[index].icon.indexOf(' active')
         this.icons[index].icon = this.icons[index].icon.slice(0, activeIndex)
       }
+    },
+    addFilter (button) {
+      this.$nextTick(() => {
+        if (this.LokalFilters[button.text]) {
+          this.LokalFilters[button.text] = !this.LokalFilters[button.text]
+        } else {
+          this.LokalFilters[button.text] = true
+        }
+      })
     }
   }
 }
