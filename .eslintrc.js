@@ -17,6 +17,7 @@ module.exports = {
   rules: {
     'no-console': 'off',
     'no-v-html': 'off',
-    'vue/this-in-template': 'off'
+    'vue/this-in-template': 'off',
+    'no-prototype-builtins': 'off'
   }
 }

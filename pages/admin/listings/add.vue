@@ -35,10 +35,12 @@
           <b-card v-for="(card, index) in renderInputs" :key="index" :title="card.title">
             <b-card-body>
               <b-form-checkbox
+                v-if="!card.noTemp"
                 :id="card.title"
                 v-model="price[card.model].temp"
                 class="mb-2"
                 :name="card.model"
+                @change="setPrioteradPrice(card.model)"
               >
                 Set as priorited price
               </b-form-checkbox>
@@ -368,37 +370,32 @@ export default {
       },
       renderInputs: [
         {
-          temporary: true,
           title: 'Pris per dag:',
           placeholder: 'Daglig pris',
           model: 'day'
         },
         {
-          temporary: true,
           title: 'Pris per helg:',
           placeholder: 'Helgpris',
           model: 'helg'
         },
         {
-          temporary: false,
           title: 'Pris per långhelg:',
           placeholder: 'lagh',
           model: 'langheig'
         },
         {
-          temporary: true,
           title: 'Pris  per vecka:',
           placeholder: 'veckopris',
           model: 'veckopris'
         },
         {
-          temporary: true,
           title: 'Pris per månad:',
           placeholder: 'manad',
           model: 'manad'
         },
         {
-          temporary: false,
+          noTemp: true,
           title: 'Prioterad pris:',
           placeholder: 'prioterad',
           model: 'prioterad'
@@ -633,6 +630,21 @@ export default {
     },
     addTimeRow (name) {
       this.days[name].hours.push({ opening: '00:00:00', closing: '00:00:00' })
+    },
+    setPrioteradPrice (card) {
+      console.log(this.price[card])
+      this.$nextTick(() => {
+        if (this.price[card].temp === true) {
+          this.price.prioterad.val = this.price[card].val
+        }
+
+        for (const key in this.price) {
+          const obj = this.price[key]
+          if (key !== card) {
+            obj.temp = false
+          }
+        }
+      })
     },
     createFormDate () {
       const listing = new FormData(document.getElementById('listing'))
