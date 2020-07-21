@@ -18,12 +18,18 @@
             <b-card-body>
               <our-uploader :name="'bildgalleri[]'" :max-file-size="64" />
             </b-card-body>
+            <template v-slot:footer>
+              <em>Max File size: 64MB</em>
+            </template>
           </b-card>
 
           <b-card title="Cover bilden:">
             <b-card-body>
               <our-uploader :name="'cover[]'" :max-file-size="64" />
             </b-card-body>
+            <template v-slot:footer>
+              <em>Max File size: 64MB</em>
+            </template>
           </b-card>
 
           <b-card title="Epost kontakt:">
@@ -126,6 +132,9 @@
                 <our-uploader :name="'planritning[]'" :max-file-size="64" />
               </client-only>
             </b-card-body>
+            <template v-slot:footer>
+              <em>Max File size: 64MB</em>
+            </template>
           </b-card>
 
           <b-card title="Minsta hyresperiod">
@@ -181,46 +190,58 @@
             <b-tabs content-class="mt-3" fill>
               <b-tab v-for="(tab) in times" :key="tab.name" :title="tab.name" :active="tab.active">
                 <b-form-radio-group>
-                  <b-form-radio
-                    v-model="days[tab.name].openTimes"
-                    value="hours"
-                    :name="tab.name"
-                  >
-                    Enter hours
-                  </b-form-radio>
-                  <b-form-radio
-                    v-model="days[tab.name].openTimes"
-                    value="openAllDay"
-                    :name="tab.name"
-                  >
-                    Open all day
-                  </b-form-radio>
-                  <b-form-radio
-                    v-model="days[tab.name].openTimes"
-                    value="closeAllDay"
-                    :name="tab.name"
-                  >
-                    Close all day
-                  </b-form-radio>
-                  <b-form-radio
-                    v-model="days[tab.name].openTimes"
-                    value="appointment"
-                    :name="tab.name"
-                  >
-                    By appointment only
-                  </b-form-radio>
+                  <b-row>
+                    <b-col cols="6" md="3">
+                      <b-form-radio
+                        v-model="days[tab.name].openTimes"
+                        value="hours"
+                        :name="tab.name"
+                      >
+                        Enter hours
+                      </b-form-radio>
+                    </b-col>
+                    <b-col cols="6" md="3">
+                      <b-form-radio
+                        v-model="days[tab.name].openTimes"
+                        value="openAllDay"
+                        :name="tab.name"
+                      >
+                        Open all day
+                      </b-form-radio>
+                    </b-col>
+
+                    <b-col cols="6" md="3">
+                      <b-form-radio
+                        v-model="days[tab.name].openTimes"
+                        value="closeAllDay"
+                        :name="tab.name"
+                      >
+                        Close all day
+                      </b-form-radio>
+                    </b-col>
+
+                    <b-col cols="6" md="3">
+                      <b-form-radio
+                        v-model="days[tab.name].openTimes"
+                        value="appointment"
+                        :name="tab.name"
+                      >
+                        By appointment only
+                      </b-form-radio>
+                    </b-col>
+                  </b-row>
                 </b-form-radio-group>
 
                 <div v-if="days[tab.name].openTimes == 'hours'">
                   <b-row v-for="(hours, index) in days[tab.name].hours" :key="'m' + index" class="my-3">
-                    <b-col cols="12" md="5">
+                    <b-col cols="12" md="5" class="mb-2 mb-md-0">
                       <b-form-timepicker v-model="days[tab.name].hours[index].opening" locale="en" />
                     </b-col>
-                    <b-col cols="12" md="5">
+                    <b-col cols="12" md="5" class="mb-2 mb-md-0">
                       <b-form-timepicker v-model="days[tab.name].hours[index].closing" locale="en" />
                     </b-col>
                     <b-col cols="12" md="2">
-                      <b-button variant="outline-light" @click="delteTimeRow(tab.name, index)">
+                      <b-button variant="outline-light" block="md" @click="delteTimeRow(tab.name, index)">
                         <b-icon-trash variant="dark" class="rounded-circle" />
                       </b-button>
                     </b-col>
@@ -248,6 +269,9 @@
                 <our-uploader :name="'centrumgalleri[]'" :max-file-size="64" />
               </client-only>
             </b-card-body>
+            <template v-slot:footer>
+              <em>Max File size: 64MB</em>
+            </template>
           </b-card>
 
           <b-card title="Upptaget från:">
