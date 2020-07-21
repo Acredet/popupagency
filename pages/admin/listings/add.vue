@@ -307,6 +307,34 @@ export default {
   },
   data () {
     return {
+      /* form: {
+        Yta: null,
+        markplan: null,
+        city: null,
+        platz: null,
+        location: null,
+        vagvisningen: null,
+        fran: null,
+        till: null,
+        lokal: null,
+        expiry: null,
+        email: null,
+        minsta: null,
+        längsta: null,
+        sasong: null,
+        hamside: null,
+        beskreving: null,
+        centrum: null,
+        price[card.model].temp: null,
+        price[card.model].val: null,
+        features[feat]: null,
+
+        kategori[kati]: null,
+        yesNoInputsVal[input.model]: null,
+        days[tab.name].openTimes: null,
+        days[tab.name].hours[index].opening: null,
+        days[tab.name].hours[index].closing: null,
+      }, */
       article: {
         beskreving: null,
         centrum: null
@@ -392,56 +420,11 @@ export default {
         WC: false,
         'wi-fi': false
       },
-      renderEgensKaper: [
-        'Belysning',
-        'El',
-        'Handikappanpassad',
-        'Högtalare',
-        'Inredning',
-        'Kassasystem',
-        'Kök',
-        'Lager',
-        'Lastkaj',
-        'Provrum',
-        'Skyltfönster',
-        'VVS',
-        'WC',
-        'wi-fi'
-      ],
+      renderEgensKaper: [],
       Yta: null,
       markplan: null,
       city: null,
-      cityOptions: [
-        'Borås',
-        'Charlottenberg',
-        'Eskilstuna',
-        'Falköping',
-        'Gotland',
-        'göteborg',
-        'Helsingborg',
-        'Jönköping',
-        'Kalmar',
-        'Karlstad',
-        'Linköping',
-        'Långflon',
-        'Malmö',
-        'Motala',
-        'Norrköping',
-        'Stockholm',
-        'Södertälje',
-        'Trollhättan',
-        'Uppsala',
-        'Väla',
-        'Västra skåna',
-        'växjö',
-        'örebro',
-        'Falkenberg',
-        'Kungsbacka',
-        'Lund',
-        'Burlöv',
-        'Hässleholm',
-        'Uddevalla'
-      ],
+      cityOptions: [],
       platz: null,
       platzOptions: [
         { value: null, text: 'Please select an option' },
@@ -465,21 +448,7 @@ export default {
         'Mat & Dryck': false,
         'Whote label popup': false
       },
-      kategoriOpts: [
-        'Butikslokal',
-        'Event',
-        '-- Eventlokal',
-        '-- Eventyta',
-        '-- Galleri',
-        '-- Showroom',
-        'Foodtruck',
-        'Köpcentrum',
-        'Marknad',
-        '-- Beach Market',
-        '-- Julmarknad',
-        'Mat & Dryck',
-        'Whote label popup'
-      ],
+      kategoriOpts: [],
       location: null,
 
       minsta: null,
@@ -552,16 +521,7 @@ export default {
       sasong: null,
 
       hamside: null,
-      lokalOpts: [
-        'Peter',
-        'Rikard',
-        'Terese',
-        'Ylva',
-        'Jasmine',
-        'Helena',
-        'Annika',
-        'Bertil'
-      ],
+      lokalOpts: [],
       lokal: null,
       vagvisningen: null,
       fran: null,
@@ -643,6 +603,30 @@ export default {
       expiry: null
     }
   },
+  async mounted () {
+    const promises = [
+      this.$axios.$get('/users/all'),
+      this.$axios.$get('/region'),
+      this.$axios.$get('/category'),
+      this.$axios.$get('/tag')
+    ]
+    await Promise.all(promises)
+      .then((res) => {
+        console.log(res)
+        const users = res[0].data
+        const regions = res[1].data
+        const categories = res[2].data
+        const tags = res[3].data
+
+        this.lokalOpts = users.map(x => x.name)
+        this.renderEgensKaper = tags.map(x => x.name)
+        this.cityOptions = regions.map(x => x.name)
+        this.kategoriOpts = categories.map(x => x.name)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  },
   methods: {
     delteTimeRow (name, index) {
       this.days[name].hours.splice(index, 1)
@@ -650,7 +634,7 @@ export default {
     addTimeRow (name) {
       this.days[name].hours.push({ opening: '00:00:00', closing: '00:00:00' })
     },
-    async addListing () {
+    createFormDate () {
       const listing = new FormData(document.getElementById('listing'))
       listing.append('beskreving', this.article.beskreving)
       listing.append('epost', this.email)
@@ -720,10 +704,14 @@ export default {
       listing.append('kontaktperson', this.lokal)
       listing.append('expiry', this.expiry)
 
-      for (const pair of listing.entries()) {
+      for (const pair of listing.entries()) { // Show data in console.
         console.log(pair[0] + ', ' + pair[1])
       }
 
+      return listing
+    },
+    async addListing () {
+      const listing = this.createFormDate()
       await this.$axios.$post('/places', listing)
         .then((res) => {
           console.log(res)

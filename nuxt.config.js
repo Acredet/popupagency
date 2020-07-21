@@ -22,16 +22,16 @@ module.exports = {
       {
         hid: 'description',
         name: 'description',
-        content: process.env.npm_package_description || ''
+        content: 'Popup Agency är en nytänkande uthyrningskonsult som på ett roligt och otraditionellt arbetssätt möter framtidens krav inom handeln med korttidsavtal och popup butiker. Vi är matchmakern som hjälper dig från idé till popup.'
       }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favo.png' },
       { href: 'https://fonts.googleapis.com/css2?family=Abel&display=swap', rel: 'stylesheet' },
-      { href: 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css', rel: 'stylesheet' }
+      { href: '/css/animate.css', rel: 'stylesheet' }
     ],
     script: [
-      { src: 'https://kit.fontawesome.com/7ccf14bcd9.js', async: true, crossorigin: 'anonymous' }
+      { src: '/js/fontawesome.js' }
     ]
   },
   /*
