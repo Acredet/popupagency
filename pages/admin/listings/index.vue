@@ -37,6 +37,7 @@ export default {
     await this.$axios.$get('/places')
       .then((res) => {
         this.items = res.data
+        console.log(res)
       })
       .catch(err => console.log(err))
   }

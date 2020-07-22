@@ -32,12 +32,6 @@
             </template>
           </b-card>
 
-          <b-card title="Epost kontakt:">
-            <b-card-body>
-              <b-form-input v-model="email" placeholder="ex: example@example.com" />
-            </b-card-body>
-          </b-card>
-
           <b-card v-for="(card, index) in renderInputs" :key="index" :title="card.title">
             <b-card-body>
               <b-form-checkbox
@@ -95,12 +89,6 @@
                   {{ stad }}
                 </b-form-radio>
               </b-form-group>
-            </b-card-body>
-          </b-card>
-
-          <b-card title="Plats:">
-            <b-card-body>
-              <b-form-select v-model="platz" :options="platzOptions" />
             </b-card-body>
           </b-card>
 
@@ -241,7 +229,7 @@
                       <b-form-timepicker v-model="days[tab.name].hours[index].closing" locale="en" />
                     </b-col>
                     <b-col cols="12" md="2">
-                      <b-button variant="outline-light" block="md" @click="delteTimeRow(tab.name, index)">
+                      <b-button variant="outline-light" block @click="delteTimeRow(tab.name, index)">
                         <b-icon-trash variant="dark" class="rounded-circle" />
                       </b-button>
                     </b-col>
@@ -337,14 +325,12 @@ export default {
         Yta: null,
         markplan: null,
         city: null,
-        platz: null,
         location: null,
         vagvisningen: null,
         fran: null,
         till: null,
         lokal: null,
         expiry: null,
-        email: null,
         minsta: null,
         längsta: null,
         sasong: null,
@@ -365,7 +351,6 @@ export default {
         beskreving: null,
         centrum: null
       },
-      email: null,
       price: {
         day: {
           val: null,
@@ -384,10 +369,6 @@ export default {
           temp: false
         },
         manad: {
-          val: null,
-          temp: false
-        },
-        prioterad: {
           val: null,
           temp: false
         }
@@ -417,12 +398,6 @@ export default {
           title: 'Pris per månad:',
           placeholder: 'manad',
           model: 'manad'
-        },
-        {
-          noTemp: true,
-          title: 'Prioterad pris:',
-          placeholder: 'prioterad',
-          model: 'prioterad'
         }
       ],
       features: {
@@ -446,14 +421,6 @@ export default {
       markplan: null,
       city: null,
       cityOptions: [],
-      platz: null,
-      platzOptions: [
-        { value: null, text: 'Please select an option' },
-        { value: 'a', text: 'This is First option' },
-        { value: 'b', text: 'Selected Option' },
-        { value: { C: '3PO' }, text: 'This is an option with object value' },
-        { value: 'd', text: 'This one is disabled', disabled: true }
-      ],
       kategori: {
         Butikslokal: false,
         Event: false,
@@ -658,10 +625,6 @@ export default {
     setPrioteradPrice (card) {
       console.log(this.price[card])
       this.$nextTick(() => {
-        if (this.price[card].temp === true) {
-          this.price.prioterad.val = this.price[card].val
-        }
-
         for (const key in this.price) {
           const obj = this.price[key]
           if (key !== card) {
@@ -680,7 +643,14 @@ export default {
       listing.append('prisperlanghelg', this.price.langheig.val)
       listing.append('prispervecka', this.price.veckopris.val)
       listing.append('prispermanad', this.price.manad.val)
-      listing.append('prioteradpris', this.price.prioterad.val)
+
+      let prioteradpris
+      for (const key in this.price) {
+        const obj = this.price[key]
+        if (obj.temp) { prioteradpris = obj.val }
+      }
+
+      listing.append('prioteradpris', prioteradpris)
 
       for (const key in this.features) {
         // eslint-disable-next-line no-prototype-builtins
@@ -693,7 +663,6 @@ export default {
       listing.append('yta', this.Yta)
       listing.append('placering', this.markplan)
       listing.append('stad', this.city)
-      listing.append('plats', this.platz)
 
       for (const key in this.kategori) {
         // eslint-disable-next-line no-prototype-builtins
