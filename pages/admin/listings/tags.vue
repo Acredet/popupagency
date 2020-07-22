@@ -54,10 +54,18 @@
             rows="3"
           />
         </b-form-group>
+
+        <b-form-group
+          id="avatar-group"
+          label="Avatar:"
+          description="The description isn't prominent by default; howerver, some themes may show it."
+        >
+          <our-uploader :responsivness="{ cols: 12, sm: 12, md: 12, lg: 12 }" :name="'tagImage[]'" :max-number-of-inputs="1" :max-file-size="64" />
+        </b-form-group>
       </b-form>
 
       <template v-slot:modal-footer="{ ok, cancel }">
-        <b-btn variant="danger" @click="editRigion(); ok()">
+        <b-btn variant="danger" @click="editTag(); ok()">
           Edit
         </b-btn>
         <b-btn variant="primary" @click="cancel(); Object.assign(editForm, {})">
@@ -72,7 +80,7 @@
       </p>
 
       <template v-slot:modal-footer="{ ok, cancel }">
-        <b-btn variant="primary" @click="deleteRigion(); ok()">
+        <b-btn variant="primary" @click="deleteTag(); ok()">
           Delete
         </b-btn>
         <b-btn variant="danger" @click="cancel(); Object.assign(editForm, {})">
@@ -85,7 +93,7 @@
     <b-container>
       <b-row>
         <b-col cols="12" md="4">
-          <b-form>
+          <b-form id="tag-form" enctype="multipart/form-data">
             <b-form-group
               id="name-group"
               label="Name:"
@@ -139,7 +147,15 @@
               />
             </b-form-group>
 
-            <b-btn variant="primary" :disabled="!form.name" @click="addRigion" v-text="'Add Tags'" />
+            <b-form-group
+              id="avatar-group"
+              label="Avatar:"
+              description="The description isn't prominent by default; howerver, some themes may show it."
+            >
+              <our-uploader :responsivness="{ cols: 12, sm: 12, md: 12, lg: 12 }" :name="'avatar'" :max-number-of-inputs="1" :max-file-size="64" />
+            </b-form-group>
+
+            <b-btn variant="primary" :disabled="!form.name" @click="addTag" v-text="'Add Tags'" />
           </b-form>
         </b-col>
 
@@ -202,9 +218,14 @@
 </template>
 
 <script>
+import ourUploader from '@/components/ourUploader'
+
 export default {
   name: 'ListingTags',
   layout: 'admin',
+  components: {
+    ourUploader
+  },
   data () {
     return {
       toast: {
@@ -251,13 +272,26 @@ export default {
     }
   },
   mounted () {
-    this.getRigions()
+    this.getTags()
   },
   methods: {
-    async addRigion () {
-      await this.$axios.$post('/tag', this.form)
+    async addTag () {
+      const tag = new FormData(document.getElementById('tag-form'))
+
+      for (const key in this.form) {
+        if (this.form.hasOwnProperty(key)) {
+          const element = this.form[key]
+          tag.append(key, element)
+        }
+      }
+
+      for (const pair of tag.entries()) { // Show data in console.
+        console.log(pair[0] + ', ' + pair[1])
+      }
+
+      await this.$axios.$post('/tag', tag)
         .then((res) => {
-          this.getRigions()
+          this.getTags()
           this.toast = {
             title: 'Tags added successfully',
             variant: 'success',
@@ -274,7 +308,7 @@ export default {
           }
         })
     },
-    async getRigions () {
+    async getTags () {
       await this.$axios.$get('/tag')
         .then((res) => {
           this.items = res.data
@@ -295,10 +329,10 @@ export default {
           }
         })
     },
-    async editRigion () {
+    async editTag () {
       await this.$axios.$patch(`/tag/${this.editForm._id}`, this.editForm)
         .then((res) => {
-          this.getRigions()
+          this.getTags()
           this.toast = {
             title: 'Tag Edited successfully',
             variant: 'success',
@@ -315,10 +349,10 @@ export default {
           }
         })
     },
-    async deleteRigion () {
+    async deleteTag () {
       await this.$axios.$delete(`/tag/${this.editForm._id}`)
         .then((res) => {
-          this.getRigions()
+          this.getTags()
           this.toast = {
             title: 'Tag deleted successfully',
             variant: 'success',

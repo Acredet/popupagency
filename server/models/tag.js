@@ -9,6 +9,9 @@ const tagSchema = new mongoose.Schema({
   },
   description: {
     type: String
+  },
+  avatar: {
+    type: String
   }
 });
 

@@ -1,7 +1,14 @@
 <template>
   <div>
     <b-row>
-      <b-col v-for="input in inputs" :key="input" cols="6" md="4">
+      <b-col
+        v-for="input in inputs"
+        :key="input"
+        :cols="responsivness.cols"
+        :sm="responsivness.sm"
+        :md="responsivness.md"
+        :lg="responsivness.lg"
+      >
         <div
           :data-id="`${name}-${input}`"
           class="input-group--wrapper"
@@ -42,6 +49,25 @@ export default {
     name: {
       type: String,
       default: () => 'input'
+    },
+    responsivness: {
+      type: Object,
+      default: () => {
+        return {
+          cols: 6,
+          sm: 6,
+          md: 4,
+          lg: 3
+        }
+      }
+    },
+    maxNumberOfInputs: {
+      type: Number,
+      default: () => 6
+    },
+    images: {
+      type: String,
+      default: () => null
     }
   },
   data: () => {
@@ -117,7 +143,7 @@ export default {
       exactImg.style.display = 'block'
       exactImg.setAttribute('src', imageSrc)
       if (newOne) { vm.files++ }
-      if (vm.files >= vm.inputs) {
+      if (vm.files >= vm.inputs && vm.input < vm.maxNumberOfInputs) {
         vm.inputs++
       }
     },
@@ -148,6 +174,9 @@ export default {
       const inputs = document.querySelectorAll('.input-group--wrapper input')
 
       this.deleteImage(e.target.parentElement, inputs, images)
+    },
+    previewOldImages (e) {
+      console.log(this.images)
     }
   }
 }

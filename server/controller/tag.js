@@ -22,11 +22,19 @@ exports.gettag = async (req, res, next) => {
 // @access Public
 exports.addtag = async (req, res, next) => {
   try {
-    const tag = await Tag.create(req.body);
-    return res.status(201).json({
-      success: true,
-      data: tag
-    });
+    const tag = new Tag({
+      name: req.body.name,
+      parent: req.body.parent,
+      description: req.body.description,
+      avatar: req.file.filename
+    })
+    await tag.save()
+      .then(result => res.status(201).json({
+          success: true,
+          data: tag
+        })
+      )
+      .catch(err => res.status(400).json(err))
   } catch (err) {
     console.error(err);
     if (err.code === 11000) {

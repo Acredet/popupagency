@@ -72,7 +72,7 @@
       </p>
 
       <template v-slot:modal-footer="{ ok, cancel }">
-        <b-btn variant="primary" @click="deleteRigion(); ok()">
+        <b-btn variant="primary" @click="deleteCategory(); ok()">
           Delete
         </b-btn>
         <b-btn variant="danger" @click="cancel(); Object.assign(editForm, {})">
@@ -85,7 +85,7 @@
     <b-container>
       <b-row>
         <b-col cols="12" md="4">
-          <b-form>
+          <b-form id="catygory-form" enctype="multipart/form-data">
             <b-form-group
               id="name-group"
               label="Name:"
@@ -139,7 +139,15 @@
               />
             </b-form-group>
 
-            <b-btn variant="primary" :disabled="!form.name" @click="addRigion" v-text="'Add Category'" />
+            <b-form-group
+              id="avatar-group"
+              label="Avatar:"
+              description="The description isn't prominent by default; howerver, some themes may show it."
+            >
+              <our-uploader :responsivness="{ cols: 12, sm: 12, md: 12, lg: 12 }" :name="'tagImage[]'" :max-file-size="64" />
+            </b-form-group>
+
+            <b-btn variant="primary" :disabled="!form.name" @click="addCategory" v-text="'Add Category'" />
           </b-form>
         </b-col>
 
@@ -251,13 +259,26 @@ export default {
     }
   },
   mounted () {
-    this.getRigions()
+    this.getCategories()
   },
   methods: {
-    async addRigion () {
-      await this.$axios.$post('/category', this.form)
+    async addCategory () {
+      const category = new FormData(document.getElementById('tag-form'))
+
+      for (const key in this.form) {
+        if (this.form.hasOwnProperty(key)) {
+          const element = this.form[key]
+          category.append(key, element)
+        }
+      }
+
+      for (const pair of category.entries()) { // Show data in console.
+        console.log(pair[0] + ', ' + pair[1])
+      }
+
+      await this.$axios.$post('/category', category)
         .then((res) => {
-          this.getRigions()
+          this.getCategories()
           this.toast = {
             title: 'Category added successfully',
             variant: 'success',
@@ -274,7 +295,7 @@ export default {
           }
         })
     },
-    async getRigions () {
+    async getCategories () {
       await this.$axios.$get('/category')
         .then((res) => {
           this.items = res.data
@@ -298,7 +319,7 @@ export default {
     async editRigion () {
       await this.$axios.$patch(`/category/${this.editForm._id}`, this.editForm)
         .then((res) => {
-          this.getRigions()
+          this.getCategories()
           this.toast = {
             title: 'Category Edited successfully',
             variant: 'success',
@@ -315,10 +336,10 @@ export default {
           }
         })
     },
-    async deleteRigion () {
+    async deleteCategory () {
       await this.$axios.$delete(`/category/${this.editForm._id}`)
         .then((res) => {
-          this.getRigions()
+          this.getCategories()
           this.toast = {
             title: 'Category deleted successfully',
             variant: 'success',
