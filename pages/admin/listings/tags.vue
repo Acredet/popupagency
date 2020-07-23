@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <b-modal id="edit-modal" centered title="Edit Tags" @close="Object.assign(editForm, {})">
+    <b-modal id="edit-modal" centered title="Edit Tags" @close="editForm = {}">
       <b-form id="edit-tag" enctype="multipart/form-data">
         <b-form-group
           id="name-group"
@@ -191,10 +191,10 @@
                 <template v-slot:button-content>
                   <b>Actions</b>
                 </template>
-                <b-dropdown-item v-b-modal.edit-modal @click="Object.assign(editForm, data.item)">
+                <b-dropdown-item v-b-modal.edit-modal @click="editForm = data.item">
                   Edit
                 </b-dropdown-item>
-                <b-dropdown-item v-b-modal.delete-modal @click="Object.assign(editForm, data.item)">
+                <b-dropdown-item v-b-modal.delete-modal @click="editForm = data.item">
                   Delete
                 </b-dropdown-item>
               </b-dropdown>
@@ -307,6 +307,23 @@ export default {
       await this.$axios.$post('/tag', tag)
         .then((res) => {
           this.getTags()
+          const inputs = [...document.querySelectorAll('.input-group--wrapper input')]
+          const images = [...document.querySelectorAll('.input-group--wrapper img')]
+
+          inputs.forEach((e) => {
+            e.value = ''
+            const img = images.find((x) => {
+              console.log(x)
+              return x.getAttribute('data-id') === e.getAttribute('data-id')
+            })
+            img.style.display = 'none'
+
+            this.form = {
+              name: '',
+              parent: null,
+              description: null
+            }
+          })
           this.toast = {
             title: 'Tags added successfully',
             variant: 'success',
@@ -346,6 +363,7 @@ export default {
     },
     async editTag () {
       const tag = new FormData(document.getElementById('edit-tag'))
+      if (this.editForm.avatar) { delete this.editForm.avatar }
 
       for (const key in this.editForm) {
         if (this.editForm.hasOwnProperty(key)) {

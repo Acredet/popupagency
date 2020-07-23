@@ -86,8 +86,10 @@ export default {
       thereIsImage: vm.oldImages ? vm.oldImages.length > 0 : false
     }
   },
-  updated () {
-    console.log('Working')
+  mounted () {
+    this.$on('clear', () => {
+      console.log('das')
+    })
   },
   methods: {
     dropped (event) {
