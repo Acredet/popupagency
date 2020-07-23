@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <b-modal id="edit-modal" centered title="Edit Region" @close="Object.assign(editForm, {})">
+    <b-modal id="edit-modal" centered title="Edit Region" @close="editForm = {}">
       <b-form>
         <b-form-group
           id="name-group"
@@ -60,7 +60,7 @@
         <b-btn variant="primary" @click="editRigion(); ok()">
           Edit
         </b-btn>
-        <b-btn variant="danger" @click="cancel(); Object.assign(editForm, {})">
+        <b-btn variant="danger" @click="cancel(); editForm = {}">
           Close
         </b-btn>
       </template>
@@ -75,7 +75,7 @@
         <b-btn variant="danger" @click="deleteRigion(); ok()">
           Delete
         </b-btn>
-        <b-btn variant="primary" @click="cancel(); Object.assign(editForm, {})">
+        <b-btn variant="primary" @click="cancel(); editForm = {}">
           Close
         </b-btn>
       </template>
@@ -160,10 +160,10 @@
                 <template v-slot:button-content>
                   <b>Actions</b>
                 </template>
-                <b-dropdown-item v-b-modal.edit-modal @click="Object.assign(editForm, data.item)">
+                <b-dropdown-item v-b-modal.edit-modal @click="editForm = data.item">
                   Edit
                 </b-dropdown-item>
-                <b-dropdown-item v-b-modal.delete-modal @click="Object.assign(editForm, data.item)">
+                <b-dropdown-item v-b-modal.delete-modal @click="editForm = data.item">
                   Delete
                 </b-dropdown-item>
               </b-dropdown>

@@ -22,6 +22,7 @@ exports.getPlaces = async (req, res, next) => {
 exports.addPlace = async (req, res, next) => {
   try {
     let place = new Place({
+      title: req.body.title,
       beskreving: req.body.beskreving,
       bildgalleri: req.files['bildgalleri[]'] ? req.files['bildgalleri[]'].map(x => x.filename) : [],
       cover: req.files['cover[]'] ? req.files['cover[]'].map(x => x.filename) : [],

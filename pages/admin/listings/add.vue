@@ -1,11 +1,17 @@
 <template>
   <div class="content">
-    <h2 class="my-3">
-      Create a listing
-    </h2>
     <b-container>
+      <h2 class="my-3">
+        Add Listing:
+      </h2>
       <form id="listing" enctype="multipart/form-data">
         <div>
+          <b-card title="Title:">
+            <b-card-body>
+              <b-form-input v-model="title" placeholder="Listing Title" />
+            </b-card-body>
+          </b-card>
+
           <b-card title="Beskrivning:">
             <b-card-body>
               <client-only>
@@ -16,7 +22,7 @@
 
           <b-card title="Bildgalleri:">
             <b-card-body>
-              <our-uploader :name="'bildgalleri[]'" :max-file-size="64" />
+              <our-uploader :name="'bildgalleri[]'" :max-number-of-inputs="999" :max-file-size="64" />
             </b-card-body>
             <template v-slot:footer>
               <em>Max File size: 64MB</em>
@@ -25,7 +31,7 @@
 
           <b-card title="Cover bilden:">
             <b-card-body>
-              <our-uploader :name="'cover[]'" :max-file-size="64" />
+              <our-uploader :name="'cover[]'" :max-number-of-inputs="999" :max-file-size="64" />
             </b-card-body>
             <template v-slot:footer>
               <em>Max File size: 64MB</em>
@@ -117,7 +123,7 @@
           <b-card title="Planritning:">
             <b-card-body>
               <client-only>
-                <our-uploader :name="'planritning[]'" :max-file-size="64" />
+                <our-uploader :name="'planritning[]'" :max-number-of-inputs="999" :max-file-size="64" />
               </client-only>
             </b-card-body>
             <template v-slot:footer>
@@ -254,7 +260,7 @@
           <b-card title="Centrum Galleri:">
             <b-card-body>
               <client-only>
-                <our-uploader :name="'centrumgalleri[]'" :max-file-size="64" />
+                <our-uploader :name="'centrumgalleri[]'" :max-number-of-inputs="999" :max-file-size="64" />
               </client-only>
             </b-card-body>
             <template v-slot:footer>
@@ -322,6 +328,7 @@ export default {
   data () {
     return {
       /* form: {
+        title: null,
         Yta: null,
         markplan: null,
         city: null,
@@ -340,13 +347,13 @@ export default {
         price[card.model].temp: null,
         price[card.model].val: null,
         features[feat]: null,
-
         kategori[kati]: null,
         yesNoInputsVal[input.model]: null,
         days[tab.name].openTimes: null,
         days[tab.name].hours[index].opening: null,
         days[tab.name].hours[index].closing: null,
       }, */
+      title: null,
       article: {
         beskreving: null,
         centrum: null
@@ -636,6 +643,7 @@ export default {
     createFormDate () {
       const listing = new FormData(document.getElementById('listing'))
       listing.append('beskreving', this.article.beskreving)
+      listing.append('title', this.title)
       listing.append('epost', this.email)
 
       listing.append('prisperdag', this.price.day.val)

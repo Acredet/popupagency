@@ -104,7 +104,6 @@ export default {
       const images = document.querySelectorAll('.input-group--wrapper img')
 
       const wrapper = event.target
-      console.log(wrapper)
       const input = [...inputs].find(
         x => x.getAttribute('data-id') === wrapper.getAttribute('data-id')
       )
@@ -157,7 +156,7 @@ export default {
       exactImg.style.display = 'block'
       exactImg.setAttribute('src', imageSrc)
       if (newOne) { vm.files++ }
-      if (vm.files >= vm.inputs && vm.input < vm.maxNumberOfInputs) {
+      if (vm.files >= vm.inputs && vm.inputs < vm.maxNumberOfInputs) {
         vm.inputs++
       }
     },
