@@ -57,10 +57,10 @@
       </b-form>
 
       <template v-slot:modal-footer="{ ok, cancel }">
-        <b-btn variant="danger" @click="editRigion(); ok()">
+        <b-btn variant="primary" @click="editRigion(); ok()">
           Edit
         </b-btn>
-        <b-btn variant="primary" @click="cancel(); Object.assign(editForm, {})">
+        <b-btn variant="danger" @click="cancel(); Object.assign(editForm, {})">
           Close
         </b-btn>
       </template>
@@ -72,17 +72,17 @@
       </p>
 
       <template v-slot:modal-footer="{ ok, cancel }">
-        <b-btn variant="primary" @click="deleteRigion(); ok()">
+        <b-btn variant="danger" @click="deleteRigion(); ok()">
           Delete
         </b-btn>
-        <b-btn variant="danger" @click="cancel(); Object.assign(editForm, {})">
+        <b-btn variant="primary" @click="cancel(); Object.assign(editForm, {})">
           Close
         </b-btn>
       </template>
     </b-modal>
 
-    <h2>Add Region:</h2>
     <b-container>
+      <h2>Add Region:</h2>
       <b-row>
         <b-col cols="12" md="4">
           <b-form>
