@@ -57,7 +57,6 @@ exports.deleteTag = (req, res) => {
 // @route update /api/Tag/id
 // @access Private
 exports.updateTag = async (req, res) => {
-  console.log(req.file);
   const update = {
     name: req.body.name || null,
     parent: req.body.parent || null,
@@ -71,8 +70,6 @@ exports.updateTag = async (req, res) => {
       if (element === null) { delete update.key }
     }
   }
-
-  console.log(update);
 
   await Tag.updateOne({ _id: req.params.id }, { $set: update })
     .then(tag => res.json({ success: true }))

@@ -1,7 +1,7 @@
 <template>
   <div class="content">
-    <b-modal id="edit-modal" centered title="Edit Category" @close="Object.assign(editForm, {})">
-      <b-form>
+    <b-modal id="edit-modal" centered title="Edit Categories" @close="editForm = {}">
+      <b-form id="edit-category" enctype="multipart/form-data">
         <b-form-group
           id="name-group"
           label="Name:"
@@ -29,12 +29,12 @@
 
         <b-form-group
           id="select-group"
-          label="Parent Category:"
-          label-for="category"
+          label="Parent Categories:"
+          label-for="categorys"
           description="Assign a parent term to create a hierachy. The term Jazz, for example, would be the parent of Bebop and Big Band."
         >
           <b-form-select
-            id="category"
+            id="categorys"
             v-model="editForm.parent"
             class="mb-2 mr-sm-2 mb-sm-0"
             :options="parentOpts"
@@ -54,11 +54,49 @@
             rows="3"
           />
         </b-form-group>
+
+        <b-form-group
+          id="avatar-edit-group"
+          label="Avatar:"
+          description="The description isn't prominent by default; howerver, some themes may show it."
+        >
+          <our-uploader
+            :responsivness="{ cols: 12, sm: 12, md: 12, lg: 12 }"
+            :name="'edit-avatar'"
+            :old-images="[editForm.avatar]"
+            :max-number-of-inputs="1"
+            :max-file-size="64"
+          >
+            <template v-slot:old-Image>
+              <div v-if="editForm && editForm.avatar" class="d-flex justify-content-center">
+                <b-img style="height: 150px" :src="require(`@/server/images/${editForm.avatar}`)" />
+              </div>
+            </template>
+          </our-uploader>
+        </b-form-group>
       </b-form>
 
       <template v-slot:modal-footer="{ ok, cancel }">
-        <b-btn variant="danger" @click="editRigion(); ok()">
+        <b-btn variant="primary" @click="editTag(); ok()">
           Edit
+        </b-btn>
+        <b-btn
+          variant="danger"
+          @click="cancel(); editForm = { name: '', parent: null, description: null }"
+        >
+          Close
+        </b-btn>
+      </template>
+    </b-modal>
+
+    <b-modal id="delete-modal" centered title="Delete Categories">
+      <p class="my-4">
+        Are you sure you wanna delete {{ editForm.name }}?
+      </p>
+
+      <template v-slot:modal-footer="{ ok, cancel }">
+        <b-btn variant="danger" @click="deleteTag(); ok()">
+          Delete
         </b-btn>
         <b-btn variant="primary" @click="cancel(); Object.assign(editForm, {})">
           Close
@@ -66,26 +104,11 @@
       </template>
     </b-modal>
 
-    <b-modal id="delete-modal" centered title="Delete Category">
-      <p class="my-4">
-        Are you sure you wanna delete {{ editForm.name }}?
-      </p>
-
-      <template v-slot:modal-footer="{ ok, cancel }">
-        <b-btn variant="primary" @click="deleteCategory(); ok()">
-          Delete
-        </b-btn>
-        <b-btn variant="danger" @click="cancel(); Object.assign(editForm, {})">
-          Close
-        </b-btn>
-      </template>
-    </b-modal>
-
-    <h2>Add Category:</h2>
     <b-container>
+      <h2>Add Categories:</h2>
       <b-row>
         <b-col cols="12" md="4">
-          <b-form id="catygory-form" enctype="multipart/form-data">
+          <b-form id="category-form" enctype="multipart/form-data">
             <b-form-group
               id="name-group"
               label="Name:"
@@ -113,12 +136,12 @@
 
             <b-form-group
               id="select-group"
-              label="Parent Category:"
-              label-for="category"
+              label="Parent Categories:"
+              label-for="categorys"
               description="Assign a parent term to create a hierachy. The term Jazz, for example, would be the parent of Bebop and Big Band."
             >
               <b-form-select
-                id="category"
+                id="categorys"
                 v-model="form.parent"
                 class="mb-2 mr-sm-2 mb-sm-0"
                 :options="parentOpts"
@@ -144,14 +167,14 @@
               label="Avatar:"
               description="The description isn't prominent by default; howerver, some themes may show it."
             >
-              <our-uploader :responsivness="{ cols: 12, sm: 12, md: 12, lg: 12 }" :name="'tagImage[]'" :max-file-size="64" />
+              <our-uploader :responsivness="{ cols: 12, sm: 12, md: 12, lg: 12 }" :name="'avatar'" :max-number-of-inputs="1" :max-file-size="64" />
             </b-form-group>
 
-            <b-btn variant="primary" :disabled="!form.name" @click="addCategory" v-text="'Add Category'" />
+            <b-btn variant="primary" :disabled="!form.name" @click="addTag" v-text="'Add Categories'" />
           </b-form>
         </b-col>
 
-        <b-col cols="12" md="8">
+        <b-col class="mt-2 mt-md-0" cols="12" md="8">
           <b-table
             id="all-listing"
             :items="items"
@@ -168,10 +191,10 @@
                 <template v-slot:button-content>
                   <b>Actions</b>
                 </template>
-                <b-dropdown-item v-b-modal.edit-modal @click="Object.assign(editForm, data.item)">
+                <b-dropdown-item v-b-modal.edit-modal @click="editForm = data.item">
                   Edit
                 </b-dropdown-item>
-                <b-dropdown-item v-b-modal.delete-modal @click="Object.assign(editForm, data.item)">
+                <b-dropdown-item v-b-modal.delete-modal @click="editForm = data.item">
                   Delete
                 </b-dropdown-item>
               </b-dropdown>
@@ -210,9 +233,14 @@
 </template>
 
 <script>
+import ourUploader from '@/components/ourUploader'
+
 export default {
-  name: 'ListingCategory',
+  name: 'ListingTags',
   layout: 'admin',
+  components: {
+    ourUploader
+  },
   data () {
     return {
       toast: {
@@ -259,11 +287,11 @@ export default {
     }
   },
   mounted () {
-    this.getCategories()
+    this.getTags()
   },
   methods: {
-    async addCategory () {
-      const category = new FormData(document.getElementById('tag-form'))
+    async addTag () {
+      const category = new FormData(document.getElementById('category-form'))
 
       for (const key in this.form) {
         if (this.form.hasOwnProperty(key)) {
@@ -278,12 +306,29 @@ export default {
 
       await this.$axios.$post('/category', category)
         .then((res) => {
-          this.getCategories()
+          this.getTags()
+          const inputs = [...document.querySelectorAll('.input-group--wrapper input')]
+          const images = [...document.querySelectorAll('.input-group--wrapper img')]
+
+          inputs.forEach((e) => {
+            e.value = ''
+            const img = images.find((x) => {
+              console.log(x)
+              return x.getAttribute('data-id') === e.getAttribute('data-id')
+            })
+            img.style.display = 'none'
+
+            this.form = {
+              name: '',
+              parent: null,
+              description: null
+            }
+          })
           this.toast = {
-            title: 'Category added successfully',
+            title: 'Categories added successfully',
             variant: 'success',
             visible: true,
-            text: `You just added ${this.form.name} Category.`
+            text: `You just added ${this.form.name} Categories.`
           }
         })
         .catch((err) => {
@@ -295,7 +340,7 @@ export default {
           }
         })
     },
-    async getCategories () {
+    async getTags () {
       await this.$axios.$get('/category')
         .then((res) => {
           this.items = res.data
@@ -316,15 +361,34 @@ export default {
           }
         })
     },
-    async editRigion () {
-      await this.$axios.$patch(`/category/${this.editForm._id}`, this.editForm)
+    async editTag () {
+      const category = new FormData(document.getElementById('edit-category'))
+      if (this.editForm.avatar) { delete this.editForm.avatar }
+
+      for (const key in this.editForm) {
+        if (this.editForm.hasOwnProperty(key)) {
+          const element = this.editForm[key]
+          category.append(key, element)
+        }
+      }
+
+      for (const pair of category.entries()) { // Show data in console.
+        console.log(pair[0] + ', ' + pair[1])
+      }
+
+      await this.$axios.$patch(`/category/${this.editForm._id}`, category)
         .then((res) => {
-          this.getCategories()
+          this.getTags()
           this.toast = {
             title: 'Category Edited successfully',
             variant: 'success',
             visible: true,
-            text: `You just Edited ${this.editForm.name} Category.`
+            text: `You just Edited ${this.editForm.name} Categories.`
+          }
+          this.editForm = {
+            name: '',
+            parent: null,
+            description: null
           }
         })
         .catch((err) => {
@@ -336,15 +400,15 @@ export default {
           }
         })
     },
-    async deleteCategory () {
+    async deleteTag () {
       await this.$axios.$delete(`/category/${this.editForm._id}`)
         .then((res) => {
-          this.getCategories()
+          this.getTags()
           this.toast = {
             title: 'Category deleted successfully',
             variant: 'success',
             visible: true,
-            text: `You just deleted ${this.editForm.name} Category.`
+            text: `You just deleted ${this.editForm.name} Categories.`
           }
         })
         .catch((err) => {

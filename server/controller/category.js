@@ -22,11 +22,19 @@ exports.getcategory = async (req, res, next) => {
 // @access Private
 exports.addcategory = async (req, res, next) => {
   try {
-    const category = await Category.create(req.body);
-    return res.status(201).json({
-      success: true,
-      data: category
-    });
+    const category = new Category({
+      name: req.body.name,
+      parent: req.body.parent,
+      description: req.body.description,
+      avatar: req.file.filename
+    })
+    await category.save()
+      .then(result => res.status(201).json({
+          success: true,
+          data: category
+        })
+      )
+      .catch(err => res.status(400).json(err))
   } catch (err) {
     console.error(err);
     if (err.code === 11000) {
@@ -48,8 +56,22 @@ exports.deleteCategory = (req, res) => {
 // @desc  update a category
 // @route update /api/category/id
 // @access Private
-exports.updateCategory = (req, res) => {
-  Category.updateOne({ _id: req.params.id }, { $set: req.body })
+exports.updateCategory = async (req, res) => {
+  const update = {
+    name: req.body.name || null,
+    parent: req.body.parent || null,
+    description: req.body.description || null,
+    avatar: req.file ? req.file.filename : null
+  }
+
+  for (const key in update) {
+    if (update.hasOwnProperty(key)) {
+      const element = update[key];
+      if (element === null) { delete update.key }
+    }
+  }
+
+  await Category.updateOne({ _id: req.params.id }, { $set: update })
     .then(category => res.json({ success: true }))
     .catch(err => res.status(404).json({ success: false }));
 };

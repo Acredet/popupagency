@@ -7,11 +7,12 @@ const {
   updateCategory
 } = require("../controller/category");
 const router = express.Router();
+const { multer } = require('../middleware/upload')
 
 router
   .route("/", auth)
   .get(getcategory)
-  .post(addcategory);
+  .post(multer.single('avatar'), addcategory);
 router.delete("/:id", auth, deleteCategory);
-router.patch("/:id", auth, updateCategory);
+router.patch("/:id", multer.single('edit-avatar'), auth, updateCategory);
 module.exports = router;

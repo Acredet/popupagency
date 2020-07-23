@@ -104,8 +104,8 @@
       </template>
     </b-modal>
 
-    <h2>Add Tags:</h2>
     <b-container>
+      <h2>Add Tags:</h2>
       <b-row>
         <b-col cols="12" md="4">
           <b-form id="tag-form" enctype="multipart/form-data">
