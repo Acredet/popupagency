@@ -29,7 +29,7 @@
             <template v-slot:button-content>
               <b>Actions</b>
             </template>
-            <b-dropdown-item v-b-modal.edit-modal @click="editForm = data.item">
+            <b-dropdown-item :to="`/admin/listings/edit/${data.item._id}`">
               Edit
             </b-dropdown-item>
             <b-dropdown-item v-b-modal.delete-modal @click="editForm = data.item">

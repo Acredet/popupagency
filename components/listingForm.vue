@@ -324,6 +324,12 @@ export default {
     BIconTrash,
     ourUploader
   },
+  props: {
+    listing: {
+      type: Object,
+      default: () => {}
+    }
+  },
   data () {
     return {
       /* form: {
@@ -352,6 +358,7 @@ export default {
         days[tab.name].hours[index].opening: null,
         days[tab.name].hours[index].closing: null,
       }, */
+
       title: null,
       article: {
         beskreving: null,
@@ -597,31 +604,94 @@ export default {
       expiry: null
     }
   },
-  async mounted () {
-    const promises = [
-      this.$axios.$get('/users/all'),
-      this.$axios.$get('/region'),
-      this.$axios.$get('/category'),
-      this.$axios.$get('/tag')
-    ]
-    await Promise.all(promises)
-      .then((res) => {
-        console.log(res)
-        const users = res[0].data
-        const regions = res[1].data
-        const categories = res[2].data
-        const tags = res[3].data
+  mounted () {
+    this.preparePageData()
+    if (this.listing._id) {
+      console.log(this.listing)
+      this.title = this.listing.title
+      this.Yta = this.listing.yta
+      this.markplan = this.listing.placering
+      this.city = this.listing.stad
+      this.location = this.listing.location
+      this.vagvisningen = this.listing.vagvisningen
+      this.fran = this.listing.fran
+      this.till = this.listing.till
+      this.lokal = this.listing.kontaktperson
+      this.expiry = this.listing.expiry
+      this.minsta = this.listing.minstahyresperiod
+      this.längsta = this.listing.langstahyresperiod
+      this.sasong = this.listing.sasong
+      this.hamside = this.listing.hemsida
+      this.article.beskreving = this.listing.beskreving
+      this.article.centrum = this.listing.centrumtextarea
 
-        this.lokalOpts = users.map(x => x.name)
-        this.renderEgensKaper = tags.map(x => x.name)
-        this.cityOptions = regions.map(x => x.name)
-        this.kategoriOpts = categories.map(x => x.name)
+      for (const key in this.listing.oppettider) {
+        if (this.listing.oppettider.hasOwnProperty(key)) {
+          const element = this.listing.oppettider[key]
+          const day = this.days[element.day]
+          day.hours = element.times
+          day.openTimes = element.oppettider
+          console.log(this.days[element.day])
+        }
+      }
+
+      this.price.day.val = this.listing.prisperdag
+      this.price.helg.val = this.listing.prisperhelg
+      this.price.langheig.val = this.listing.prisperlanghelg
+      this.price.manad.val = this.listing.prispermanad
+      this.price.veckopris.val = this.listing.prispervecka
+
+      const prices = [
+        { text: 'day', val: this.price.day.val },
+        { text: 'helg', val: this.price.helg.val },
+        { text: 'langheig', val: this.price.langheig.val },
+        { text: 'manad', val: this.price.manad.val }
+      ]
+
+      // DETERMINE THE prispervecka
+      prices.forEach((price) => {
+        if (price.val === this.price.veckopris.val) { this.price[price.text].temp = true }
       })
-      .catch((err) => {
-        console.log(err)
-      })
+
+      /* form: {
+        beskreving: null,
+        centrum: null,
+        price[card.model].temp: null,
+        price[card.model].val: null,
+        features[feat]: null,
+        kategori[kati]: null,
+        yesNoInputsVal[input.model]: null,
+        days[tab.name].openTimes: null,
+        days[tab.name].hours[index].opening: null,
+        days[tab.name].hours[index].closing: null,
+      }, */
+    }
   },
   methods: {
+    async preparePageData () {
+      const promises = [
+        this.$axios.$get('/users/all'),
+        this.$axios.$get('/region'),
+        this.$axios.$get('/category'),
+        this.$axios.$get('/tag')
+      ]
+      await Promise.all(promises)
+        .then((res) => {
+          console.log(res)
+          const users = res[0].data
+          const regions = res[1].data
+          const categories = res[2].data
+          const tags = res[3].data
+
+          this.lokalOpts = users.map(x => x.name)
+          this.renderEgensKaper = tags.map(x => x.name)
+          this.cityOptions = regions.map(x => x.name)
+          this.kategoriOpts = categories.map(x => x.name)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
     delteTimeRow (name, index) {
       this.days[name].hours.splice(index, 1)
     },

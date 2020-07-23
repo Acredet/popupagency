@@ -7,9 +7,6 @@
 <script>
 export default {
   name: 'AddListing',
-  layout: 'admin',
-  mounted () {
-    console.log('dsa')
-  }
+  layout: 'admin'
 }
 </script>
