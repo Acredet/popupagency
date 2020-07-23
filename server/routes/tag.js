@@ -9,5 +9,5 @@ router
   .get(gettag)
   .post(multer.single('avatar'), addtag)
 router.delete("/:id", auth, deleteTag);
-router.patch("/:id", auth, updateTag);
+router.patch("/:id", multer.single('edit-avatar'), auth, updateTag);
 module.exports = router;

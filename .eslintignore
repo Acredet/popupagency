@@ -2,3 +2,4 @@ node_modules/
 server/
 static/
 jsconfig.json
+*.md

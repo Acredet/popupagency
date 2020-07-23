@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <b-modal id="edit-modal" centered title="Edit Tags" @close="Object.assign(editForm, {})">
-      <b-form>
+      <b-form id="edit-tag" enctype="multipart/form-data">
         <b-form-group
           id="name-group"
           label="Name:"
@@ -56,19 +56,34 @@
         </b-form-group>
 
         <b-form-group
-          id="avatar-group"
+          id="avatar-edit-group"
           label="Avatar:"
           description="The description isn't prominent by default; howerver, some themes may show it."
         >
-          <our-uploader :responsivness="{ cols: 12, sm: 12, md: 12, lg: 12 }" :name="'tagImage[]'" :max-number-of-inputs="1" :max-file-size="64" />
+          <our-uploader
+            :responsivness="{ cols: 12, sm: 12, md: 12, lg: 12 }"
+            :name="'edit-avatar'"
+            :old-images="[editForm.avatar]"
+            :max-number-of-inputs="1"
+            :max-file-size="64"
+          >
+            <template v-slot:old-Image>
+              <div v-if="editForm && editForm.avatar" class="d-flex justify-content-center">
+                <b-img style="height: 150px" :src="require(`@/server/images/${editForm.avatar}`)" />
+              </div>
+            </template>
+          </our-uploader>
         </b-form-group>
       </b-form>
 
       <template v-slot:modal-footer="{ ok, cancel }">
-        <b-btn variant="danger" @click="editTag(); ok()">
+        <b-btn variant="primary" @click="editTag(); ok()">
           Edit
         </b-btn>
-        <b-btn variant="primary" @click="cancel(); Object.assign(editForm, {})">
+        <b-btn
+          variant="danger"
+          @click="cancel(); editForm = { name: '', parent: null, description: null }"
+        >
           Close
         </b-btn>
       </template>
@@ -80,10 +95,10 @@
       </p>
 
       <template v-slot:modal-footer="{ ok, cancel }">
-        <b-btn variant="primary" @click="deleteTag(); ok()">
+        <b-btn variant="danger" @click="deleteTag(); ok()">
           Delete
         </b-btn>
-        <b-btn variant="danger" @click="cancel(); Object.assign(editForm, {})">
+        <b-btn variant="primary" @click="cancel(); Object.assign(editForm, {})">
           Close
         </b-btn>
       </template>
@@ -159,7 +174,7 @@
           </b-form>
         </b-col>
 
-        <b-col cols="12" md="8">
+        <b-col class="mt-2 mt-md-0" cols="12" md="8">
           <b-table
             id="all-listing"
             :items="items"
@@ -330,7 +345,20 @@ export default {
         })
     },
     async editTag () {
-      await this.$axios.$patch(`/tag/${this.editForm._id}`, this.editForm)
+      const tag = new FormData(document.getElementById('edit-tag'))
+
+      for (const key in this.editForm) {
+        if (this.editForm.hasOwnProperty(key)) {
+          const element = this.editForm[key]
+          tag.append(key, element)
+        }
+      }
+
+      for (const pair of tag.entries()) { // Show data in console.
+        console.log(pair[0] + ', ' + pair[1])
+      }
+
+      await this.$axios.$patch(`/tag/${this.editForm._id}`, tag)
         .then((res) => {
           this.getTags()
           this.toast = {
@@ -338,6 +366,11 @@ export default {
             variant: 'success',
             visible: true,
             text: `You just Edited ${this.editForm.name} Tags.`
+          }
+          this.editForm = {
+            name: '',
+            parent: null,
+            description: null
           }
         })
         .catch((err) => {

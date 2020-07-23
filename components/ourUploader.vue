@@ -1,6 +1,14 @@
 <template>
   <div>
-    <b-row>
+    <b-row v-if="thereIsImage">
+      <b-col>
+        <b-btn variant="warning" @click="thereIsImage = false">
+          Edit Avatar
+        </b-btn>
+        <slot name="old-Image" />
+      </b-col>
+    </b-row>
+    <b-row v-else>
       <b-col
         v-for="input in inputs"
         :key="input"
@@ -65,17 +73,21 @@ export default {
       type: Number,
       default: () => 6
     },
-    images: {
-      type: String,
-      default: () => null
+    oldImages: {
+      type: Array,
+      default: () => []
     }
   },
-  data: () => {
+  data: (vm) => {
     return {
       inputs: 1,
       files: 0,
-      oldInputValue: null
+      oldInputValue: null,
+      thereIsImage: vm.oldImages ? vm.oldImages.length > 0 : false
     }
+  },
+  updated () {
+    console.log('Working')
   },
   methods: {
     dropped (event) {
@@ -174,9 +186,6 @@ export default {
       const inputs = document.querySelectorAll('.input-group--wrapper input')
 
       this.deleteImage(e.target.parentElement, inputs, images)
-    },
-    previewOldImages (e) {
-      console.log(this.images)
     }
   }
 }
