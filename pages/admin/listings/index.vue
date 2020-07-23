@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <h2>All Listings:</h2>
     <b-table
       :items="items"
       :fields="fields"

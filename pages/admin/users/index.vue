@@ -46,7 +46,10 @@
         </b-btn>
       </template>
     </b-modal>
+
     <b-container>
+      <h2>All Users:</h2>
+
       <b-table
         :items="items"
         :fields="fields"
