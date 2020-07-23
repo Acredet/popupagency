@@ -6,7 +6,8 @@ const {
   getPlaces,
   addPlace,
   deletePlace,
-  updatePlace
+  updatePlace,
+  getOnePlace
 } = require("../controller/places");
 const router = express.Router();
 
@@ -15,6 +16,7 @@ router
   .get(getPlaces)
   .post(multer.fields([{ name: 'bildgalleri[]' }, { name: 'cover[]' }, { name: 'planritning[]' }, { name: 'centrumgalleri[]' }]), addPlace);
 
+router.get("/:id", auth, getOnePlace);
 router.delete("/:id", auth, deletePlace);
 router.patch("/:id", auth, updatePlace);
 module.exports = router;

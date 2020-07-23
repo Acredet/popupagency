@@ -83,6 +83,18 @@ exports.deletePlace = (req, res) => {
     .catch(err => res.status(404).json({ success: false }));
 };
 
+/**
+ * @description Get one place
+ * @method GET
+ * @route /api/place/:id
+ * @access Private
+ */
+exports.getOnePlace = async (req, res) => {
+  await Place.findById(req.params.id)
+    .then(place => res.json({ success: true, place }))
+    .catch(err => res.status(404).json({ success: false }));
+}
+
 // @desc  update a Place
 // @route update /api/Place/id
 // @access Private
