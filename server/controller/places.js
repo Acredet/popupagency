@@ -99,7 +99,13 @@ exports.getOnePlace = async (req, res) => {
 // @route update /api/Place/id
 // @access Private
 exports.updatePlace = (req, res) => {
-  Place.updateOne({ _id: req.params.id }, { $set: req.body })
+  let updata = req.body
+  if(updata) {
+    updata.oppettider = req.body.oppettider.map(x => JSON.parse(x))
+  }
+
+  console.log(updata)
+  Place.updateOne({ _id: req.params.id }, { $set: updata })
     .then(place => res.json({ success: true }))
-    .catch(err => res.status(404).json({ success: false }));
+    .catch(err => res.status(404).json(err.message));
 };

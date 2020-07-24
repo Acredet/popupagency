@@ -26,7 +26,7 @@ exports.addcategory = async (req, res, next) => {
       name: req.body.name,
       parent: req.body.parent,
       description: req.body.description,
-      avatar: req.file.filename
+      avatar: req.file ? req.file.filename : null
     })
     await category.save()
       .then(result => res.status(201).json({

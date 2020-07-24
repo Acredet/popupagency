@@ -45,7 +45,6 @@
                 :id="card.title"
                 v-model="price[card.model].temp"
                 class="mb-2"
-                :name="card.model"
                 @change="setPrioteradPrice(card.model)"
               >
                 Set as priorited price
@@ -60,7 +59,7 @@
                 <b-col v-for="(feat,index) in renderEgensKaper" :key="index" cols="12" md="6">
                   <b-form-checkbox
                     :id="feat"
-                    v-model="features[feat]"
+                    v-model="egenskaper[feat]"
                     class="mb-2"
                   >
                     {{ feat }}
@@ -159,7 +158,7 @@
           <b-card title="Säsong Boxen:">
             <b-card-body>
               <b-form-group>
-                <b-form-radio v-for="input in sasongInputs" :key="input.text" v-model="sasong" name="säsong" :value="input.text">
+                <b-form-radio v-for="input in sasongInputs" :key="input.text" v-model="sasong" name="sasong" :value="input.text">
                   {{ input.text }}
                 </b-form-radio>
               </b-form-group>
@@ -283,7 +282,7 @@
           <b-card title="Lokalens kontaktperson:">
             <b-card-body>
               <b-form-group>
-                <b-form-radio v-for="input in lokalOpts" :key="input" v-model="lokal" name="säsong" :value="input">
+                <b-form-radio v-for="input in lokalOpts" :key="input" v-model="lokal" name="users" :value="input">
                   {{ input }}
                 </b-form-radio>
               </b-form-group>
@@ -297,8 +296,11 @@
           </b-card>
         </div>
       </form>
-      <b-btn variant="primary" @click="addListing">
-        add
+      <b-btn v-if="!thereIsListing" variant="primary" block @click="addListing">
+        Add Listing
+      </b-btn>
+      <b-btn v-else variant="primary" block @click="editListing">
+        Edit Listing
       </b-btn>
     </b-container>
   </div>
@@ -351,7 +353,7 @@ export default {
         centrum: null,
         price[card.model].temp: null,
         price[card.model].val: null,
-        features[feat]: null,
+        egenskaper[feat]: null,
         kategori[kati]: null,
         yesNoInputsVal[input.model]: null,
         days[tab.name].openTimes: null,
@@ -413,7 +415,7 @@ export default {
           model: 'manad'
         }
       ],
-      features: {
+      egenskaper: {
         Belysning: false,
         El: false,
         Handikappanpassad: false,
@@ -470,17 +472,17 @@ export default {
         {
           title: 'Butik "Boxen":',
           name: 'Butik-"Boxen"',
-          model: 'Butik'
+          model: 'butik'
         },
         {
           title: 'Mat & Dryck "Boxen":',
           name: 'Mat&Dryck',
-          model: 'MatDryck'
+          model: 'mat'
         },
         {
           title: 'Event "Boxen":',
           name: 'Event',
-          model: 'Event'
+          model: 'event'
         }
       ],
       sasongInputs: [
@@ -604,68 +606,14 @@ export default {
       expiry: null
     }
   },
+  computed: {
+    thereIsListing () {
+      return !!this.$route.params.id
+    }
+  },
   mounted () {
     this.preparePageData()
-    if (this.listing._id) {
-      console.log(this.listing)
-      this.title = this.listing.title
-      this.Yta = this.listing.yta
-      this.markplan = this.listing.placering
-      this.city = this.listing.stad
-      this.location = this.listing.location
-      this.vagvisningen = this.listing.vagvisningen
-      this.fran = this.listing.fran
-      this.till = this.listing.till
-      this.lokal = this.listing.kontaktperson
-      this.expiry = this.listing.expiry
-      this.minsta = this.listing.minstahyresperiod
-      this.längsta = this.listing.langstahyresperiod
-      this.sasong = this.listing.sasong
-      this.hamside = this.listing.hemsida
-      this.article.beskreving = this.listing.beskreving
-      this.article.centrum = this.listing.centrumtextarea
-
-      for (const key in this.listing.oppettider) {
-        if (this.listing.oppettider.hasOwnProperty(key)) {
-          const element = this.listing.oppettider[key]
-          const day = this.days[element.day]
-          day.hours = element.times
-          day.openTimes = element.oppettider
-          console.log(this.days[element.day])
-        }
-      }
-
-      this.price.day.val = this.listing.prisperdag
-      this.price.helg.val = this.listing.prisperhelg
-      this.price.langheig.val = this.listing.prisperlanghelg
-      this.price.manad.val = this.listing.prispermanad
-      this.price.veckopris.val = this.listing.prispervecka
-
-      const prices = [
-        { text: 'day', val: this.price.day.val },
-        { text: 'helg', val: this.price.helg.val },
-        { text: 'langheig', val: this.price.langheig.val },
-        { text: 'manad', val: this.price.manad.val }
-      ]
-
-      // DETERMINE THE prispervecka
-      prices.forEach((price) => {
-        if (price.val === this.price.veckopris.val) { this.price[price.text].temp = true }
-      })
-
-      /* form: {
-        beskreving: null,
-        centrum: null,
-        price[card.model].temp: null,
-        price[card.model].val: null,
-        features[feat]: null,
-        kategori[kati]: null,
-        yesNoInputsVal[input.model]: null,
-        days[tab.name].openTimes: null,
-        days[tab.name].hours[index].opening: null,
-        days[tab.name].hours[index].closing: null,
-      }, */
-    }
+    if (this.thereIsListing) { this.assignListingToEdit() }
   },
   methods: {
     async preparePageData () {
@@ -692,6 +640,71 @@ export default {
           console.log(err)
         })
     },
+    assignListingToEdit () {
+      console.log(this.listing)
+      this.title = this.listing.title
+      this.Yta = this.listing.yta
+      this.markplan = this.listing.placering
+      this.city = this.listing.stad
+      this.location = this.listing.location
+      this.vagvisningen = this.listing.vagvisningen
+      this.fran = this.listing.fran
+      this.till = this.listing.till
+      this.lokal = this.listing.kontaktperson
+      this.expiry = this.listing.expiry
+      this.minsta = this.listing.minstahyresperiod
+      this.längsta = this.listing.langstahyresperiod
+      this.sasong = this.listing.sasongBoxen
+      this.hamside = this.listing.hemsida
+      this.article.beskreving = this.listing.beskreving
+      this.article.centrum = this.listing.centrumtextarea
+
+      // ASSIGN DAYS
+      for (const key in this.listing.oppettider) {
+        if (this.listing.oppettider.hasOwnProperty(key)) {
+          const element = this.listing.oppettider[key]
+          const day = this.days[element.day]
+          day.hours = element.times
+          day.openTimes = element.oppettider
+          console.log(this.days[element.day])
+        }
+      }
+
+      // ASSIGN PRICES
+      this.price.day.val = this.listing.prisperdag
+      this.price.helg.val = this.listing.prisperhelg
+      this.price.langheig.val = this.listing.prisperlanghelg
+      this.price.manad.val = this.listing.prispermanad
+      this.price.veckopris.val = this.listing.prispervecka
+
+      const prices = [
+        { text: 'day', val: this.price.day.val },
+        { text: 'helg', val: this.price.helg.val },
+        { text: 'langheig', val: this.price.langheig.val },
+        { text: 'manad', val: this.price.manad.val }
+      ]
+
+      // DETERMINE THE prispervecka
+      prices.forEach((price) => {
+        if (price.val === this.price.veckopris.val) { this.price[price.text].temp = true }
+      })
+
+      // ADD TAGS
+      this.listing.egenskaper.forEach((tag) => {
+        this.egenskaper[tag] = true
+      })
+
+      // ADD CATEGORY
+      this.listing.kategori.forEach((category) => {
+        this.kategori[category] = true
+      })
+
+      // ASSIGN YES AND NO INPUTS
+      const yesNoFromListing = ['fasta', 'butik', 'mat', 'event']
+      yesNoFromListing.forEach((input) => {
+        this.yesNoInputsVal[input] = this.listing[input]
+      })
+    },
     delteTimeRow (name, index) {
       this.days[name].hours.splice(index, 1)
     },
@@ -711,9 +724,15 @@ export default {
     },
     createFormDate () {
       const listing = new FormData(document.getElementById('listing'))
+      listing.delete('Fasta-öppettider')
+      listing.delete('Butik-%22Boxen%22')
+      listing.delete('Mat&Dryck')
+      listing.delete('Event')
+      listing.delete('säsong')
+      listing.delete('user')
+
       listing.append('beskreving', this.article.beskreving)
       listing.append('title', this.title)
-      listing.append('epost', this.email)
 
       listing.append('prisperdag', this.price.day.val)
       listing.append('prisperhelg', this.price.helg.val)
@@ -729,10 +748,9 @@ export default {
 
       listing.append('prioteradpris', prioteradpris)
 
-      for (const key in this.features) {
-        // eslint-disable-next-line no-prototype-builtins
-        if (this.features.hasOwnProperty(key)) {
-          const feat = this.features[key]
+      for (const key in this.egenskaper) {
+        if (this.egenskaper.hasOwnProperty(key)) {
+          const feat = this.egenskaper[key]
           if (feat) { listing.append('egenskaper[]', key) }
         }
       }
@@ -795,6 +813,16 @@ export default {
     async addListing () {
       const listing = this.createFormDate()
       await this.$axios.$post('/places', listing)
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    async editListing () {
+      const listing = this.createFormDate()
+      await this.$axios.$patch(`/places/${this.listing._id}`, listing)
         .then((res) => {
           console.log(res)
         })

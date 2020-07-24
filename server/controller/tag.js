@@ -26,7 +26,7 @@ exports.addtag = async (req, res, next) => {
       name: req.body.name,
       parent: req.body.parent,
       description: req.body.description,
-      avatar: req.file.filename
+      avatar: req.file ? req.file.filename : null
     })
     await tag.save()
       .then(result => res.status(201).json({

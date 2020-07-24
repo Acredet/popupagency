@@ -18,5 +18,5 @@ router
 
 router.get("/:id", auth, getOnePlace);
 router.delete("/:id", auth, deletePlace);
-router.patch("/:id", auth, updatePlace);
+router.patch("/:id", multer.fields([{ name: 'bildgalleri[]' }, { name: 'cover[]' }, { name: 'planritning[]' }, { name: 'centrumgalleri[]' }]), auth, updatePlace);
 module.exports = router;
