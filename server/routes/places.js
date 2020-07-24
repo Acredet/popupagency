@@ -9,14 +9,23 @@ const {
   updatePlace,
   getOnePlace
 } = require("../controller/places");
+const fields = [{ name: 'bildgalleri[]' }, { name: 'cover[]' }, { name: 'planritning[]' }, { name: 'centrumgalleri[]' }]
 const router = express.Router();
 
 router
   .route("/", auth)
   .get(getPlaces)
-  .post(multer.fields([{ name: 'bildgalleri[]' }, { name: 'cover[]' }, { name: 'planritning[]' }, { name: 'centrumgalleri[]' }]), addPlace);
+  .post(multer.fields(fields), addPlace);
 
-router.get("/:id", auth, getOnePlace);
-router.delete("/:id", auth, deletePlace);
-router.patch("/:id", multer.fields([{ name: 'bildgalleri[]' }, { name: 'cover[]' }, { name: 'planritning[]' }, { name: 'centrumgalleri[]' }]), auth, updatePlace);
+router
+  .route('/:id', auth)
+  .get(getOnePlace)
+  .delete(deletePlace)
+  .patch(multer.none(), updatePlace)
+
+router.post('/images', multer.fields(fields), (req, res) => {
+  console.log(req.files[req.body.name], req.body.name)
+  const names = req.files[req.body.name].map(file => file.filename)
+  return res.status(200).json(...names)
+})
 module.exports = router;

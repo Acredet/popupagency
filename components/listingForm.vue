@@ -22,7 +22,25 @@
 
           <b-card title="Bildgalleri:">
             <b-card-body>
-              <our-uploader :name="'bildgalleri[]'" :max-number-of-inputs="999" :max-file-size="64" />
+              <our-uploader :name="'bildgalleri[]'" :more="true" :old-images="images.bildgalleri" :max-number-of-inputs="999" :max-file-size="64">
+                <template v-slot:old-Image>
+                  <b-row>
+                    <b-col
+                      v-if="thereIsListing && images.bildgalleri.length > 0"
+                      class="d-flex justify-content-center"
+                      cols="12"
+                      sm="6"
+                      md="4"
+                      lg="3"
+                    >
+                      <b-img v-for="(img, index) in images.bildgalleri" :key="index" class="mx-2" style="height: 150px" :src="require(`@/server/images/${img}`)" />
+                      <button type="button" class="close" aria-label="Close" @click="deleteImage">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </b-col>
+                  </b-row>
+                </template>
+              </our-uploader>
             </b-card-body>
             <template v-slot:footer>
               <em>Max File size: 64MB</em>
@@ -31,7 +49,25 @@
 
           <b-card title="Cover bilden:">
             <b-card-body>
-              <our-uploader :name="'cover[]'" :max-number-of-inputs="999" :max-file-size="64" />
+              <our-uploader :name="'cover[]'" :more="true" :old-images="images.cover" :max-number-of-inputs="999" :max-file-size="64">
+                <template v-slot:old-Image>
+                  <b-row>
+                    <b-col
+                      v-if="thereIsListing && images.cover.length > 0"
+                      class="d-flex justify-content-center"
+                      cols="12"
+                      sm="6"
+                      md="4"
+                      lg="3"
+                    >
+                      <b-img v-for="(img, index) in images.cover" :key="index" class="mx-2" style="height: 150px" :src="require(`@/server/images/${img}`)" />
+                      <button type="button" class="close" aria-label="Close" @click="deleteImage">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </b-col>
+                  </b-row>
+                </template>
+              </our-uploader>
             </b-card-body>
             <template v-slot:footer>
               <em>Max File size: 64MB</em>
@@ -122,7 +158,25 @@
           <b-card title="Planritning:">
             <b-card-body>
               <client-only>
-                <our-uploader :name="'planritning[]'" :max-number-of-inputs="999" :max-file-size="64" />
+                <our-uploader :name="'planritning[]'" :more="true" :old-images="images.planritning" :max-number-of-inputs="999" :max-file-size="64">
+                  <template v-slot:old-Image>
+                    <b-row>
+                      <b-col
+                        v-if="thereIsListing && images.planritning.length > 0"
+                        class="d-flex justify-content-center"
+                        cols="12"
+                        sm="6"
+                        md="4"
+                        lg="3"
+                      >
+                        <b-img v-for="(img, index) in images.planritning" :key="index" class="mx-2" style="height: 150px" :src="require(`@/server/images/${img}`)" />
+                        <button type="button" class="close" aria-label="Close" @click="deleteImage">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </b-col>
+                    </b-row>
+                  </template>
+                </our-uploader>
               </client-only>
             </b-card-body>
             <template v-slot:footer>
@@ -259,7 +313,25 @@
           <b-card title="Centrum Galleri:">
             <b-card-body>
               <client-only>
-                <our-uploader :name="'centrumgalleri[]'" :max-number-of-inputs="999" :max-file-size="64" />
+                <our-uploader :name="'centrumgalleri[]'" :more="true" :old-images="images.bildgalleri" :max-number-of-inputs="999" :max-file-size="64">
+                  <template v-slot:old-Image>
+                    <b-row>
+                      <b-col
+                        v-if="thereIsListing && images.centrumgalleri.length > 0"
+                        class="d-flex justify-content-center"
+                        cols="12"
+                        sm="6"
+                        md="4"
+                        lg="3"
+                      >
+                        <b-img v-for="(img, index) in images.centrumgalleri" :key="index" class="mx-2" style="height: 150px" :src="require(`@/server/images/${img}`)" />
+                        <button type="button" class="close" aria-label="Close" @click="deleteImage">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </b-col>
+                    </b-row>
+                  </template>
+                </our-uploader>
               </client-only>
             </b-card-body>
             <template v-slot:footer>
@@ -603,7 +675,13 @@ export default {
           active: false
         }
       ],
-      expiry: null
+      expiry: null,
+      images: {
+        bildgalleri: null,
+        cover: null,
+        planritning: null,
+        centrumgalleri: null
+      }
     }
   },
   computed: {
@@ -666,7 +744,6 @@ export default {
           const day = this.days[element.day]
           day.hours = element.times
           day.openTimes = element.oppettider
-          console.log(this.days[element.day])
         }
       }
 
@@ -675,18 +752,23 @@ export default {
       this.price.helg.val = this.listing.prisperhelg
       this.price.langheig.val = this.listing.prisperlanghelg
       this.price.manad.val = this.listing.prispermanad
-      this.price.veckopris.val = this.listing.prispervecka
+
+      // ASSIGN IMAGES
+      this.images.bildgalleri = this.listing.bildgalleri
+      this.images.cover = this.listing.cover
+      this.images.planritning = this.listing.planritning
+      this.images.centrumgalleri = this.listing.centrumgalleri
 
       const prices = [
-        { text: 'day', val: this.price.day.val },
-        { text: 'helg', val: this.price.helg.val },
-        { text: 'langheig', val: this.price.langheig.val },
-        { text: 'manad', val: this.price.manad.val }
+        { text: 'day', val: this.listing.prisperdag },
+        { text: 'helg', val: this.listing.prisperhelg },
+        { text: 'langheig', val: this.listing.prisperlanghelg },
+        { text: 'manad', val: this.listing.prispermana }
       ]
 
       // DETERMINE THE prispervecka
       prices.forEach((price) => {
-        if (price.val === this.price.veckopris.val) { this.price[price.text].temp = true }
+        if (Number(price.val) === Number(this.price.veckopris.val)) { this.price[price.text].temp = true; this.price.veckopris.val = price }
       })
 
       // ADD TAGS
@@ -740,6 +822,7 @@ export default {
       listing.append('prispervecka', this.price.veckopris.val)
       listing.append('prispermanad', this.price.manad.val)
 
+      // ASSIGN THE PRICE
       let prioteradpris
       for (const key in this.price) {
         const obj = this.price[key]
@@ -774,7 +857,7 @@ export default {
         // eslint-disable-next-line no-prototype-builtins
         if (this.yesNoInputsVal.hasOwnProperty(key)) {
           const value = this.yesNoInputsVal[key]
-          console.log(key, value)
+          // console.log(key, value)
           if (value) { listing.append(key, value) }
         }
       }
@@ -804,10 +887,6 @@ export default {
       listing.append('kontaktperson', this.lokal)
       listing.append('expiry', this.expiry)
 
-      for (const pair of listing.entries()) { // Show data in console.
-        console.log(pair[0] + ', ' + pair[1])
-      }
-
       return listing
     },
     async addListing () {
@@ -822,6 +901,67 @@ export default {
     },
     async editListing () {
       const listing = this.createFormDate()
+
+      const bildgalleri = this.listing.bildgalleri ? [...this.listing.bildgalleri] : []
+      const cover = this.listing.cover ? [...this.listing.cover] : []
+      const planritning = this.listing.planritning ? [...this.listing.planritning] : []
+      const centrumgalleri = this.listing.centrumgalleri ? [...this.listing.centrumgalleri] : []
+
+      for (const pair of listing.entries()) { // post Images First
+        if (pair[0] === 'bildgalleri[]') {
+          const data = new FormData()
+          if (pair[1].name) {
+            data.append('bildgalleri[]', pair[1]); data.append('name', 'bildgalleri[]')
+
+            await this.$axios.$post('/places/images', data)
+              .then(res => bildgalleri.push(res))
+              .catch(err => console.log(err))
+          }
+        } else if (pair[0] === 'cover[]') {
+          const data = new FormData()
+          if (pair[1].name) {
+            data.append('cover[]', pair[1]); data.append('name', 'cover[]')
+
+            await this.$axios.$post('/places/images', data)
+              .then(res => cover.push(res))
+              .catch(err => console.log(err))
+          }
+        } else if (pair[0] === 'planritning[]') {
+          const data = new FormData()
+          if (pair[1].name) {
+            data.append('planritning[]', pair[1]); data.append('name', 'planritning[]')
+
+            await this.$axios.$post('/places/images', data)
+              .then(res => planritning.push(res))
+              .catch(err => console.log(err))
+          }
+        } else if (pair[0] === 'centrumgalleri[]') {
+          const data = new FormData()
+          if (pair[1].name) {
+            data.append('centrumgalleri[]', pair[1]); data.append('name', 'centrumgalleri[]')
+
+            await this.$axios.$post('/places/images', data)
+              .then(res => centrumgalleri.push(res))
+              .catch(err => console.log(err))
+          }
+        }
+      }
+
+      // DELETE THE INPUTS
+      listing.delete('bildgalleri[]')
+      listing.delete('cover[]')
+      listing.delete('planritning[]')
+      listing.delete('centrumgalleri[]')
+
+      // APPEND THE ARRAY WE CREATED 😉
+      listing.append('bildgalleri', JSON.stringify(bildgalleri))
+      listing.append('cover', JSON.stringify(cover))
+      listing.append('planritning', JSON.stringify(planritning))
+      listing.append('centrumgalleri', JSON.stringify(centrumgalleri))
+
+      for (const pair of listing.entries()) {
+        console.log(pair[0], ':', pair[1])
+      }
       await this.$axios.$patch(`/places/${this.listing._id}`, listing)
         .then((res) => {
           console.log(res)
@@ -829,19 +969,24 @@ export default {
         .catch((err) => {
           console.log(err)
         })
+    },
+    deleteImage () {
+      alert('not working yet 😜')
     }
   }
 }
 </script>
 
-<style>
-/* ö
-ä
-Å
-Ö
-å */
+<style lang="sass" scoped>
+/* ö ä Å Ö å */
 
-.card-title {
-  font-weight: 800;
-}
+.card-title
+  font-weight: 800
+
+button.close
+  position: absolute
+  top: 0
+  right: 10px
+  z-index: 4
+  color: white
 </style>

@@ -99,10 +99,24 @@ exports.getOnePlace = async (req, res) => {
 // @route update /api/Place/id
 // @access Private
 exports.updatePlace = (req, res) => {
+  console.log('hery', req.body);
   let updata = req.body
-  if(updata) {
-    updata.oppettider = req.body.oppettider.map(x => JSON.parse(x))
+  if(updata.oppettider) {
+    updata.oppettider = updata.oppettider.map(x => JSON.parse(x))
   }
+  if(updata.bildgalleri) {
+    updata.bildgalleri = JSON.parse(updata.bildgalleri)
+  }
+  if(updata.cover) {
+    updata.cover = JSON.parse(updata.cover)
+  }
+  if(updata.planritning) {
+    updata.planritning = JSON.parse(updata.planritning)
+  }
+  if(updata.centrumgalleri) {
+    updata.centrumgalleri = JSON.parse(updata.centrumgalleri)
+  }
+  if (!updata.prioteradpris) updata.prioteradpris = 0
 
   console.log(updata)
   Place.updateOne({ _id: req.params.id }, { $set: updata })

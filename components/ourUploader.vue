@@ -8,7 +8,7 @@
         <slot name="old-Image" />
       </b-col>
     </b-row>
-    <b-row v-else>
+    <b-row v-if="showImageOnly">
       <b-col
         v-for="input in inputs"
         :key="input"
@@ -76,6 +76,10 @@ export default {
     oldImages: {
       type: Array,
       default: () => []
+    },
+    more: {
+      type: Boolean,
+      default: () => false
     }
   },
   data: (vm) => {
@@ -83,13 +87,21 @@ export default {
       inputs: 1,
       files: 0,
       oldInputValue: null,
-      thereIsImage: vm.oldImages ? vm.oldImages.length > 0 : false
+      thereIsImage: false
     }
   },
-  mounted () {
-    this.$on('clear', () => {
-      console.log('das')
-    })
+  computed: {
+    showImageOnly () {
+      return (this.thereIsImage && this.more) || !this.thereIsImage
+    }
+  },
+  watch: {
+    'oldImages.length': {
+      immediate: true,
+      handler (val) {
+        if (val > 0) { this.thereIsImage = true }
+      }
+    }
   },
   methods: {
     dropped (event) {
