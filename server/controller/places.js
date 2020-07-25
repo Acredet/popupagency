@@ -21,6 +21,11 @@ exports.getPlaces = async (req, res, next) => {
 // @access Public
 exports.addPlace = async (req, res, next) => {
   try {
+    for (const key in req.body) {
+        const element = req.body[key];
+        req.body[key] = element !== 'null' ? element : null
+
+    }
     let place = new Place({
       title: req.body.title,
       beskreving: req.body.beskreving,
@@ -99,7 +104,11 @@ exports.getOnePlace = async (req, res) => {
 // @route update /api/Place/id
 // @access Private
 exports.updatePlace = (req, res) => {
-  console.log('hery', req.body);
+  for (const key in req.body) {
+      const element = req.body[key];
+      req.body[key] = element !== 'null' ? element : null
+
+  }
   let updata = req.body
   if(updata.oppettider) {
     updata.oppettider = updata.oppettider.map(x => JSON.parse(x))
@@ -118,7 +127,6 @@ exports.updatePlace = (req, res) => {
   }
   if (!updata.prioteradpris) updata.prioteradpris = 0
 
-  console.log(updata)
   Place.updateOne({ _id: req.params.id }, { $set: updata })
     .then(place => res.json({ success: true }))
     .catch(err => res.status(404).json(err.message));

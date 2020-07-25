@@ -8,7 +8,26 @@
         <div>
           <b-card title="Title:">
             <b-card-body>
-              <b-form-input v-model="title" placeholder="Listing Title" />
+              <b-form-group
+                id="title-group"
+                label-for="title"
+              >
+                <b-form-input
+                  id="title"
+                  v-model="title"
+                  required
+                  autocomplete="off"
+                  :state="titleValid"
+                  placeholder="Listing Title"
+                />
+                <b-form-invalid-feedback :state="titleValid">
+                  Required.
+                </b-form-invalid-feedback>
+
+                <b-form-valid-feedback :state="titleValid">
+                  Good to go.
+                </b-form-valid-feedback>
+              </b-form-group>
             </b-card-body>
           </b-card>
 
@@ -119,39 +138,57 @@
 
           <b-card title="Stad:">
             <b-card-body>
-              <b-form-group>
-                <b-form-radio
-                  v-for="(stad, index) in cityOptions"
-                  :key="index"
-                  v-model="city"
-                  :name="stad"
-                  :value="stad"
-                >
-                  {{ stad }}
-                </b-form-radio>
-              </b-form-group>
+              <b-form-radio-group v-model="city" :stacked="true" :options="cityOptions" :state="stadValid" name="radio-validation">
+                <b-form-invalid-feedback :state="stadValid">
+                  Please select one
+                </b-form-invalid-feedback>
+                <b-form-valid-feedback :state="stadValid">
+                  You choosed {{ city }}
+                </b-form-valid-feedback>
+              </b-form-radio-group>
             </b-card-body>
           </b-card>
 
           <b-card title="Location:">
             <b-card-body>
-              <b-form-input v-model="location" placeholder="location" />
+              <b-form-group
+                id="location-group"
+                label-for="location"
+              >
+                <b-form-input
+                  id="location"
+                  v-model="location"
+                  required
+                  autocomplete="off"
+                  :state="locationValid"
+                  placeholder="location"
+                />
+                <b-form-invalid-feedback :state="locationValid">
+                  Required.
+                </b-form-invalid-feedback>
+
+                <b-form-valid-feedback :state="locationValid">
+                  Good to go.
+                </b-form-valid-feedback>
+              </b-form-group>
             </b-card-body>
           </b-card>
 
           <b-card title="Kategori*:">
             <b-card-body>
-              <b-row>
-                <b-col v-for="(kati,index) in kategoriOpts" :key="index" cols="12" md="6">
-                  <b-form-checkbox
-                    :id="kati"
-                    v-model="kategori[kati]"
-                    class="mb-2"
-                  >
-                    {{ kati }}
-                  </b-form-checkbox>
-                </b-col>
-              </b-row>
+              <b-form-checkbox-group
+                v-model="kategori"
+                :options="kategoriOpts"
+                :state="kategoryValid"
+                name="catigory-validation"
+              >
+                <b-form-invalid-feedback :state="kategoryValid">
+                  Please select two
+                </b-form-invalid-feedback>
+                <b-form-valid-feedback :state="kategoryValid">
+                  Good to go
+                </b-form-valid-feedback>
+              </b-form-checkbox-group>
             </b-card-body>
           </b-card>
 
@@ -353,11 +390,14 @@
 
           <b-card title="Lokalens kontaktperson:">
             <b-card-body>
-              <b-form-group>
-                <b-form-radio v-for="input in lokalOpts" :key="input" v-model="lokal" name="users" :value="input">
-                  {{ input }}
-                </b-form-radio>
-              </b-form-group>
+              <b-form-radio-group v-model="lokal" :stacked="true" :options="lokalOpts" :state="lokalensValid" name="lokal-validation">
+                <b-form-invalid-feedback :state="lokalensValid">
+                  Please select one
+                </b-form-invalid-feedback>
+                <b-form-valid-feedback :state="lokalensValid">
+                  You choosed {{ lokal }}
+                </b-form-valid-feedback>
+              </b-form-radio-group>
             </b-card-body>
           </b-card>
 
@@ -368,10 +408,38 @@
           </b-card>
         </div>
       </form>
-      <b-btn v-if="!thereIsListing" variant="primary" block @click="addListing">
+      <b-alert :show="!valid" variant="danger">
+        <div>
+          <p v-if="!titleValid" class="font-weight-bold">
+            <i class="fas fa-exclamation-triangle" />
+            You should add title
+          </p>
+          <p v-if="!stadValid" class="font-weight-bold">
+            <i class="fas fa-exclamation-triangle" />
+            You should choose stad
+          </p>
+          <p v-if="!locationValid" class="font-weight-bold">
+            <i class="fas fa-exclamation-triangle" />
+            You should add location
+          </p>
+          <p v-if="!kategoryValid" class="font-weight-bold">
+            <i class="fas fa-exclamation-triangle" />
+            You should choose kategory
+          </p>
+          <p v-if="!lokalensValid" class="font-weight-bold">
+            <i class="fas fa-exclamation-triangle" />
+            You should choose lokalens
+          </p>
+          <p v-if="!price.prioteradpris.val" class="font-weight-bold">
+            <i class="fas fa-exclamation-triangle" />
+            You should choose prioteradpris
+          </p>
+        </div>
+      </b-alert>
+      <b-btn v-if="!thereIsListing" :disabled="!valid" variant="primary" block @click="addListing">
         Add Listing
       </b-btn>
-      <b-btn v-else variant="primary" block @click="editListing">
+      <b-btn v-else :disabled="!valid" variant="primary" block @click="editListing">
         Edit Listing
       </b-btn>
     </b-container>
@@ -458,6 +526,9 @@ export default {
         manad: {
           val: null,
           temp: false
+        },
+        prioteradpris: {
+          val: null
         }
       },
       renderInputs: [
@@ -508,21 +579,7 @@ export default {
       markplan: null,
       city: null,
       cityOptions: [],
-      kategori: {
-        Butikslokal: false,
-        Event: false,
-        '-- Eventlokal': false,
-        '-- Eventyta': false,
-        '-- Galleri': false,
-        '-- Showroom': false,
-        Foodtruck: false,
-        Köpcentrum: false,
-        Marknad: false,
-        '-- Beach Market': false,
-        '-- Julmarknad': false,
-        'Mat & Dryck': false,
-        'Whote label popup': false
-      },
+      kategori: [],
       kategoriOpts: [],
       location: null,
 
@@ -687,6 +744,29 @@ export default {
   computed: {
     thereIsListing () {
       return !!this.$route.params.id
+    },
+    titleValid () {
+      return !!this.title
+    },
+    stadValid () {
+      return !!this.city
+    },
+    locationValid () {
+      return !!this.location
+    },
+    kategoryValid () {
+      return this.kategori.length > 0
+    },
+    lokalensValid () {
+      return !!this.lokal
+    },
+    valid () {
+      return !!this.titleValid &&
+              !!this.stadValid &&
+              !!this.locationValid &&
+              !!this.kategoryValid &&
+              !!this.lokalensValid &&
+              !!this.price.prioteradpris.val
     }
   },
   mounted () {
@@ -712,7 +792,9 @@ export default {
           this.lokalOpts = users.map(x => x.name)
           this.renderEgensKaper = tags.map(x => x.name)
           this.cityOptions = regions.map(x => x.name)
-          this.kategoriOpts = categories.map(x => x.name)
+          this.kategoriOpts = categories.map((x) => {
+            return { text: x.name, value: x.name }
+          })
         })
         .catch((err) => {
           console.log(err)
@@ -772,7 +854,7 @@ export default {
       prices.forEach((price) => {
         if (Number(price.val) === Number(this.listing.prioteradpris)) {
           this.price[price.text].temp = true
-          this.price.veckopris.val = price.val
+          this.price.prioteradpris.val = price.val
         }
       })
 
@@ -782,9 +864,7 @@ export default {
       })
 
       // ADD CATEGORY
-      this.listing.kategori.forEach((category) => {
-        this.kategori[category] = true
-      })
+      this.kategori = this.listing.kategori
 
       // ASSIGN YES AND NO INPUTS
       const yesNoFromListing = ['fasta', 'butik', 'mat', 'event']
@@ -805,6 +885,8 @@ export default {
           const obj = this.price[key]
           if (key !== card) {
             obj.temp = false
+          } else {
+            this.price.prioteradpris.val = this.price[card].val
           }
         }
       })
@@ -821,21 +903,15 @@ export default {
       listing.append('beskreving', this.article.beskreving)
       listing.append('title', this.title)
 
+      // ASSIGN THE PRICE
       listing.append('prisperdag', this.price.day.val || 0)
       listing.append('prisperhelg', this.price.helg.val || 0)
       listing.append('prisperlanghelg', this.price.langheig.val || 0)
       listing.append('prispervecka', this.price.veckopris.val || 0)
       listing.append('prispermanad', this.price.manad.val || 0)
+      listing.append('prioteradpris', this.price.prioteradpris.val)
 
-      // ASSIGN THE PRICE
-      let prioteradpris
-      for (const key in this.price) {
-        const obj = this.price[key]
-        if (obj.temp) { prioteradpris = obj.val }
-      }
-
-      listing.append('prioteradpris', prioteradpris)
-
+      // ASSIGN TAG
       for (const key in this.egenskaper) {
         if (this.egenskaper.hasOwnProperty(key)) {
           const feat = this.egenskaper[key]
@@ -847,13 +923,8 @@ export default {
       listing.append('placering', this.markplan)
       listing.append('stad', this.city)
 
-      for (const key in this.kategori) {
-        // eslint-disable-next-line no-prototype-builtins
-        if (this.kategori.hasOwnProperty(key)) {
-          const catigory = this.kategori[key]
-          if (catigory) { listing.append('kategori[]', key) }
-        }
-      }
+      // ASSIGN CATEGORY
+      this.kategori.forEach(cate => listing.append('kategori[]', cate))
 
       listing.append('minstahyresperiod', this.minsta)
       listing.append('langstahyresperiod', this.längsta)

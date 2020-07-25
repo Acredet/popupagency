@@ -25,13 +25,19 @@
         show-empty
       >
         <template v-slot:cell(expiry)="data">
-          <p class="text-center">
+          <p v-if="data.item.expiry" class="text-center">
             {{ data.item.expiry.substring(0,10) }}
+          </p>
+          <p v-else class="text-center">
+            -
           </p>
         </template>
 
         <template v-slot:cell(cover)="data">
-          <b-img width="100" :src="require(`@/server/images/${data.item.cover[0]}`)" />
+          <b-img v-if="data.item.cover && data.item.cover[0]" width="100" :src="require(`@/server/images/${data.item.cover[0]}`)" />
+          <p v-else class="text-center">
+            -
+          </p>
         </template>
 
         <template v-slot:cell(actions)="data">
