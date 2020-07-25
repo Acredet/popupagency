@@ -186,6 +186,12 @@
             responsive="sm"
             show-empty
           >
+            <template v-slot:cell(parent)="data">
+              <p class="text-center font-wight-bold">
+                {{ (data.item.parent && data.item.parent !== 'null') ? data.item.parent : '-' }}
+              </p>
+            </template>
+
             <template v-slot:cell(actions)="data">
               <b-dropdown variant="light">
                 <template v-slot:button-content>
@@ -324,20 +330,15 @@ export default {
               description: null
             }
           })
-          this.toast = {
-            title: 'Tags added successfully',
-            variant: 'success',
-            visible: true,
-            text: `You just added ${this.form.name} Tags.`
-          }
+          this.$router.go()
         })
         .catch((err) => {
-          this.toast = {
+          this.$bvToast.toast(err.response.data.msg, {
             title: 'There is something wrong',
-            variant: 'danger',
-            visible: true,
-            text: err.message
-          }
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'danger'
+          })
         })
     },
     async getTags () {
@@ -385,19 +386,15 @@ export default {
             visible: true,
             text: `You just Edited ${this.editForm.name} Tags.`
           }
-          this.editForm = {
-            name: '',
-            parent: null,
-            description: null
-          }
+          this.$router.go()
         })
         .catch((err) => {
-          this.toast = {
+          this.$bvToast.toast(err.response.data.msg, {
             title: 'There is something wrong',
-            variant: 'danger',
-            visible: true,
-            text: err.message
-          }
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'danger'
+          })
         })
     },
     async deleteTag () {
@@ -410,14 +407,15 @@ export default {
             visible: true,
             text: `You just deleted ${this.editForm.name} Tags.`
           }
+          this.$router.go()
         })
         .catch((err) => {
-          this.toast = {
+          this.$bvToast.toast(err.response.data.msg, {
             title: 'There is something wrong',
-            variant: 'danger',
-            visible: true,
-            text: err.message
-          }
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'danger'
+          })
         })
     }
   }
