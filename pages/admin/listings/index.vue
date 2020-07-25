@@ -24,6 +24,16 @@
         responsive="sm"
         show-empty
       >
+        <template v-slot:cell(expiry)="data">
+          <p class="text-center">
+            {{ data.item.expiry.substring(0,10) }}
+          </p>
+        </template>
+
+        <template v-slot:cell(cover)="data">
+          <b-img width="100" :src="require(`@/server/images/${data.item.cover[0]}`)" />
+        </template>
+
         <template v-slot:cell(actions)="data">
           <b-dropdown variant="light">
             <template v-slot:button-content>
@@ -66,6 +76,7 @@ export default {
       fields: [
         { key: 'title', sortable: true },
         { key: 'expiry', sortable: true },
+        { key: 'cover', sortable: false },
         { key: 'stad', sortable: true },
         { key: 'actions' }
       ],
