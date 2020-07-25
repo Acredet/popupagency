@@ -15,6 +15,7 @@ router.get("/me", auth, getUser);
 router.post("/", addUser);
 router.get("/all", auth, getAllUsers);
 router.post("/auth", authenticate);
+router.post("/logout", auth, (req, res) => res.status(200).json({ success: true }));
 router.delete("/:id", auth, deleteUser);
 router.patch("/:id", auth, updateUser);
 module.exports = router;

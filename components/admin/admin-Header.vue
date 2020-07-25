@@ -113,7 +113,7 @@
                 <i class="fas fa-user" /> Profile
               </nuxt-link>
               <div class="dropdown-divider" />
-              <button type="button" class="dropdown-item text-danger" @click="$auth.logout()">
+              <button type="button" class="dropdown-item text-danger" @click="logout">
                 <i class="fas fa-power-off text-danger" /> Logout
               </button>
             </div>
@@ -159,6 +159,10 @@ export default {
   methods: {
     toggleClass () {
       document.body.classList.toggle('enlarged')
+    },
+    logout () {
+      this.$auth.logout('local')
+      this.$router.push('/admin/login')
     }
   }
 }

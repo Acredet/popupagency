@@ -59,15 +59,6 @@
         </div>
       </div>
     </div>
-
-    <!-- <div class="m-t-40 text-center">
-      <p>
-        Don't have an account ? <nuxt-link to="sign-up" class="text-primary">
-          Signup Now
-        </nuxt-link>
-      </p>
-    </div> -->
-    <toast :toast="toast" />
   </div>
 </template>
 
@@ -97,14 +88,6 @@ export default {
   methods: {
     async login () {
       await this.$auth.loginWith('local', { data: this.user })
-        .then((res) => {
-          this.$bvToast.toast(`Welcome back ${this.$auth.user.name}`, {
-            title: 'Successful login',
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'success'
-          })
-        })
         .catch((err) => {
           this.$bvToast.toast(err.response.data.msg, {
             title: 'There is something wrong',
@@ -112,12 +95,6 @@ export default {
             appendToast: true,
             variant: 'danger'
           })
-          // this.toast = {
-          //   title: 'There is something wrong',
-          //   variant: 'danger',
-          //   visible: true,
-          //   text: err.response.data.msg
-          // }
         })
     }
   }
