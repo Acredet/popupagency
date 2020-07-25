@@ -477,7 +477,7 @@ export default {
           model: 'langheig'
         },
         {
-          title: 'Pris  per vecka:',
+          title: 'Pris per vecka:',
           placeholder: 'veckopris',
           model: 'veckopris'
         },
@@ -752,6 +752,7 @@ export default {
       this.price.helg.val = this.listing.prisperhelg
       this.price.langheig.val = this.listing.prisperlanghelg
       this.price.manad.val = this.listing.prispermanad
+      this.price.veckopris.val = this.listing.prispervecka
 
       // ASSIGN IMAGES
       this.images.bildgalleri = this.listing.bildgalleri
@@ -763,12 +764,16 @@ export default {
         { text: 'day', val: this.listing.prisperdag },
         { text: 'helg', val: this.listing.prisperhelg },
         { text: 'langheig', val: this.listing.prisperlanghelg },
-        { text: 'manad', val: this.listing.prispermana }
+        { text: 'manad', val: this.listing.prispermana },
+        { text: 'veckopris', val: this.listing.prispervecka }
       ]
 
       // DETERMINE THE prispervecka
       prices.forEach((price) => {
-        if (Number(price.val) === Number(this.price.veckopris.val)) { this.price[price.text].temp = true; this.price.veckopris.val = price }
+        if (Number(price.val) === Number(this.listing.prioteradpris)) {
+          this.price[price.text].temp = true
+          this.price.veckopris.val = price.val
+        }
       })
 
       // ADD TAGS
@@ -816,11 +821,11 @@ export default {
       listing.append('beskreving', this.article.beskreving)
       listing.append('title', this.title)
 
-      listing.append('prisperdag', this.price.day.val)
-      listing.append('prisperhelg', this.price.helg.val)
-      listing.append('prisperlanghelg', this.price.langheig.val)
-      listing.append('prispervecka', this.price.veckopris.val)
-      listing.append('prispermanad', this.price.manad.val)
+      listing.append('prisperdag', this.price.day.val || 0)
+      listing.append('prisperhelg', this.price.helg.val || 0)
+      listing.append('prisperlanghelg', this.price.langheig.val || 0)
+      listing.append('prispervecka', this.price.veckopris.val || 0)
+      listing.append('prispermanad', this.price.manad.val || 0)
 
       // ASSIGN THE PRICE
       let prioteradpris
@@ -892,11 +897,14 @@ export default {
     async addListing () {
       const listing = this.createFormDate()
       await this.$axios.$post('/places', listing)
-        .then((res) => {
-          console.log(res)
-        })
+        .then(res => this.$router.push('/admin/listings/'))
         .catch((err) => {
-          console.log(err)
+          this.$bvToast.toast(err.response.data.msg, {
+            title: 'There is something wrong',
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'danger'
+          })
         })
     },
     async editListing () {
@@ -963,11 +971,14 @@ export default {
         console.log(pair[0], ':', pair[1])
       }
       await this.$axios.$patch(`/places/${this.listing._id}`, listing)
-        .then((res) => {
-          console.log(res)
-        })
+        .then(res => this.$router.go())
         .catch((err) => {
-          console.log(err)
+          this.$bvToast.toast(err.response.data.msg, {
+            title: 'There is something wrong',
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'danger'
+          })
         })
     },
     deleteImage () {
