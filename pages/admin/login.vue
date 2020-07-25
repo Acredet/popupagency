@@ -67,6 +67,7 @@
         </nuxt-link>
       </p>
     </div> -->
+    <toast :toast="toast" />
   </div>
 </template>
 
@@ -76,22 +77,48 @@ export default {
   name: 'Login',
   data () {
     return {
+      toast: {
+        title: null,
+        variant: null,
+        visible: false,
+        text: null
+      },
       user: {
         email: '',
         password: ''
       }
     }
   },
+  mounted () {
+    if (this.$auth.loggedIn) {
+      this.$router.push('/admin')
+    }
+  },
   methods: {
     async login () {
-      try {
-        const response = await this.$auth.loginWith('local', {
-          data: this.user
+      await this.$auth.loginWith('local', { data: this.user })
+        .then((res) => {
+          this.$bvToast.toast(`Welcome back ${this.$auth.user.name}`, {
+            title: 'Successful login',
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'success'
+          })
         })
-        console.log(response)
-      } catch (err) {
-        console.log(err)
-      }
+        .catch((err) => {
+          this.$bvToast.toast(err.response.data.msg, {
+            title: 'There is something wrong',
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'danger'
+          })
+          // this.toast = {
+          //   title: 'There is something wrong',
+          //   variant: 'danger',
+          //   visible: true,
+          //   text: err.response.data.msg
+          // }
+        })
     }
   }
 }

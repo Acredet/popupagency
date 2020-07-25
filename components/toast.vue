@@ -1,7 +1,7 @@
 <template>
   <b-toast
     :title="toast.title"
-    toaster="b-toaster-bottom-full"
+    toaster="b-toaster-bottom-center"
     :solid="true"
     :variant="toast.variant"
     :visible="toast.visible"
