@@ -1,6 +1,7 @@
 <template>
   <div class="content">
     <h1>Under construction</h1>
+    <b-btn @click="test" v-text="'See nice message'" />
   </div>
 </template>
 
@@ -8,8 +9,10 @@
 export default {
   name: 'AddUser',
   layout: 'admin',
-  mounted () {
-    alert('Hey handsome 😉, I\'m working 👌')
+  methods: {
+    test () {
+      alert('Hey handsome 😉, I\'m working 👌')
+    }
   }
 }
 </script>
