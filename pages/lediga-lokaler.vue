@@ -415,20 +415,27 @@ export default {
 }
 </script>
 
-<style scoped lang="sass">
-.custom-tab, .custom-tab div
-  height: 300px
+<style scoped >
+.custom-tab, .custom-tab div {
+  height: 300px;
+}
 
-.wrapper
-  max-height: 100vh
-  overflow: scroll
+.wrapper {
+  max-height: 100vh;
+  overflow: scroll;
+}
 
-.vue-map-container
-  height: 100vh
-  width: 100%
-.choices, .choices *
-  height: auto !important
+.vue-map-container {
+  height: 100vh;
+  width: 100%;
+}
 
-span ~ button.list-group-item
-  background-color: #ddd !important
+.choices, .choices * {
+  height: auto !important;
+}
+
+span ~ button.list-group-item {
+  background-color: #ddd !important;
+}
+
 </style>

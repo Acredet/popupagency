@@ -1059,16 +1059,18 @@ export default {
 }
 </script>
 
-<style lang="sass" scoped>
+<style scoped>
 /* ö ä Å Ö å */
 
-.card-title
+.card-title {
   font-weight: 800
+}
 
-button.close
-  position: absolute
-  top: 0
-  right: 10px
-  z-index: 4
-  color: white
+button.close{
+  position: absolute;
+  top: 0;
+  right: 10px;
+  z-index: 4;
+  color: white;
+}
 </style>

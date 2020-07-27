@@ -7,7 +7,7 @@
     "dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",
     "generate": "nuxt generate",
     "push": "git push origin master",
-    "start": "cross-env NODE_ENV=production node server/app.js",
+    "start": "node server/app.js",
     "stop": "taskkill -f -im node.exe",
     "build": "nuxt build",
     "export": "nuxt export",
@@ -19,7 +19,6 @@
     "@nuxtjs/auth": "^4.9.1",
     "@nuxtjs/axios": "^5.11.0",
     "@nuxtjs/dotenv": "^1.4.1",
-    "@nuxtjs/proxy": "^2.0.1",
     "bcrypt": "^5.0.0",
     "bootstrap": "^4.5.0",
     "bootstrap-vue": "^2.15.0",
@@ -43,8 +42,6 @@
     "@nuxtjs/eslint-module": "^2.0.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.2.0",
-    "eslint-plugin-nuxt": "^1.0.0",
-    "node-sass": "^4.14.1",
-    "sass-loader": "^9.0.2"
+    "eslint-plugin-nuxt": "^1.0.0"
   }
 }

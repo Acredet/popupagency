@@ -70,7 +70,6 @@ module.exports = {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/auth',
-    '@nuxtjs/proxy',
     '@nuxtjs/dotenv'
   ],
   auth: {
@@ -99,9 +98,8 @@ module.exports = {
     VUE_APP_GOOGLE_MAPS_API_KEY: process.env.VUE_APP_GOOGLE_MAPS_API_KEY
   },
   axios: {
-    prefix: '/api',
-    baseURL: 'https://popup.dk.se/'
-    // baseURL: '/'
+    // baseURL: 'https://popup.dk.se/'
+    baseURL: '/api'
   },
   router: {
     linkActiveClass: 'active'

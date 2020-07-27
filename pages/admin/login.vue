@@ -101,7 +101,8 @@ export default {
 }
 </script>
 
-<style lang="sass" scoped>
-.card
+<style scoped>
+.card {
   margin-top: 100px
+}
 </style>

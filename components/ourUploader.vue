@@ -204,52 +204,57 @@ export default {
 }
 </script>
 
-<style lang="sass">
-.input-group--wrapper
-  cursor: pointer
-  width: 100%
-  height: 150px
-  position: relative
-  overflow: hidden
-  margin-bottom: 10px
-  background: white
-  transition: all 0.4s ease
-  &:hover, &.drag
-    background: #eee
-  &::before
-    font-family: "Font Awesome 5 Free"
-    font-weight: 900
-    content: "\f093"
-    transition: all 0.4s ease
-    border: 2px dashed #ddd
-    display: flex
-    justify-content: center
-    align-items: center
-    color: #aaa
-    position: absolute
-    top: 0
-    left: 0
-    width: 100%
-    height: 100%
+<style>
+@charset "UTF-8";
+.input-group--wrapper {
+  cursor: pointer;
+  width: 100%;
+  height: 150px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 10px;
+  background: white;
+  transition: all 0.4s ease;
+}
+.input-group--wrapper:hover, .input-group--wrapper.drag {
+  background: #eee;
+}
+.input-group--wrapper::before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  content: "";
+  transition: all 0.4s ease;
+  border: 2px dashed #ddd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #aaa;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.input-group--wrapper button.close {
+  position: absolute;
+  top: 0;
+  right: 10px;
+  display: none;
+  z-index: 4;
+  color: white;
+}
+.input-group--wrapper input {
+  appearance: none;
+  display: none;
+}
+.input-group--wrapper img {
+  position: absolute;
+  display: none;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
 
-  button.close
-    position: absolute
-    top: 0
-    right: 10px
-    display: none
-    z-index: 4
-    color: white
-
-  input
-    appearance: none
-    display: none
-
-  img
-    position: absolute
-    display: none
-    top: 0
-    left: 0
-    width: 100%
-    height: 100%
-    z-index: 2
 </style>

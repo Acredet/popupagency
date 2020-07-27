@@ -240,57 +240,78 @@ export default {
 }
 </script>
 
-<style lang="sass">
-.logo
-  max-height: 50px
+<style>
+.logo {
+  max-height: 50px;
+}
 
-.navbar-toggler
-  border: 0
-  font-size: 40px
+.navbar-toggler {
+  border: 0;
+  font-size: 40px;
+}
 
-.navbar-dark .navbar-nav .nav-link
-  color: white !important
+.navbar-dark .navbar-nav .nav-link {
+  color: white !important;
+}
 
-.animate__animated.animate__zoomIn
-  --animate-duration: 0.4s
+.animate__animated.animate__zoomIn {
+  --animate-duration: 0.4s;
+}
 
-ul.dropdown-menu li[role=presentation] a
-  transition: all 0.4s ease
-  &:hover
-    padding-left: 30px
+ul.dropdown-menu li[role="presentation"] a {
+  transition: all 0.4s ease;
+}
+ul.dropdown-menu li[role="presentation"] a:hover {
+  padding-left: 30px;
+}
 
-.b-sidebar-body
-  a
-    color: #000
-    text-decoration: none
-    &:hover
-      text-decoration: none
+.b-sidebar-body a {
+  color: #000;
+  text-decoration: none;
+}
 
-  ul
-    padding: 0
-    margin: 0
-    list-style: none
-    li
-      padding: 15px
-      background: white
-      transition: all 0.4s ease-out
-      svg
-        transition: all 0.4s ease-out
-        opacity: 0.6
-      &:hover
-        padding-left: 20px
-        svg
-          opacity: 1
-  .collapse
-    background: #ddd
-    ul
-      margin: 0
-      padding: 0
-      background: #ddd !important
-      li
-        background: #ddd !important
-        padding-left: 10px
-        transition: all 0.4s ease-out
-        &:hover
-          padding-left: 20px
+.b-sidebar-body a:hover {
+  text-decoration: none;
+}
+
+.b-sidebar-body ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.b-sidebar-body ul li {
+  padding: 15px;
+  background: white;
+  transition: all 0.4s ease-out;
+}
+
+.b-sidebar-body ul li svg {
+  transition: all 0.4s ease-out;
+  opacity: 0.6;
+}
+.b-sidebar-body ul li:hover {
+  padding-left: 20px;
+}
+.b-sidebar-body ul li:hover svg {
+  opacity: 1;
+}
+.collapse {
+  background: #ddd;
+}
+
+.collapse ul {
+  margin: 0;
+  padding: 0;
+  background: #ddd !important;
+}
+.collapse ul li {
+  background: #ddd !important;
+  padding-left: 10px;
+  transition: all 0.4s ease-out;
+}
+
+.collapse ul li:hover {
+  padding-left: 20px;
+}
 </style>
