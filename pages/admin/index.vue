@@ -7,7 +7,10 @@
 <script>
 export default {
   name: 'AddUser',
-  layout: 'admin'
+  layout: 'admin',
+  mounted () {
+    alert('Hey handsome 😉, I\'m working 👌')
+  }
 }
 </script>
 
