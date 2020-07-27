@@ -88,7 +88,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .submenu li.active > a:not(.nuxt-link-active) {
   color: #8699ad !important;
 }

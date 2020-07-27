@@ -204,7 +204,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 @charset "UTF-8";
 .input-group--wrapper {
   cursor: pointer;

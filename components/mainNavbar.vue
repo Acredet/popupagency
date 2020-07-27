@@ -240,7 +240,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .logo {
   max-height: 50px;
 }
@@ -296,17 +296,14 @@ ul.dropdown-menu li[role="presentation"] a:hover {
 .b-sidebar-body ul li:hover svg {
   opacity: 1;
 }
-.collapse {
-  background: #ddd;
-}
 
 .collapse ul {
   margin: 0;
   padding: 0;
-  background: #ddd !important;
+  /* background: #ddd !important; */
 }
 .collapse ul li {
-  background: #ddd !important;
+  /* background: #ddd !important; */
   padding-left: 10px;
   transition: all 0.4s ease-out;
 }
