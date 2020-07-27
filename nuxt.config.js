@@ -99,7 +99,7 @@ module.exports = {
   },
   axios: {
     // baseURL: 'https://popup.dk.se/'
-    baseURL: '/api'
+    baseURL: 'https://popup.dk.se/api'
   },
   router: {
     linkActiveClass: 'active'
