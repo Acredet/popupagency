@@ -132,19 +132,20 @@
             <a
               id="dropdownMenuLink"
               class="btn btn-light dropdown-toggle"
-              href="#"
               role="button"
               data-toggle="dropdown"
               aria-haspopup="true"
               aria-expanded="false"
-            >Create</a>
+            >Languages</a>
 
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
+              <nuxt-link :to="switchLocalePath('en')" class="dropdown-item">
+                En-English
+              </nuxt-link>
               <div class="dropdown-divider" />
-              <a class="dropdown-item" href="#">Separated link</a>
+              <nuxt-link :to="switchLocalePath('sv')" class="dropdown-item">
+                Sv-Swedish
+              </nuxt-link>
             </div>
           </div>
         </li>

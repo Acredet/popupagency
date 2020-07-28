@@ -1,37 +1,33 @@
 <template>
   <div class="content">
-    <b-modal id="edit-modal" centered title="Edit Region" @close="editForm = {}">
+    <b-modal id="edit-modal" centered :title="$t('region.editModal.title')" @close="editForm = {}">
       <b-form>
         <b-form-group
           id="name-group"
-          label="Name:"
+          :label="$t('forms.name.title')"
           label-for="name"
-          description="The name is how it appears on your site."
+          :description="$t('forms.name.desc')"
         >
           <b-form-input
             id="name"
             v-model="editForm.name"
-            :state="!!editForm.name"
+            :state="nameValid"
             type="text"
             required
             autocomplete="off"
-            placeholder="Enter Name"
+            :placeholder="$t('forms.name.holder')"
           />
 
-          <b-form-invalid-feedback :state="!!editForm.name">
-            Required.
-          </b-form-invalid-feedback>
+          <b-form-invalid-feedback :state="nameValid" v-text="$t('forms.required')" />
 
-          <b-form-valid-feedback :state="!!editForm.name">
-            Good to go.
-          </b-form-valid-feedback>
+          <b-form-valid-feedback :state="nameValid" v-text="$t('forms.valid')" />
         </b-form-group>
 
         <b-form-group
           id="select-group"
-          label="Parent Region:"
+          :label="$t('forms.parent.title')"
           label-for="region"
-          description="Assign a parent term to create a hierachy. The term Jazz, for example, would be the parent of Bebop and Big Band."
+          :description="$t('forms.parent.desc')"
         >
           <b-form-select
             id="region"
@@ -43,14 +39,14 @@
 
         <b-form-group
           id="description-group"
-          label="Description:"
+          :label="$t('forms.decription.title')"
           label-for="description"
-          description="The description isn't prominent by default; howerver, some themes may show it."
+          :description="$t('forms.decription.desc')"
         >
           <b-form-textarea
             id="description"
             v-model="editForm.description"
-            placeholder="Enter Your Description"
+            :placeholder="$t('forms.decription.holder')"
             rows="3"
           />
         </b-form-group>
@@ -58,39 +54,39 @@
 
       <template v-slot:modal-footer="{ ok, cancel }">
         <b-btn variant="primary" @click="editRigion(); ok()">
-          Edit
+          {{ $t('actions.edit') }}
         </b-btn>
         <b-btn variant="danger" @click="cancel(); editForm = {}">
-          Close
+          {{ $t('actions.cancle') }}
         </b-btn>
       </template>
     </b-modal>
 
-    <b-modal id="delete-modal" centered title="Delete Region">
+    <b-modal id="delete-modal" centered :title="$t('region.deleteModal.title')">
       <p class="my-4">
-        Are you sure you wanna delete {{ editForm.name }}?
+        {{ $t('actions.deleteConfimrMessage') }} {{ editForm.name }}?
       </p>
 
       <template v-slot:modal-footer="{ ok, cancel }">
         <b-btn variant="danger" @click="deleteRigion(); ok()">
-          Delete
+          {{ $t('actions.delete') }}
         </b-btn>
         <b-btn variant="primary" @click="cancel(); editForm = {}">
-          Close
+          {{ $t('actions.cancle') }}
         </b-btn>
       </template>
     </b-modal>
 
     <b-container>
-      <h2>Add Region:</h2>
+      <h2>{{ $t('region.title') }}</h2>
       <b-row>
         <b-col cols="12" md="4">
           <b-form>
             <b-form-group
               id="name-group"
-              label="Name:"
+              :label="$t('forms.name.title')"
               label-for="name"
-              description="The name is how it appears on your site."
+              :description="$t('forms.name.desc')"
             >
               <b-form-input
                 id="name"
@@ -99,23 +95,19 @@
                 type="text"
                 required
                 autocomplete="off"
-                placeholder="Enter Name"
+                :placeholder="$t('forms.name.holder')"
               />
 
-              <b-form-invalid-feedback :state="nameValid">
-                Required.
-              </b-form-invalid-feedback>
+              <b-form-invalid-feedback :state="nameValid" v-text="$t('forms.required')" />
 
-              <b-form-valid-feedback :state="nameValid">
-                Good to go.
-              </b-form-valid-feedback>
+              <b-form-valid-feedback :state="nameValid" v-text="$t('forms.valid')" />
             </b-form-group>
 
             <b-form-group
               id="select-group"
-              label="Parent Region:"
+              :label="$t('forms.parent.title')"
               label-for="region"
-              description="Assign a parent term to create a hierachy. The term Jazz, for example, would be the parent of Bebop and Big Band."
+              :description="$t('forms.parent.desc')"
             >
               <b-form-select
                 id="region"
@@ -127,14 +119,14 @@
 
             <b-form-group
               id="description-group"
-              label="Description:"
+              :label="$t('forms.decription.title')"
               label-for="description"
-              description="The description isn't prominent by default; howerver, some themes may show it."
+              :description="$t('forms.decription.desc')"
             >
               <b-form-textarea
                 id="description"
                 v-model="form.description"
-                placeholder="Enter Your Description"
+                :placeholder="$t('forms.decription.holder')"
                 rows="3"
               />
             </b-form-group>
@@ -158,13 +150,13 @@
             <template v-slot:cell(actions)="data">
               <b-dropdown variant="light">
                 <template v-slot:button-content>
-                  <b>Actions</b>
+                  <b>{{ $t('actions.actions') }}</b>
                 </template>
                 <b-dropdown-item v-b-modal.edit-modal @click="editForm = data.item">
-                  Edit
+                  {{ $t('actions.edit') }}
                 </b-dropdown-item>
                 <b-dropdown-item v-b-modal.delete-modal @click="editForm = data.item">
-                  Delete
+                  {{ $t('actions.delete') }}
                 </b-dropdown-item>
               </b-dropdown>
             </template>
@@ -180,7 +172,7 @@
               />
             </b-col>
             <b-col cols="12" md="4">
-              <b-form-group id="per-page-group" label="Per page:" label-for="per-page">
+              <b-form-group id="per-page-group" :label="$t('tables.pagenation.perPage')" label-for="per-page">
                 <b-form-select
                   id="per-page"
                   v-model="perPage"
@@ -190,8 +182,8 @@
             </b-col>
           </b-row>
           <div>
-            Sorting By: <b>{{ sortBy }}</b>, Sort Direction:
-            <b>{{ sortDesc ? 'Descending' : 'Ascending' }}</b>
+            {{ $t('tables.sort.by') }} <b>{{ sortBy }}</b>, {{ $t('tables.sort.direction') }}
+            <b>{{ sortDesc ? $t('tables.sort.descending') : $t('tables.sort.ascending') }}</b>
           </div>
         </b-col>
       </b-row>
@@ -204,6 +196,7 @@
 <script>
 export default {
   name: 'ListingRegion',
+  middleware: 'authenticated',
   layout: 'admin',
   data () {
     return {

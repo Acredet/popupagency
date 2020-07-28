@@ -68,6 +68,7 @@
 <script>
 export default {
   name: 'Listings',
+  middleware: 'authenticated',
   layout: 'admin',
   data () {
     return {

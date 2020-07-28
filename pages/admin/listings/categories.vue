@@ -242,6 +242,7 @@ import ourUploader from '@/components/ourUploader'
 
 export default {
   name: 'ListingTags',
+  middleware: 'authenticated',
   layout: 'admin',
   components: {
     ourUploader

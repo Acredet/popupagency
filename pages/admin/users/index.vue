@@ -94,6 +94,7 @@
 <script>
 export default {
   name: 'AllUsers',
+  middleware: 'authenticated',
   layout: 'admin',
   data () {
     return {

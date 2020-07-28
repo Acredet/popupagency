@@ -72,6 +72,21 @@ module.exports = {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/auth',
+    ['nuxt-i18n', {
+      locales: [
+        {
+          code: 'en',
+          file: 'en.js'
+        },
+        {
+          code: 'sv',
+          file: 'sv.js'
+        }
+      ],
+      lazy: true,
+      langDir: 'lang/',
+      defaultLocale: 'sv'
+    }],
     '@nuxtjs/dotenv'
   ],
   auth: {
