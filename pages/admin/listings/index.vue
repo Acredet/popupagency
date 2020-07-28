@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <loading :state="loading" />
     <b-modal id="delete-modal" centered title="Delete Listing">
       <p class="my-4">
         Are you sure you wanna delete {{ editForm._id }}?
@@ -70,6 +71,7 @@ export default {
   layout: 'admin',
   data () {
     return {
+      loading: true,
       toast: {
         title: null,
         variant: null,
@@ -97,6 +99,7 @@ export default {
       await this.$axios.$get('/places')
         .then((res) => {
           this.items = res.data
+          this.loading = false
           console.log(res)
         })
         .catch(err => console.log(err))
