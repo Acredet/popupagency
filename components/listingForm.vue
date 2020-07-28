@@ -50,24 +50,22 @@
                 :max-file-size="64"
               >
                 <template v-slot:old-Image>
-                  <b-row>
+                  <b-row v-if="thereIsListing && images.bildgalleri.length > 0" class="mb-1">
                     <b-col
-                      v-if="thereIsListing && images.bildgalleri.length > 0"
-                      class="d-flex justify-content-center"
+                      v-for="(img, index) in images.bildgalleri"
+                      :key="index"
+                      class="d-flex mb-1 "
                       cols="12"
                       sm="6"
                       md="4"
                       lg="3"
                     >
-                      <div v-for="(img, index) in images.bildgalleri" :key="index" class="position-relative">
-                        <button type="button" class="close" aria-label="Close" @click="deleteImageFromExistingArray(index, 'bildgalleri')">
+                      <div class="position-relative">
+                        <b-btn variant="danger" class="delete-btn" aria-label="Close" @click="deleteImageFromExistingArray(index, 'bildgalleri')">
                           <span aria-hidden="true">&times;</span>
-                        </button>
+                        </b-btn>
                         <b-img class="mx-2" style="height: 150px" :src="require(`@/server/images/${img}`)" />
                       </div>
-                      <button type="button" class="close" aria-label="Close" @click="deleteImage">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
                     </b-col>
                   </b-row>
                 </template>
@@ -89,19 +87,22 @@
                 :max-file-size="64"
               >
                 <template v-slot:old-Image>
-                  <b-row>
+                  <b-row v-if="thereIsListing && images.cover.length > 0" class="mb-1">
                     <b-col
-                      v-if="thereIsListing && images.cover.length > 0"
-                      class="d-flex justify-content-center"
+                      v-for="(img, index) in images.cover"
+                      :key="index"
+                      class="d-flex mb-1 "
                       cols="12"
                       sm="6"
                       md="4"
                       lg="3"
                     >
-                      <b-img v-for="(img, index) in images.cover" :key="index" class="mx-2" style="height: 150px" :src="require(`@/server/images/${img}`)" />
-                      <button type="button" class="close" aria-label="Close" @click="deleteImage">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
+                      <div class="position-relative">
+                        <b-btn type="button" variant="danger" class="delete-btn" aria-label="Close" @click="deleteImageFromExistingArray(index, 'cover')">
+                          <span aria-hidden="true">&times;</span>
+                        </b-btn>
+                        <b-img class="mx-2" style="height: 150px" :src="require(`@/server/images/${img}`)" />
+                      </div>
                     </b-col>
                   </b-row>
                 </template>
@@ -223,19 +224,22 @@
                   :max-file-size="64"
                 >
                   <template v-slot:old-Image>
-                    <b-row>
+                    <b-row v-if="thereIsListing && images.planritning.length > 0" class="mb-1">
                       <b-col
-                        v-if="thereIsListing && images.planritning.length > 0"
-                        class="d-flex justify-content-center"
+                        v-for="(img, index) in images.planritning"
+                        :key="index"
+                        class="d-flex mb-1 "
                         cols="12"
                         sm="6"
                         md="4"
                         lg="3"
                       >
-                        <b-img v-for="(img, index) in images.planritning" :key="index" class="mx-2" style="height: 150px" :src="require(`@/server/images/${img}`)" />
-                        <button type="button" class="close" aria-label="Close" @click="deleteImage">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
+                        <div class="position-relative">
+                          <b-btn type="button" variant="danger" class="delete-btn" aria-label="Close" @click="deleteImageFromExistingArray(index, 'planritning')">
+                            <span aria-hidden="true">&times;</span>
+                          </b-btn>
+                          <b-img class="mx-2" style="height: 150px" :src="require(`@/server/images/${img}`)" />
+                        </div>
                       </b-col>
                     </b-row>
                   </template>
@@ -380,24 +384,27 @@
                   :name="'centrumgalleri[]'"
                   :show-btn="false"
                   :more="true"
-                  :old-images="images.bildgalleri"
+                  :old-images="images.centrumgalleri"
                   :max-number-of-inputs="999"
                   :max-file-size="64"
                 >
                   <template v-slot:old-Image>
-                    <b-row>
+                    <b-row v-if="thereIsListing && images.centrumgalleri.length > 0" class="mb-1">
                       <b-col
-                        v-if="thereIsListing && images.centrumgalleri.length > 0"
-                        class="d-flex justify-content-center"
+                        v-for="(img, index) in images.centrumgalleri"
+                        :key="index"
+                        class="d-flex mb-1 "
                         cols="12"
                         sm="6"
                         md="4"
                         lg="3"
                       >
-                        <b-img v-for="(img, index) in images.centrumgalleri" :key="index" class="mx-2" style="height: 150px" :src="require(`@/server/images/${img}`)" />
-                        <button type="button" class="close" aria-label="Close" @click="deleteImage">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
+                        <div class="position-relative">
+                          <b-btn type="button" variant="danger" class="delete-btn" aria-label="Close" @click="deleteImageFromExistingArray(index, 'centrumgalleri')">
+                            <span aria-hidden="true">&times;</span>
+                          </b-btn>
+                          <b-img class="mx-2" style="height: 150px" :src="require(`@/server/images/${img}`)" />
+                        </div>
                       </b-col>
                     </b-row>
                   </template>
@@ -1004,7 +1011,11 @@ export default {
     async addListing () {
       const listing = this.createFormDate()
       await this.$axios.$post('/places', listing)
-        .then(res => this.$router.push('/admin/listings/'))
+        .then((res) => {
+          this.$nextTick(() => {
+            this.$router.push('/admin/listings/')
+          })
+        })
         .catch((err) => {
           this.$bvToast.toast(err.response.data.msg, {
             title: 'There is something wrong',
@@ -1081,7 +1092,11 @@ export default {
         console.log(pair[0], ':', pair[1])
       }
       await this.$axios.$patch(`/places/${this.listing._id}`, listing)
-        .then(res => this.$router.go())
+        .then((res) => {
+          this.$nextTick(() => {
+            this.$router.push('/admin/listings/')
+          })
+        })
         .catch((err) => {
           this.$bvToast.toast(err.response.data.msg, {
             title: 'There is something wrong',
@@ -1090,9 +1105,6 @@ export default {
             variant: 'danger'
           })
         })
-    },
-    deleteImage () {
-      alert('not working yet 😜')
     }
   }
 }
@@ -1105,11 +1117,12 @@ export default {
   font-weight: 800
 }
 
-button.close{
+button.delete-btn{
   position: absolute;
   top: 0;
   right: 10px;
   z-index: 4;
-  color: white;
+  /* color: white; */
+  /* background-color: red; */
 }
 </style>
