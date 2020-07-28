@@ -4,6 +4,7 @@ export default {
   actions: {
     actions: 'Åtgärder',
     edit: 'Redigera',
+    add: 'Lägg till',
     deleteConfimrMessage: 'Är du säker på att du vill ta bort',
     delete: 'Radera',
     confirm: 'Bekräfta',
@@ -44,10 +45,31 @@ export default {
   region: {
     title: 'Regions:',
     editModal: {
-      title: 'Edit Region:'
+      title: 'Redigera Region:'
     },
     deleteModal: {
-      title: 'Delete Region:'
-    }
+      title: 'Radera Region:'
+    },
+    addBtn: 'Lägg till Regions'
+  },
+  tag: {
+    title: 'Tags:',
+    editModal: {
+      title: 'Redigera Tag:'
+    },
+    deleteModal: {
+      title: 'Radera Tag:'
+    },
+    addBtn: 'Lägg till Tags'
+  },
+  category: {
+    title: 'Kategori:',
+    editModal: {
+      title: 'Redigera Kategori:'
+    },
+    deleteModal: {
+      title: 'Radera Kategori:'
+    },
+    addBtn: 'Lägg till Kategori'
   }
 }

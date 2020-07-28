@@ -131,7 +131,7 @@
               />
             </b-form-group>
 
-            <b-btn variant="primary" :disabled="!form.name" @click="addRigion" v-text="'Add Rigion'" />
+            <b-btn variant="primary" :disabled="!form.name" @click="addRigion" v-text="$t('rigion.addBtn')" />
           </b-form>
         </b-col>
 

@@ -3,6 +3,7 @@ export default {
   welcome: 'HI',
   actions: {
     actions: 'Actions',
+    add: 'Add',
     edit: 'Edit',
     deleteConfimrMessage: 'Are you sure you wanna delete',
     delete: 'Delete',
@@ -48,6 +49,28 @@ export default {
     },
     deleteModal: {
       title: 'Delete Region:'
-    }
+    },
+    addBtn: 'Add region'
+  },
+  tag: {
+    title: 'Tags:',
+    editModal: {
+      title: 'Edit Tag:'
+    },
+    deleteModal: {
+      title: 'Delete Tag:'
+    },
+    addBtn: 'Add tag'
+  },
+  category: {
+    title: 'Category:',
+    editModal: {
+      title: 'Edit Tag:'
+    },
+    deleteModal: {
+      title: 'Delete Tag:'
+    },
+    addBtn: 'Add category'
   }
+
 }
