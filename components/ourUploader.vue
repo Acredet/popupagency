@@ -2,7 +2,7 @@
   <div>
     <b-row v-if="thereIsImage">
       <b-col>
-        <b-btn variant="warning" @click="thereIsImage = false">
+        <b-btn v-if="showBtn" variant="warning" @click="thereIsImage = false">
           Edit Avatar
         </b-btn>
         <slot name="old-Image" />
@@ -80,6 +80,10 @@ export default {
     more: {
       type: Boolean,
       default: () => false
+    },
+    showBtn: {
+      type: Boolean,
+      default: () => true
     }
   },
   data: (vm) => {

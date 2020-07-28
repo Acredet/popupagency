@@ -41,7 +41,14 @@
 
           <b-card title="Bildgalleri:">
             <b-card-body>
-              <our-uploader :name="'bildgalleri[]'" :more="true" :old-images="images.bildgalleri" :max-number-of-inputs="999" :max-file-size="64">
+              <our-uploader
+                :name="'bildgalleri[]'"
+                :show-btn="false"
+                :more="true"
+                :old-images="images.bildgalleri"
+                :max-number-of-inputs="999"
+                :max-file-size="64"
+              >
                 <template v-slot:old-Image>
                   <b-row>
                     <b-col
@@ -52,7 +59,12 @@
                       md="4"
                       lg="3"
                     >
-                      <b-img v-for="(img, index) in images.bildgalleri" :key="index" class="mx-2" style="height: 150px" :src="require(`@/server/images/${img}`)" />
+                      <div v-for="(img, index) in images.bildgalleri" :key="index" class="position-relative">
+                        <button type="button" class="close" aria-label="Close" @click="deleteImageFromExistingArray(index, 'bildgalleri')">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                        <b-img class="mx-2" style="height: 150px" :src="require(`@/server/images/${img}`)" />
+                      </div>
                       <button type="button" class="close" aria-label="Close" @click="deleteImage">
                         <span aria-hidden="true">&times;</span>
                       </button>
@@ -68,7 +80,14 @@
 
           <b-card title="Cover bilden:">
             <b-card-body>
-              <our-uploader :name="'cover[]'" :more="true" :old-images="images.cover" :max-number-of-inputs="999" :max-file-size="64">
+              <our-uploader
+                :name="'cover[]'"
+                :show-btn="false"
+                :more="true"
+                :old-images="images.cover"
+                :max-number-of-inputs="999"
+                :max-file-size="64"
+              >
                 <template v-slot:old-Image>
                   <b-row>
                     <b-col
@@ -195,7 +214,14 @@
           <b-card title="Planritning:">
             <b-card-body>
               <client-only>
-                <our-uploader :name="'planritning[]'" :more="true" :old-images="images.planritning" :max-number-of-inputs="999" :max-file-size="64">
+                <our-uploader
+                  :name="'planritning[]'"
+                  :show-btn="false"
+                  :more="true"
+                  :old-images="images.planritning"
+                  :max-number-of-inputs="999"
+                  :max-file-size="64"
+                >
                   <template v-slot:old-Image>
                     <b-row>
                       <b-col
@@ -350,7 +376,14 @@
           <b-card title="Centrum Galleri:">
             <b-card-body>
               <client-only>
-                <our-uploader :name="'centrumgalleri[]'" :more="true" :old-images="images.bildgalleri" :max-number-of-inputs="999" :max-file-size="64">
+                <our-uploader
+                  :name="'centrumgalleri[]'"
+                  :show-btn="false"
+                  :more="true"
+                  :old-images="images.bildgalleri"
+                  :max-number-of-inputs="999"
+                  :max-file-size="64"
+                >
                   <template v-slot:old-Image>
                     <b-row>
                       <b-col
@@ -408,6 +441,8 @@
           </b-card>
         </div>
       </form>
+
+      <!-- Start Alert -->
       <b-alert :show="!valid" variant="danger">
         <div>
           <p v-if="!titleValid" class="font-weight-bold">
@@ -436,6 +471,7 @@
           </p>
         </div>
       </b-alert>
+      <!-- End Alert -->
       <b-btn v-if="!thereIsListing" :disabled="!valid" variant="primary" block @click="addListing">
         Add Listing
       </b-btn>
@@ -977,6 +1013,9 @@ export default {
             variant: 'danger'
           })
         })
+    },
+    deleteImageFromExistingArray (index, name) {
+      this.images[name].splice(index, 1)
     },
     async editListing () {
       const listing = this.createFormDate()

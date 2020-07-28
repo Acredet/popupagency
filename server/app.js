@@ -24,8 +24,9 @@ app.use("/api/category", category);
 app.use("/api/tag", tag);
 
 // Import and Set Nuxt.js options
-nuxtConfig.dev = false;
-process.env.NODE_ENV = 'production'
+// nuxtConfig.dev = false;
+// process.env.NODE_ENV = 'production'
+nuxtConfig.dev = true;
 app.use(express.json({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
 
