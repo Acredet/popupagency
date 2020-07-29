@@ -214,6 +214,37 @@ export default {
       add: 'Add Listing',
       edit: 'Edit Listing'
     }
+  },
+  allUsers: {
+    title: 'All Users:',
+    deleteModal: {
+      title: 'Delete User:'
+    },
+    editModal: {
+      title: 'Edit User:',
+      name: {
+        label: 'Name:',
+        holder: 'Enter name'
+      },
+      email: {
+        label: 'Email:',
+        holder: 'Enter Email',
+        desc: 'We\'ll respect your inbox.'
+      }
+    },
+    table: {
+      header: {
+        name: 'Name',
+        email: 'Email'
+      }
+    },
+    toast: {
+      edit: 'User Edited successfully',
+      delete: 'User deleted successfully',
+      justDeleted: 'You just deleted',
+      justEdited: 'You just edited',
+      error: 'There is something wrong'
+    }
   }
 
 }

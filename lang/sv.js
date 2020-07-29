@@ -214,5 +214,36 @@ export default {
       add: 'Lägg till lista',
       edit: 'Redigera lista'
     }
+  },
+  allUsers: {
+    title: 'Alla användare:',
+    deleteModal: {
+      title: 'Radera användare:'
+    },
+    editModal: {
+      title: 'Redigera användare:',
+      name: {
+        label: 'Namn:',
+        holder: 'Ange namn'
+      },
+      email: {
+        label: 'E-post:',
+        holder: 'Ange e-post',
+        desc: 'Vi respekterar din inkorg.'
+      }
+    },
+    table: {
+      header: {
+        name: 'Namn',
+        email: 'E-post'
+      }
+    },
+    toast: {
+      edit: 'Användaren redigeras framgångsrikt',
+      delete: 'Användaren har raderats med framgång',
+      justDeleted: 'Du har precis raderat',
+      justEdited: 'Du har just redigerat',
+      error: 'Det är något fel'
+    }
   }
 }
