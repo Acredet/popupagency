@@ -2,11 +2,11 @@
   <div class="content">
     <b-container>
       <h2 class="my-3">
-        Add Listing:
+        {{ $t('addListing.title') }}
       </h2>
       <form id="listing" enctype="multipart/form-data">
         <div>
-          <b-card title="Title:">
+          <b-card :title="$t('addListing.inputs.title.label')">
             <b-card-body>
               <b-form-group
                 id="title-group"
@@ -18,20 +18,20 @@
                   required
                   autocomplete="off"
                   :state="titleValid"
-                  placeholder="Listing Title"
+                  :placeholder="$t('addListing.inputs.title.holder')"
                 />
                 <b-form-invalid-feedback :state="titleValid">
-                  Required.
+                  {{ $t('forms.required') }}
                 </b-form-invalid-feedback>
 
                 <b-form-valid-feedback :state="titleValid">
-                  Good to go.
+                  {{ $t('forms.valid') }}
                 </b-form-valid-feedback>
               </b-form-group>
             </b-card-body>
           </b-card>
 
-          <b-card title="Beskrivning:">
+          <b-card :title="$t('addListing.inputs.beskrivning')">
             <b-card-body>
               <client-only>
                 <VueEditor v-model="article.beskreving" />
@@ -39,7 +39,7 @@
             </b-card-body>
           </b-card>
 
-          <b-card title="Bildgalleri:">
+          <b-card :title="$t('addListing.inputs.Bilgalleri')">
             <b-card-body>
               <our-uploader
                 :name="'bildgalleri[]'"
@@ -76,7 +76,7 @@
             </template>
           </b-card>
 
-          <b-card title="Cover bilden:">
+          <b-card :title="$t('addListing.inputs.Cover')">
             <b-card-body>
               <our-uploader
                 :name="'cover[]'"
@@ -122,13 +122,13 @@
                 class="mb-2"
                 @change="setPrioteradPrice(card.model)"
               >
-                Set as priorited price
+                {{ $t('addListing.inputs.price.priority') }}
               </b-form-checkbox>
               <b-form-input v-model="price[card.model].val" type="number" :placeholder="card.placeholder" />
             </b-card-body>
           </b-card>
 
-          <b-card title="Egenskaper:">
+          <b-card :title="$t('addListing.inputs.egenskaper')">
             <b-card-body>
               <b-row>
                 <b-col v-for="(feat,index) in renderEgensKaper" :key="index" cols="12" md="6">
@@ -144,32 +144,32 @@
             </b-card-body>
           </b-card>
 
-          <b-card title="Yta:">
+          <b-card :title="$t('addListing.inputs.yta.label')">
             <b-card-body>
-              <b-form-input v-model="Yta" type="number" placeholder="ex: 190" />
+              <b-form-input v-model="Yta" type="number" :placeholder="$t('addListing.inputs.yta.holder')" />
             </b-card-body>
           </b-card>
 
-          <b-card title="Våning/placering:">
+          <b-card :title="$t('addListing.inputs.placering.label')">
             <b-card-body>
-              <b-form-input v-model="markplan" type="number" placeholder="markplan" />
+              <b-form-input v-model="markplan" type="number" :placeholder="$t('addListing.inputs.placering.holder')" />
             </b-card-body>
           </b-card>
 
-          <b-card title="Stad:">
+          <b-card :title="$t('addListing.inputs.stad')">
             <b-card-body>
               <b-form-radio-group v-model="city" :stacked="true" :options="cityOptions" :state="stadValid" name="radio-validation">
                 <b-form-invalid-feedback :state="stadValid">
-                  Please select one
+                  {{ $t('addListing.inputs.maxFileSize') }}
                 </b-form-invalid-feedback>
                 <b-form-valid-feedback :state="stadValid">
-                  You choosed {{ city }}
+                  {{ $t('addListing.inputs.choosed') }} {{ city }}
                 </b-form-valid-feedback>
               </b-form-radio-group>
             </b-card-body>
           </b-card>
 
-          <b-card title="Location:">
+          <b-card :title="$t('addListing.inputs.plats')">
             <b-card-body>
               <b-form-group
                 id="location-group"
@@ -181,20 +181,20 @@
                   required
                   autocomplete="off"
                   :state="locationValid"
-                  placeholder="location"
+                  :placeholder="$t('addListing.inputs.plats')"
                 />
                 <b-form-invalid-feedback :state="locationValid">
-                  Required.
+                  {{ $t('forms.required') }}
                 </b-form-invalid-feedback>
 
                 <b-form-valid-feedback :state="locationValid">
-                  Good to go.
+                  {{ $t('forms.valid') }}
                 </b-form-valid-feedback>
               </b-form-group>
             </b-card-body>
           </b-card>
 
-          <b-card title="Kategori*:">
+          <b-card :title="$t('addListing.inputs.kategori')">
             <b-card-body>
               <b-form-checkbox-group
                 v-model="kategori"
@@ -203,16 +203,16 @@
                 name="catigory-validation"
               >
                 <b-form-invalid-feedback :state="kategoryValid">
-                  Please select two
+                  {{ $t('addListing.inputs.selectOne') }}
                 </b-form-invalid-feedback>
                 <b-form-valid-feedback :state="kategoryValid">
-                  Good to go
+                  {{ $t('forms.valid') }}
                 </b-form-valid-feedback>
               </b-form-checkbox-group>
             </b-card-body>
           </b-card>
 
-          <b-card title="Planritning:">
+          <b-card :title="$t('addListing.inputs.planritning')">
             <b-card-body>
               <client-only>
                 <our-uploader
@@ -251,15 +251,15 @@
             </template>
           </b-card>
 
-          <b-card title="Minsta hyresperiod">
+          <b-card :title="$t('addListing.inputs.minsta.label')">
             <b-card-body>
-              <b-form-input v-model="minsta" placeholder="Den minsta hyresperiod för lokalen" />
+              <b-form-input v-model="minsta" :placeholder="$t('addListing.inputs.minsta.holder')" />
             </b-card-body>
           </b-card>
 
-          <b-card title="Längsta hyresperiod:">
+          <b-card :title="$t('addListing.inputs.langsta.label')">
             <b-card-body>
-              <b-form-input v-model="längsta" placeholder="Den längsta hyresperiod för lokalen" />
+              <b-form-input v-model="längsta" :placeholder="$t('addListing.inputs.langsta.holder')" />
             </b-card-body>
           </b-card>
 
@@ -267,32 +267,32 @@
             <b-card-body>
               <b-form-group>
                 <b-form-radio v-model="yesNoInputsVal[input.model]" :name="input.name" value="true">
-                  Ja
+                  {{ $t('addListing.inputs.yes') }}
                 </b-form-radio>
                 <b-form-radio v-model="yesNoInputsVal[input.model]" :name="input.name" value="false">
-                  Nej
+                  {{ $t('addListing.inputs.no') }}
                 </b-form-radio>
               </b-form-group>
             </b-card-body>
           </b-card>
 
-          <b-card title="Säsong Boxen:">
+          <b-card :title="$t('addListing.inputs.season')">
             <b-card-body>
               <b-form-group>
-                <b-form-radio v-for="input in sasongInputs" :key="input.text" v-model="sasong" name="sasong" :value="input.text">
-                  {{ input.text }}
+                <b-form-radio v-for="input in sasongInputs" :key="input" v-model="sasong" name="sasong" :value="input.text">
+                  {{ input }}
                 </b-form-radio>
               </b-form-group>
             </b-card-body>
           </b-card>
 
-          <b-card title="Centrum hemsida:">
+          <b-card :title="$t('addListing.inputs.hemsida')">
             <b-card-body>
               <b-form-input v-model="hamside" placeholder="https://vala.se" />
             </b-card-body>
           </b-card>
 
-          <b-card title="Centrum textarea:">
+          <b-card :title="$t('addListing.inputs.textarea')">
             <b-card-body>
               <client-only>
                 <VueEditor v-model="article.centrum" />
@@ -300,51 +300,25 @@
             </b-card-body>
           </b-card>
 
-          <b-card title="Öppettider:">
+          <b-card :title="$t('addListing.inputs.optidder')">
             <b-tabs content-class="mt-3" fill>
               <b-tab v-for="(tab) in times" :key="tab.name" :title="tab.name" :active="tab.active">
-                <b-form-radio-group>
-                  <b-row>
-                    <b-col cols="6" md="3">
-                      <b-form-radio
-                        v-model="days[tab.name].openTimes"
-                        value="hours"
-                        :name="tab.name"
-                      >
-                        Enter hours
-                      </b-form-radio>
-                    </b-col>
-                    <b-col cols="6" md="3">
-                      <b-form-radio
-                        v-model="days[tab.name].openTimes"
-                        value="openAllDay"
-                        :name="tab.name"
-                      >
-                        Open all day
-                      </b-form-radio>
-                    </b-col>
-
-                    <b-col cols="6" md="3">
-                      <b-form-radio
-                        v-model="days[tab.name].openTimes"
-                        value="closeAllDay"
-                        :name="tab.name"
-                      >
-                        Close all day
-                      </b-form-radio>
-                    </b-col>
-
-                    <b-col cols="6" md="3">
-                      <b-form-radio
-                        v-model="days[tab.name].openTimes"
-                        value="appointment"
-                        :name="tab.name"
-                      >
-                        By appointment only
-                      </b-form-radio>
-                    </b-col>
-                  </b-row>
-                </b-form-radio-group>
+                <b-form-group>
+                  <b-form-radio-group id="optidder" v-model="days[tab.name].openTimes" :name="tab.name">
+                    <b-form-radio value="hours">
+                      {{ $t('addListing.inputs.optidderOpts.hours') }}
+                    </b-form-radio>
+                    <b-form-radio value="openAllDay">
+                      {{ $t('addListing.inputs.optidderOpts.allDayOpen') }}
+                    </b-form-radio>
+                    <b-form-radio value="closeAllDay">
+                      {{ $t('addListing.inputs.optidderOpts.allDayClose') }}
+                    </b-form-radio>
+                    <b-form-radio value="appointment">
+                      {{ $t('addListing.inputs.optidderOpts.appointment') }}
+                    </b-form-radio>
+                  </b-form-radio-group>
+                </b-form-group>
 
                 <div v-if="days[tab.name].openTimes == 'hours'">
                   <b-row v-for="(hours, index) in days[tab.name].hours" :key="'m' + index" class="my-3">
@@ -371,13 +345,13 @@
             </b-tabs>
           </b-card>
 
-          <b-card title="Vägvisningen:">
+          <b-card :title="$t('addListing.inputs.vag')">
             <b-card-body>
-              <b-form-input v-model="vagvisningen" placeholder="Vägvisningen" />
+              <b-form-input v-model="vagvisningen" :placeholder="$t('addListing.inputs.vag')" />
             </b-card-body>
           </b-card>
 
-          <b-card title="Centrum Galleri:">
+          <b-card :title="$t('addListing.inputs.centerGallery')">
             <b-card-body>
               <client-only>
                 <our-uploader
@@ -416,32 +390,32 @@
             </template>
           </b-card>
 
-          <b-card title="Upptaget från:">
+          <b-card :title="$t('addListing.inputs.fran')">
             <b-card-body>
               <b-form-datepicker id="Upptaget-från" v-model="fran" class="mb-2" />
             </b-card-body>
           </b-card>
 
-          <b-card title="Upptaget till:">
+          <b-card :title="$t('addListing.inputs.till')">
             <b-card-body>
               <b-form-datepicker id="Upptaget-till" v-model="till" class="mb-2" />
             </b-card-body>
           </b-card>
 
-          <b-card title="Lokalens kontaktperson:">
+          <b-card :title="$t('addListing.inputs.Lokalens')">
             <b-card-body>
               <b-form-radio-group v-model="lokal" :stacked="true" :options="lokalOpts" :state="lokalensValid" name="lokal-validation">
                 <b-form-invalid-feedback :state="lokalensValid">
-                  Please select one
+                  {{ $t('addListing.inputs.selectOne') }}
                 </b-form-invalid-feedback>
                 <b-form-valid-feedback :state="lokalensValid">
-                  You choosed {{ lokal }}
+                  {{ $t('addListing.inputs.choosed') }} {{ lokal }}
                 </b-form-valid-feedback>
               </b-form-radio-group>
             </b-card-body>
           </b-card>
 
-          <b-card title="Listing Expiry Date:">
+          <b-card :title="$t('addListing.inputs.expiry')">
             <b-card-body>
               <b-form-datepicker id="example-datepicker" v-model="expiry" class="mb-2" />
             </b-card-body>
@@ -454,36 +428,36 @@
         <div>
           <p v-if="!titleValid" class="font-weight-bold">
             <i class="fas fa-exclamation-triangle" />
-            You should add title
+            {{ $t('addListing.errors.title') }}
           </p>
           <p v-if="!stadValid" class="font-weight-bold">
             <i class="fas fa-exclamation-triangle" />
-            You should choose stad
+            {{ $t('addListing.errors.stad') }}
           </p>
           <p v-if="!locationValid" class="font-weight-bold">
             <i class="fas fa-exclamation-triangle" />
-            You should add location
+            {{ $t('addListing.errors.location') }}
           </p>
           <p v-if="!kategoryValid" class="font-weight-bold">
             <i class="fas fa-exclamation-triangle" />
-            You should choose kategory
+            {{ $t('addListing.errors.category') }}
           </p>
           <p v-if="!lokalensValid" class="font-weight-bold">
             <i class="fas fa-exclamation-triangle" />
-            You should choose lokalens
+            {{ $t('addListing.errors.lokalens') }}
           </p>
           <p v-if="!price.prioteradpris.val" class="font-weight-bold">
             <i class="fas fa-exclamation-triangle" />
-            You should choose prioteradpris
+            {{ $t('addListing.errors.propteradpris') }}
           </p>
         </div>
       </b-alert>
       <!-- End Alert -->
       <b-btn v-if="!thereIsListing" :disabled="!valid" variant="primary" block @click="addListing">
-        Add Listing
+        {{ $t('addListing.btns.add') }}
       </b-btn>
       <b-btn v-else :disabled="!valid" variant="primary" block @click="editListing">
-        Edit Listing
+        {{ $t('addListing.btns.edit') }}
       </b-btn>
     </b-container>
   </div>
@@ -517,33 +491,6 @@ export default {
   },
   data () {
     return {
-      /* form: {
-        title: null,
-        Yta: null,
-        markplan: null,
-        city: null,
-        location: null,
-        vagvisningen: null,
-        fran: null,
-        till: null,
-        lokal: null,
-        expiry: null,
-        minsta: null,
-        längsta: null,
-        sasong: null,
-        hamside: null,
-        beskreving: null,
-        centrum: null,
-        price[card.model].temp: null,
-        price[card.model].val: null,
-        egenskaper[feat]: null,
-        kategori[kati]: null,
-        yesNoInputsVal[input.model]: null,
-        days[tab.name].openTimes: null,
-        days[tab.name].hours[index].opening: null,
-        days[tab.name].hours[index].closing: null,
-      }, */
-
       title: null,
       article: {
         beskreving: null,
@@ -576,47 +523,32 @@ export default {
       },
       renderInputs: [
         {
-          title: 'Pris per dag:',
-          placeholder: 'Daglig pris',
+          title: this.$t('addListing.inputs.price.dag'),
+          placeholder: this.$t('addListing.inputs.price.dag'),
           model: 'day'
         },
         {
-          title: 'Pris per helg:',
-          placeholder: 'Helgpris',
+          title: this.$t('addListing.inputs.price.helg'),
+          placeholder: this.$t('addListing.inputs.price.helg'),
           model: 'helg'
         },
         {
-          title: 'Pris per långhelg:',
-          placeholder: 'lagh',
+          title: this.$t('addListing.inputs.price.långhelg'),
+          placeholder: this.$t('addListing.inputs.price.långhelg'),
           model: 'langheig'
         },
         {
-          title: 'Pris per vecka:',
-          placeholder: 'veckopris',
+          title: this.$t('addListing.inputs.price.vecka'),
+          placeholder: this.$t('addListing.inputs.price.vecka'),
           model: 'veckopris'
         },
         {
-          title: 'Pris per månad:',
-          placeholder: 'manad',
+          title: this.$t('addListing.inputs.price.manad'),
+          placeholder: this.$t('addListing.inputs.price.manad'),
           model: 'manad'
         }
       ],
-      egenskaper: {
-        Belysning: false,
-        El: false,
-        Handikappanpassad: false,
-        Högtalare: false,
-        Inredning: false,
-        Kassasystem: false,
-        Kök: false,
-        Lager: false,
-        Lastkaj: false,
-        Provrum: false,
-        Skyltfönster: false,
-        VVS: false,
-        WC: false,
-        'wi-fi': false
-      },
+      egenskaper: {},
       renderEgensKaper: [],
       Yta: null,
       markplan: null,
@@ -637,62 +569,27 @@ export default {
       },
       yesNoInputs: [
         {
-          title: 'Fasta öppettider:',
+          title: this.$t('addListing.inputs.fasta'),
           name: 'Fasta-öppettider',
           model: 'fasta'
         },
         {
-          title: 'Butik "Boxen":',
+          title: this.$t('addListing.inputs.butik'),
           name: 'Butik-"Boxen"',
           model: 'butik'
         },
         {
-          title: 'Mat & Dryck "Boxen":',
+          title: this.$t('addListing.inputs.mat'),
           name: 'Mat&Dryck',
           model: 'mat'
         },
         {
-          title: 'Event "Boxen":',
+          title: this.$t('addListing.inputs.event'),
           name: 'Event',
           model: 'event'
         }
       ],
-      sasongInputs: [
-        {
-          text: 'Sol'
-        },
-        {
-          text: 'Solstol'
-        },
-        {
-          text: 'Julgran'
-        },
-        {
-          text: 'Snöflinga',
-          model: 'Snoflinga'
-        },
-        {
-          text: 'Pumpa'
-        },
-        {
-          text: 'Löv'
-        },
-        {
-          text: 'Blommor'
-        },
-        {
-          text: 'Cykel'
-        },
-        {
-          text: 'Tavla'
-        },
-        {
-          text: 'Klåder'
-        },
-        {
-          text: 'Året runt (ingenting)'
-        }
-      ],
+      sasongInputs: this.$t('addListing.inputs.seasonOts'),
       sasong: null,
 
       hamside: null,
@@ -922,7 +819,6 @@ export default {
       this.days[name].hours.push({ opening: '00:00:00', closing: '00:00:00' })
     },
     setPrioteradPrice (card) {
-      console.log(this.price[card])
       this.$nextTick(() => {
         for (const key in this.price) {
           const obj = this.price[key]
@@ -1018,7 +914,7 @@ export default {
         })
         .catch((err) => {
           this.$bvToast.toast(err.response.data.msg, {
-            title: 'There is something wrong',
+            title: this.$t('region.toast.error'),
             autoHideDelay: 5000,
             appendToast: true,
             variant: 'danger'
@@ -1098,12 +994,12 @@ export default {
           })
         })
         .catch((err) => {
-          this.$bvToast.toast(err.response.data.msg, {
-            title: 'There is something wrong',
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger'
-          })
+          this.toast = {
+            title: this.$t('region.toast.error'),
+            variant: 'danger',
+            visible: true,
+            text: err.message
+          }
         })
     }
   }

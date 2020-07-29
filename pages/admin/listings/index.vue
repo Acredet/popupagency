@@ -3,20 +3,21 @@
     <loading :state="loading" />
 
     <div class="content">
-      <b-modal id="delete-modal" centered title="Delete Listing">
+      <b-modal id="delete-modal" centered :title="$t('allListing.deleteModal.title')">
         <p class="my-4">
-          Are you sure you wanna delete {{ editForm._id }}?
+          {{ $t('actions.deleteConfimrMessage') }} {{ editForm.title }}?
         </p>
 
         <template v-slot:modal-footer="{ ok, cancel }">
           <b-btn variant="danger" @click="deleteListing(); ok()">
-            Delete
+            {{ $t('actions.delete') }}
           </b-btn>
           <b-btn variant="primary" @click="cancel(); editForm = {}">
-            Close
+            {{ $t('actions.cancle') }}
           </b-btn>
         </template>
       </b-modal>
+
       <b-container>
         <h2>All Listings:</h2>
         <b-table
@@ -46,21 +47,21 @@
           <template v-slot:cell(actions)="data">
             <b-dropdown variant="light">
               <template v-slot:button-content>
-                <b>Actions</b>
+                <b>{{ $t('actions.actions') }}</b>
               </template>
               <b-dropdown-item :to="`/admin/listings/edit/${data.item._id}`">
-                Edit
+                {{ $t('actions.edit') }}
               </b-dropdown-item>
               <b-dropdown-item v-b-modal.delete-modal @click="editForm = data.item">
-                Delete
+                {{ $t('actions.delete') }}
               </b-dropdown-item>
             </b-dropdown>
           </template>
         </b-table>
 
         <div>
-          Sorting By: <b>{{ sortBy }}</b>, Sort Direction:
-          <b>{{ sortDesc ? 'Descending' : 'Ascending' }}</b>
+          {{ $t('tables.sort.by') }} <b>{{ sortBy }}</b>, {{ $t('tables.sort.direction') }}
+          <b>{{ sortDesc ? $t('tables.sort.descending') : $t('tables.sort.ascending') }}</b>
         </div>
         <toast :toast="toast" />
       </b-container>
@@ -82,15 +83,15 @@ export default {
         visible: false,
         text: null
       },
-      sortBy: 'age',
+      sortBy: this.$t('allListing.table.header.title'),
       sortDesc: false,
       editForm: {},
       fields: [
-        { key: 'title', sortable: true },
-        { key: 'expiry', sortable: true },
-        { key: 'cover', sortable: false },
-        { key: 'stad', sortable: true },
-        { key: 'actions' }
+        { key: this.$t('allListing.table.header.title'), sortable: true },
+        { key: this.$t('allListing.table.header.expiry'), sortable: true },
+        { key: this.$t('allListing.table.header.cover'), sortable: false },
+        { key: this.$t('allListing.table.header.stad'), sortable: true },
+        { key: this.$t('allListing.table.header.actions') }
       ],
       items: null
     }
@@ -114,16 +115,16 @@ export default {
           console.log(res)
           this.getListings()
           this.toast = {
-            title: 'Listing deleted successfully',
+            title: this.$t('allListing.toast.delete'),
             variant: 'success',
             visible: true,
-            text: `You just deleted ${this.editForm.name} from Listings.`
+            text: `${this.$t('allListing.toast.justDeleted')} ${this.editForm.name} from Listings.`
           }
           this.editForm = {}
         })
         .catch((err) => {
           this.toast = {
-            title: 'There is something wrong',
+            title: this.$t('allListing.toast.error'),
             variant: 'danger',
             visible: true,
             text: err.message

@@ -100,5 +100,119 @@ export default {
       justAdded: 'Du har precis lagt till',
       error: 'Någonting är fel'
     }
+  },
+  allListing: {
+    deleteModal: {
+      title: 'Radera listning'
+    },
+    table: {
+      header: {
+        title: 'Titel',
+        expiry: 'utgång',
+        cover: 'omslag',
+        stad: 'stad',
+        actions: 'Åtgärder'
+      }
+    },
+    toast: {
+      add: 'Listning har lagts fram',
+      edit: 'Listning redigerad framgångsrik',
+      delete: 'Listan har raderats framgångsrikt',
+      justDeleted: 'Du har precis raderat',
+      justEdited: 'Du har just redigerat',
+      justAdded: 'Du har precis lagt till',
+      error: 'Någonting är fel'
+    }
+  },
+  addListing: {
+    title: 'Lägg till annons:',
+    inputs: {
+      maxFileSize: 'Max filstorlek: 64 MB',
+      selectOne: 'Vänligen välj en',
+      choosed: 'Du väljer',
+      yes: 'Ja',
+      no: 'nej',
+      title: {
+        label: 'Titel:',
+        holder: 'Listing title'
+      },
+      beskrivning: 'Beskrivning:',
+      Bilgalleri: 'Galleri:',
+      Cover: 'Omslagsbild:',
+      price: {
+        dag: 'Pris per dag:',
+        priority: 'Ställ in som prioriterat pris',
+        helg: 'Pris per helg:',
+        långhelg: 'Pris per lång helg:',
+        vecka: 'Pris per vecka:',
+        manad: 'Pris per månad:'
+      },
+      egenskaper: 'Egenskaper:',
+      yta: {
+        label: 'Yta:',
+        holder: 'ex: 190'
+      },
+      placering: {
+        label: 'Flat / location:',
+        holder: 'mark'
+      },
+      stad: 'Stad:',
+      plats: 'Loacation:',
+      kategori: 'Kategori:',
+      planritning: 'Ichnography:',
+      minsta: {
+        label: 'Minsta hyresperiod:',
+        holder: 'Den minsta hyresperiod för lokalen'
+      },
+      langsta: {
+        label: 'Längsta hyresperiod:',
+        holder: 'Den längsta hyresperiod för lokalen'
+      },
+      fasta: 'Fasta öppettider:',
+      butik: 'Boxen store:',
+      mat: 'Mat och dryck "lådor":',
+      event: 'Boxing Event:',
+      season: 'Boxsäsong:',
+      seasonOts: [
+        'Sol',
+        'Däckstol',
+        'Julgran',
+        'Snöflinga',
+        'Pumpa',
+        'Blad',
+        'blommor',
+        'Cykel',
+        'Målning',
+        'Kläder',
+        'Hela året (ingenting)'
+      ],
+      hemsida: 'Centerwebbplats:',
+      textarea: 'Textcenter:',
+      optidder: 'Öppettider:',
+      optidderOpts: {
+        hours: 'Ange timmar',
+        allDayOpen: 'Öppet hela dagen',
+        allDayClose: 'Stäng hela dagen',
+        appointment: 'Endast efter överenskommelse'
+      },
+      vag: 'Vägledning:',
+      centerGallery: 'Center Gallery:',
+      fran: 'Inspelad från:',
+      till: 'Upptagen tills:',
+      Lokalens: 'Rums kontaktperson:',
+      expiry: 'Lista utgångsdatum:'
+    },
+    errors: {
+      title: 'Du bör lägga till titel',
+      stad: 'Du bör välja stad',
+      location: 'Du bör lägga till plats',
+      category: 'Du bör välja kategori',
+      lokalens: 'Du bör välja lokalens',
+      propteradpris: 'Du bör välja prioteradpris'
+    },
+    btns: {
+      add: 'Lägg till lista',
+      edit: 'Redigera lista'
+    }
   }
 }

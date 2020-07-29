@@ -16,7 +16,7 @@
             </a>
             <ul class="submenu">
               <li v-for="link in links" :key="link.url">
-                <nuxt-link exact :to="`/admin/listings/${link.url}`">
+                <nuxt-link exact :to="`${$t('link')}admin/listings/${link.url}`">
                   {{ link.text }}
                 </nuxt-link>
               </li>
@@ -29,12 +29,12 @@
             </a>
             <ul class="submenu">
               <li>
-                <nuxt-link exact to="/admin/users/">
+                <nuxt-link exact :to="`${$t('link')}admin/users/`">
                   All Users
                 </nuxt-link>
               </li>
               <li>
-                <nuxt-link exact to="/admin/users/add">
+                <nuxt-link exact :to="`${$t('link')}admin/users/add`">
                   Add User
                 </nuxt-link>
               </li>
@@ -42,7 +42,7 @@
           </li>
 
           <li>
-            <nuxt-link exact class="waves-effect" to="/admin/settings">
+            <nuxt-link exact class="waves-effect" :to="`${$t('link')}admin/settings`">
               <i class="fas fa-cog" />
               <span> site settings </span>
             </nuxt-link>

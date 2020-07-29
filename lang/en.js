@@ -100,6 +100,120 @@ export default {
       justAdded: 'You just added',
       error: 'There is something wrong'
     }
+  },
+  allListing: {
+    deleteModal: {
+      title: 'Delete Listing'
+    },
+    table: {
+      header: {
+        title: 'Title',
+        expiry: 'Expiry',
+        cover: 'Cover',
+        stad: 'City',
+        actions: 'Actions'
+      }
+    },
+    toast: {
+      add: 'Listing added successfully',
+      edit: 'Listing Edited successfully',
+      delete: 'Listing deleted successfully',
+      justDeleted: 'You just deleted',
+      justEdited: 'You just edited',
+      justAdded: 'You just added',
+      error: 'There is something wrong'
+    }
+  },
+  addListing: {
+    title: 'Add Listing:',
+    inputs: {
+      maxFileSize: 'Max filstorlek: 64 MB',
+      selectOne: 'Please select one',
+      choosed: 'You choose',
+      yes: 'yes',
+      no: 'No',
+      title: {
+        label: 'Title:',
+        holder: 'Listing Title'
+      },
+      beskrivning: 'Description:',
+      Bilgalleri: 'Gallery:',
+      Cover: 'Cover image:',
+      price: {
+        dag: 'Price per day:',
+        priority: 'Set as priority price',
+        helg: 'Price per weekend:',
+        långhelg: 'Price per long weekend:',
+        vecka: 'Price per week:',
+        manad: 'Price per month:'
+      },
+      egenskaper: 'Characteristics:',
+      yta: {
+        label: 'Surface:',
+        holder: 'ex: 190'
+      },
+      placering: {
+        label: 'Flat / location:',
+        holder: 'ground'
+      },
+      stad: 'City:',
+      plats: 'Loacation:',
+      kategori: 'Category:',
+      planritning: 'Ichnography:',
+      minsta: {
+        label: 'Minimum rental period:',
+        holder: 'The minimum rental period for the premises'
+      },
+      langsta: {
+        label: 'Longest rental period:',
+        holder: 'The longest rental period for the premises'
+      },
+      fasta: 'Fixed opening hours:',
+      butik: 'Boxen store:',
+      mat: 'Food & Drink "Boxes":',
+      event: 'Boxing Event:',
+      season: 'Boxing season:',
+      seasonOts: [
+        'Solar',
+        'Deckchair',
+        'Christmas tree',
+        'Snowflake',
+        'Pumpkin',
+        'Leaf',
+        'flowers',
+        'Bike',
+        'Painting',
+        'cLOTHING',
+        'All year round (nothing)'
+      ],
+      hemsida: 'Center website:',
+      textarea: 'Text Center:',
+      optidder: 'Hours:',
+      optidderOpts: {
+        hours: 'Enter hours',
+        allDayOpen: 'Open all day',
+        allDayClose: 'Close all day',
+        appointment: 'By appointment only'
+      },
+      vag: 'Route guidance:',
+      centerGallery: 'Center Gallery:',
+      fran: 'Recorded from:',
+      till: 'Busy until:',
+      Lokalens: 'Room contact person:',
+      expiry: 'Listing Expiry Date:'
+    },
+    errors: {
+      title: 'You should add title',
+      stad: 'You should choose stad',
+      location: 'You should add location',
+      category: 'You should choose kategory',
+      lokalens: 'You should choose lokalens',
+      propteradpris: 'You should choose prioteradpris'
+    },
+    btns: {
+      add: 'Add Listing',
+      edit: 'Edit Listing'
+    }
   }
 
 }
