@@ -1,67 +1,70 @@
 <template>
-  <div class="content">
+  <div>
     <loading :state="loading" />
-    <b-modal id="delete-modal" centered title="Delete Listing">
-      <p class="my-4">
-        Are you sure you wanna delete {{ editForm._id }}?
-      </p>
 
-      <template v-slot:modal-footer="{ ok, cancel }">
-        <b-btn variant="danger" @click="deleteListing(); ok()">
-          Delete
-        </b-btn>
-        <b-btn variant="primary" @click="cancel(); editForm = {}">
-          Close
-        </b-btn>
-      </template>
-    </b-modal>
-    <b-container>
-      <h2>All Listings:</h2>
-      <b-table
-        :items="items"
-        :fields="fields"
-        :sort-by.sync="sortBy"
-        :sort-desc.sync="sortDesc"
-        responsive="sm"
-        show-empty
-      >
-        <template v-slot:cell(expiry)="data">
-          <p v-if="data.item.expiry" class="text-center">
-            {{ data.item.expiry.substring(0,10) }}
-          </p>
-          <p v-else class="text-center">
-            -
-          </p>
+    <div class="content">
+      <b-modal id="delete-modal" centered title="Delete Listing">
+        <p class="my-4">
+          Are you sure you wanna delete {{ editForm._id }}?
+        </p>
+
+        <template v-slot:modal-footer="{ ok, cancel }">
+          <b-btn variant="danger" @click="deleteListing(); ok()">
+            Delete
+          </b-btn>
+          <b-btn variant="primary" @click="cancel(); editForm = {}">
+            Close
+          </b-btn>
         </template>
+      </b-modal>
+      <b-container>
+        <h2>All Listings:</h2>
+        <b-table
+          :items="items"
+          :fields="fields"
+          :sort-by.sync="sortBy"
+          :sort-desc.sync="sortDesc"
+          responsive="sm"
+          show-empty
+        >
+          <template v-slot:cell(expiry)="data">
+            <p v-if="data.item.expiry" class="text-center">
+              {{ data.item.expiry.substring(0,10) }}
+            </p>
+            <p v-else class="text-center">
+              -
+            </p>
+          </template>
 
-        <template v-slot:cell(cover)="data">
-          <b-img v-if="data.item.cover && data.item.cover[0]" width="100" :src="require(`@/server/images/${data.item.cover[0]}`)" />
-          <p v-else class="text-center">
-            -
-          </p>
-        </template>
+          <template v-slot:cell(cover)="data">
+            <b-img v-if="data.item.cover && data.item.cover[0]" width="100" :src="require(`@/server/images/${data.item.cover[0]}`)" />
+            <p v-else class="text-center">
+              -
+            </p>
+          </template>
 
-        <template v-slot:cell(actions)="data">
-          <b-dropdown variant="light">
-            <template v-slot:button-content>
-              <b>Actions</b>
-            </template>
-            <b-dropdown-item :to="`/admin/listings/edit/${data.item._id}`">
-              Edit
-            </b-dropdown-item>
-            <b-dropdown-item v-b-modal.delete-modal @click="editForm = data.item">
-              Delete
-            </b-dropdown-item>
-          </b-dropdown>
-        </template>
-      </b-table>
+          <template v-slot:cell(actions)="data">
+            <b-dropdown variant="light">
+              <template v-slot:button-content>
+                <b>Actions</b>
+              </template>
+              <b-dropdown-item :to="`/admin/listings/edit/${data.item._id}`">
+                Edit
+              </b-dropdown-item>
+              <b-dropdown-item v-b-modal.delete-modal @click="editForm = data.item">
+                Delete
+              </b-dropdown-item>
+            </b-dropdown>
+          </template>
+        </b-table>
 
-      <div>
-        Sorting By: <b>{{ sortBy }}</b>, Sort Direction:
-        <b>{{ sortDesc ? 'Descending' : 'Ascending' }}</b>
-      </div>
-      <toast :toast="toast" />
-    </b-container>
+        <div>
+          Sorting By: <b>{{ sortBy }}</b>, Sort Direction:
+          <b>{{ sortDesc ? 'Descending' : 'Ascending' }}</b>
+        </div>
+        <toast :toast="toast" />
+      </b-container>
+    </div>
   </div>
 </template>
 

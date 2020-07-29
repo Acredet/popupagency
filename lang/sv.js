@@ -1,6 +1,7 @@
 
 export default {
   welcome: 'HEllo',
+  link: '/',
   actions: {
     actions: 'Åtgärder',
     edit: 'Redigera',
@@ -42,6 +43,7 @@ export default {
       perPage: 'Per page:'
     }
   },
+  chooseParent: 'Välj förälder ..',
   region: {
     title: 'Regions:',
     editModal: {
@@ -50,7 +52,16 @@ export default {
     deleteModal: {
       title: 'Radera Region:'
     },
-    addBtn: 'Lägg till Regions'
+    addBtn: 'Lägg till Regions',
+    toast: {
+      add: 'Region tillagd framgångsrikt',
+      edit: 'Region redigerad framgångsrikt',
+      delete: 'Region har raderats',
+      justDeleted: 'Du har precis raderat',
+      justEdited: 'Du har just redigerat',
+      justAdded: 'Du har precis lagt till',
+      error: 'Någonting är fel'
+    }
   },
   tag: {
     title: 'Tags:',
@@ -60,7 +71,16 @@ export default {
     deleteModal: {
       title: 'Radera Tag:'
     },
-    addBtn: 'Lägg till Tags'
+    addBtn: 'Lägg till Tags',
+    toast: {
+      add: 'Tag tillagd framgångsrikt',
+      edit: 'Tag redigerad framgångsrikt',
+      delete: 'Tag har raderats',
+      justDeleted: 'Du har precis raderat',
+      justEdited: 'Du har just redigerat',
+      justAdded: 'Du har precis lagt till',
+      error: 'Någonting är fel'
+    }
   },
   category: {
     title: 'Kategori:',
@@ -70,6 +90,15 @@ export default {
     deleteModal: {
       title: 'Radera Kategori:'
     },
-    addBtn: 'Lägg till Kategori'
+    addBtn: 'Lägg till Kategori',
+    toast: {
+      add: 'Kategori tillagd framgångsrikt',
+      edit: 'Kategori redigerad framgångsrikt',
+      delete: 'Kategori har raderats',
+      justDeleted: 'Du har precis raderat',
+      justEdited: 'Du har just redigerat',
+      justAdded: 'Du har precis lagt till',
+      error: 'Någonting är fel'
+    }
   }
 }

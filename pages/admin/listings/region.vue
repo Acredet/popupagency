@@ -131,7 +131,7 @@
               />
             </b-form-group>
 
-            <b-btn variant="primary" :disabled="!form.name" @click="addRigion" v-text="$t('rigion.addBtn')" />
+            <b-btn variant="primary" :disabled="!form.name" @click="addRigion" v-text="$t('region.addBtn')" />
           </b-form>
         </b-col>
 
@@ -252,15 +252,15 @@ export default {
         .then((res) => {
           this.getRigions()
           this.toast = {
-            title: 'Region added successfully',
+            title: this.$t('region.toast.add'),
             variant: 'success',
             visible: true,
-            text: `You just added ${this.form.name} Region.`
+            text: `${this.$t('region.toast.justAdded')} ${this.form.name} Region.`
           }
         })
         .catch((err) => {
           this.toast = {
-            title: 'There is something wrong',
+            title: this.$t('region.toast.error'),
             variant: 'danger',
             visible: true,
             text: err.message
@@ -277,7 +277,7 @@ export default {
               value: x.name
             }
           })
-          this.parentOpts.unshift({ text: 'Choose parent..', value: null })
+          this.parentOpts.unshift({ text: this.$t('chooseParent'), value: null })
         })
         .catch((err) => {
           this.toast = {
@@ -293,15 +293,15 @@ export default {
         .then((res) => {
           this.getRigions()
           this.toast = {
-            title: 'Region Edited successfully',
+            title: this.$t('region.toast.edit'),
             variant: 'success',
             visible: true,
-            text: `You just Edited ${this.editForm.name} Region.`
+            text: `${this.$t('region.toast.justEdited')} ${this.editForm.name} Region.`
           }
         })
         .catch((err) => {
           this.toast = {
-            title: 'There is something wrong',
+            title: this.$t('region.toast.error'),
             variant: 'danger',
             visible: true,
             text: err.message
@@ -313,15 +313,15 @@ export default {
         .then((res) => {
           this.getRigions()
           this.toast = {
-            title: 'Region deleted successfully',
+            title: this.$t('region.toast.delete'),
             variant: 'success',
             visible: true,
-            text: `You just deleted ${this.editForm.name} Region.`
+            text: `${this.$t('region.toast.justDeleted')} ${this.editForm.name} Region.`
           }
         })
         .catch((err) => {
           this.toast = {
-            title: 'There is something wrong',
+            title: this.$t('region.toast.error'),
             variant: 'danger',
             visible: true,
             text: err.message

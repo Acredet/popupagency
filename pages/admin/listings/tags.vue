@@ -322,15 +322,21 @@ export default {
               description: null
             }
           })
+          this.$bvToast.toast(`${this.$t('category.toast.justAdded')} ${this.form.name} Tag.`, {
+            title: this.$t('category.toast.add'),
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'success'
+          })
           this.$router.go()
         })
         .catch((err) => {
-          this.$bvToast.toast(err.response.data.msg, {
-            title: 'There is something wrong',
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger'
-          })
+          this.toast = {
+            title: this.$t('category.toast.error'),
+            variant: 'danger',
+            visible: true,
+            text: err.message
+          }
         })
     },
     async getTags () {
@@ -343,11 +349,11 @@ export default {
               value: x.name
             }
           })
-          this.parentOpts.unshift({ text: 'Choose parent..', value: null })
+          this.parentOpts.unshift({ text: this.$t('chooseParent'), value: null })
         })
         .catch((err) => {
           this.toast = {
-            title: 'There is something wrong',
+            title: this.$t('category.toast.error'),
             variant: 'danger',
             visible: true,
             text: err.message
@@ -373,20 +379,20 @@ export default {
         .then((res) => {
           this.getTags()
           this.toast = {
-            title: 'Tag Edited successfully',
+            title: this.$t('category.toast.edit'),
             variant: 'success',
             visible: true,
-            text: `You just Edited ${this.editForm.name} Tags.`
+            text: `${this.$t('category.toast.justEdited')} ${this.editForm.name} Categories.`
           }
           this.$router.go()
         })
         .catch((err) => {
-          this.$bvToast.toast(err.response.data.msg, {
-            title: 'There is something wrong',
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger'
-          })
+          this.toast = {
+            title: this.$t('category.toast.error'),
+            variant: 'danger',
+            visible: true,
+            text: err.message
+          }
         })
     },
     async deleteTag () {
@@ -394,20 +400,20 @@ export default {
         .then((res) => {
           this.getTags()
           this.toast = {
-            title: 'Tag deleted successfully',
+            title: this.$t('category.toast.delete'),
             variant: 'success',
             visible: true,
-            text: `You just deleted ${this.editForm.name} Tags.`
+            text: `${this.$t('category.toast.justDeleted')} ${this.editForm.name} Categories.`
           }
           this.$router.go()
         })
         .catch((err) => {
-          this.$bvToast.toast(err.response.data.msg, {
-            title: 'There is something wrong',
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger'
-          })
+          this.toast = {
+            title: this.$t('category.toast.error'),
+            variant: 'danger',
+            visible: true,
+            text: err.message
+          }
         })
     }
   }

@@ -26,11 +26,11 @@
         <b-form-group
           id="select-group"
           :label="$t('forms.parent.title')"
-          label-for="region"
+          label-for="category"
           :description="$t('forms.parent.desc')"
         >
           <b-form-select
-            id="region"
+            id="category"
             v-model="editForm.parent"
             class="mb-2 mr-sm-2 mb-sm-0"
             :options="parentOpts"
@@ -129,11 +129,11 @@
             <b-form-group
               id="select-group"
               :label="$t('forms.parent.title')"
-              label-for="region"
+              label-for="category"
               :description="$t('forms.parent.desc')"
             >
               <b-form-select
-                id="region"
+                id="category"
                 v-model="form.parent"
                 class="mb-2 mr-sm-2 mb-sm-0"
                 :options="parentOpts"
@@ -326,8 +326,8 @@ export default {
               description: null
             }
           })
-          this.$bvToast.toast(`You just added ${this.form.name} Categories.`, {
-            title: 'Categories added successfully',
+          this.$bvToast.toast(`${this.$t('category.toast.justAdded')} ${this.form.name} Category.`, {
+            title: this.$t('category.toast.add'),
             autoHideDelay: 5000,
             appendToast: true,
             variant: 'success'
@@ -335,12 +335,12 @@ export default {
           this.$router.go()
         })
         .catch((err) => {
-          this.$bvToast.toast(err.response.data.msg, {
-            title: 'There is something wrong',
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger'
-          })
+          this.toast = {
+            title: this.$t('category.toast.error'),
+            variant: 'danger',
+            visible: true,
+            text: err.message
+          }
         })
     },
     async getTags () {
@@ -353,11 +353,11 @@ export default {
               value: x.name
             }
           })
-          this.parentOpts.unshift({ text: 'Choose parent..', value: null })
+          this.parentOpts.unshift({ text: this.$t('chooseParent'), value: null })
         })
         .catch((err) => {
           this.toast = {
-            title: 'There is something wrong',
+            title: this.$t('category.toast.error'),
             variant: 'danger',
             visible: true,
             text: err.message
@@ -383,20 +383,20 @@ export default {
         .then((res) => {
           this.getTags()
           this.toast = {
-            title: 'Category Edited successfully',
+            title: this.$t('category.toast.edit'),
             variant: 'success',
             visible: true,
-            text: `You just Edited ${this.editForm.name} Categories.`
+            text: `${this.$t('category.toast.justEdited')} ${this.editForm.name} Categories.`
           }
           this.$router.go()
         })
         .catch((err) => {
-          this.$bvToast.toast(err.response.data.msg, {
-            title: 'There is something wrong',
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger'
-          })
+          this.toast = {
+            title: this.$t('category.toast.error'),
+            variant: 'danger',
+            visible: true,
+            text: err.message
+          }
         })
     },
     async deleteTag () {
@@ -404,20 +404,20 @@ export default {
         .then((res) => {
           this.getTags()
           this.toast = {
-            title: 'Category deleted successfully',
+            title: this.$t('category.toast.delete'),
             variant: 'success',
             visible: true,
-            text: `You just deleted ${this.editForm.name} Categories.`
+            text: `${this.$t('category.toast.justDeleted')} ${this.editForm.name} Categories.`
           }
           this.$router.go()
         })
         .catch((err) => {
-          this.$bvToast.toast(err.response.data.msg, {
-            title: 'There is something wrong',
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger'
-          })
+          this.toast = {
+            title: this.$t('category.toast.error'),
+            variant: 'danger',
+            visible: true,
+            text: err.message
+          }
         })
     }
   }

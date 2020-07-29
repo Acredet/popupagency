@@ -1,6 +1,7 @@
 
 export default {
   welcome: 'HI',
+  link: '/en/',
   actions: {
     actions: 'Actions',
     add: 'Add',
@@ -42,6 +43,7 @@ export default {
       perPage: 'Per page:'
     }
   },
+  chooseParent: 'Choose parent..',
   region: {
     title: 'Rigions:',
     editModal: {
@@ -50,7 +52,16 @@ export default {
     deleteModal: {
       title: 'Delete Region:'
     },
-    addBtn: 'Add region'
+    addBtn: 'Add region',
+    toast: {
+      add: 'Region added successfully',
+      edit: 'Region Edited successfully',
+      delete: 'Region deleted successfully',
+      justDeleted: 'You just deleted',
+      justEdited: 'You just edited',
+      justAdded: 'You just added',
+      error: 'There is something wrong'
+    }
   },
   tag: {
     title: 'Tags:',
@@ -60,7 +71,16 @@ export default {
     deleteModal: {
       title: 'Delete Tag:'
     },
-    addBtn: 'Add tag'
+    addBtn: 'Add tag',
+    toast: {
+      add: 'Tag added successfully',
+      edit: 'Tag Edited successfully',
+      delete: 'Tag deleted successfully',
+      justDeleted: 'You just deleted',
+      justEdited: 'You just edited',
+      justAdded: 'You just added',
+      error: 'There is something wrong'
+    }
   },
   category: {
     title: 'Category:',
@@ -70,7 +90,16 @@ export default {
     deleteModal: {
       title: 'Delete Tag:'
     },
-    addBtn: 'Add category'
+    addBtn: 'Add category',
+    toast: {
+      add: 'Category added successfully',
+      edit: 'Category Edited successfully',
+      delete: 'Category deleted successfully',
+      justDeleted: 'You just deleted',
+      justEdited: 'You just edited',
+      justAdded: 'You just added',
+      error: 'There is something wrong'
+    }
   }
 
 }
