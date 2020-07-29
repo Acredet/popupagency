@@ -9,11 +9,15 @@ export default {
     deleteConfimrMessage: 'Are you sure you wanna delete',
     delete: 'Delete',
     confirm: 'Confirm',
-    cancle: 'Cancle'
+    cancle: 'Cancle',
+    submit: 'Submit'
   },
   forms: {
     valid: 'Good to go.',
     required: 'Required.',
+    atLeast8: 'At Least 8 charchters.',
+    notMatch: 'This should match with the password',
+    match: 'Matched',
     name: {
       title: 'Name:',
       holder: 'Enter your name',
@@ -245,6 +249,31 @@ export default {
       justEdited: 'You just edited',
       error: 'There is something wrong'
     }
+  },
+  addUser: {
+    title: 'All Users',
+    inputs: {
+      name: {
+        label: 'Name:',
+        holder: 'Enter name'
+      },
+      email: {
+        label: 'Email:',
+        holder: 'Enter Email',
+        desc: 'We\'ll respect your inbox.'
+      },
+      password: {
+        label: 'Password:',
+        holder: 'Enter Password'
+      },
+      confirmPass: {
+        label: 'Confirm password:',
+        holder: 'Enter password again'
+      }
+    },
+    toast: {
+      add: 'User Added successfully',
+      justAdded: 'You Just added'
+    }
   }
-
 }

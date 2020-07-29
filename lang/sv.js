@@ -9,11 +9,15 @@ export default {
     deleteConfimrMessage: 'Är du säker på att du vill ta bort',
     delete: 'Radera',
     confirm: 'Bekräfta',
-    cancle: 'Avbryt'
+    cancle: 'Avbryt',
+    submit: 'Skicka in'
   },
   forms: {
     valid: 'Bra att gå.',
     required: 'Obligatoriskt.',
+    atLeast8: 'At Minst 8 charchters.',
+    notMatch: 'Detta ska matcha med lösenordet',
+    match: 'matchade',
     name: {
       title: 'namn',
       holder: 'Ange ditt namn',
@@ -244,6 +248,32 @@ export default {
       justDeleted: 'Du har precis raderat',
       justEdited: 'Du har just redigerat',
       error: 'Det är något fel'
+    }
+  },
+  addUser: {
+    title: 'Alla användare',
+    inputs: {
+      name: {
+        label: 'Namn:',
+        holder: 'Ange namn'
+      },
+      email: {
+        label: 'E-post:',
+        holder: 'Ange e-post',
+        desc: 'Vi respekterar din inkorg.'
+      },
+      password: {
+        label: 'Lösenord:',
+        holder: 'Ange lösenord'
+      },
+      confirmPass: {
+        label: 'Bekräfta lösenord:',
+        holder: 'Ange lösenord igen'
+      }
+    },
+    toast: {
+      add: 'Användaren har lagts fram',
+      justAdded: 'Du har precis lagt till'
     }
   }
 }

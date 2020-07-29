@@ -2,66 +2,66 @@
   <div class="content">
     <b-container>
       <h2 class="font-weight-bold">
-        Add user:
+        {{ $t('addUser.title') }}
       </h2>
       <b-form>
-        <b-form-group id="name-group" label="Name:" label-for="name">
-          <b-form-input id="name" v-model="form.name" autocomplete="off" required placeholder="Enter name" />
+        <b-form-group id="name-group" :label="$t('addUser.inputs.name.label')" label-for="name">
+          <b-form-input id="name" v-model="form.name" autocomplete="off" required :placeholder="$t('addUser.inputs.name.holder')" />
         </b-form-group>
 
         <b-form-group
           id="Email-group"
-          label="Email:"
+          :label="$t('addUser.inputs.email.label')"
           label-for="email"
-          description="We'll respect your inbox."
+          :description="$t('addUser.inputs.email.desc')"
         >
           <b-form-input
             id="email"
             v-model="form.email"
             type="email"
             required
-            placeholder="Enter email"
+            :placeholder="$t('addUser.inputs.email.holder')"
           />
         </b-form-group>
 
-        <b-form-group id="password-group" label="Password:" label-for="password">
+        <b-form-group id="password-group" :label="$t('addUser.inputs.password.label')" label-for="password">
           <b-form-input
             id="password"
             v-model="form.password"
             type="password"
             :state="passwordValid"
             required
-            placeholder="Enter password"
+            :placeholder="$t('addUser.inputs.email.holder')"
           />
 
           <b-form-invalid-feedback :state="passwordValid">
-            At Least 8 charchters.
+            {{ $t('forms.atLeast8') }}
           </b-form-invalid-feedback>
           <b-form-valid-feedback :state="passwordValid">
-            Nice.
+            {{ $t('forms.valid') }}
           </b-form-valid-feedback>
         </b-form-group>
 
-        <b-form-group id="confirm-password-group" label="Confirm password:" label-for="confirm-password">
+        <b-form-group id="confirm-password-group" :label="$t('addUser.inputs.confirmPass.label')" label-for="confirm-password">
           <b-form-input
             id="confirm-password"
             v-model="form.confirmPassword"
             :state="validation"
             type="password"
             required
-            placeholder="Enter password again"
+            :placeholder="$t('addUser.inputs.confirmPass.holder')"
           />
 
           <b-form-invalid-feedback :state="validation">
-            Not matched.
+            {{ $t('forms.notMatch') }}
           </b-form-invalid-feedback>
           <b-form-valid-feedback :state="validation">
-            Ok.
+            {{ $t('forms.match') }}
           </b-form-valid-feedback>
         </b-form-group>
 
         <b-button :disabled="!validation" variant="primary" @click="onSubmit">
-          Submit
+          {{ $t('actions.submit') }}
         </b-button>
       </b-form>
     </b-container>
@@ -96,8 +96,22 @@ export default {
       const data = Object.assign({}, this.form)
       delete data.confirmPassword
       this.$axios.$post('/users', data)
-        .then(res => console.log(res))
-        .catch(err => console.log(err))
+        .then((res) => {
+          this.$bvToast.toast(`${this.$t('addUser.toast.justAdded')} ${this.form.name}.`, {
+            title: this.$t('addUser.toast.add'),
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'success'
+          })
+        })
+        .catch((err) => {
+          this.$bvToast.toast(err, {
+            title: this.$t('category.toast.err'),
+            autoHideDelay: 5000,
+            appendToast: true,
+            variant: 'success'
+          })
+        })
     }
   }
 }
