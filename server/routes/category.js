@@ -14,5 +14,10 @@ router
   .get(getcategory)
   .post(multer.single('avatar'), addcategory);
 router.delete("/:id", auth, deleteCategory);
-router.patch("/:id", multer.single('edit-avatar'), auth, updateCategory);
+router.patch("/:id", auth, updateCategory);
+
+router.post('/images', multer.single('edit-avatar'), (req, res) => {
+  console.log(req.file)
+  return res.status(200).json(req.file.filename)
+})
 module.exports = router;

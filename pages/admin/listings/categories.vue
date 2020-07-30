@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <b-modal id="edit-modal" centered :title="$t('category.editModal.title')" @close="editForm = {}">
-      <b-form id="edit-tag" enctype="multipart/form-data">
+      <b-form id="edit-category" enctype="multipart/form-data">
         <b-form-group
           id="name-group"
           :label="$t('forms.name.title')"
@@ -11,16 +11,16 @@
           <b-form-input
             id="name"
             v-model="editForm.name"
-            :state="nameValid"
+            :state="editNameValid"
             type="text"
             required
             autocomplete="off"
             :placeholder="$t('forms.name.holder')"
           />
 
-          <b-form-invalid-feedback :state="nameValid" v-text="$t('forms.required')" />
+          <b-form-invalid-feedback :state="editNameValid" v-text="$t('forms.required')" />
 
-          <b-form-valid-feedback :state="nameValid" v-text="$t('forms.valid')" />
+          <b-form-valid-feedback :state="editNameValid" v-text="$t('forms.valid')" />
         </b-form-group>
 
         <b-form-group
@@ -188,10 +188,10 @@
                 <template v-slot:button-content>
                   <b>{{ $t('actions.actions') }}</b>
                 </template>
-                <b-dropdown-item v-b-modal.edit-modal @click="editForm = data.item">
+                <b-dropdown-item v-b-modal.edit-modal @click="Object.assign(editForm, data.item)">
                   {{ $t('actions.edit') }}
                 </b-dropdown-item>
-                <b-dropdown-item v-b-modal.delete-modal @click="editForm = data.item">
+                <b-dropdown-item v-b-modal.delete-modal @click="Object.assign(editForm, data.item)">
                   {{ $t('actions.delete') }}
                 </b-dropdown-item>
               </b-dropdown>
@@ -217,10 +217,6 @@
               </b-form-group>
             </b-col>
           </b-row>
-          <div>
-            {{ $t('tables.sort.by') }} <b>{{ sortBy }}</b>, {{ $t('tables.sort.direction') }}
-            <b>{{ sortDesc ? $t('tables.sort.descending') : $t('tables.sort.ascending') }}</b>
-          </div>
         </b-col>
       </b-row>
       <div>
@@ -286,6 +282,9 @@ export default {
   computed: {
     nameValid () {
       return !!this.form.name
+    },
+    editNameValid () {
+      return !!this.editForm.name
     }
   },
   mounted () {
@@ -366,20 +365,33 @@ export default {
     },
     async editTag () {
       const category = new FormData(document.getElementById('edit-category'))
-      if (this.editForm.avatar) { delete this.editForm.avatar }
 
-      for (const key in this.editForm) {
-        if (this.editForm.hasOwnProperty(key)) {
-          const element = this.editForm[key]
-          category.append(key, element)
+      for (const pair of category.entries()) { // upload images
+        console.log(pair[0] + ', ' + pair[1])
+        const data = new FormData()
+        if (pair[0] === 'edit-avatar') {
+          data.append(pair[0], pair[1])
+          if (pair[1].name) {
+            await this.$axios.$post('/category/images', data)
+              .then((res) => {
+                this.editForm.avatar = res
+              })
+              .catch((err) => {
+                this.$bvToast.toast(err.response.data.msg, {
+                  title: this.$t('category.toast.error'),
+                  autoHideDelay: 5000,
+                  appendToast: true,
+                  variant: 'danger'
+                })
+              })
+          } else {
+            this.editForm.avatar = ''
+          }
         }
       }
 
-      for (const pair of category.entries()) { // Show data in console.
-        console.log(pair[0] + ', ' + pair[1])
-      }
-
-      await this.$axios.$patch(`/category/${this.editForm._id}`, category)
+      console.log(this.editForm)
+      await this.$axios.$patch(`/category/${this.editForm._id}`, this.editForm)
         .then((res) => {
           this.getTags()
           this.toast = {
