@@ -62,12 +62,12 @@
               aria-expanded="false"
             >Languages</a>
 
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-              <nuxt-link :to="switchLocalePath('en')" class="dropdown-item">
+            <div class="py-0 dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <nuxt-link exact :to="switchLocalePath('en')" class="dropdown-item">
                 En-English
               </nuxt-link>
-              <div class="dropdown-divider" />
-              <nuxt-link :to="switchLocalePath('sv')" class="dropdown-item">
+              <div class="my-0 dropdown-divider" />
+              <nuxt-link exact :to="switchLocalePath('sv')" class="dropdown-item">
                 Sv-Swedish
               </nuxt-link>
             </div>

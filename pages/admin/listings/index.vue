@@ -87,11 +87,11 @@ export default {
       sortDesc: false,
       editForm: {},
       fields: [
-        { key: this.$t('allListing.table.header.title'), sortable: true },
-        { key: this.$t('allListing.table.header.expiry'), sortable: true },
-        { key: this.$t('allListing.table.header.cover'), sortable: false },
-        { key: this.$t('allListing.table.header.stad'), sortable: true },
-        { key: this.$t('allListing.table.header.actions') }
+        { key: 'title', label: this.$t('allListing.table.header.title'), sortable: true },
+        { key: 'expiry', label: this.$t('allListing.table.header.expiry'), sortable: true },
+        { key: 'cover', label: this.$t('allListing.table.header.cover'), sortable: false },
+        { key: 'stad', label: this.$t('allListing.table.header.stad'), sortable: true },
+        { key: 'actions', label: this.$t('allListing.table.header.actions') }
       ],
       items: null
     }

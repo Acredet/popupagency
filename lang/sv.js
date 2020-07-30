@@ -44,8 +44,11 @@ export default {
       ascending: 'Stigande'
     },
     pagenation: {
-      perPage: 'Per page:'
-    }
+      perPage: 'Per sida:'
+    },
+    name: 'namn',
+    description: 'Beskrivning',
+    parent: 'Förälder'
   },
   chooseParent: 'Välj förälder ..',
   region: {

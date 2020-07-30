@@ -45,7 +45,10 @@ export default {
     },
     pagenation: {
       perPage: 'Per page:'
-    }
+    },
+    name: 'Name',
+    description: 'Description',
+    parent: 'Parent'
   },
   chooseParent: 'Choose parent..',
   region: {

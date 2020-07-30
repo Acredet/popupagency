@@ -107,9 +107,9 @@ export default {
       sortBy: this.$t('allUsers.table.header.name'),
       sortDesc: false,
       fields: [
-        { key: 'name', sortable: true },
-        { key: 'email', sortable: true },
-        { key: 'actions' }
+        { key: 'name', label: this.$t('allUsers.table.header.name'), sortable: true },
+        { key: 'email', label: this.$t('allUsers.table.header.email'), sortable: true },
+        { key: 'actions', label: this.$t('tables.actions') }
       ],
       items: null,
       user: {

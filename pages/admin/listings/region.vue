@@ -230,10 +230,10 @@ export default {
         { value: 100, text: '100' }
       ],
       fields: [
-        { key: 'name', sortable: true },
-        { key: 'description', sortable: true },
-        { key: 'parent', sortable: true },
-        { key: 'actions', sortable: false }
+        { key: 'name', label: this.$t('tables.name'), sortable: true },
+        { key: 'description', label: this.$t('tables.description'), sortable: true },
+        { key: 'parent', label: this.$t('tables.parent'), sortable: true },
+        { key: 'actions', label: this.$t('tables.actions'), sortable: false }
       ],
       items: []
     }
