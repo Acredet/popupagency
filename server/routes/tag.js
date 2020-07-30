@@ -9,5 +9,9 @@ router
   .get(gettag)
   .post(multer.single('avatar'), addtag)
 router.delete("/:id", auth, deleteTag);
-router.patch("/:id", multer.single('edit-avatar'), auth, updateTag);
+router.patch("/:id", auth, updateTag);
+router.post('/images', multer.single('edit-avatar'), (req, res) => {
+  console.log(req.file)
+  return res.status(200).json(req.file.filename)
+})
 module.exports = router;

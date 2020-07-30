@@ -57,21 +57,7 @@ exports.deleteTag = (req, res) => {
 // @route update /api/Tag/id
 // @access Private
 exports.updateTag = async (req, res) => {
-  const update = {
-    name: req.body.name || null,
-    parent: req.body.parent || null,
-    description: req.body.description || null,
-    avatar: req.file ? req.file.filename : null
-  }
-
-  for (const key in update) {
-    if (update.hasOwnProperty(key)) {
-      const element = update[key];
-      if (element === null) { delete update.key }
-    }
-  }
-
-  await Tag.updateOne({ _id: req.params.id }, { $set: update })
+  await Tag.updateOne({ _id: req.params.id }, { $set: req.body })
     .then(tag => res.json({ success: true }))
     .catch(err => res.status(404).json({ success: false }));
 };

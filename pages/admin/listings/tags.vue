@@ -11,16 +11,16 @@
           <b-form-input
             id="name"
             v-model="editForm.name"
-            :state="nameValid"
+            :state="editNameValid"
             type="text"
             required
             autocomplete="off"
             :placeholder="$t('forms.name.holder')"
           />
 
-          <b-form-invalid-feedback :state="nameValid" v-text="$t('forms.required')" />
+          <b-form-invalid-feedback :state="editNameValid" v-text="$t('forms.required')" />
 
-          <b-form-valid-feedback :state="nameValid" v-text="$t('forms.valid')" />
+          <b-form-valid-feedback :state="editNameValid" v-text="$t('forms.valid')" />
         </b-form-group>
 
         <b-form-group
@@ -73,7 +73,7 @@
       </b-form>
 
       <template v-slot:modal-footer="{ ok, cancel }">
-        <b-btn variant="primary" @click="editTag(); ok()">
+        <b-btn variant="primary" :disabled="!editNameValid" @click="editTag(); ok()">
           Edit
         </b-btn>
         <b-btn
@@ -104,7 +104,7 @@
       <h2>{{ $t('tag.title') }}</h2>
       <b-row>
         <b-col cols="12" md="4">
-          <b-form>
+          <b-form id="add-tag">
             <b-form-group
               id="name-group"
               :label="$t('forms.name.title')"
@@ -188,10 +188,10 @@
                 <template v-slot:button-content>
                   <b>{{ $t('actions.actions') }}</b>
                 </template>
-                <b-dropdown-item v-b-modal.edit-modal @click="editForm = data.item">
+                <b-dropdown-item v-b-modal.edit-modal @click="Object.assign(editForm, data.item)">
                   {{ $t('actions.edit') }}
                 </b-dropdown-item>
-                <b-dropdown-item v-b-modal.delete-modal @click="editForm = data.item">
+                <b-dropdown-item v-b-modal.delete-modal @click="Object.assign(editForm, data.item)">
                   {{ $t('actions.delete') }}
                 </b-dropdown-item>
               </b-dropdown>
@@ -282,6 +282,9 @@ export default {
   computed: {
     nameValid () {
       return !!this.form.name
+    },
+    editNameValid () {
+      return !!this.editForm.name
     }
   },
   mounted () {
@@ -289,7 +292,7 @@ export default {
   },
   methods: {
     async addTag () {
-      const tag = new FormData(document.getElementById('tag-form'))
+      const tag = new FormData(document.getElementById('add-tag'))
 
       for (const key in this.form) {
         if (this.form.hasOwnProperty(key)) {
@@ -362,20 +365,32 @@ export default {
     },
     async editTag () {
       const tag = new FormData(document.getElementById('edit-tag'))
-      if (this.editForm.avatar) { delete this.editForm.avatar }
 
-      for (const key in this.editForm) {
-        if (this.editForm.hasOwnProperty(key)) {
-          const element = this.editForm[key]
-          tag.append(key, element)
+      for (const pair of tag.entries()) { // upload images
+        console.log(pair[0] + ', ' + pair[1])
+        const data = new FormData()
+        if (pair[0] === 'edit-avatar') {
+          data.append(pair[0], pair[1])
+          if (pair[1].name) {
+            await this.$axios.$post('/tag/images', data)
+              .then((res) => {
+                this.editForm.avatar = res
+              })
+              .catch((err) => {
+                this.$bvToast.toast(err.response.data.msg, {
+                  title: this.$t('category.toast.error'),
+                  autoHideDelay: 5000,
+                  appendToast: true,
+                  variant: 'danger'
+                })
+              })
+          } else {
+            this.editForm.avatar = ''
+          }
         }
       }
 
-      for (const pair of tag.entries()) { // Show data in console.
-        console.log(pair[0] + ', ' + pair[1])
-      }
-
-      await this.$axios.$patch(`/tag/${this.editForm._id}`, tag)
+      await this.$axios.$patch(`/tag/${this.editForm._id}`, this.editForm)
         .then((res) => {
           this.getTags()
           this.toast = {
