@@ -257,12 +257,15 @@ export default {
 .animate__animated.animate__zoomIn {
   --animate-duration: 0.4s;
 }
+@media (max-width: 770px) {
+  ul.navbar-nav li a:hover {
+    padding-left: 0;
+  }
 
-ul.dropdown-menu li[role="presentation"] a {
-  transition: all 0.4s ease;
-}
-ul.dropdown-menu li[role="presentation"] a:hover {
-  padding-left: 30px;
+  ul.dropdown-menu li[role="presentation"]:hover a {
+    padding-left: 30px;
+  }
+
 }
 
 .b-sidebar-body a {
@@ -297,18 +300,19 @@ ul.dropdown-menu li[role="presentation"] a:hover {
   opacity: 1;
 }
 
-.collapse ul {
+.b-sidebar-body .collapse ul {
   margin: 0;
   padding: 0;
-  /* background: #ddd !important; */
+  background: #ddd !important;
 }
-.collapse ul li {
-  /* background: #ddd !important; */
+
+.b-sidebar-body .collapse ul li {
+  background: #ddd !important;
   padding-left: 10px;
   transition: all 0.4s ease-out;
 }
 
-.collapse ul li:hover {
-  padding-left: 20px;
-}
+.b-sidebar-body .collapse ul li:hover {
+    padding-left: 20px;
+  }
 </style>
