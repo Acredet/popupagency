@@ -5,7 +5,7 @@
       <b-container fluid>
         <b-row no-gutters class="py-2">
           <!-- Start Search Input -->
-          <b-col cols="9" md="auto" class="mr-2 d-flex align-items-center">
+          <b-col cols="12" sm="9" md="auto" class="mr-2 d-flex align-items-center">
             <b-input-group>
               <b-form-input placeholder="Address, City, Zip, Neighborhood, School" />
               <b-input-group-append>
@@ -33,11 +33,11 @@
 
           <!-- Start property Filter -->
           <b-col cols="12" md="auto" class="mr-2 d-none d-md-flex align-items-center">
-            <b-dropdown id="property-dropdown" class="w-100" variant="light" text="Property type">
+            <b-dropdown id="property-dropdown" class="w-100" variant="light" :text="filters.property.text">
               <b-dropdown-group header="property" style="width: 300px !important" class="px-1">
                 <b-row>
                   <b-col v-for="icon in filters.property.icons" :key="icon.value" class="mb-1" cols="6">
-                    <span class="text-center rounded-circle">
+                    <span class="text-center rounded-circle" :class="{ 'checked': filters.property.choose.filter(x => x === icon.value).length !== 0 }" @click="propertyClicked(icon.value)">
                       <svg data-testid="icon-single-family-circle" class="property-icon" viewBox="0 0 512 512"><path :d="icon.path" /></svg>
                       <!-- <br> -->
                       <b>{{ icon.text }}</b>
@@ -115,7 +115,7 @@
           </b-col>
           <!-- End bathrooms Filter -->
 
-          <!-- Start bathrooms Filter -->
+          <!-- Start Status Filter -->
           <b-col cols="12" md="auto" class="mr-2 d-none d-lg-flex align-items-center">
             <b-dropdown id="listing-status-dropdown" class="w-100" variant="light" text="Listing Status">
               <b-dropdown-group header="Listing Status" style="width: 300px !important" class="px-1">
@@ -146,22 +146,142 @@
               </b-dropdown-group>
             </b-dropdown>
           </b-col>
-          <!-- End bathrooms Filter -->
+          <!-- End Status Filter -->
 
-          <!-- Start bathrooms Filter -->
-          <b-col cols="2" md="auto" class="d-flex align-items-center justify-content-end">
-            <b-button v-b-toggle.more-filters variant="light" v-text="'More Filters'" />
+          <!-- Start more Filters -->
+          <b-col cols="12" sm="2" md="auto" class="d-flex align-items-center justify-content-end">
+            <b-button v-b-toggle.more-filters block class="mt-1 mt-sm-0" variant="primary" v-text="'More Filters'" />
           </b-col>
+          <!-- End more Filters -->
 
-          <b-sidebar id="more-filters" title="More Fitlers" shadow>
-            <div class="px-3 py-2">
-              <p>
-                Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis
-                in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-              </p>
-            </div>
+          <!-- Sart Sidebar -->
+          <b-sidebar id="more-filters" title="Filter your home search" shadow>
+            <b-container class="py-2">
+              <ul class="list-unstyled">
+                <!-- Start Price Tab -->
+                <li v-b-toggle="'price'" class="font-3 mb-1" v-text="'Price'" />
+
+                <b-collapse id="price" accordion="filters" role="tabpanel">
+                  <b-form-input id="sidebar-min-price-input" v-model="filters.price.min" list="sidebar-min-price" class="mb-2" placeholder="$min" />
+                  <b-form-datalist id="sidebar-min-price" :options="filters.price.minOpts" />
+
+                  <b-form-input id="sidebar-max-price-input" v-model="filters.price.max" list="sidebar-max-price" placeholder="$max" />
+                  <b-form-datalist id="sidebar-max-price" :options="filters.price.maxOpts" />
+                </b-collapse>
+                <!-- End Price Tab -->
+
+                <!-- Start property Tab -->
+                <li v-b-toggle="'property'" class="font-3 mb-1" v-text="'property'" />
+
+                <b-collapse id="property" accordion="filters" role="tabpanel">
+                  <b-row>
+                    <b-col v-for="icon in filters.property.icons" :key="icon.value" class="mb-1" cols="6">
+                      <span class="text-center rounded-circle" :class="{ 'checked': filters.property.choose.filter(x => x === icon.value).length !== 0 }" @click="propertyClicked(icon.value)">
+                        <svg data-testid="icon-single-family-circle" class="property-icon" viewBox="0 0 512 512"><path :d="icon.path" /></svg>
+                        <!-- <br> -->
+                        <b>{{ icon.text }}</b>
+                      </span>
+                    </b-col>
+                  </b-row>
+                </b-collapse>
+                <!-- End property Tab -->
+
+                <!-- Start beds Tab -->
+                <li v-b-toggle="'beds'" class="font-3 mb-1" v-text="'Beds'" />
+
+                <b-collapse id="beds" accordion="filters" role="tabpanel">
+                  <b-form-group class="w-100">
+                    <b-form-radio-group
+                      id="btn-radios-2"
+                      v-model="filters.beds.choose"
+                      class="w-100"
+                      :options="filters.beds.opts"
+                      buttons
+                      block
+                      button-variant="outline-dark"
+                      name="radio-btn-outline"
+                    />
+                    <br>
+                    <p class="text-center">
+                      Or Select Bedrooms Range
+                    </p>
+                    <b-row>
+                      <b-col md="6">
+                        <b-form-select v-model="filters.beds.range.from" :options="[{ value: null, text: 'From' }, ...filters.beds.range.opts]" />
+                      </b-col>
+                      <b-col md="6">
+                        <b-form-select v-model="filters.beds.range.to" :options="[{ value: null, text: 'To' }, ...filters.beds.range.opts]" />
+                      </b-col>
+                    </b-row>
+                  </b-form-group>
+                </b-collapse>
+                <!-- End beds Tab -->
+
+                <!-- Start bathrooms Tab -->
+                <li v-b-toggle="'bathrooms'" class="font-3 mb-1" v-text="'Bathrooms'" />
+
+                <b-collapse id="bathrooms" accordion="filters" role="tabpanel">
+                  <b-form-group>
+                    <b-form-radio-group
+                      id="btn-radios-2"
+                      v-model="filters.bathrooms.choose"
+                      class="w-100"
+                      :options="filters.bathrooms.opts"
+                      buttons
+                      block
+                      button-variant="outline-dark"
+                      name="radio-btn-outline"
+                    />
+                    <br>
+                    <p class="text-center">
+                      Or Select Bethrooms Range
+                    </p>
+                    <b-row>
+                      <b-col md="6">
+                        <b-form-select v-model="filters.bathrooms.range.from" :options="[{ value: null, text: 'From' }, ...filters.bathrooms.range.opts]" />
+                      </b-col>
+                      <b-col md="6">
+                        <b-form-select v-model="filters.bathrooms.range.to" :options="[{ value: null, text: 'To' }, ...filters.bathrooms.range.opts]" />
+                      </b-col>
+                    </b-row>
+                  </b-form-group>
+                </b-collapse>
+                <!-- End bathrooms Tab -->
+
+                <!-- Start Status Tab -->
+                <li v-b-toggle="'Status'" class="font-3 mb-1" v-text="'Listing Status'" />
+
+                <b-collapse id="Status" accordion="filters" role="tabpanel">
+                  <b-form-group>
+                    <b-form-radio-group
+                      id="listing-status-group"
+                      v-model="filters.status.choose.status"
+                      name="listing-status"
+                    >
+                      <b-form-radio value="any">
+                        Any
+                      </b-form-radio>
+                      <b-form-radio value="existing">
+                        Existing Homes
+                      </b-form-radio>
+                      <b-form-radio value="new">
+                        New construction
+                      </b-form-radio>
+                    </b-form-radio-group>
+                  </b-form-group>
+                  <b-dropdown-divider />
+                  <b-form-checkbox-group
+                    id="checkbox-group-1"
+                    v-model="filters.status.choose.feats"
+                    :options="filters.status. options"
+                    name="flavour-1"
+                  />
+                </b-collapse>
+                <!-- End Status Tab -->
+              </ul>
+            </b-container>
           </b-sidebar>
-          <!-- End bathrooms Filter -->
+          <!-- End SideBar -->
         </b-row>
       </b-container>
     </b-col>
@@ -358,6 +478,18 @@ export default {
           this.filters.price.text = `Max $${val.max}`
         }
       }
+    },
+    'filters.property.choose': {
+      deep: true,
+      handler (val) {
+        if (val.length === 0) {
+          this.filters.property.text = 'Property type'
+        } else if (val.length === 8) {
+          this.filters.property.text = 'Any'
+        } else {
+          this.filters.property.text = val.join()
+        }
+      }
     }
   },
   async mounted () {
@@ -374,7 +506,17 @@ export default {
       })
       .catch(err => console.log(err))
   },
-  methods: {}
+  methods: {
+    propertyClicked (property) {
+      const existed = this.filters.property.choose.indexOf(property)
+      console.log(existed)
+      if (existed !== -1) {
+        this.filters.property.choose.splice(existed, 1)
+      } else {
+        this.filters.property.choose.push(property)
+      }
+    }
+  }
 }
 </script>
 
