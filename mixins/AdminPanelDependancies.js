@@ -1,3 +1,4 @@
+/* eslint-disable no-sequences */
 exports.AdminPanelDependancies = {
   mounted () {
     this.$nextTick(() => {
@@ -9,6 +10,7 @@ exports.AdminPanelDependancies = {
       // eslint-disable-next-line no-unused-expressions
       !(function ($) {
         'use strict'
+
         const MainApp = function () {}
 
         // eslint-disable-next-line no-unused-expressions
@@ -21,7 +23,6 @@ exports.AdminPanelDependancies = {
             wheelStep: 5,
             touchScrollStep: 50
           })
-        // eslint-disable-next-line no-sequences
         },
         MainApp.prototype.initSlimscroll = function () {
           $('.slimscroll').slimscroll({
@@ -43,7 +44,6 @@ exports.AdminPanelDependancies = {
           $('.button-menu-mobile').on('click', function (event) {
             event.preventDefault()
             $('body').toggleClass('enlarged')
-            console.log('ds')
           })
         },
 
@@ -108,12 +108,12 @@ exports.AdminPanelDependancies = {
 
         // init
         $.MainApp = new MainApp(), $.MainApp.Constructor = MainApp
-      // eslint-disable-next-line no-sequences
       }(window.jQuery)),
 
       // initializing
       (function ($) {
         'use strict'
+        console.log($.MainApp.init)
         $.MainApp.init()
       }(window.jQuery))
     }
@@ -121,10 +121,9 @@ exports.AdminPanelDependancies = {
   head () {
     return {
       link: [
-        { rel: 'stylesheet', href: '/plugins/morris/morris.css' },
-        { href: '/css/bootstrap.min.css', rel: 'stylesheet', type: 'text/css' },
-        { href: '/css/metismenu.min.css', rel: 'stylesheet', type: 'text/css' },
-        { href: '/css/style.css', rel: 'stylesheet', type: 'text/css' }
+        { href: '/css/style.css', rel: 'stylesheet', type: 'text/css' },
+        { href: '/plugins/morris/morris.css', rel: 'stylesheet', type: 'text/css' },
+        { href: '/css/metismenu.min.css', rel: 'stylesheet', type: 'text/css' }
       ],
       script: [
         { src: '/js/jquery.min.js' },

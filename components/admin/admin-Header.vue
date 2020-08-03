@@ -19,7 +19,7 @@
           <div class="dropdown notification-list nav-pro-img">
             <a
               v-if="$auth.loggedIn"
-              class="dropdown-toggle nav-link text-dark font-weight-bold font-3 waves-effect nav-user"
+              class="dropdown-toggle nav-link arrow-none waves-effect nav-user"
               data-toggle="dropdown"
               href="#"
               role="button"
@@ -28,10 +28,10 @@
             >
               {{ $auth.user.name }}
             </a>
-            <nuxt-link v-else class="dropdown-toggle nav-link text-dark font-weight-bold font-3 waves-effect nav-user" to="/admin/login">
+            <nuxt-link v-else class="nav-link text-dark font-weight-bold font-3 waves-effect nav-user" to="/admin/login">
               login
             </nuxt-link>
-            <div v-if="$auth.loggedIn" class="dropdown-menu dropdown-menu-right profile-dropdown">
+            <div v-if="$auth.loggedIn" class="dropdown-menu dropdown-menu-right profile-dropdown ">
               <!-- item-->
               <nuxt-link exact class="dropdown-item" :to="`/admin/users/profile/${$auth.user._id}`">
                 <i class="fas fa-user" /> Profile
@@ -82,12 +82,8 @@
 <script>
 export default {
   methods: {
-    toggleClass () {
-      document.body.classList.toggle('enlarged')
-    },
     logout () {
       this.$auth.logout('local')
-      this.$router.push('/admin/login')
     }
   }
 }

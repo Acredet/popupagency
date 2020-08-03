@@ -8,6 +8,7 @@
 import { AdminPanelDependancies } from '@/mixins/AdminPanelDependancies'
 
 export default {
+  name: 'AuthLayout',
   mixins: [AdminPanelDependancies]
 }
 </script>
