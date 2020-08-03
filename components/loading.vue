@@ -1,5 +1,5 @@
 <template>
-  <div v-if="state" style="z-index: 9999" class="bg-dark d-flex justify-content-center align-items-center w-100 h-100 position-absolute z-100 top-0 left-0">
+  <div v-if="state" style="z-index: 9999" class="loading bg-dark d-flex justify-content-center align-items-center w-100 h-100">
     <div class="loader loader--style1" title="0">
       <svg
         id="loader-1"
@@ -72,13 +72,10 @@ export default {
 </script>
 
 <style scoped>
-.loding-wrrapper {
-  padding: 1em;
-  background: #2B3134;
-  color: #777;
-  text-align: center;
-  width: 80%;
-  margin: 0 auto;
+.loading {
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 .loader{
   margin: 0 0 2em;

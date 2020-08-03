@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <loading :state="loadingState" />
     <b-modal id="edit-modal" centered :title="$t('tag.editModal.title')" @close="editForm = {}">
       <b-form id="edit-tag" enctype="multipart/form-data">
         <b-form-group
@@ -73,7 +74,7 @@
       </b-form>
 
       <template v-slot:modal-footer="{ ok, cancel }">
-        <b-btn variant="primary" :disabled="!editNameValid" @click="editTag(); ok()">
+        <b-btn variant="primary" :disabled="!editNameValid" @click="editItem('tag'); ok()">
           Edit
         </b-btn>
         <b-btn
@@ -91,7 +92,7 @@
       </p>
 
       <template v-slot:modal-footer="{ ok, cancel }">
-        <b-btn variant="danger" @click="deleteTag(); ok()">
+        <b-btn variant="danger" @click="deleteItem('tag'); ok()">
           {{ $t('actions.delete') }}
         </b-btn>
         <b-btn variant="primary" @click="cancel(); editForm = {}">
@@ -161,7 +162,7 @@
               <our-uploader :responsivness="{ cols: 12, sm: 12, md: 12, lg: 12 }" :name="'avatar'" :max-number-of-inputs="1" :max-file-size="64" />
             </b-form-group>
 
-            <b-btn variant="primary" :disabled="!form.name" @click="addTag" v-text="$t('tag.addBtn')" />
+            <b-btn variant="primary" :disabled="!form.name" @click="addItem('tag')" v-text="$t('tag.addBtn')" />
           </b-form>
         </b-col>
 
@@ -231,206 +232,16 @@
 
 <script>
 import ourUploader from '@/components/ourUploader'
+import { ListingDepedancies } from '@/mixins/ListingDepedancies'
 
 export default {
   name: 'ListingTags',
-  middleware: 'authenticated',
-  layout: 'admin',
   components: {
     ourUploader
   },
-  data () {
-    return {
-      toast: {
-        title: null,
-        variant: null,
-        visible: false,
-        text: null
-      },
-      form: {
-        name: '',
-        parent: null,
-        description: null
-      },
-      editForm: {
-        name: '',
-        parent: null,
-        description: null
-      },
-      sortBy: 'name',
-      sortDesc: false,
-      currentPage: 1,
-      parentOpts: [],
-      perPage: 5,
-      perPageOpts: [
-        { value: 1, text: '1' },
-        { value: 5, text: '5' },
-        { value: 10, text: '10' },
-        { value: 25, text: '25' },
-        { value: 50, text: '50' },
-        { value: 100, text: '100' }
-      ],
-      fields: [
-        { key: 'name', label: this.$t('tables.name'), sortable: true },
-        { key: 'description', label: this.$t('tables.description'), sortable: true },
-        { key: 'parent', label: this.$t('tables.parent'), sortable: true },
-        { key: 'actions', label: this.$t('tables.actions'), sortable: false }
-      ],
-      items: []
-    }
-  },
-  computed: {
-    nameValid () {
-      return !!this.form.name
-    },
-    editNameValid () {
-      return !!this.editForm.name
-    }
-  },
+  mixins: [ListingDepedancies],
   mounted () {
-    this.getTags()
-  },
-  methods: {
-    async addTag () {
-      const tag = new FormData(document.getElementById('add-tag'))
-
-      for (const key in this.form) {
-        if (this.form.hasOwnProperty(key)) {
-          const element = this.form[key]
-          tag.append(key, element)
-        }
-      }
-
-      for (const pair of tag.entries()) { // Show data in console.
-        console.log(pair[0] + ', ' + pair[1])
-      }
-
-      await this.$axios.$post('/tag', tag)
-        .then((res) => {
-          this.getTags()
-          const inputs = [...document.querySelectorAll('.input-group--wrapper input')]
-          const images = [...document.querySelectorAll('.input-group--wrapper img')]
-
-          inputs.forEach((e) => {
-            e.value = ''
-            const img = images.find((x) => {
-              console.log(x)
-              return x.getAttribute('data-id') === e.getAttribute('data-id')
-            })
-            img.style.display = 'none'
-
-            this.form = {
-              name: '',
-              parent: null,
-              description: null
-            }
-          })
-          this.$bvToast.toast(`${this.$t('category.toast.justAdded')} ${this.form.name} Tag.`, {
-            title: this.$t('category.toast.add'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'success'
-          })
-          this.$router.go()
-        })
-        .catch((err) => {
-          this.toast = {
-            title: this.$t('category.toast.error'),
-            variant: 'danger',
-            visible: true,
-            text: err.message
-          }
-        })
-    },
-    async getTags () {
-      await this.$axios.$get('/tag')
-        .then((res) => {
-          this.items = res.data
-          this.parentOpts = this.items.map(function (x) {
-            return {
-              text: x.name,
-              value: x.name
-            }
-          })
-          this.parentOpts.unshift({ text: this.$t('chooseParent'), value: null })
-        })
-        .catch((err) => {
-          this.toast = {
-            title: this.$t('category.toast.error'),
-            variant: 'danger',
-            visible: true,
-            text: err.message
-          }
-        })
-    },
-    async editTag () {
-      const tag = new FormData(document.getElementById('edit-tag'))
-
-      for (const pair of tag.entries()) { // upload images
-        console.log(pair[0] + ', ' + pair[1])
-        const data = new FormData()
-        if (pair[0] === 'edit-avatar') {
-          data.append(pair[0], pair[1])
-          if (pair[1].name) {
-            await this.$axios.$post('/tag/images', data)
-              .then((res) => {
-                this.editForm.avatar = res
-              })
-              .catch((err) => {
-                this.$bvToast.toast(err.response.data.msg, {
-                  title: this.$t('category.toast.error'),
-                  autoHideDelay: 5000,
-                  appendToast: true,
-                  variant: 'danger'
-                })
-              })
-          } else {
-            this.editForm.avatar = ''
-          }
-        }
-      }
-
-      await this.$axios.$patch(`/tag/${this.editForm._id}`, this.editForm)
-        .then((res) => {
-          this.getTags()
-          this.toast = {
-            title: this.$t('category.toast.edit'),
-            variant: 'success',
-            visible: true,
-            text: `${this.$t('category.toast.justEdited')} ${this.editForm.name} Categories.`
-          }
-          this.$router.go()
-        })
-        .catch((err) => {
-          this.toast = {
-            title: this.$t('category.toast.error'),
-            variant: 'danger',
-            visible: true,
-            text: err.message
-          }
-        })
-    },
-    async deleteTag () {
-      await this.$axios.$delete(`/tag/${this.editForm._id}`)
-        .then((res) => {
-          this.getTags()
-          this.toast = {
-            title: this.$t('category.toast.delete'),
-            variant: 'success',
-            visible: true,
-            text: `${this.$t('category.toast.justDeleted')} ${this.editForm.name} Categories.`
-          }
-          this.$router.go()
-        })
-        .catch((err) => {
-          this.toast = {
-            title: this.$t('category.toast.error'),
-            variant: 'danger',
-            visible: true,
-            text: err.message
-          }
-        })
-    }
+    this.getItems('tag')
   }
 }
 </script>
