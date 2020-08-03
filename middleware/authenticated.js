@@ -1,7 +1,8 @@
-export default function (context) {
+export default function ({ store, redirect }) {
   // If the user is not authenticated
-  console.log(context.$auth.$state.loggedIn)
-  if (!context.$auth.$state.loggedIn) {
-    return context.redirect('/admin/login')
+  if (process.client) {
+    if (!store.state.auth.loggedIn) {
+      return redirect('/admin/login')
+    }
   }
 }

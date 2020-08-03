@@ -91,6 +91,12 @@ module.exports = {
   ],
   auth: {
     // Options
+    redirect: {
+      login: '/admin/login',
+      logout: '/admin/login',
+      callback: '/admin',
+      home: '/admin'
+    },
     strategies: {
       local: {
         endpoints: {
@@ -100,10 +106,6 @@ module.exports = {
         },
         tokenName: 'x-auth-token',
         tokenType: ''
-        // autoFetchUser: true,
-        // tokenRequired: true
-        // tokenType: 'bearer',
-        // globalToken: true,
       }
     }
   },

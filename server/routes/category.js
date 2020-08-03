@@ -7,7 +7,7 @@ const {
   updateCategory
 } = require("../controller/category");
 const router = express.Router();
-const { multer } = require('../middleware/upload')
+const { multer, uploadImage } = require('../middleware/upload')
 
 router
   .route("/", auth)
@@ -16,8 +16,5 @@ router
 router.delete("/:id", auth, deleteCategory);
 router.patch("/:id", auth, updateCategory);
 
-router.post('/images', multer.single('edit-avatar'), (req, res) => {
-  console.log(req.file)
-  return res.status(200).json(req.file.filename)
-})
+router.post('/images', multer.single('edit-avatar'), uploadImage)
 module.exports = router;
