@@ -191,7 +191,7 @@ export default {
       const images = document.querySelectorAll('.input-group--wrapper img')
       // Handle File Here
 
-      if (input.files[0].size / 1024 / 1024 <= this.maxFileSize) {
+      if (input.files[0] && input.files[0].size / 1024 / 1024 <= this.maxFileSize) {
         this.AddImage(input, delBtns, images, this.oldInputValue === '')
       } else {
         alert(`Max size is ${this.maxFileSize} MB`)
