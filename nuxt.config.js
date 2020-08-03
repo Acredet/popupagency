@@ -91,6 +91,10 @@ module.exports = {
   ],
   auth: {
     // Options
+    cookie: {
+      domain: 'popup.dk',
+      secure: 'true'
+    },
     redirect: {
       login: '/admin/login',
       logout: '/admin/login',
@@ -117,8 +121,8 @@ module.exports = {
     VUE_APP_GOOGLE_MAPS_API_KEY: process.env.VUE_APP_GOOGLE_MAPS_API_KEY
   },
   axios: {
-    baseURL: '/api'
-    // baseURL: 'https://popup.dk.se/api'
+    // baseURL: '/api'
+    baseURL: 'https://popup.dk.se/api'
   },
   router: {
     linkActiveClass: 'active'

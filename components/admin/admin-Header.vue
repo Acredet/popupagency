@@ -3,14 +3,14 @@
   <div class="topbar">
     <!-- LOGO -->
     <div class="topbar-left">
-      <a href="index.html" class="logo">
+      <nuxt-link to="/lediga-lokaler" class="logo">
         <span>
-          <img src="/favo.png" alt height="60">
+          <img src="/images/logo.png" alt height="40">
         </span>
         <i>
-          <img src="/favo.png" alt height="30">
+          <img src="/favo-light.png" alt height="30">
         </i>
-      </a>
+      </nuxt-link>
     </div>
 
     <nav class="navbar-custom">
