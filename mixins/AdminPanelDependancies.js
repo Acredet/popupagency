@@ -1,9 +1,7 @@
 /* eslint-disable no-sequences */
 exports.AdminPanelDependancies = {
   mounted () {
-    this.$nextTick(() => {
-      this.initApp()
-    })
+    this.initApp()
   },
   methods: {
     initApp () {
@@ -121,7 +119,6 @@ exports.AdminPanelDependancies = {
   head () {
     return {
       link: [
-        { href: '/css/style.css', rel: 'stylesheet', type: 'text/css' },
         { href: '/plugins/morris/morris.css', rel: 'stylesheet', type: 'text/css' },
         { href: '/css/metismenu.min.css', rel: 'stylesheet', type: 'text/css' }
       ],

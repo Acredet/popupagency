@@ -16,14 +16,19 @@ import adminSidebar from '@/components/admin/admin-Sidebar.vue'
 import { AdminPanelDependancies } from '@/mixins/AdminPanelDependancies'
 
 export default {
-  middleware: 'authenticated',
+  // middleware: 'authenticated',
   name: 'AdminLayout',
   components: {
     adminHeader,
     // adminFooter,
     adminSidebar
   },
-  mixins: [AdminPanelDependancies]
+  mixins: [AdminPanelDependancies],
+  created () {
+    if (!this.$auth.loggedIn) {
+      this.$router.push('/admin/login')
+    }
+  }
 
 }
 </script>

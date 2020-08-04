@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "commit": "git add . && git commit -m ",
-    "dev": "nuxt",
+    "dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",
     "generate": "nuxt generate",
     "push": "git push origin master",
-    "start": "nuxt start",
+    "start": "node server/index.js",
     "stop": "taskkill -f -im node.exe",
     "build": "nuxt build",
     "export": "nuxt export",
