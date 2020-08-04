@@ -23,28 +23,32 @@ app.use("/api/region", region);
 app.use("/api/category", category);
 app.use("/api/tag", tag);
 
-// Import and Set Nuxt.js options
-nuxtConfig.dev = process.env.NODE_ENV !== 'production';
 app.use(express.json({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
 
-async function start() {
-  // Init Nuxt.js
-  const nuxt = new Nuxt(nuxtConfig);
-  // const { host, port } = nuxt.options.server;
-  await nuxt.ready();
-  // Build only in dev mode
-  if (nuxtConfig.dev) {
-    console.log("building");
-    const builder = new Builder(nuxt);
-    await builder.build();
-  }
-  // Give nuxt middleware to express
-  app.use(nuxt.render);
-  // Listen the server
-  const port = process.env.PORT || 3000
-  app.listen(port);
+// Export express app
+module.exports = app
 
-  console.log(`Server listening on port:${port}`);
-}
-start();
+
+// Import and Set Nuxt.js options
+// nuxtConfig.dev = process.env.NODE_ENV !== 'production';
+// async function start() {
+//   // Init Nuxt.js
+//   const nuxt = new Nuxt(nuxtConfig);
+//   // const { host, port } = nuxt.options.server;
+//   await nuxt.ready();
+//   // Build only in dev mode
+//   if (nuxtConfig.dev) {
+//     console.log("building");
+//     const builder = new Builder(nuxt);
+//     await builder.build();
+//   }
+//   // Give nuxt middleware to express
+//   app.use(nuxt.render);
+//   // Listen the server
+//   const port = process.env.PORT || 3000
+//   app.listen(port);
+
+//   console.log(`Server listening on port:${port}`);
+// }
+// start();

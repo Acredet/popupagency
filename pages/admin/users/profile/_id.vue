@@ -19,7 +19,6 @@
 
 <script>
 export default {
-  middleware: 'authenticated',
   layout: 'admin',
   name: 'UserProfile',
   data () {

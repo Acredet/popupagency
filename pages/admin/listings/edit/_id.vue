@@ -7,7 +7,6 @@
 <script>
 export default {
   name: 'EditListing',
-  middleware: 'authenticated',
   layout: 'admin',
   data () {
     return {

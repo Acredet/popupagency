@@ -1,5 +1,4 @@
 exports.ListingDepedancies = {
-  middleware: 'authenticated',
   layout: 'admin',
   data () {
     return {
@@ -67,7 +66,7 @@ exports.ListingDepedancies = {
 
       await this.$axios.$post(`/${link}`, item)
         .then((res) => {
-          this.getItems()
+          this.getItems(link)
           const inputs = [...document.querySelectorAll('.input-group--wrapper input')]
           const images = [...document.querySelectorAll('.input-group--wrapper img')]
 
@@ -86,7 +85,6 @@ exports.ListingDepedancies = {
             }
           })
           this.loadingState = true
-          this.$router.go()
         })
         .catch((err) => {
           this.loadingState = false
@@ -133,11 +131,16 @@ exports.ListingDepedancies = {
         console.log(pair[0] + ', ' + pair[1])
         const data = new FormData()
         if (pair[0] === 'edit-avatar') {
+          if (pair[1].name === '') {
+            this.editForm.avatar = null
+            return
+          }
           data.append(pair[0], pair[1])
           if (pair[1].name) {
             await this.$axios.$post(`/${link}/images`, data)
               .then((res) => {
                 this.editForm.avatar = res
+                console.log(res)
               })
               .catch((err) => {
                 this.$bvToast.toast(err.response.data.msg, {
@@ -154,17 +157,7 @@ exports.ListingDepedancies = {
       }
 
       await this.$axios.$patch(`/${link}/${this.editForm._id}`, this.editForm)
-        .then((res) => {
-          this.getItems()
-          this.toast = {
-            title: this.$t('category.toast.edit'),
-            variant: 'success',
-            visible: true,
-            text: `${this.$t('category.toast.justEdited')} ${this.editForm.name} Categories.`
-          }
-
-          this.$router.go()
-        })
+        .then(res => this.getItems(link))
         .catch((err) => {
           this.loadingState = false
           this.toast = {
@@ -180,14 +173,14 @@ exports.ListingDepedancies = {
 
       await this.$axios.$delete(`/${link}/${this.editForm._id}`)
         .then((res) => {
-          this.getItems()
+          this.getItems(link)
           this.toast = {
             title: this.$t('category.toast.delete'),
             variant: 'success',
             visible: true,
             text: `${this.$t('category.toast.justDeleted')} ${this.editForm.name} Categories.`
           }
-          this.$router.go()
+          // this.$router.go()
         })
         .catch((err) => {
           this.loadingState = false

@@ -1,8 +1,5 @@
 export default function ({ store, redirect }) {
-  // If the user is not authenticated
-  if (process.client) {
-    if (!store.state.auth.loggedIn) {
-      return redirect('/admin/login')
-    }
+  if (process.client && !store.state.auth.loggedIn) {
+    redirect('/admin/login')
   }
 }

@@ -8,7 +8,7 @@
         img-width="1024"
         img-height="480"
       >
-        <b-carousel-slide v-for="(img, index) in card.images.slice(0,2)" :key="String(index)" :img-src="require(`@/server/images/${img}`)" />
+        <b-carousel-slide v-for="(img, index) in card.images.slice(0,2)" :key="String(index)" :img-src="`https://popup.dk.se/_nuxt/img/${img}`" />
       </b-carousel>
     </b-card-body>
 

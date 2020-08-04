@@ -11,13 +11,12 @@
 </template>
 
 <script>
-/* eslint-disable no-sequences */
 import adminHeader from '@/components/admin/admin-Header'
-// import adminFooter from '@/components/admin/adminFooter'
 import adminSidebar from '@/components/admin/admin-Sidebar.vue'
 import { AdminPanelDependancies } from '@/mixins/AdminPanelDependancies'
 
 export default {
+  middleware: 'authenticated',
   name: 'AdminLayout',
   components: {
     adminHeader,

@@ -93,7 +93,6 @@ module.exports = {
   auth: {
     // Options
     cookie: {
-      domain: 'popup.dk',
       secure: 'true'
     },
     redirect: {
@@ -129,8 +128,15 @@ module.exports = {
     linkActiveClass: 'active'
   },
   /*
+  ** Server Middleware
+  */
+  serverMiddleware: {
+    '/': '~/server'
+  },
+  /*
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
    */
-  build: {}
+  build: {
+  }
 }

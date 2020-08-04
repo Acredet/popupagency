@@ -60,13 +60,13 @@
           <our-uploader
             :responsivness="{ cols: 12, sm: 12, md: 12, lg: 12 }"
             :name="'edit-avatar'"
-            :old-images="[editForm.avatar]"
+            :old-images="(editForm.avatar && editForm.avatar.length > 0) ? [editForm.avatar] : []"
             :max-number-of-inputs="1"
             :max-file-size="64"
           >
             <template v-slot:old-Image>
-              <div v-if="editForm && editForm.avatar" class="d-flex justify-content-center">
-                <b-img style="height: 150px" :src="require(`@/server/images/${editForm.avatar}`)" />
+              <div v-if="editForm && editForm.avatar && editForm.avatar.length > 0" class="d-flex justify-content-center">
+                <b-img style="height: 150px" :src="`https://popup.dk.se/_nuxt/img/${editForm.avatar}`" />
               </div>
             </template>
           </our-uploader>
@@ -240,6 +240,19 @@ export default {
     ourUploader
   },
   mixins: [ListingDepedancies],
+  computed: {
+    nuxtState () {
+      return this.$nuxt.context.nuxtState
+    }
+  },
+  watch: {
+    nuxtState: {
+      immediate: true,
+      handler: (val) => {
+        console.log(val)
+      }
+    }
+  },
   mounted () {
     this.getItems('tag')
   }

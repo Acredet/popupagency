@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "commit": "git add . && git commit -m ",
-    "dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",
+    "dev": "nuxt",
     "generate": "nuxt generate",
     "push": "git push origin master",
-    "start": "node server/app.js",
+    "start": "nuxt start",
     "stop": "taskkill -f -im node.exe",
     "build": "nuxt build",
     "export": "nuxt export",
@@ -43,6 +43,7 @@
     "@nuxtjs/eslint-module": "^2.0.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.2.0",
-    "eslint-plugin-nuxt": "^1.0.0"
+    "eslint-plugin-nuxt": "^1.0.0",
+    "webpack-watch-files-plugin": "^1.0.3"
   }
 }

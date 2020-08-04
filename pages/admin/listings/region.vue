@@ -196,7 +196,6 @@
 <script>
 export default {
   name: 'ListingRegion',
-  middleware: 'authenticated',
   layout: 'admin',
   data () {
     return {

@@ -3,7 +3,7 @@ const { date } = require('joi')
 
 const storage = multer.diskStorage({
   destination (req, file, cb) {
-    cb(null, `${__dirname}/../images`)
+    cb(null, `${__dirname}/../../.nuxt/dist/client/img/`)
   },
   filename (req, file, cb) {
     console.log(file)

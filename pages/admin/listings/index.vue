@@ -38,7 +38,7 @@
           </template>
 
           <template v-slot:cell(cover)="data">
-            <b-img v-if="data.item.cover && data.item.cover[0]" width="100" :src="require(`@/server/images/${data.item.cover[0]}`)" />
+            <b-img v-if="data.item.cover && data.item.cover[0]" width="100" :src="`https://popup.dk.se/_nuxt/img/${data.item.cover[0]}`" />
             <p v-else class="text-center">
               -
             </p>
@@ -72,7 +72,6 @@
 <script>
 export default {
   name: 'Listings',
-  middleware: 'authenticated',
   layout: 'admin',
   data () {
     return {

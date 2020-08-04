@@ -64,7 +64,7 @@
                         <b-btn variant="danger" class="delete-btn" aria-label="Close" @click="deleteImageFromExistingArray(index, 'bildgalleri')">
                           <span aria-hidden="true">&times;</span>
                         </b-btn>
-                        <b-img class="mx-2" style="height: 150px" :src="require(`@/server/images/${img}`)" />
+                        <b-img class="mx-2" style="height: 150px" :src="`https://popup.dk.se/_nuxt/img/${img}`" />
                       </div>
                     </b-col>
                   </b-row>
@@ -101,7 +101,7 @@
                         <b-btn type="button" variant="danger" class="delete-btn" aria-label="Close" @click="deleteImageFromExistingArray(index, 'cover')">
                           <span aria-hidden="true">&times;</span>
                         </b-btn>
-                        <b-img class="mx-2" style="height: 150px" :src="require(`@/server/images/${img}`)" />
+                        <b-img class="mx-2" style="height: 150px" :src="`https://popup.dk.se/_nuxt/img/${img}`" />
                       </div>
                     </b-col>
                   </b-row>
@@ -238,7 +238,7 @@
                           <b-btn type="button" variant="danger" class="delete-btn" aria-label="Close" @click="deleteImageFromExistingArray(index, 'planritning')">
                             <span aria-hidden="true">&times;</span>
                           </b-btn>
-                          <b-img class="mx-2" style="height: 150px" :src="require(`@/server/images/${img}`)" />
+                          <b-img class="mx-2" style="height: 150px" :src="`https://popup.dk.se/_nuxt/img/${img}`" />
                         </div>
                       </b-col>
                     </b-row>
@@ -377,7 +377,7 @@
                           <b-btn type="button" variant="danger" class="delete-btn" aria-label="Close" @click="deleteImageFromExistingArray(index, 'centrumgalleri')">
                             <span aria-hidden="true">&times;</span>
                           </b-btn>
-                          <b-img class="mx-2" style="height: 150px" :src="require(`@/server/images/${img}`)" />
+                          <b-img class="mx-2" style="height: 150px" :src="`https://popup.dk.se/_nuxt/img/${img}`" />
                         </div>
                       </b-col>
                     </b-row>
