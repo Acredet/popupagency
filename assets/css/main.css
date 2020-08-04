@@ -33,3 +33,6 @@
   color: #6c4d92;
   text-decoration: none
 }
+table.b-table thead tr[role='row'] { background: #FFF !important }
+table.b-table tbody tr[role='row']:nth-child(even) { background: #eee !important }
+table.b-table tbody tr[role='row']:nth-child(odd) { background: #FFF !important }

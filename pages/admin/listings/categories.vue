@@ -2,7 +2,7 @@
   <div class="content">
     <loading :state="loadingState" />
 
-    <b-modal id="edit-modal" centered :title="$t('category.editModal.title')" @close="editForm = {}">
+    <b-modal id="edit-modal" centered :title="$t('category.editModal.title')" @close="editForm = {name: '',parent: null,description: ''}">
       <b-form id="edit-category" enctype="multipart/form-data">
         <b-form-group
           id="name-group"
@@ -96,7 +96,7 @@
         <b-btn variant="danger" @click="deleteItem('category'); ok()">
           {{ $t('actions.delete') }}
         </b-btn>
-        <b-btn variant="primary" @click="cancel(); editForm = {}">
+        <b-btn variant="primary" @click="cancel(); editForm = {name: '',parent: null,description: ''}">
           {{ $t('actions.cancle') }}
         </b-btn>
       </template>

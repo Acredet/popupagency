@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <loading :state="loadingState" />
-    <b-modal id="edit-modal" centered :title="$t('tag.editModal.title')" @close="editForm = {}">
+    <b-modal id="edit-modal" centered :title="$t('tag.editModal.title')" @close="editForm = {name: '',parent: null,description: ''}">
       <b-form id="edit-tag" enctype="multipart/form-data">
         <b-form-group
           id="name-group"
@@ -95,7 +95,7 @@
         <b-btn variant="danger" @click="deleteItem('tag'); ok()">
           {{ $t('actions.delete') }}
         </b-btn>
-        <b-btn variant="primary" @click="cancel(); editForm = {}">
+        <b-btn variant="primary" @click="cancel(); editForm = {name: '',parent: null,description: ''}">
           {{ $t('actions.cancle') }}
         </b-btn>
       </template>
@@ -240,19 +240,6 @@ export default {
     ourUploader
   },
   mixins: [ListingDepedancies],
-  computed: {
-    nuxtState () {
-      return this.$nuxt.context.nuxtState
-    }
-  },
-  watch: {
-    nuxtState: {
-      immediate: true,
-      handler: (val) => {
-        console.log(val)
-      }
-    }
-  },
   mounted () {
     this.getItems('tag')
   }
@@ -260,5 +247,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

@@ -12,12 +12,12 @@ exports.ListingDepedancies = {
       form: {
         name: '',
         parent: null,
-        description: null
+        description: ''
       },
       editForm: {
         name: '',
         parent: null,
-        description: null
+        description: ''
       },
       sortBy: 'name',
       sortDesc: false,
@@ -51,12 +51,16 @@ exports.ListingDepedancies = {
   },
   methods: {
     async addItem (link) {
+      this.loadingState = true
+
       const item = new FormData(document.getElementById(`add-${link}`))
 
       for (const key in this.form) {
         if (this.form.hasOwnProperty(key)) {
           const element = this.form[key]
-          item.append(key, element)
+          if (element !== '') {
+            item.append(key, element)
+          }
         }
       }
 
@@ -81,10 +85,15 @@ exports.ListingDepedancies = {
             this.form = {
               name: '',
               parent: null,
-              description: null
+              description: ''
+            }
+            this.editForm = {
+              name: '',
+              parent: null,
+              description: ''
             }
           })
-          this.loadingState = true
+          this.loadingState = false
         })
         .catch((err) => {
           this.loadingState = false
@@ -131,12 +140,8 @@ exports.ListingDepedancies = {
         console.log(pair[0] + ', ' + pair[1])
         const data = new FormData()
         if (pair[0] === 'edit-avatar') {
-          if (pair[1].name === '') {
-            this.editForm.avatar = null
-            return
-          }
-          data.append(pair[0], pair[1])
-          if (pair[1].name) {
+          if (pair[1].name !== '') {
+            data.append(pair[0], pair[1])
             await this.$axios.$post(`/${link}/images`, data)
               .then((res) => {
                 this.editForm.avatar = res
@@ -157,7 +162,15 @@ exports.ListingDepedancies = {
       }
 
       await this.$axios.$patch(`/${link}/${this.editForm._id}`, this.editForm)
-        .then(res => this.getItems(link))
+        .then((res) => {
+          this.getItems(link)
+          this.loadingState = false
+          this.editForm = {
+            name: '',
+            parent: null,
+            description: ''
+          }
+        })
         .catch((err) => {
           this.loadingState = false
           this.toast = {
