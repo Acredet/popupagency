@@ -38,7 +38,6 @@ module.exports = {
    ** Global CSS
    */
   css: [
-    '@/static/css/style.css',
     '@/assets/css/main.css'
   ],
   /*

@@ -120,7 +120,8 @@ exports.AdminPanelDependancies = {
     return {
       link: [
         { href: '/plugins/morris/morris.css', rel: 'stylesheet', type: 'text/css' },
-        { href: '/css/metismenu.min.css', rel: 'stylesheet', type: 'text/css' }
+        { href: '/css/metismenu.min.css', rel: 'stylesheet', type: 'text/css' },
+        { href: '/css/style.css', rel: 'stylesheet', type: 'text/css', body: true }
       ],
       script: [
         { src: '/js/jquery.min.js' },
