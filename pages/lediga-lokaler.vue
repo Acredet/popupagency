@@ -5,7 +5,7 @@
       <b-container fluid>
         <b-row no-gutters class="py-2">
           <!-- Start Search Input -->
-          <b-col cols="12" sm="9" md="auto" class="mr-2 d-flex align-items-center">
+          <b-col cols="12" sm="9" md="4" class="mr-2 d-flex align-items-center">
             <b-input-group>
               <b-form-input placeholder="Address, City, Zip, Neighborhood, School" />
               <b-input-group-append>
@@ -17,136 +17,143 @@
           </b-col>
           <!-- End Search Input -->
 
-          <!-- Start price Filter -->
+          <!-- Start plats Filter -->
           <b-col cols="12" md="auto" class="mr-2 d-none d-md-flex align-items-center">
-            <b-dropdown id="price-dropdown" class="w-100" variant="light" :text="filters.price.text">
-              <b-dropdown-group header="Price" style="width: 300px !important" class="px-1">
-                <b-form-input id="min-price-input" v-model="filters.price.min" list="min-price" class="mb-2" placeholder="$min" />
-                <b-form-datalist id="min-price" :options="filters.price.minOpts" />
+            <b-dropdown id="plats-dropdown" variant="light" :text="filters.plats.text">
+              <!-- Start first horizontal tab -->
+              <div style="width: 500px" class="custom-tab border plats">
+                <div class="cities w-full">
+                  <!-- Start Tabs -->
+                  <b-tabs
+                    nav-wrapper-class="w-25 h-100 overflow-auto border"
+                    nav-class="d-block p-0 m-0"
+                    pills
+                    card
+                    content-class="overflow-auto"
+                    vertical
+                  >
+                    <!-- Start First tab -->
 
-                <b-form-input id="max-price-input" v-model="filters.price.max" list="max-price" placeholder="$max" />
-                <b-form-datalist id="max-price" :options="filters.price.maxOpts" />
-              </b-dropdown-group>
+                    <b-tab
+                      v-for="(tab, index) in tabs"
+                      :key="String(index)"
+                      title-item-class="tabBtn"
+                      :title="tab.text"
+                    >
+                      <b-card-body class="p-1">
+                        <div class="choices">
+                          <b-form-group>
+                            <template v-slot:label>
+                              <b-form-checkbox
+                                v-model="tabs[index].allSelected"
+                                :indeterminate="tabs[index].indeterminate"
+                                :aria-describedby="tabs[index].name"
+                                :aria-controls="tabs[index].name"
+                                size="md"
+                                @change="toggleAll(index)"
+                              >
+                                <b class="font-2">Hela {{ tabs[index].name }}</b>
+                              </b-form-checkbox>
+                            </template>
+
+                            <b-form-checkbox-group
+                              :id="tabs[index].name"
+                              v-model="tabs[index].selected"
+                              :options="tabs[index].options"
+                              :name="tabs[index].name"
+                              aria-label="Individual popup"
+                              stacked
+                              @change="changed(index)"
+                            />
+                          </b-form-group>
+                        </div>
+                      </b-card-body>
+                    </b-tab>
+                    <!-- End First tab -->
+
+                    <!-- End tabs -->
+                  </b-tabs>
+                </div>
+              </div>
             </b-dropdown>
           </b-col>
-          <!-- End price Filter -->
+          <!-- End plats Filter -->
 
           <!-- Start property Filter -->
           <b-col cols="12" md="auto" class="mr-2 d-none d-md-flex align-items-center">
             <b-dropdown id="property-dropdown" class="w-100" variant="light" :text="filters.property.text">
               <b-dropdown-group header="property" style="width: 300px !important" class="px-1">
-                <b-row>
+                <b-row no-gutters>
+                  <!-- Start left buttons -->
+                  <b-col cols="6">
+                    <b-button-group vertical class="w-100">
+                      <b-button
+                        v-for="(icon) in icons.slice(0,6)"
+                        :key="icon.text"
+                        :pressed.sync="icon.state"
+                        variant="outline-dark"
+                        class="text-left"
+                        @click="addFilter(icon)"
+                      >
+                        <i :class="`fas fa-${icon.icon}`" />
+                        {{ icon.text }}
+                      </b-button>
+                    </b-button-group>
+                  </b-col>
+                  <!-- End Left buttons -->
+
+                  <!-- Start right buttons -->
+                  <b-col cols="6">
+                    <b-button-group vertical class="w-100">
+                      <b-button
+                        v-for="(icon) in icons.slice(6,12)"
+                        :key="icon.text"
+                        :pressed.sync="icon.state"
+                        variant="outline-dark"
+                        class="text-left"
+                        @click="addFilter(icon)"
+                      >
+                        <i :class="`fas fa-${icon.icon}`" />
+                        {{ icon.text }}
+                      </b-button>
+                    </b-button-group>
+                  </b-col>
+                  <!-- End right buttons -->
+                </b-row>
+                <!-- <b-row>
                   <b-col v-for="icon in filters.property.icons" :key="icon.value" class="mb-1" cols="6">
                     <span class="text-center rounded-circle" :class="{ 'checked': filters.property.choose.filter(x => x === icon.value).length !== 0 }" @click="propertyClicked(icon.value)">
                       <svg data-testid="icon-single-family-circle" class="property-icon" viewBox="0 0 512 512"><path :d="icon.path" /></svg>
-                      <!-- <br> -->
                       <b>{{ icon.text }}</b>
                     </span>
                   </b-col>
-                </b-row>
+                </b-row> -->
               </b-dropdown-group>
             </b-dropdown>
           </b-col>
           <!-- End property Filter -->
 
-          <!-- Start beds Filter -->
-          <b-col cols="12" md="auto" class="mr-2 d-none d-lg-flex align-items-center">
-            <b-dropdown id="beds-dropdown" class="w-100" variant="light" text="Beds">
-              <b-dropdown-group header="Beds" style="width: 300px !important" class="px-1">
-                <b-form-group class="w-100">
-                  <b-form-radio-group
-                    id="btn-radios-2"
-                    v-model="filters.beds.choose"
-                    class="w-100"
-                    :options="filters.beds.opts"
-                    buttons
-                    block
-                    button-variant="outline-dark"
-                    name="radio-btn-outline"
-                  />
-                  <br>
-                  <p class="text-center">
-                    Or Select Bedrooms Range
-                  </p>
-                  <b-row>
-                    <b-col md="6">
-                      <b-form-select v-model="filters.beds.range.from" :options="[{ value: null, text: 'From' }, ...filters.beds.range.opts]" />
-                    </b-col>
-                    <b-col md="6">
-                      <b-form-select v-model="filters.beds.range.to" :options="[{ value: null, text: 'To' }, ...filters.beds.range.opts]" />
-                    </b-col>
-                  </b-row>
-                </b-form-group>
+          <!-- Start price Filter -->
+          <b-col cols="12" md="auto" class="mr-2 d-none d-md-flex align-items-center">
+            <b-dropdown id="price-dropdown" class="w-100" variant="light" right :text="filters.price.text">
+              <b-dropdown-group header="Price" style="width: 300px !important" class="px-3">
+                <vue-slider v-model="filters.price.value" />
+                <small>{{ filters.price.value[0] || 0 }} Kr — {{ filters.price.value[1] || 0 }} Kr</small>
               </b-dropdown-group>
             </b-dropdown>
           </b-col>
-          <!-- End beds Filter -->
+          <!-- End price Filter -->
 
-          <!-- Start bathrooms Filter -->
-          <b-col cols="12" md="auto" class="mr-2 d-none d-lg-flex align-items-center">
-            <b-dropdown id="bathrooms-dropdown" class="w-100" variant="light" text="Bathrooms">
-              <b-dropdown-group header="Bathrooms" style="width: 300px !important" class="px-1">
-                <b-form-group>
-                  <b-form-radio-group
-                    id="btn-radios-2"
-                    v-model="filters.bathrooms.choose"
-                    class="w-100"
-                    :options="filters.bathrooms.opts"
-                    buttons
-                    block
-                    button-variant="outline-dark"
-                    name="radio-btn-outline"
-                  />
-                  <br>
-                  <p class="text-center">
-                    Or Select Bethrooms Range
-                  </p>
-                  <b-row>
-                    <b-col md="6">
-                      <b-form-select v-model="filters.bathrooms.range.from" :options="[{ value: null, text: 'From' }, ...filters.bathrooms.range.opts]" />
-                    </b-col>
-                    <b-col md="6">
-                      <b-form-select v-model="filters.bathrooms.range.to" :options="[{ value: null, text: 'To' }, ...filters.bathrooms.range.opts]" />
-                    </b-col>
-                  </b-row>
-                </b-form-group>
+          <!-- Start yta Filter -->
+          <b-col cols="12" md="auto" class="mr-2 d-none d-md-flex align-items-center">
+            <b-dropdown id="yta-dropdown" class="w-100" variant="light" right :text="filters.yta.text">
+              <b-dropdown-group header="Yta" style="width: 300px !important" class="px-3">
+                <vue-slider v-model="filters.yta.value" />
+                <small>{{ filters.yta.value[0] || 0 }} m<sup>3</sup> — {{ filters.yta.value[1] || 0 }} m<sup>3</sup></small>
               </b-dropdown-group>
             </b-dropdown>
           </b-col>
-          <!-- End bathrooms Filter -->
-
-          <!-- Start Status Filter -->
-          <b-col cols="12" md="auto" class="mr-2 d-none d-lg-flex align-items-center">
-            <b-dropdown id="listing-status-dropdown" class="w-100" variant="light" text="Listing Status">
-              <b-dropdown-group header="Listing Status" style="width: 300px !important" class="px-1">
-                <b-form-group>
-                  <b-form-radio-group
-                    id="listing-status-group"
-                    v-model="filters.status.choose.status"
-                    name="listing-status"
-                  >
-                    <b-form-radio value="any">
-                      Any
-                    </b-form-radio>
-                    <b-form-radio value="existing">
-                      Existing Homes
-                    </b-form-radio>
-                    <b-form-radio value="new">
-                      New construction
-                    </b-form-radio>
-                  </b-form-radio-group>
-                </b-form-group>
-                <b-dropdown-divider />
-                <b-form-checkbox-group
-                  id="checkbox-group-1"
-                  v-model="filters.status.choose.feats"
-                  :options="filters.status. options"
-                  name="flavour-1"
-                />
-              </b-dropdown-group>
-            </b-dropdown>
-          </b-col>
-          <!-- End Status Filter -->
+          <!-- End yta Filter -->
 
           <!-- Start more Filters -->
           <b-col cols="12" sm="2" md="auto" class="d-flex align-items-center justify-content-end">
@@ -169,115 +176,6 @@
                   <b-form-datalist id="sidebar-max-price" :options="filters.price.maxOpts" />
                 </b-collapse>
                 <!-- End Price Tab -->
-
-                <!-- Start property Tab -->
-                <li v-b-toggle="'property'" class="font-3 mb-1" v-text="'property'" />
-
-                <b-collapse id="property" accordion="filters" role="tabpanel">
-                  <b-row>
-                    <b-col v-for="icon in filters.property.icons" :key="icon.value" class="mb-1" cols="6">
-                      <span class="text-center rounded-circle" :class="{ 'checked': filters.property.choose.filter(x => x === icon.value).length !== 0 }" @click="propertyClicked(icon.value)">
-                        <svg data-testid="icon-single-family-circle" class="property-icon" viewBox="0 0 512 512"><path :d="icon.path" /></svg>
-                        <!-- <br> -->
-                        <b>{{ icon.text }}</b>
-                      </span>
-                    </b-col>
-                  </b-row>
-                </b-collapse>
-                <!-- End property Tab -->
-
-                <!-- Start beds Tab -->
-                <li v-b-toggle="'beds'" class="font-3 mb-1" v-text="'Beds'" />
-
-                <b-collapse id="beds" accordion="filters" role="tabpanel">
-                  <b-form-group class="w-100">
-                    <b-form-radio-group
-                      id="btn-radios-2"
-                      v-model="filters.beds.choose"
-                      class="w-100"
-                      :options="filters.beds.opts"
-                      buttons
-                      block
-                      button-variant="outline-dark"
-                      name="radio-btn-outline"
-                    />
-                    <br>
-                    <p class="text-center">
-                      Or Select Bedrooms Range
-                    </p>
-                    <b-row>
-                      <b-col md="6">
-                        <b-form-select v-model="filters.beds.range.from" :options="[{ value: null, text: 'From' }, ...filters.beds.range.opts]" />
-                      </b-col>
-                      <b-col md="6">
-                        <b-form-select v-model="filters.beds.range.to" :options="[{ value: null, text: 'To' }, ...filters.beds.range.opts]" />
-                      </b-col>
-                    </b-row>
-                  </b-form-group>
-                </b-collapse>
-                <!-- End beds Tab -->
-
-                <!-- Start bathrooms Tab -->
-                <li v-b-toggle="'bathrooms'" class="font-3 mb-1" v-text="'Bathrooms'" />
-
-                <b-collapse id="bathrooms" accordion="filters" role="tabpanel">
-                  <b-form-group>
-                    <b-form-radio-group
-                      id="btn-radios-2"
-                      v-model="filters.bathrooms.choose"
-                      class="w-100"
-                      :options="filters.bathrooms.opts"
-                      buttons
-                      block
-                      button-variant="outline-dark"
-                      name="radio-btn-outline"
-                    />
-                    <br>
-                    <p class="text-center">
-                      Or Select Bethrooms Range
-                    </p>
-                    <b-row>
-                      <b-col md="6">
-                        <b-form-select v-model="filters.bathrooms.range.from" :options="[{ value: null, text: 'From' }, ...filters.bathrooms.range.opts]" />
-                      </b-col>
-                      <b-col md="6">
-                        <b-form-select v-model="filters.bathrooms.range.to" :options="[{ value: null, text: 'To' }, ...filters.bathrooms.range.opts]" />
-                      </b-col>
-                    </b-row>
-                  </b-form-group>
-                </b-collapse>
-                <!-- End bathrooms Tab -->
-
-                <!-- Start Status Tab -->
-                <li v-b-toggle="'Status'" class="font-3 mb-1" v-text="'Listing Status'" />
-
-                <b-collapse id="Status" accordion="filters" role="tabpanel">
-                  <b-form-group>
-                    <b-form-radio-group
-                      id="listing-status-group"
-                      v-model="filters.status.choose.status"
-                      name="listing-status"
-                    >
-                      <b-form-radio value="any">
-                        Any
-                      </b-form-radio>
-                      <b-form-radio value="existing">
-                        Existing Homes
-                      </b-form-radio>
-                      <b-form-radio value="new">
-                        New construction
-                      </b-form-radio>
-                    </b-form-radio-group>
-                  </b-form-group>
-                  <b-dropdown-divider />
-                  <b-form-checkbox-group
-                    id="checkbox-group-1"
-                    v-model="filters.status.choose.feats"
-                    :options="filters.status. options"
-                    name="flavour-1"
-                  />
-                </b-collapse>
-                <!-- End Status Tab -->
               </ul>
             </b-container>
           </b-sidebar>
@@ -314,44 +212,147 @@
 
 <script>
 import { BootstrapVue, BIcon } from 'bootstrap-vue'
+import 'vue-slider-component/theme/material.css'
+let VueSlider
+if (process.browser) {
+  VueSlider = require('vue-slider-component')
+}
 
 export default {
   components: {
     // eslint-disable-next-line vue/no-unused-components
     BootstrapVue,
     // eslint-disable-next-line vue/no-unused-components
-    BIcon
+    BIcon,
+    VueSlider
   },
   data () {
     return {
+      tabs: [
+        {
+          name: 'Stockholm',
+          text: 'Stockholm (51)',
+          allSelected: false, // Shape of the check
+          indeterminate: false, // Shape of the check
+          selected: [],
+          options: [
+            'Väsby Centrum (4)',
+            'Värmdö Köpcentrum (1)',
+            'Vällingby Centrum (1)',
+            'Tyresö Centrum (6)',
+            'Täby Centrum (7)',
+            'Sollentuna Centrum (1)',
+            'Söderhallarna (1)',
+            'Skrapan (1)',
+            'Skärholmen centrum (5)',
+            'Signalfabriken (1)',
+            'Kungens Kurva Shoppingcenter (1)',
+            'Kista (1)',
+            'Hornstull Galleria (2)',
+            'Haninge Centrum (1)',
+            'Götgatan 31 (1)',
+            'Globen Shopping (2)',
+            'Gallerian (1)',
+            'Farsta Centrum (2)',
+            'Bromma Blocks (3)',
+            'BETA (1)',
+            'Bålsta Centrum (1)',
+            'Arninge Centrum (1)',
+            'Åkersberga Centrum (1)'
+          ]
+        },
+        {
+          name: 'Malmö',
+          text: 'Malmö (11)',
+          allSelected: false, // Shape of the check
+          indeterminate: false, // Shape of the check
+          selected: [],
+          options: [
+            'Triangeln (3)',
+            'Södra Förstadsgatan (1)',
+            'Södertull (1)',
+            'Burlöv centrum (6)'
+          ]
+        }
+      ],
+      icons: [
+        {
+          text: 'Butikslokal',
+          icon: 'shopping-bag',
+          state: false
+        },
+        {
+          text: 'Event',
+          icon: 'calendar-alt',
+          state: false
+        },
+        {
+          text: 'Eventlokal',
+          icon: 'car ml-2',
+          state: false
+        },
+        {
+          text: 'Eventyta',
+          icon: 'calendar-day ml-2',
+          state: false
+        },
+        {
+          text: 'Galleri',
+          icon: 'image ml-2',
+          state: false
+        },
+        {
+          text: 'Showroom',
+          icon: 'warehouse ml-2',
+          state: false
+        },
+        {
+          text: 'Foodtruck',
+          icon: 'truck',
+          state: false
+        },
+        {
+          text: 'Köpcentrum',
+          icon: 'shopping-basket',
+          state: false
+        },
+        {
+          text: 'Marknad',
+          icon: 'store-alt',
+          state: false
+        },
+        {
+          text: 'Beach Market',
+          icon: 'umbrella-beach ml-2',
+          state: false
+        },
+        {
+          text: 'Julmarknad',
+          icon: 'landmark ml-2',
+          state: false
+        },
+        {
+          text: 'Mat & Dryck',
+          icon: 'hamburger',
+          state: false
+        },
+        {
+          text: 'White label popup',
+          icon: 'tag',
+          state: false
+        }
+      ],
       filters: {
+        plats: {
+          text: 'Plats'
+        },
         price: {
           text: 'Price',
-          min: null,
-          minOpts: [
-            { value: null, text: 'Any Price' },
-            { value: 80, text: '$80K' },
-            { value: 150, text: '$150K' },
-            { value: 250, text: '$250K' },
-            { value: 300, text: '$300K' },
-            { value: 400, text: '$400K' },
-            { value: 450, text: '$450K' },
-            { value: 500, text: '$500K' }
-          ],
-          max: null,
-          maxOpts: [
-            { value: 120, text: '$120K' },
-            { value: 250, text: '$250K' },
-            { value: 400, text: '$400K' },
-            { value: 500, text: '$500K' },
-            { value: 600, text: '$600K' },
-            { value: 800, text: '$800K' },
-            { value: null, text: 'Any Price' }
-          ]
+          value: [0, 100]
         },
         property: {
           text: 'Property type',
-          choose: [],
+          choose: {},
           icons: [
             {
               text: 'Any',
@@ -395,65 +396,10 @@ export default {
             }
           ]
         },
-        beds: {
-          choose: null,
-          opts: [
-            { text: 'Any', value: null },
-            { text: '1+', value: 1 },
-            { text: '2+', value: 2 },
-            { text: '3+', value: 3 },
-            { text: '4+', value: 4 },
-            { text: '5+', value: 5 }
-          ],
-          range: {
-            opts: [
-              // { value: null, text: 'Please select an option' },
-              { value: 'Studio', text: 'Studio' },
-              { value: 1, text: '1' },
-              { value: 2, text: '2' },
-              { value: 3, text: '3' },
-              { value: 4, text: '4' },
-              { value: 5, text: '5' }
-            ],
-            from: null,
-            to: null
-          }
-        },
-        bathrooms: {
-          choose: null,
-          opts: [
-            { text: 'Any', value: null },
-            { text: '1+', value: 1 },
-            { text: '2+', value: 2 },
-            { text: '3+', value: 3 },
-            { text: '4+', value: 4 },
-            { text: '5+', value: 5 }
-          ],
-          range: {
-            opts: [
-              // { value: null, text: 'Please select an option' },
-              { value: 'Studio', text: 'Studio' },
-              { value: 1, text: '1' },
-              { value: 2, text: '2' },
-              { value: 3, text: '3' },
-              { value: 4, text: '4' },
-              { value: 5, text: '5' }
-            ],
-            from: null,
-            to: null
-          }
-        },
-        status: {
-          choose: {
-            status: null,
-            feats: []
-          },
-          options: [
-            { text: 'Hide Pending / Contingent', value: 'Hide' },
-            { text: 'Price Reduced', value: 'Price' },
-            { text: 'Open House', value: 'Open' },
-            { text: '3D, Virtual Tours', value: '3D' }
-          ]
+        yta: {
+          text: 'Yta',
+          value: [0, 100],
+          enableCross: false
         }
       },
       cards: [],
@@ -463,6 +409,14 @@ export default {
         { position: { lat: -0.48585, lng: 117.1466 } },
         { position: { lat: -6.9127778, lng: 107.6205556 } }
       ]
+    }
+  },
+  computed: {
+    minYtaState () {
+      return (this.filters.yta.min && !this.filters.yta.max) || (this.filters.yta.min < this.filters.yta.max)
+    },
+    maxYtaState () {
+      return (this.filters.yta.max && !this.filters.yta.min) || (this.filters.yta.min < this.filters.yta.max)
     }
   },
   watch: {
@@ -497,7 +451,7 @@ export default {
       .then((res) => {
         this.cards = res.data.map((x) => {
           return {
-            images: [],
+            images: x.cover,
             place: x.stad,
             money: `fr ${x.prispermanad} kr / månad`,
             text: x.beskreving
@@ -507,14 +461,50 @@ export default {
       .catch(err => console.log(err))
   },
   methods: {
-    propertyClicked (property) {
-      const existed = this.filters.property.choose.indexOf(property)
-      console.log(existed)
-      if (existed !== -1) {
-        this.filters.property.choose.splice(existed, 1)
+    toggleAll (index) {
+      this.tabs[index].selected =
+        this.tabs[index].selected.length !== this.tabs[index].options.length
+          ? this.tabs[index].options.slice()
+          : []
+    },
+    changed (index) {
+      console.log(this.tabs[index].selected.length)
+      this.$nextTick(() => {
+        if (this.tabs[index].selected.length === 0) {
+          this.tabs[index].indeterminate = false
+          this.tabs[index].allSelected = false
+        } else if (
+          this.tabs[index].selected.length === this.tabs[index].options.length
+        ) {
+          this.tabs[index].indeterminate = false
+          this.tabs[index].allSelected = true
+        } else {
+          this.tabs[index].indeterminate = true
+          this.tabs[index].allSelected = false
+        }
+      })
+    },
+    addToFilters (val, index) {
+      const existing = this.filters.findIndex(x => x === val)
+      if (existing === -1) {
+        const length = this.icons[index].icon.length
+        console.log(length)
+        this.filters.push(val)
+        this.icons[index].icon = this.icons[index].icon + ' active'
       } else {
-        this.filters.property.choose.push(property)
+        this.filters.splice(existing, existing + 1)
+        const activeIndex = this.icons[index].icon.indexOf(' active')
+        this.icons[index].icon = this.icons[index].icon.slice(0, activeIndex)
       }
+    },
+    addFilter (button) {
+      this.$nextTick(() => {
+        if (this.filters.property.choose[button.text]) {
+          this.filters.property.choose[button.text] = !this.filters.property.choose[button.text]
+        } else {
+          this.filters.property.choose[button.text] = true
+        }
+      })
     }
   }
 }
@@ -565,6 +555,10 @@ span:hover > svg, span.checked > svg{
 
 span ~ button.list-group-item {
   background-color: #ddd !important;
+}
+
+.custom-tab, .custom-tab div {
+  height: 300px;
 }
 
 </style>

@@ -5,7 +5,7 @@
     <div class="topbar-left">
       <nuxt-link to="/lediga-lokaler" class="logo">
         <span>
-          <img src="/images/logo.png" alt height="40">
+          <img src="/images/logo-white.svg" alt height="50">
         </span>
         <i>
           <img src="/favo-light.png" alt height="30">
