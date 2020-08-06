@@ -1,8 +1,8 @@
 <template>
   <div class="content">
     <loading :state="loadingState" />
-    <b-modal id="edit-modal" centered :title="$t('tag.editModal.title')" @close="editForm = {name: {en: '',sv: ''},parent: null,description: {en: '',sv: ''}}">
-      <b-form id="edit-tag" enctype="multipart/form-data">
+    <b-modal id="edit-modal" centered :title="$t('category.editModal.title')" @close="editForm = {name: {en: '',sv: ''},parent: null,description: {en: '',sv: ''}}">
+      <b-form id="edit-category" enctype="multipart/form-data">
         <b-form-group
           id="name-sv-group"
           :label="`${$t('forms.name.title')} (Swedish):`"
@@ -107,7 +107,7 @@
       </template>
     </b-modal>
 
-    <b-modal id="delete-modal" centered :title="$t('tag.deleteModal.title')">
+    <b-modal id="delete-modal" centered :title="$t('category.deleteModal.title')">
       <p class="my-4">
         {{ $t('actions.deleteConfimrMessage') }} {{ editForm.name }}?
       </p>
@@ -123,10 +123,10 @@
     </b-modal>
 
     <b-container>
-      <h2>{{ $t('tag.title') }}</h2>
+      <h2>{{ $t('category.title') }}</h2>
       <b-row>
         <b-col cols="12" md="4">
-          <b-form id="add-tag">
+          <b-form id="add-category">
             <b-form-group
               id="name-sv-group"
               :label="`${$t('forms.name.title')} (Swedish):`"
@@ -218,7 +218,7 @@
               <our-uploader :responsivness="{ cols: 12, sm: 12, md: 12, lg: 12 }" :name="'avatar'" :max-number-of-inputs="1" :max-file-size="64" />
             </b-form-group>
 
-            <b-btn variant="primary" :disabled="!form.name.en || !form.name.sv" @click="addItem('category')" v-text="$t('tag.addBtn')" />
+            <b-btn variant="primary" :disabled="!form.name.en || !form.name.sv" @click="addItem('category')" v-text="$t('category.addBtn')" />
           </b-form>
         </b-col>
 
@@ -315,7 +315,7 @@ import ourUploader from '@/components/ourUploader'
 import { ListingDepedancies } from '@/mixins/ListingDepedancies'
 
 export default {
-  name: 'ListingTags',
+  name: 'Listingcategorys',
   components: {
     ourUploader
   },
