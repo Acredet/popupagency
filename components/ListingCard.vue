@@ -5,10 +5,19 @@
         id="carousel-fade"
         style="text-shadow: 0px 0px 2px #000"
         indicators
-        img-width="1024"
-        img-height="480"
       >
-        <b-carousel-slide v-for="(img, index) in card.images.slice(0,2)" :key="String(index)" :img-src="`https://popup.dk.se/_nuxt/img/${img}`" />
+        <b-carousel-slide v-for="(img, index) in card.images" :key="String(index)" :img-src="`https://popup.dk.se/_nuxt/img/${img}`">
+          <template v-slot:img>
+            <img
+              :src="`https://popup.dk.se/_nuxt/img/${img}`"
+              class="img-fluid"
+              width="480px"
+              height="320px"
+              :alt="card.text"
+              :srcset="`https://popup.dk.se/_nuxt/img/${img}`"
+            >
+          </template>
+        </b-carousel-slide>
       </b-carousel>
     </b-card-body>
 
