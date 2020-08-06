@@ -210,7 +210,10 @@ export default {
       expiry: 'Lista utgångsdatum:'
     },
     errors: {
-      title: 'Du bör lägga till titel',
+      title: {
+        en: 'Du bör lägga till titel på engelska',
+        sv: 'Du bör lägga till titel på svenska'
+      },
       stad: 'Du bör välja stad',
       location: 'Du bör lägga till plats',
       category: 'Du bör välja kategori',

@@ -9,22 +9,45 @@
           <b-card :title="$t('addListing.inputs.title.label')">
             <b-card-body>
               <b-form-group
-                id="title-group"
-                label-for="title"
+                id="title-sv-group"
+                label="Swedish:"
+                label-for="title-sv"
               >
                 <b-form-input
-                  id="title"
-                  v-model="title"
+                  id="title-sv"
+                  v-model="title.sv"
                   required
                   autocomplete="off"
-                  :state="titleValid"
+                  :state="titleValidSv"
                   :placeholder="$t('addListing.inputs.title.holder')"
                 />
-                <b-form-invalid-feedback :state="titleValid">
+                <b-form-invalid-feedback :state="titleValidSv">
                   {{ $t('forms.required') }}
                 </b-form-invalid-feedback>
 
-                <b-form-valid-feedback :state="titleValid">
+                <b-form-valid-feedback :state="titleValidSv">
+                  {{ $t('forms.valid') }}
+                </b-form-valid-feedback>
+              </b-form-group>
+
+              <b-form-group
+                id="title-en-group"
+                label="English:"
+                label-for="title-en"
+              >
+                <b-form-input
+                  id="title-en"
+                  v-model="title.en"
+                  required
+                  autocomplete="off"
+                  :state="titleValidEn"
+                  :placeholder="$t('addListing.inputs.title.holder')"
+                />
+                <b-form-invalid-feedback :state="titleValidEn">
+                  {{ $t('forms.required') }}
+                </b-form-invalid-feedback>
+
+                <b-form-valid-feedback :state="titleValidEn">
                   {{ $t('forms.valid') }}
                 </b-form-valid-feedback>
               </b-form-group>
@@ -33,8 +56,17 @@
 
           <b-card :title="$t('addListing.inputs.beskrivning')">
             <b-card-body>
+              <p class="p-0 m-0">
+                Swedish:
+              </p>
               <client-only>
-                <VueEditor v-model="article.beskreving" />
+                <VueEditor v-model="article.beskreving.sv" class="mb-3" />
+              </client-only>
+              <p class="p-0 m-0">
+                English:
+              </p>
+              <client-only>
+                <VueEditor v-model="article.beskreving.en" />
               </client-only>
             </b-card-body>
           </b-card>
@@ -426,9 +458,13 @@
       <!-- Start Alert -->
       <b-alert :show="!valid" variant="danger">
         <div>
-          <p v-if="!titleValid" class="font-weight-bold">
+          <p v-if="!titleValidEn" class="font-weight-bold">
             <i class="fas fa-exclamation-triangle" />
-            {{ $t('addListing.errors.title') }}
+            {{ $t('addListing.errors.title.en') }}
+          </p>
+          <p v-if="!titleValidSv" class="font-weight-bold">
+            <i class="fas fa-exclamation-triangle" />
+            {{ $t('addListing.errors.title.sv') }}
           </p>
           <p v-if="!stadValid" class="font-weight-bold">
             <i class="fas fa-exclamation-triangle" />
@@ -491,9 +527,15 @@ export default {
   },
   data () {
     return {
-      title: null,
+      title: {
+        en: null,
+        sv: null
+      },
       article: {
-        beskreving: null,
+        beskreving: {
+          en: null,
+          sv: null
+        },
         centrum: null
       },
       price: {
@@ -685,8 +727,11 @@ export default {
     thereIsListing () {
       return !!this.$route.params.id
     },
-    titleValid () {
-      return !!this.title
+    titleValidEn () {
+      return !!this.title.en
+    },
+    titleValidSv () {
+      return !!this.title.sv
     },
     stadValid () {
       return !!this.city
@@ -701,7 +746,8 @@ export default {
       return !!this.lokal
     },
     valid () {
-      return !!this.titleValid &&
+      return !!this.titleValidEn &&
+              !!this.titleValidSv &&
               !!this.stadValid &&
               !!this.locationValid &&
               !!this.kategoryValid &&
@@ -839,8 +885,8 @@ export default {
       listing.delete('säsong')
       listing.delete('user')
 
-      listing.append('beskreving', this.article.beskreving)
-      listing.append('title', this.title)
+      listing.append('beskreving', JSON.stringify(this.article.beskreving))
+      listing.append('title', JSON.stringify(this.title))
 
       // ASSIGN THE PRICE
       listing.append('prisperdag', this.price.day.val || 0)

@@ -210,7 +210,10 @@ export default {
       expiry: 'Listing Expiry Date:'
     },
     errors: {
-      title: 'You should add title',
+      title: {
+        en: 'You should add title in English',
+        sv: 'You should add title in Swedish'
+      },
       stad: 'You should choose stad',
       location: 'You should add location',
       category: 'You should choose kategory',

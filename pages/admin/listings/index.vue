@@ -28,6 +28,15 @@
           responsive="sm"
           show-empty
         >
+          <template v-slot:cell(title)="data">
+            <p v-if="$i18n.locale == 'en'" class="text-center">
+              {{ JSON.parse(data.item.title).en }}
+            </p>
+            <p v-else>
+              {{ JSON.parse(data.item.title).sv }}
+            </p>
+          </template>
+
           <template v-slot:cell(expiry)="data">
             <p v-if="data.item.expiry" class="text-center">
               {{ data.item.expiry.substring(0,10) }}

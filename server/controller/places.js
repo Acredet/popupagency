@@ -27,8 +27,14 @@ exports.addPlace = async (req, res, next) => {
 
     }
     let place = new Place({
-      title: req.body.title,
-      beskreving: req.body.beskreving,
+      title: {
+        en: JSON.parse(req.body.title).en,
+        sv: JSON.parse(req.body.title).sv
+      },
+      beskreving: {
+        en: JSON.parse(req.body.beskreving).en,
+        sv: JSON.parse(req.body.beskreving).sv
+      },
       bildgalleri: req.files['bildgalleri[]'] ? req.files['bildgalleri[]'].map(x => x.filename) : [],
       cover: req.files['cover[]'] ? req.files['cover[]'].map(x => x.filename) : [],
       epost: req.body.epost,

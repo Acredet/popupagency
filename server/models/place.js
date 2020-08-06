@@ -3,8 +3,14 @@ const mongoose = require('mongoose')
 // const geocoder = require("../utils/geocoder");
 
 const PlaceSchema = new mongoose.Schema({
-  title: String,
-  beskreving: String,
+  title: {
+    en: String,
+    sv: String
+  },
+  beskreving: {
+    en: String,
+    sv: String
+  },
   bildgalleri: Array,
   cover: Array,
   epost: String,
