@@ -1,5 +1,25 @@
 <template>
   <b-row>
+    <!-- Sart Sidebar -->
+    <b-sidebar id="more-filters" title="Filter your home search" shadow>
+      <b-container class="py-2">
+        <ul class="list-unstyled">
+          <!-- Start Price Tab -->
+          <li v-b-toggle="'price'" class="font-3 mb-1" v-text="'Price'" />
+
+          <b-collapse id="price" accordion="filters" role="tabpanel">
+            <b-form-input id="sidebar-min-price-input" v-model="filters.price.min" list="sidebar-min-price" class="mb-2" placeholder="$min" />
+            <b-form-datalist id="sidebar-min-price" :options="filters.price.minOpts" />
+
+            <b-form-input id="sidebar-max-price-input" v-model="filters.price.max" list="sidebar-max-price" placeholder="$max" />
+            <b-form-datalist id="sidebar-max-price" :options="filters.price.maxOpts" />
+          </b-collapse>
+          <!-- End Price Tab -->
+        </ul>
+      </b-container>
+    </b-sidebar>
+    <!-- End SideBar -->
+
     <!-- Start filters Bar -->
     <b-col cols="12">
       <b-container fluid>
@@ -80,7 +100,7 @@
           <!-- End plats Filter -->
 
           <!-- Start property Filter -->
-          <b-col cols="12" md="auto" class="mr-2 d-none d-md-flex align-items-center">
+          <b-col cols="12" md="auto" class="mr-2 d-none d-lg-flex align-items-center">
             <b-dropdown id="property-dropdown" class="w-100" variant="light" :text="filters.property.text">
               <b-dropdown-group header="property" style="width: 300px !important" class="px-1">
                 <b-row no-gutters>
@@ -139,7 +159,7 @@
           <!-- End price Filter -->
 
           <!-- Start yta Filter -->
-          <b-col cols="12" md="auto" class="mr-2 d-none d-md-flex align-items-center">
+          <b-col cols="12" md="auto" class="mr-2 d-none d-lg-flex align-items-center">
             <b-dropdown id="yta-dropdown" class="w-100" variant="light" right :text="filters.yta.text">
               <b-dropdown-group header="Yta" style="width: 300px !important" class="px-3">
                 <vue-slider v-model="filters.yta.value" />
@@ -155,34 +175,43 @@
           </b-col>
           <!-- End more Filters -->
 
-          <!-- Sart Sidebar -->
-          <b-sidebar id="more-filters" title="Filter your home search" shadow>
-            <b-container class="py-2">
-              <ul class="list-unstyled">
-                <!-- Start Price Tab -->
-                <li v-b-toggle="'price'" class="font-3 mb-1" v-text="'Price'" />
-
-                <b-collapse id="price" accordion="filters" role="tabpanel">
-                  <b-form-input id="sidebar-min-price-input" v-model="filters.price.min" list="sidebar-min-price" class="mb-2" placeholder="$min" />
-                  <b-form-datalist id="sidebar-min-price" :options="filters.price.minOpts" />
-
-                  <b-form-input id="sidebar-max-price-input" v-model="filters.price.max" list="sidebar-max-price" placeholder="$max" />
-                  <b-form-datalist id="sidebar-max-price" :options="filters.price.maxOpts" />
-                </b-collapse>
-                <!-- End Price Tab -->
-              </ul>
-            </b-container>
-          </b-sidebar>
-          <!-- End SideBar -->
+          <!-- Start layout buttons -->
+          <b-col cols="12" md="auto" class="d-none ml-auto d-md-flex align-items-center justify-content-end">
+            <b-form-group class="p-0 m-0">
+              <b-form-radio-group
+                id="layout-btns"
+                v-model="layout.value"
+                buttons
+                button-variant="outline-primary"
+              >
+                <b-form-radio value="list">
+                  <i class="fas fa-list mr-1" />
+                  List
+                </b-form-radio>
+                <b-form-radio value="map">
+                  <i class="far fa-map mr-1" />
+                  Map
+                </b-form-radio>
+              </b-form-radio-group>
+            </b-form-group>
+          </b-col>
+          <!-- End layout buttons -->
         </b-row>
       </b-container>
     </b-col>
     <!-- End filters Bar -->
 
-    <b-col cols="12" md="auto" class="wrapper">
+    <b-col cols="12" :md="layout.value === 'map' ? 6 : 12" class="wrapper">
       <b-container>
         <!-- Start Listings -->
-        <b-col v-for="(card, index) in cards" :key="String(index)" class="my-2" cols="12" sm="6">
+        <b-col
+          v-for="(card, index) in cards"
+          :key="String(index)"
+          class="my-2"
+          cols="12"
+          :md="layout.value === 'map' ? 12 : 6"
+          :lg="layout.value === 'map' ? 6 : 4"
+        >
           <listing-card :card="card" />
         </b-col>
         <!-- End Listings -->
@@ -190,7 +219,7 @@
     </b-col>
 
     <!-- Start Map -->
-    <b-col cols="auto" class="d-none d-md-flex">
+    <b-col v-if="layout.value === 'map'" cols="6" class="d-none d-md-flex">
       <!-- <gmap-map :center="center" :map-type-id="mapTypeId" :zoom="5">
         <gmap-marker
           v-for="(item, index) in markers"
@@ -228,6 +257,9 @@ export default {
   },
   data () {
     return {
+      layout: {
+        value: 'list'
+      },
       filters: {
         plats: {
           text: 'Plats',
