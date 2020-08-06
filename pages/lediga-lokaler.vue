@@ -219,17 +219,21 @@
     </b-col>
 
     <!-- Start Map -->
-    <b-col v-if="layout.value === 'map'" cols="6" class="d-none d-md-flex">
-      <!-- <gmap-map :center="center" :map-type-id="mapTypeId" :zoom="5">
+    <!-- <b-col v-if="layout.value === 'map'" cols="12" md="6" class="map-wrapper d-md-flex">
+      <gmap-map :center="center" :map-type-id="mapTypeId" :zoom="5">
         <gmap-marker
           v-for="(item, index) in markers"
           :key="index"
           :position="item.position"
           @click="center = item.position"
         />
-      </gmap-map> -->
-    </b-col>
+      </gmap-map>
+    </b-col> -->
     <!-- End Map -->
+
+    <!-- Strat Toggle Layout in small screens -->
+    <!-- TODO: ADD BUTTONS HERE -->
+    <!-- End Toggle Layout in small screens -->
   </b-row>
 </template>
 
@@ -479,6 +483,20 @@ export default {
 </script>
 
 <style scoped>
+@media (max-width: 767.98px) {
+  .map-wrapper {
+    padding: 0 !important;
+    margin: 0 !important;
+    display: block !important;
+    position: fixed;
+    z-index: 5;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%
+  }
+}
+
 span {
   color: #757575
 }
