@@ -23,9 +23,15 @@ exports.gettag = async (req, res, next) => {
 exports.addtag = async (req, res, next) => {
   try {
     const tag = new Tag({
-      name: req.body.name,
+      name: {
+        en: JSON.parse(req.body.name).en,
+        sv: JSON.parse(req.body.name).sv
+      },
       parent: req.body.parent,
-      description: req.body.description,
+      description: {
+        en: JSON.parse(req.body.description).en,
+        sv: JSON.parse(req.body.description).sv
+      },
       avatar: req.file ? req.file.filename : null
     })
     await tag.save()

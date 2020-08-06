@@ -788,7 +788,8 @@ export default {
     },
     assignListingToEdit () {
       console.log(this.listing)
-      this.title = this.listing.title
+      this.title.en = JSON.parse(this.listing.title).en
+      this.title.sv = JSON.parse(this.listing.title).sv
       this.Yta = this.listing.yta
       this.markplan = this.listing.placering
       this.city = this.listing.stad
@@ -802,7 +803,8 @@ export default {
       this.längsta = this.listing.langstahyresperiod
       this.sasong = this.listing.sasongBoxen
       this.hamside = this.listing.hemsida
-      this.article.beskreving = this.listing.beskreving
+      this.article.beskreving.en = JSON.parse(this.listing.beskreving).en
+      this.article.beskreving.sv = JSON.parse(this.listing.beskreving).sv
       this.article.centrum = this.listing.centrumtextarea
 
       // ASSIGN DAYS

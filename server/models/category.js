@@ -1,14 +1,21 @@
 const mongoose = require("mongoose");
 const categorySchema = new mongoose.Schema({
   name: {
-    type: String,
-    required: true
+    en: {
+      type: String,
+      required: true
+    },
+    sv: {
+      type: String,
+      required: true
+    }
   },
   parent: {
     type: String
   },
   description: {
-    type: String
+    en: String,
+    sv: String
   },
   avatar: {
     type: String

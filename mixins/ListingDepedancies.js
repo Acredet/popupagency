@@ -10,14 +10,26 @@ exports.ListingDepedancies = {
         text: null
       },
       form: {
-        name: '',
+        name: {
+          en: '',
+          sv: ''
+        },
         parent: null,
-        description: ''
+        description: {
+          en: '',
+          sv: ''
+        }
       },
       editForm: {
-        name: '',
+        name: {
+          en: '',
+          sv: ''
+        },
         parent: null,
-        description: ''
+        description: {
+          en: '',
+          sv: ''
+        }
       },
       sortBy: 'name',
       sortDesc: false,
@@ -42,11 +54,17 @@ exports.ListingDepedancies = {
     }
   },
   computed: {
-    nameValid () {
-      return !!this.form.name
+    nameValidEn () {
+      return !!this.form.name.en
     },
-    editNameValid () {
-      return !!this.editForm.name
+    nameValidSv () {
+      return !!this.form.name.sv
+    },
+    editNameValidEn () {
+      return !!this.editForm.name.en
+    },
+    editNameValidSv () {
+      return !!this.editForm.name.sv
     }
   },
   methods: {
@@ -55,14 +73,9 @@ exports.ListingDepedancies = {
 
       const item = new FormData(document.getElementById(`add-${link}`))
 
-      for (const key in this.form) {
-        if (this.form.hasOwnProperty(key)) {
-          const element = this.form[key]
-          if (element !== '') {
-            item.append(key, element)
-          }
-        }
-      }
+      item.append('name', JSON.stringify(this.form.name))
+      item.append('description', JSON.stringify(this.form.description))
+      item.append('parent', this.form.parent)
 
       for (const pair of item.entries()) { // Show data in console.
         console.log(pair[0] + ', ' + pair[1])
@@ -83,14 +96,26 @@ exports.ListingDepedancies = {
             img.style.display = 'none'
 
             this.form = {
-              name: '',
+              name: {
+                en: '',
+                sv: ''
+              },
               parent: null,
-              description: ''
+              description: {
+                en: '',
+                sv: ''
+              }
             }
             this.editForm = {
-              name: '',
+              name: {
+                en: '',
+                sv: ''
+              },
               parent: null,
-              description: ''
+              description: {
+                en: '',
+                sv: ''
+              }
             }
           })
           this.loadingState = false
@@ -166,9 +191,15 @@ exports.ListingDepedancies = {
           this.getItems(link)
           this.loadingState = false
           this.editForm = {
-            name: '',
+            name: {
+              en: '',
+              sv: ''
+            },
             parent: null,
-            description: ''
+            description: {
+              en: '',
+              sv: ''
+            }
           }
         })
         .catch((err) => {

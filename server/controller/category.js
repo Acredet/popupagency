@@ -23,9 +23,15 @@ exports.getcategory = async (req, res, next) => {
 exports.addcategory = async (req, res, next) => {
   try {
     const category = new Category({
-      name: req.body.name,
+      name: {
+        en: JSON.parse(req.body.name).en,
+        sv: JSON.parse(req.body.name).sv
+      },
       parent: req.body.parent,
-      description: req.body.description,
+      description: {
+        en: JSON.parse(req.body.description).en,
+        sv: JSON.parse(req.body.description).sv
+      },
       avatar: req.file ? req.file.filename : null
     })
     await category.save()

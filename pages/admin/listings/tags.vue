@@ -1,27 +1,48 @@
 <template>
   <div class="content">
     <loading :state="loadingState" />
-    <b-modal id="edit-modal" centered :title="$t('tag.editModal.title')" @close="editForm = {name: '',parent: null,description: ''}">
+    <b-modal id="edit-modal" centered :title="$t('tag.editModal.title')" @close="editForm = {name: {en: '',sv: ''},parent: null,description: {en: '',sv: ''}}">
       <b-form id="edit-tag" enctype="multipart/form-data">
         <b-form-group
-          id="name-group"
-          :label="$t('forms.name.title')"
-          label-for="name"
+          id="name-sv-group"
+          :label="`${$t('forms.name.title')} (Swedish):`"
+          label-for="name-sv"
           :description="$t('forms.name.desc')"
         >
           <b-form-input
-            id="name"
-            v-model="editForm.name"
-            :state="editNameValid"
+            id="name-sv"
+            v-model="editForm.name.sv"
+            :state="editNameValidSv"
             type="text"
             required
             autocomplete="off"
             :placeholder="$t('forms.name.holder')"
           />
 
-          <b-form-invalid-feedback :state="editNameValid" v-text="$t('forms.required')" />
+          <b-form-invalid-feedback :state="editNameValidSv" v-text="$t('forms.required')" />
 
-          <b-form-valid-feedback :state="editNameValid" v-text="$t('forms.valid')" />
+          <b-form-valid-feedback :state="editNameValidSv" v-text="$t('forms.valid')" />
+        </b-form-group>
+
+        <b-form-group
+          id="name-en-group"
+          :label="`${$t('forms.name.title')} (English):`"
+          label-for="name-en"
+          :description="$t('forms.name.desc')"
+        >
+          <b-form-input
+            id="name-en"
+            v-model="editForm.name.en"
+            :state="editNameValidEn"
+            type="text"
+            required
+            autocomplete="off"
+            :placeholder="$t('forms.name.holder')"
+          />
+
+          <b-form-invalid-feedback :state="editNameValidEn" v-text="$t('forms.required')" />
+
+          <b-form-valid-feedback :state="editNameValidEn" v-text="$t('forms.valid')" />
         </b-form-group>
 
         <b-form-group
@@ -79,7 +100,7 @@
         </b-btn>
         <b-btn
           variant="danger"
-          @click="cancel(); editForm = { name: '', parent: null, description: null }"
+          @click="cancel(); editForm = { name: {en: '',sv: ''}, parent: null, description: {en: '',sv: ''} }"
         >
           Close
         </b-btn>
@@ -95,7 +116,7 @@
         <b-btn variant="danger" @click="deleteItem('tag'); ok()">
           {{ $t('actions.delete') }}
         </b-btn>
-        <b-btn variant="primary" @click="cancel(); editForm = {name: '',parent: null,description: ''}">
+        <b-btn variant="primary" @click="cancel(); editForm = {name: {en: '',sv: ''},parent: null,description: {en: '',sv: ''}}">
           {{ $t('actions.cancle') }}
         </b-btn>
       </template>
@@ -107,24 +128,45 @@
         <b-col cols="12" md="4">
           <b-form id="add-tag">
             <b-form-group
-              id="name-group"
-              :label="$t('forms.name.title')"
-              label-for="name"
+              id="name-sv-group"
+              :label="`${$t('forms.name.title')} (Swedish):`"
+              label-for="name-sv"
               :description="$t('forms.name.desc')"
             >
               <b-form-input
-                id="name"
-                v-model="form.name"
-                :state="nameValid"
+                id="name-sv"
+                v-model="form.name.sv"
+                :state="nameValidSv"
                 type="text"
                 required
                 autocomplete="off"
                 :placeholder="$t('forms.name.holder')"
               />
 
-              <b-form-invalid-feedback :state="nameValid" v-text="$t('forms.required')" />
+              <b-form-invalid-feedback :state="nameValidSv" v-text="$t('forms.required')" />
 
-              <b-form-valid-feedback :state="nameValid" v-text="$t('forms.valid')" />
+              <b-form-valid-feedback :state="nameValidSv" v-text="$t('forms.valid')" />
+            </b-form-group>
+
+            <b-form-group
+              id="name-en-group"
+              :label="`${$t('forms.name.title')} (English):`"
+              label-for="name-en"
+              :description="$t('forms.name.desc')"
+            >
+              <b-form-input
+                id="name-en"
+                v-model="form.name.en"
+                :state="nameValidEn"
+                type="text"
+                required
+                autocomplete="off"
+                :placeholder="$t('forms.name.holder')"
+              />
+
+              <b-form-invalid-feedback :state="nameValidEn" v-text="$t('forms.required')" />
+
+              <b-form-valid-feedback :state="nameValidEn" v-text="$t('forms.valid')" />
             </b-form-group>
 
             <b-form-group
@@ -142,14 +184,28 @@
             </b-form-group>
 
             <b-form-group
-              id="description-group"
-              :label="$t('forms.decription.title')"
-              label-for="description"
+              id="description-en-group"
+              :label="`${$t('forms.decription.title')} (English):`"
+              label-for="description-en"
               :description="$t('forms.decription.desc')"
             >
               <b-form-textarea
-                id="description"
-                v-model="form.description"
+                id="description-en"
+                v-model="form.description.en"
+                :placeholder="$t('forms.decription.holder')"
+                rows="3"
+              />
+            </b-form-group>
+
+            <b-form-group
+              id="description-sv-group"
+              :label="`${$t('forms.decription.title')} (Swedish):`"
+              label-for="description-sv"
+              :description="$t('forms.decription.desc')"
+            >
+              <b-form-textarea
+                id="description-sv"
+                v-model="form.description.sv"
                 :placeholder="$t('forms.decription.holder')"
                 rows="3"
               />
@@ -162,7 +218,7 @@
               <our-uploader :responsivness="{ cols: 12, sm: 12, md: 12, lg: 12 }" :name="'avatar'" :max-number-of-inputs="1" :max-file-size="64" />
             </b-form-group>
 
-            <b-btn variant="primary" :disabled="!form.name" @click="addItem('tag')" v-text="$t('tag.addBtn')" />
+            <b-btn variant="primary" :disabled="!form.name.en || !form.name.sv" @click="addItem('tag')" v-text="$t('tag.addBtn')" />
           </b-form>
         </b-col>
 
@@ -178,9 +234,33 @@
             responsive="sm"
             show-empty
           >
+            <template v-slot:cell(name)="data">
+              <p v-if="$i18n.locale == 'en'">
+                {{ data.item.name.en }}
+              </p>
+              <p v-else>
+                {{ data.item.name.sv }}
+              </p>
+            </template>
+
+            <template v-slot:cell(description)="data">
+              <p v-if="data.item.description && $i18n.locale == 'en'">
+                {{ data.item.description.en }}
+              </p>
+              <p v-else-if="!data.item.description">
+                -
+              </p>
+              <p v-else>
+                {{ data.item.description.sv }}
+              </p>
+            </template>
+
             <template v-slot:cell(parent)="data">
-              <p class="text-center font-wight-bold">
-                {{ (data.item.parent && data.item.parent !== 'null') ? data.item.parent : '-' }}
+              <p v-if="$i18n.locale == 'en'" class="text-center font-wight-bold">
+                {{ (data.item.parent) ? data.item.parent.en : '-' }}
+              </p>
+              <p v-else class="text-center font-wight-bold">
+                {{ (data.item.parent) ? data.item.parent.sv : '-' }}
               </p>
             </template>
 
