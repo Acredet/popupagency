@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <b-modal id="edit-modal" centered :title="$t('region.editModal.title')" @close="editForm = {}">
+    <b-modal id="edit-modal" centered :title="$t('region.editModal.title')" @close="editForm = { name: {en: '',sv: ''}, parent: null, description: {en: '',sv: ''} }">
       <b-form>
         <b-form-group
           id="name-en-group"
@@ -11,16 +11,16 @@
           <b-form-input
             id="name-en"
             v-model="editForm.name.en"
-            :state="nameValidEn"
+            :state="editNameValidEn"
             type="text"
             required
             autocomplete="off"
             :placeholder="$t('forms.name.holder')"
           />
 
-          <b-form-invalid-feedback :state="nameValidEn" v-text="$t('forms.required')" />
+          <b-form-invalid-feedback :state="editNameValidEn" v-text="$t('forms.required')" />
 
-          <b-form-valid-feedback :state="nameValidEn" v-text="$t('forms.valid')" />
+          <b-form-valid-feedback :state="editNameValidEn" v-text="$t('forms.valid')" />
         </b-form-group>
 
         <b-form-group
@@ -32,16 +32,16 @@
           <b-form-input
             id="name-sv"
             v-model="editForm.name.sv"
-            :state="nameValidSv"
+            :state="editNameValidSv"
             type="text"
             required
             autocomplete="off"
             :placeholder="$t('forms.name.holder')"
           />
 
-          <b-form-invalid-feedback :state="nameValidSv" v-text="$t('forms.required')" />
+          <b-form-invalid-feedback :state="editNameValidSv" v-text="$t('forms.required')" />
 
-          <b-form-valid-feedback :state="nameValidSv" v-text="$t('forms.valid')" />
+          <b-form-valid-feedback :state="editNameValidSv" v-text="$t('forms.valid')" />
         </b-form-group>
 
         <b-form-group
@@ -91,7 +91,7 @@
         <b-btn variant="primary" @click="editRigion(); ok()">
           {{ $t('actions.edit') }}
         </b-btn>
-        <b-btn variant="danger" @click="cancel(); editForm = {}">
+        <b-btn variant="danger" @click="cancel(); editForm = { name: {en: '',sv: ''}, parent: null, description: {en: '',sv: ''} }">
           {{ $t('actions.cancle') }}
         </b-btn>
       </template>
@@ -99,14 +99,14 @@
 
     <b-modal id="delete-modal" centered :title="$t('region.deleteModal.title')">
       <p class="my-4">
-        {{ $t('actions.deleteConfimrMessage') }} {{ editForm.name }}?
+        {{ $t('actions.deleteConfimrMessage') }} {{ ($i18n.getLocaleCookie() === 'en') ? editForm.name.en : editForm.name.sv }}?
       </p>
 
       <template v-slot:modal-footer="{ ok, cancel }">
-        <b-btn variant="danger" @click="deleteRigion(); ok()">
+        <b-btn variant="danger" @click="deleteItem('region'); ok()">
           {{ $t('actions.delete') }}
         </b-btn>
-        <b-btn variant="primary" @click="cancel(); editForm = {}">
+        <b-btn variant="primary" @click="cancel(); editForm = { name: {en: '',sv: ''}, parent: null, description: {en: '',sv: ''} }">
           {{ $t('actions.cancle') }}
         </b-btn>
       </template>
@@ -294,108 +294,31 @@
 </template>
 
 <script>
+import { ListingDepedancies } from '@/mixins/ListingDepedancies'
+
 export default {
   name: 'ListingRegion',
   layout: 'admin',
-  data () {
-    return {
-      toast: {
-        title: null,
-        variant: null,
-        visible: false,
-        text: null
-      },
-      form: {
-        name: {
-          en: '',
-          sv: ''
-        },
-        parent: null,
-        description: {
-          en: '',
-          sv: ''
-        }
-      },
-      editForm: {
-        name: {
-          en: '',
-          sv: ''
-        },
-        parent: null,
-        description: {
-          en: '',
-          sv: ''
-        }
-      },
-      sortBy: 'name',
-      sortDesc: false,
-      currentPage: 1,
-      parentOpts: [],
-      perPage: 5,
-      perPageOpts: [
-        { value: 1, text: '1' },
-        { value: 5, text: '5' },
-        { value: 10, text: '10' },
-        { value: 25, text: '25' },
-        { value: 50, text: '50' },
-        { value: 100, text: '100' }
-      ],
-      fields: [
-        { key: 'name', label: this.$t('tables.name'), sortable: true },
-        { key: 'description', label: this.$t('tables.description'), sortable: true },
-        { key: 'parent', label: this.$t('tables.parent'), sortable: true },
-        { key: 'actions', label: this.$t('tables.actions'), sortable: false }
-      ],
-      items: []
-    }
-  },
-  computed: {
-    nameValidEn () {
-      return !!this.form.name.en
-    },
-    nameValidSv () {
-      return !!this.form.name.sv
-    }
-  },
+  mixins: [ListingDepedancies],
   mounted () {
-    this.getRigions()
+    console.log(this.$i18n.getLocaleCookie())
+    this.getItems('region')
   },
   methods: {
     async addRigion () {
       await this.$axios.$post('/region', this.form)
         .then((res) => {
-          this.getRigions()
+          this.getItems('region')
           this.toast = {
             title: this.$t('region.toast.add'),
             variant: 'success',
             visible: true,
-            text: `${this.$t('region.toast.justAdded')} ${this.form.name} Region.`
+            text: `${this.$t('region.toast.justAdded')} ${(this.$i18n.getLocaleCookie() === 'en') ? this.form.name.en : this.form.name.sv} Region.`
           }
         })
         .catch((err) => {
           this.toast = {
             title: this.$t('region.toast.error'),
-            variant: 'danger',
-            visible: true,
-            text: err.message
-          }
-        })
-    },
-    async getRigions () {
-      await this.$axios.$get('/region')
-        .then((res) => {
-          this.items = res.data
-          this.parentOpts = this.items.map(function (x) {
-            return {
-              text: x.name,
-              value: x.name
-            }
-          })
-          this.parentOpts.unshift({ text: this.$t('chooseParent'), value: null })
-        })
-        .catch((err) => {
-          this.toast = {
-            title: 'There is something wrong',
             variant: 'danger',
             visible: true,
             text: err.message
@@ -405,32 +328,12 @@ export default {
     async editRigion () {
       await this.$axios.$patch(`/region/${this.editForm._id}`, this.editForm)
         .then((res) => {
-          this.getRigions()
+          this.getItems('region')
           this.toast = {
             title: this.$t('region.toast.edit'),
             variant: 'success',
             visible: true,
-            text: `${this.$t('region.toast.justEdited')} ${this.editForm.name} Region.`
-          }
-        })
-        .catch((err) => {
-          this.toast = {
-            title: this.$t('region.toast.error'),
-            variant: 'danger',
-            visible: true,
-            text: err.message
-          }
-        })
-    },
-    async deleteRigion () {
-      await this.$axios.$delete(`/region/${this.editForm._id}`)
-        .then((res) => {
-          this.getRigions()
-          this.toast = {
-            title: this.$t('region.toast.delete'),
-            variant: 'success',
-            visible: true,
-            text: `${this.$t('region.toast.justDeleted')} ${this.editForm.name} Region.`
+            text: `${this.$t('region.toast.justEdited')} ${(this.$i18n.getLocaleCookie() === 'en') ? this.editForm.name.en : this.editForm.name.sv} Region.`
           }
         })
         .catch((err) => {

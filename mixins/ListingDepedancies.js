@@ -132,13 +132,15 @@ exports.ListingDepedancies = {
         })
     },
     async getItems (link) {
+      const vm = this
       this.loadingState = true
+
       await this.$axios.$get(`/${link}`)
         .then((res) => {
           this.items = res.data
           this.parentOpts = this.items.map(function (x) {
             return {
-              text: x.name,
+              text: (vm.$i18n.getLocaleCookie() === 'en') ? x.name.en : x.name.sv,
               value: x.name
             }
           })
@@ -222,7 +224,7 @@ exports.ListingDepedancies = {
             title: this.$t('category.toast.delete'),
             variant: 'success',
             visible: true,
-            text: `${this.$t('category.toast.justDeleted')} ${this.editForm.name} Categories.`
+            text: `${this.$t('category.toast.justDeleted')} ${(this.$i18n.getLocaleCookie() === 'en') ? this.editForm.name.en : this.editForm.name.sv} Categories.`
           }
           // this.$router.go()
         })

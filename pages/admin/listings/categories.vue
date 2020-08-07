@@ -60,14 +60,28 @@
         </b-form-group>
 
         <b-form-group
-          id="description-group"
+          id="description-en-group"
           :label="$t('forms.decription.title')"
-          label-for="description"
+          label-for="description-en"
           :description="$t('forms.decription.desc')"
         >
           <b-form-textarea
-            id="description"
-            v-model="editForm.description"
+            id="description-en"
+            v-model="editForm.description.en"
+            :placeholder="$t('forms.decription.holder')"
+            rows="3"
+          />
+        </b-form-group>
+
+        <b-form-group
+          id="description-sv-group"
+          :label="$t('forms.decription.title')"
+          label-for="description-sv"
+          :description="$t('forms.decription.desc')"
+        >
+          <b-form-textarea
+            id="description-sv"
+            v-model="editForm.description.sv"
             :placeholder="$t('forms.decription.holder')"
             rows="3"
           />
@@ -95,7 +109,7 @@
       </b-form>
 
       <template v-slot:modal-footer="{ ok, cancel }">
-        <b-btn variant="primary" :disabled="!editNameValid" @click="editItem('category'); ok()">
+        <b-btn variant="primary" :disabled="!editForm.name.en || !editForm.name.sv" @click="editItem('category'); ok()">
           Edit
         </b-btn>
         <b-btn
@@ -109,7 +123,7 @@
 
     <b-modal id="delete-modal" centered :title="$t('category.deleteModal.title')">
       <p class="my-4">
-        {{ $t('actions.deleteConfimrMessage') }} {{ editForm.name }}?
+        {{ $t('actions.deleteConfimrMessage') }} {{ ($i18n.getLocaleCookie() === 'en') ? editForm.name.en : editForm.name.sv }}?
       </p>
 
       <template v-slot:modal-footer="{ ok, cancel }">
