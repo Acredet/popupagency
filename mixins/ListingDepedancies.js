@@ -141,7 +141,7 @@ exports.ListingDepedancies = {
           this.parentOpts = this.items.map(function (x) {
             return {
               text: (vm.$i18n.getLocaleCookie() === 'en') ? x.name.en : x.name.sv,
-              value: x.name
+              value: x._id
             }
           })
           this.parentOpts.unshift({ text: this.$t('chooseParent'), value: null })

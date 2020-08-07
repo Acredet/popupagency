@@ -206,10 +206,34 @@
         </b-col>
 
         <b-col cols="12" md="8">
+          <b-form-group
+            label="Filter"
+            label-cols-sm="3"
+            label-align-sm="right"
+            label-size="sm"
+            label-for="filterInput"
+            class="mb-1"
+          >
+            <b-input-group size="sm">
+              <b-form-input
+                id="filterInput"
+                v-model="filter"
+                type="search"
+                placeholder="Type to Search"
+              />
+              <b-input-group-append>
+                <b-button :disabled="!filter" @click="filter = ''">
+                  Clear
+                </b-button>
+              </b-input-group-append>
+            </b-input-group>
+          </b-form-group>
+
           <b-table
             id="all-listing"
             :items="items"
             :fields="fields"
+            :filter="filter"
             :current-page="currentPage"
             :per-page="perPage"
             :sort-by.sync="sortBy"
@@ -300,6 +324,11 @@ export default {
   name: 'ListingRegion',
   layout: 'admin',
   mixins: [ListingDepedancies],
+  data () {
+    return {
+      filter: null
+    }
+  },
   mounted () {
     console.log(this.$i18n.getLocaleCookie())
     this.getItems('region')

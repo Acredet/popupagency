@@ -11,7 +11,7 @@ const regionSchema = new mongoose.Schema({
     }
   },
   parent: {
-    type: String
+    type: mongoose.ObjectId
   },
   description: {
     en: String,
