@@ -206,38 +206,41 @@
         </b-col>
 
         <b-col cols="12" md="8">
-          <b-form-group
-            label="Filter"
-            label-cols-sm="3"
-            label-align-sm="right"
-            label-size="sm"
-            label-for="filterInput"
-            class="mb-1"
-          >
-            <b-input-group size="sm">
-              <b-form-input
-                id="filterInput"
-                v-model="filter"
-                type="search"
-                placeholder="Type to Search"
-              />
-              <b-input-group-append>
-                <b-button :disabled="!filter" @click="filter = ''">
-                  Clear
-                </b-button>
-              </b-input-group-append>
-            </b-input-group>
-          </b-form-group>
+          <b-row class="m-2">
+            <b-col md="3">
+              <b-btn block @click="sortBy = ''">
+                Clear Sort
+              </b-btn>
+            </b-col>
+
+            <b-col cols="12" md="9">
+              <b-form-group label-for="filterInput">
+                <b-input-group>
+                  <b-form-input
+                    id="filterInput"
+                    v-model="filter"
+                    type="search"
+                    placeholder="Type to Search"
+                  />
+                  <b-input-group-append>
+                    <b-button :disabled="!filter" @click="filter = ''">
+                      Clear
+                    </b-button>
+                  </b-input-group-append>
+                </b-input-group>
+              </b-form-group>
+            </b-col>
+          </b-row>
 
           <b-table
             id="all-listing"
             :items="items"
             :fields="fields"
             :filter="filter"
-            :current-page="currentPage"
-            :per-page="perPage"
             :sort-by.sync="sortBy"
             :sort-desc.sync="sortDesc"
+            :current-page="currentPage"
+            :per-page="perPage"
             responsive="sm"
             show-empty
           >
@@ -264,10 +267,10 @@
 
             <template v-slot:cell(parent)="data">
               <p v-if="$i18n.locale == 'en'" class="text-center font-wight-bold">
-                {{ (data.item.parent) ? data.item.parent.en : '-' }}
+                {{ (data.item.parent) ? items.filter(x => x._id === data.item.parent)[0].name.en : '-' }}
               </p>
               <p v-else class="text-center font-wight-bold">
-                {{ (data.item.parent) ? data.item.parent.sv : '-' }}
+                {{ (data.item.parent) ? items.filter(x => x._id === data.item.parent)[0].name.sv : '-' }}
               </p>
             </template>
 
@@ -329,11 +332,76 @@ export default {
       filter: null
     }
   },
-  mounted () {
-    console.log(this.$i18n.getLocaleCookie())
-    this.getItems('region')
-  },
+  mounted () { this.getRigions() },
   methods: {
+    sortItems () {
+      const countries = this.items.filter(x => !x.parent) // Get countries
+      const cities = this.items.filter(x => countries.map(x => x._id).includes(x.parent)) // get cities
+      const subCities = this.items.filter(x => cities.map(x => x._id).includes(x.parent)) // get subCities
+
+      countries.forEach((x) => {
+        x.cities = []
+
+        cities.forEach((city) => {
+          city.subCities = []
+
+          subCities.forEach((subCity) => {
+            if (city._id === subCity.parent) {
+              city.subCities.push(subCity)
+            }
+          })
+
+          if (x._id === city.parent) {
+            console.log(x.name.sv, city.name.sv)
+            x.cities.push(city)
+          }
+        })
+      })
+
+      const all = []
+
+      for (let i = 0; i < countries.length; i++) {
+        const country = countries[i]
+
+        console.log('country: ', country.name.sv)
+        all.push(country)
+
+        for (let j = 0; j < country.cities.length; j++) {
+          const city = country.cities[j]
+
+          console.log('city: ', city.name.sv)
+          all.push(city)
+
+          console.log('city.subCities: ', ...city.subCities)
+          all.push(...city.subCities)
+        }
+      }
+      console.log('all: ', all)
+      this.items = all
+    },
+    async getRigions () {
+      const vm = this
+      await vm.$axios.$get('/region')
+        .then((res) => {
+          vm.items = res.data
+          vm.parentOpts = vm.items.map(function (x) {
+            return {
+              text: (vm.$i18n.getLocaleCookie() === 'en') ? x.name.en : x.name.sv,
+              value: x._id
+            }
+          })
+          vm.parentOpts.unshift({ text: vm.$t('chooseParent'), value: null })
+          vm.sortItems()
+        })
+        .catch((err) => {
+          this.toast = {
+            title: 'There is something wrong',
+            variant: 'danger',
+            visible: true,
+            text: err.message
+          }
+        })
+    },
     async addRigion () {
       await this.$axios.$post('/region', this.form)
         .then((res) => {
