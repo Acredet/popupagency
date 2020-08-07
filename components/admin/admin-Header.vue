@@ -63,13 +63,13 @@
             >Languages</a>
 
             <div class="py-0 dropdown-menu" aria-labelledby="dropdownMenuLink">
-              <nuxt-link exact :to="switchLocalePath('en')" class="dropdown-item">
+              <b-button class="dropdown-item" @click="changeLang('en')">
                 En-English
-              </nuxt-link>
+              </b-button>
               <div class="my-0 dropdown-divider" />
-              <nuxt-link exact :to="switchLocalePath('sv')" class="dropdown-item">
+              <b-button class="dropdown-item" @click="changeLang('sv')">
                 Sv-Swedish
-              </nuxt-link>
+              </b-button>
             </div>
           </div>
         </li>
@@ -82,7 +82,12 @@
 <script>
 export default {
   methods: {
+    changeLang (lang) {
+      this.$i18n.setLocale(lang)
+      this.$store.commit('changeSidebarRenderKey')
+    },
     logout () {
+      this.$store.commit('changeSidebarRenderKey')
       this.$auth.logout('local')
     }
   }

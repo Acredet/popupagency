@@ -1,7 +1,7 @@
 <template>
   <div id="wrapper">
-    <admin-header />
-    <admin-sidebar />
+    <admin-header :key="renderKey" />
+    <admin-sidebar :key="renderKey" />
 
     <div class="my-3 content-page">
       <Nuxt />
@@ -24,6 +24,11 @@ export default {
     adminSidebar
   },
   mixins: [AdminPanelDependancies],
+  computed: {
+    renderKey () {
+      return this.$store.state.changeSidebarRenderKey
+    }
+  },
   created () {
     if (!this.$auth.loggedIn) {
       this.$router.push('/admin/login')

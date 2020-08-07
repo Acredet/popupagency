@@ -96,6 +96,7 @@ export default {
             variant: 'danger'
           })
         })
+      this.$store.commit('changeSidebarRenderKey')
     }
   }
 }
