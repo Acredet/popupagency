@@ -22,11 +22,24 @@ exports.getregion = async (req, res, next) => {
 // @access Public
 exports.addregion = async (req, res, next) => {
   try {
-    const region = await Region.create(req.body);
-    return res.status(201).json({
-      success: true,
-      data: region
-    });
+    const region = new Region({
+      name: {
+        en: req.body.name.en,
+        sv: req.body.name.sv
+      },
+      parent: req.body.parent,
+      description: {
+        en: req.body.description.en,
+        sv: req.body.description.sv
+      }
+    })
+    await region.save()
+      .then(result => res.status(201).json({
+          success: true,
+          data: region
+        })
+      )
+      .catch(err => res.status(400).json(err))
   } catch (err) {
     console.error(err);
     if (err.code === 11000) {

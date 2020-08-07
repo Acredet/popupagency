@@ -3,24 +3,45 @@
     <b-modal id="edit-modal" centered :title="$t('region.editModal.title')" @close="editForm = {}">
       <b-form>
         <b-form-group
-          id="name-group"
-          :label="$t('forms.name.title')"
-          label-for="name"
+          id="name-en-group"
+          :label="`${$t('forms.name.title')} (English):`"
+          label-for="name-en"
           :description="$t('forms.name.desc')"
         >
           <b-form-input
-            id="name"
-            v-model="editForm.name"
-            :state="nameValid"
+            id="name-en"
+            v-model="editForm.name.en"
+            :state="nameValidEn"
             type="text"
             required
             autocomplete="off"
             :placeholder="$t('forms.name.holder')"
           />
 
-          <b-form-invalid-feedback :state="nameValid" v-text="$t('forms.required')" />
+          <b-form-invalid-feedback :state="nameValidEn" v-text="$t('forms.required')" />
 
-          <b-form-valid-feedback :state="nameValid" v-text="$t('forms.valid')" />
+          <b-form-valid-feedback :state="nameValidEn" v-text="$t('forms.valid')" />
+        </b-form-group>
+
+        <b-form-group
+          id="name-sv-group"
+          :label="`${$t('forms.name.title')} (Swedish):`"
+          label-for="name-sv"
+          :description="$t('forms.name.desc')"
+        >
+          <b-form-input
+            id="name-sv"
+            v-model="editForm.name.sv"
+            :state="nameValidSv"
+            type="text"
+            required
+            autocomplete="off"
+            :placeholder="$t('forms.name.holder')"
+          />
+
+          <b-form-invalid-feedback :state="nameValidSv" v-text="$t('forms.required')" />
+
+          <b-form-valid-feedback :state="nameValidSv" v-text="$t('forms.valid')" />
         </b-form-group>
 
         <b-form-group
@@ -38,14 +59,28 @@
         </b-form-group>
 
         <b-form-group
-          id="description-group"
-          :label="$t('forms.decription.title')"
-          label-for="description"
+          id="description-en-group"
+          :label="`${$t('forms.decription.title')} (English):`"
+          label-for="description-en"
           :description="$t('forms.decription.desc')"
         >
           <b-form-textarea
-            id="description"
-            v-model="editForm.description"
+            id="description-en"
+            v-model="editForm.description.en"
+            :placeholder="$t('forms.decription.holder')"
+            rows="3"
+          />
+        </b-form-group>
+
+        <b-form-group
+          id="description-sv-group"
+          :label="`${$t('forms.decription.title')} (Swedish):`"
+          label-for="description-sv"
+          :description="$t('forms.decription.desc')"
+        >
+          <b-form-textarea
+            id="description-sv"
+            v-model="editForm.description.sv"
             :placeholder="$t('forms.decription.holder')"
             rows="3"
           />
@@ -83,24 +118,45 @@
         <b-col cols="12" md="4">
           <b-form>
             <b-form-group
-              id="name-group"
-              :label="$t('forms.name.title')"
-              label-for="name"
+              id="name-en-group"
+              :label="`${$t('forms.name.title')} (English):`"
+              label-for="name-en"
               :description="$t('forms.name.desc')"
             >
               <b-form-input
-                id="name"
-                v-model="form.name"
-                :state="nameValid"
+                id="name-en"
+                v-model="form.name.en"
+                :state="nameValidEn"
                 type="text"
                 required
                 autocomplete="off"
                 :placeholder="$t('forms.name.holder')"
               />
 
-              <b-form-invalid-feedback :state="nameValid" v-text="$t('forms.required')" />
+              <b-form-invalid-feedback :state="nameValidEn" v-text="$t('forms.required')" />
 
-              <b-form-valid-feedback :state="nameValid" v-text="$t('forms.valid')" />
+              <b-form-valid-feedback :state="nameValidEn" v-text="$t('forms.valid')" />
+            </b-form-group>
+
+            <b-form-group
+              id="name-sv-group"
+              :label="`${$t('forms.name.title')} (Swedish):`"
+              label-for="name-sv"
+              :description="$t('forms.name.desc')"
+            >
+              <b-form-input
+                id="name-sv"
+                v-model="form.name.sv"
+                :state="nameValidSv"
+                type="text"
+                required
+                autocomplete="off"
+                :placeholder="$t('forms.name.holder')"
+              />
+
+              <b-form-invalid-feedback :state="nameValidSv" v-text="$t('forms.required')" />
+
+              <b-form-valid-feedback :state="nameValidSv" v-text="$t('forms.valid')" />
             </b-form-group>
 
             <b-form-group
@@ -118,14 +174,28 @@
             </b-form-group>
 
             <b-form-group
-              id="description-group"
-              :label="$t('forms.decription.title')"
-              label-for="description"
+              id="description-en-group"
+              :label="`${$t('forms.decription.title')} (English):`"
+              label-for="description-en"
               :description="$t('forms.decription.desc')"
             >
               <b-form-textarea
-                id="description"
-                v-model="form.description"
+                id="description-en"
+                v-model="form.description.en"
+                :placeholder="$t('forms.decription.holder')"
+                rows="3"
+              />
+            </b-form-group>
+
+            <b-form-group
+              id="description-sv-group"
+              :label="`${$t('forms.decription.title')} (Swedish):`"
+              label-for="description-sv"
+              :description="$t('forms.decription.desc')"
+            >
+              <b-form-textarea
+                id="description-sv"
+                v-model="form.description.sv"
                 :placeholder="$t('forms.decription.holder')"
                 rows="3"
               />
@@ -147,6 +217,36 @@
             responsive="sm"
             show-empty
           >
+            <template v-slot:cell(name)="data">
+              <p v-if="$i18n.locale == 'en'">
+                {{ data.item.name.en }}
+              </p>
+              <p v-else>
+                {{ data.item.name.sv }}
+              </p>
+            </template>
+
+            <template v-slot:cell(description)="data">
+              <p v-if="data.item.description && $i18n.locale == 'en'">
+                {{ data.item.description.en }}
+              </p>
+              <p v-else-if="!data.item.description">
+                -
+              </p>
+              <p v-else>
+                {{ data.item.description.sv }}
+              </p>
+            </template>
+
+            <template v-slot:cell(parent)="data">
+              <p v-if="$i18n.locale == 'en'" class="text-center font-wight-bold">
+                {{ (data.item.parent) ? data.item.parent.en : '-' }}
+              </p>
+              <p v-else class="text-center font-wight-bold">
+                {{ (data.item.parent) ? data.item.parent.sv : '-' }}
+              </p>
+            </template>
+
             <template v-slot:cell(actions)="data">
               <b-dropdown variant="light">
                 <template v-slot:button-content>
@@ -206,14 +306,26 @@ export default {
         text: null
       },
       form: {
-        name: '',
+        name: {
+          en: '',
+          sv: ''
+        },
         parent: null,
-        description: null
+        description: {
+          en: '',
+          sv: ''
+        }
       },
       editForm: {
-        name: '',
+        name: {
+          en: '',
+          sv: ''
+        },
         parent: null,
-        description: null
+        description: {
+          en: '',
+          sv: ''
+        }
       },
       sortBy: 'name',
       sortDesc: false,
@@ -238,8 +350,11 @@ export default {
     }
   },
   computed: {
-    nameValid () {
-      return !!this.form.name
+    nameValidEn () {
+      return !!this.form.name.en
+    },
+    nameValidSv () {
+      return !!this.form.name.sv
     }
   },
   mounted () {

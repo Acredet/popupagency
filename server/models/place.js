@@ -4,8 +4,14 @@ const mongoose = require('mongoose')
 
 const PlaceSchema = new mongoose.Schema({
   title: {
-    en: String,
-    sv: String
+    en: {
+      type: String,
+      required: true
+    },
+    sv: {
+      type: String,
+      required: true
+    }
   },
   beskreving: {
     en: String,
