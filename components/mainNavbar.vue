@@ -1,10 +1,16 @@
 <template>
   <div>
-    <b-sidebar id="sidebar-1" backdrop-variant="dark" backdrop shadow no-header-close>
-      <div>
-        <BIconList v-b-toggle.sidebar-1 class="border-0 font-6 text-dark" />
+    <b-sidebar
+      id="sidebar-1"
+      backdrop-variant="dark"
+      backdrop
+      shadow
+      no-header
+    >
+      <div class="d-flex justify-content-end bg-white pt-2 px-2">
+        <i v-b-toggle.sidebar-1 class="ml-auto fas fa-times font-4 text-dark" />
       </div>
-      <div class="py-2">
+      <div class="py-2 bg-white ">
         <ul v-for="(link, index) in links" :key="String(index)">
           <li
             v-b-toggle="'accordion' + index"
@@ -249,7 +255,9 @@ export default {
   border: 0;
   font-size: 40px;
 }
-
+header.b-sidebar-header {
+  background: white !important;
+}
 .navbar-dark .navbar-nav .nav-link {
   color: white !important;
 }
@@ -303,11 +311,11 @@ export default {
 .b-sidebar-body .collapse ul {
   margin: 0;
   padding: 0;
-  background: #ddd !important;
+  background: #eee !important;
 }
 
 .b-sidebar-body .collapse ul li {
-  background: #ddd !important;
+  background: #eee !important;
   padding-left: 10px;
   transition: all 0.4s ease-out;
 }

@@ -1,20 +1,148 @@
 <template>
   <b-row>
     <!-- Sart Sidebar -->
-    <b-sidebar id="more-filters" title="Filter your home search" shadow>
+    <b-sidebar
+      id="more-filters"
+      bg-variant="white"
+      backdrop-variant="dark"
+      backdrop
+      shadow
+      title="Filter your home search"
+    >
       <b-container class="py-2">
         <ul class="list-unstyled">
           <!-- Start Price Tab -->
-          <li v-b-toggle="'price'" class="font-3 mb-1" v-text="'Price'" />
+          <li v-b-toggle="'price'" class="p-2 border d-flex justify-content-between align-items-center font-3 mb-1">
+            <span>{{ filters.price.text }}</span>
+            <i class="fas fa-caret-down" />
+          </li>
 
           <b-collapse id="price" accordion="filters" role="tabpanel">
-            <b-form-input id="sidebar-min-price-input" v-model="filters.price.min" list="sidebar-min-price" class="mb-2" placeholder="$min" />
-            <b-form-datalist id="sidebar-min-price" :options="filters.price.minOpts" />
-
-            <b-form-input id="sidebar-max-price-input" v-model="filters.price.max" list="sidebar-max-price" placeholder="$max" />
-            <b-form-datalist id="sidebar-max-price" :options="filters.price.maxOpts" />
+            <div class="px-2">
+              <vue-slider v-model="filters.price.value" />
+              <small>{{ filters.price.value[0] || 0 }} Kr — {{ filters.price.value[1] || 0 }} Kr</small>
+            </div>
           </b-collapse>
           <!-- End Price Tab -->
+
+          <!-- Start yta Tab -->
+          <li v-b-toggle="'yta'" class="p-2 border d-flex justify-content-between align-items-center font-3 mb-1">
+            <span>{{ filters.yta.text }}</span>
+            <i class="fas fa-caret-down" />
+          </li>
+
+          <b-collapse id="yta" accordion="filters" role="tabpanel">
+            <div class="px-2">
+              <vue-slider v-model="filters.yta.value" />
+              <small>{{ filters.yta.value[0] || 0 }} m<sup>3</sup> — {{ filters.yta.value[1] || 0 }} m<sup>3</sup></small>
+            </div>
+          </b-collapse>
+          <!-- End yta Tab -->
+
+          <!-- Start yta Tab -->
+          <li v-b-toggle="'property'" class="p-2 border d-flex justify-content-between align-items-center font-3 mb-1">
+            <span>{{ filters.property.text }}</span>
+            <i class="fas fa-caret-down" />
+          </li>
+
+          <b-collapse id="property" accordion="filters" role="tabpanel">
+            <div class="px-2">
+              <b-row no-gutters>
+                <!-- Start left buttons -->
+                <b-col cols="6">
+                  <b-button-group vertical class="w-100">
+                    <b-button
+                      v-for="(icon) in filters.property.icons.slice(0,6)"
+                      :key="icon.text"
+                      :pressed.sync="icon.state"
+                      variant="outline-dark"
+                      squared
+                      class="text-left"
+                      @click="addProperty(icon)"
+                    >
+                      <i :class="`fas fa-${icon.icon}`" />
+                      {{ icon.text }}
+                    </b-button>
+                  </b-button-group>
+                </b-col>
+                <!-- End Left buttons -->
+
+                <!-- Start right buttons -->
+                <b-col cols="6">
+                  <b-button-group vertical class="w-100">
+                    <b-button
+                      v-for="(icon) in filters.property.icons.slice(6,12)"
+                      :key="icon.text"
+                      :pressed.sync="icon.state"
+                      squared
+                      variant="outline-dark"
+                      class="text-left"
+                      @click="addProperty(icon)"
+                    >
+                      <i :class="`fas fa-${icon.icon}`" />
+                      {{ icon.text }}
+                    </b-button>
+                  </b-button-group>
+                </b-col>
+                <!-- End right buttons -->
+              </b-row>
+            </div>
+          </b-collapse>
+          <!-- End yta Tab -->
+
+          <!-- Start yta Tab -->
+          <li v-b-toggle="'plats'" class="p-2 border d-flex justify-content-between align-items-center font-3 mb-1">
+            <span>Plats</span>
+            <i class="fas fa-caret-down" />
+          </li>
+
+          <b-collapse id="plats" accordion="filters" role="tabpanel">
+            <div class="px-2">
+              <ul class="list-unstyled">
+                <li
+                  v-for="(tab, index) in filters.plats.tabs"
+                  :key="String(index)"
+                  v-b-toggle="tab.name"
+                  class="p-2 border font-3 mb-1"
+                >
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span>{{ tab.name }}</span>
+                    <i class="fas fa-caret-down" />
+                  </div>
+
+                  <b-collapse :id="tab.name" accordion="stad" role="tabpanel">
+                    <div class="px-2">
+                      <b-form-group>
+                        <template v-slot:label>
+                          <b-form-checkbox
+                            v-model="filters.plats.tabs[index].allSelected"
+                            :indeterminate="filters.plats.tabs[index].indeterminate"
+                            :aria-describedby="filters.plats.tabs[index].name"
+                            :aria-controls="filters.plats.tabs[index].name"
+                            size="md"
+                            @change="toggleAll(index)"
+                          >
+                            <b class="font-2">Hela {{ filters.plats.tabs[index].name }}</b>
+                          </b-form-checkbox>
+                        </template>
+
+                        <b-form-checkbox-group
+                          :id="filters.plats.tabs[index].name"
+                          v-model="filters.plats.tabs[index].selected"
+                          :options="filters.plats.tabs[index].options"
+                          :name="filters.plats.tabs[index].name"
+                          aria-label="Individual popup"
+                          stacked
+                          @change="placeChoose(index)"
+                        />
+                      </b-form-group>
+                    </div>
+                  </b-collapse>
+                </li>
+              </ul>
+            </div>
+          </b-collapse>
+          <!-- End yta Tab -->
         </ul>
       </b-container>
     </b-sidebar>
@@ -170,7 +298,7 @@
           <!-- End yta Filter -->
 
           <!-- Start more Filters -->
-          <b-col cols="12" sm="2" md="auto" class="d-flex align-items-center justify-content-end">
+          <b-col cols="12" sm="2" md="auto" class="d-flex d-lg-none align-items-center justify-content-end">
             <b-button v-b-toggle.more-filters block class="mt-1 mt-sm-0" variant="primary" v-text="'More Filters'" />
           </b-col>
           <!-- End more Filters -->
@@ -495,29 +623,6 @@ export default {
     width: 100%;
     height: 100%
   }
-}
-
-span {
-  color: #757575
-}
-
-svg.property-icon {
-  font-size: 50px;
-  width: 1em;
-  display: inline-block;
-  fill: #757575;
-}
-
-span.checked > svg.property-icon {
-  fill: red;
-}
-
-span:hover, span.checked {
-  color: red;
-}
-
-span:hover > svg, span.checked > svg{
-  fill: red;
 }
 
 .dropdown-header {
