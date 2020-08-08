@@ -192,7 +192,7 @@
             <b-card-body>
               <b-form-radio-group v-model="city" :stacked="true" :options="cityOptions" :state="stadValid" name="radio-validation">
                 <b-form-invalid-feedback :state="stadValid">
-                  {{ $t('addListing.inputs.maxFileSize') }}
+                  {{ $t('addListing.inputs.selectOne') }}
                 </b-form-invalid-feedback>
                 <b-form-valid-feedback :state="stadValid">
                   {{ $t('addListing.inputs.choosed') }} {{ city }}
@@ -774,12 +774,13 @@ export default {
           const regions = res[1].data
           const categories = res[2].data
           const tags = res[3].data
+          const lang = this.$i18n.getLocaleCookie()
 
           this.lokalOpts = users.map(x => x.name)
-          this.renderEgensKaper = tags.map(x => x.name)
-          this.cityOptions = regions.map(x => x.name)
+          this.renderEgensKaper = tags.map(x => (lang === 'en') ? x.name.en : x.name.sv)
+          this.cityOptions = regions.map(x => (lang === 'en') ? x.name.en : x.name.sv)
           this.kategoriOpts = categories.map((x) => {
-            return { text: x.name, value: x.name }
+            return { text: (lang === 'en') ? x.name.en : x.name.sv, value: (lang === 'en') ? x.name.en : x.name.sv }
           })
         })
         .catch((err) => {

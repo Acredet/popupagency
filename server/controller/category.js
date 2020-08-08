@@ -27,7 +27,7 @@ exports.addcategory = async (req, res, next) => {
         en: JSON.parse(req.body.name).en,
         sv: JSON.parse(req.body.name).sv
       },
-      parent: req.body.parent,
+      parent: (req.body.parent !== 'null') ? req.body.parent : null,
       description: {
         en: JSON.parse(req.body.description).en,
         sv: JSON.parse(req.body.description).sv

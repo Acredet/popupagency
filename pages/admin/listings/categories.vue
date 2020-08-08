@@ -271,10 +271,10 @@
 
             <template v-slot:cell(parent)="data">
               <p v-if="$i18n.locale == 'en'" class="text-center font-wight-bold">
-                {{ (data.item.parent) ? data.item.parent.en : '-' }}
+                {{ (data.item.parent) ? items.filter(x => x._id === data.item.parent)[0].name.en : '-' }}
               </p>
               <p v-else class="text-center font-wight-bold">
-                {{ (data.item.parent) ? data.item.parent.sv : '-' }}
+                {{ (data.item.parent) ? items.filter(x => x._id === data.item.parent)[0].name.en : '-' }}
               </p>
             </template>
 
