@@ -206,9 +206,9 @@
         </b-col>
 
         <b-col cols="12" md="8">
-          <b-row class="m-2">
-            <b-col md="3">
-              <b-btn block @click="sortBy = ''">
+          <b-row class="my-2">
+            <b-col md="3" class="mb-1 mb-md-0">
+              <b-btn block variant="primary" @click="sortBy = ''; sortItems()">
                 Clear Sort
               </b-btn>
             </b-col>
@@ -238,6 +238,7 @@
             :fields="fields"
             :filter="filter"
             :sort-by.sync="sortBy"
+            :filter-included-fields="['name']"
             :sort-desc.sync="sortDesc"
             :current-page="currentPage"
             :per-page="perPage"
@@ -339,20 +340,36 @@ export default {
       const cities = this.items.filter(x => countries.map(x => x._id).includes(x.parent)) // get cities
       const subCities = this.items.filter(x => cities.map(x => x._id).includes(x.parent)) // get subCities
 
+      const vm = this
+      this.parentOpts = [...countries, ...cities].map(function (x) {
+        return {
+          text: (vm.$i18n.getLocaleCookie() === 'en') ? x.name.en : x.name.sv,
+          value: x._id
+        }
+      })
+      this.parentOpts.unshift({ text: this.$t('chooseParent'), value: null })
+
       countries.forEach((x) => {
         x.cities = []
 
         cities.forEach((city) => {
           city.subCities = []
-
           subCities.forEach((subCity) => {
             if (city._id === subCity.parent) {
+              if (subCity.name.en[0] !== '-') {
+                subCity.name.en = '---' + subCity.name.en
+                subCity.name.sv = '---' + subCity.name.sv
+              }
+
               city.subCities.push(subCity)
             }
           })
 
           if (x._id === city.parent) {
-            console.log(x.name.sv, city.name.sv)
+            if (city.name.en[0] !== '-') {
+              city.name.en = '--' + city.name.en
+              city.name.sv = '--' + city.name.sv
+            }
             x.cities.push(city)
           }
         })
@@ -376,7 +393,7 @@ export default {
           all.push(...city.subCities)
         }
       }
-      console.log('all: ', all)
+
       this.items = all
     },
     async getRigions () {
@@ -384,13 +401,6 @@ export default {
       await vm.$axios.$get('/region')
         .then((res) => {
           vm.items = res.data
-          vm.parentOpts = vm.items.map(function (x) {
-            return {
-              text: (vm.$i18n.getLocaleCookie() === 'en') ? x.name.en : x.name.sv,
-              value: x._id
-            }
-          })
-          vm.parentOpts.unshift({ text: vm.$t('chooseParent'), value: null })
           vm.sortItems()
         })
         .catch((err) => {
