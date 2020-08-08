@@ -1,5 +1,5 @@
 <template>
-  <b-row>
+  <div>
     <!-- Sart Sidebar -->
     <b-sidebar
       id="more-filters"
@@ -84,7 +84,7 @@
                     </b-button>
                   </b-button-group>
                 </b-col>
-                <!-- End right buttons -->
+              <!-- End right buttons -->
               </b-row>
             </div>
           </b-collapse>
@@ -142,227 +142,234 @@
               </ul>
             </div>
           </b-collapse>
-          <!-- End yta Tab -->
+        <!-- End yta Tab -->
         </ul>
       </b-container>
     </b-sidebar>
     <!-- End SideBar -->
+    <b-row>
+      <!-- Start filters Bar -->
+      <b-col cols="12">
+        <b-container fluid>
+          <b-row no-gutters class="py-2">
+            <!-- Start Search Input -->
+            <b-col cols="12" sm="9" md="4" class="mr-2 d-flex align-items-center">
+              <b-input-group>
+                <b-form-input placeholder="Address, City, Zip, Neighborhood, School" />
+                <b-input-group-append>
+                  <b-button variant="outline-success">
+                    <i class="fas fa-search" />
+                  </b-button>
+                </b-input-group-append>
+              </b-input-group>
+            </b-col>
+            <!-- End Search Input -->
 
-    <!-- Start filters Bar -->
-    <b-col cols="12">
-      <b-container fluid>
-        <b-row no-gutters class="py-2">
-          <!-- Start Search Input -->
-          <b-col cols="12" sm="9" md="4" class="mr-2 d-flex align-items-center">
-            <b-input-group>
-              <b-form-input placeholder="Address, City, Zip, Neighborhood, School" />
-              <b-input-group-append>
-                <b-button variant="outline-success">
-                  <i class="fas fa-search" />
-                </b-button>
-              </b-input-group-append>
-            </b-input-group>
-          </b-col>
-          <!-- End Search Input -->
-
-          <!-- Start plats Filter -->
-          <b-col cols="12" md="auto" class="mr-2 d-none d-md-flex align-items-center">
-            <b-dropdown id="plats-dropdown" variant="light" :text="filters.plats.text">
-              <!-- Start first horizontal tab -->
-              <div style="width: 500px" class="custom-tab border plats">
-                <div class="cities w-full">
-                  <!-- Start Tabs -->
-                  <b-tabs
-                    nav-wrapper-class="w-25 h-100 overflow-auto border"
-                    nav-class="d-block p-0 m-0"
-                    pills
-                    card
-                    content-class="overflow-auto"
-                    vertical
-                  >
-                    <!-- Start First tab -->
-
-                    <b-tab
-                      v-for="(tab, index) in filters.plats.tabs"
-                      :key="String(index)"
-                      title-item-class="tabBtn"
-                      :title="tab.text"
+            <!-- Start plats Filter -->
+            <b-col cols="12" md="auto" class="mr-2 d-none d-md-flex align-items-center">
+              <b-dropdown id="plats-dropdown" variant="light" :text="filters.plats.text">
+                <!-- Start first horizontal tab -->
+                <div style="width: 500px" class="custom-tab border plats">
+                  <div class="cities w-full">
+                    <!-- Start Tabs -->
+                    <b-tabs
+                      nav-wrapper-class="w-25 h-100 overflow-auto border"
+                      nav-class="d-block p-0 m-0"
+                      pills
+                      card
+                      content-class="overflow-auto"
+                      vertical
                     >
-                      <b-card-body class="p-1">
-                        <div class="choices">
-                          <b-form-group>
-                            <template v-slot:label>
-                              <b-form-checkbox
-                                v-model="filters.plats.tabs[index].allSelected"
-                                :indeterminate="filters.plats.tabs[index].indeterminate"
-                                :aria-describedby="filters.plats.tabs[index].name"
-                                :aria-controls="filters.plats.tabs[index].name"
-                                size="md"
-                                @change="toggleAll(index)"
-                              >
-                                <b class="font-2">Hela {{ filters.plats.tabs[index].name }}</b>
-                              </b-form-checkbox>
-                            </template>
+                      <!-- Start First tab -->
 
-                            <b-form-checkbox-group
-                              :id="filters.plats.tabs[index].name"
-                              v-model="filters.plats.tabs[index].selected"
-                              :options="filters.plats.tabs[index].options"
-                              :name="filters.plats.tabs[index].name"
-                              aria-label="Individual popup"
-                              stacked
-                              @change="placeChoose(index)"
-                            />
-                          </b-form-group>
-                        </div>
-                      </b-card-body>
-                    </b-tab>
+                      <b-tab
+                        v-for="(tab, index) in filters.plats.tabs"
+                        :key="String(index)"
+                        title-item-class="tabBtn"
+                        :title="tab.text"
+                      >
+                        <b-card-body class="p-1">
+                          <div class="choices">
+                            <b-form-group>
+                              <template v-slot:label>
+                                <b-form-checkbox
+                                  v-model="filters.plats.tabs[index].allSelected"
+                                  :indeterminate="filters.plats.tabs[index].indeterminate"
+                                  :aria-describedby="filters.plats.tabs[index].name"
+                                  :aria-controls="filters.plats.tabs[index].name"
+                                  size="md"
+                                  @change="toggleAll(index)"
+                                >
+                                  <b class="font-2">Hela {{ filters.plats.tabs[index].name }}</b>
+                                </b-form-checkbox>
+                              </template>
+
+                              <b-form-checkbox-group
+                                :id="filters.plats.tabs[index].name"
+                                v-model="filters.plats.tabs[index].selected"
+                                :options="filters.plats.tabs[index].options"
+                                :name="filters.plats.tabs[index].name"
+                                aria-label="Individual popup"
+                                stacked
+                              />
+                            </b-form-group>
+                          </div>
+                        </b-card-body>
+                      </b-tab>
                     <!-- End First tab -->
 
                     <!-- End tabs -->
-                  </b-tabs>
+                    </b-tabs>
+                  </div>
                 </div>
-              </div>
-            </b-dropdown>
-          </b-col>
-          <!-- End plats Filter -->
+              </b-dropdown>
+            </b-col>
+            <!-- End plats Filter -->
 
-          <!-- Start property Filter -->
-          <b-col cols="12" md="auto" class="mr-2 d-none d-lg-flex align-items-center">
-            <b-dropdown id="property-dropdown" class="w-100" variant="light" :text="filters.property.text">
-              <b-dropdown-group header="property" style="width: 300px !important" class="px-1">
-                <b-row no-gutters>
-                  <!-- Start left buttons -->
-                  <b-col cols="6">
-                    <b-button-group vertical class="w-100">
-                      <b-button
-                        v-for="(icon) in filters.property.icons.slice(0,6)"
-                        :key="icon.text"
-                        :pressed.sync="icon.state"
-                        variant="outline-dark"
-                        squared
-                        class="text-left"
-                        @click="addProperty(icon)"
-                      >
-                        <i :class="`fas fa-${icon.icon}`" />
-                        {{ icon.text }}
-                      </b-button>
-                    </b-button-group>
-                  </b-col>
-                  <!-- End Left buttons -->
+            <!-- Start property Filter -->
+            <b-col cols="12" md="auto" class="mr-2 d-none d-lg-flex align-items-center">
+              <b-dropdown id="property-dropdown" class="w-100" variant="light" :text="filters.property.text">
+                <b-dropdown-group header="property" style="width: 300px !important" class="px-1">
+                  <b-row no-gutters>
+                    <!-- Start left buttons -->
+                    <b-col cols="6">
+                      <b-button-group vertical class="w-100">
+                        <b-button
+                          v-for="(icon) in filters.property.icons.slice(0,6)"
+                          :key="icon.text"
+                          :pressed.sync="icon.state"
+                          variant="outline-dark"
+                          squared
+                          class="text-left"
+                          @click="addProperty(icon)"
+                        >
+                          <i :class="`fas fa-${icon.icon}`" />
+                          {{ icon.text }}
+                        </b-button>
+                      </b-button-group>
+                    </b-col>
+                    <!-- End Left buttons -->
 
-                  <!-- Start right buttons -->
-                  <b-col cols="6">
-                    <b-button-group vertical class="w-100">
-                      <b-button
-                        v-for="(icon) in filters.property.icons.slice(6,12)"
-                        :key="icon.text"
-                        :pressed.sync="icon.state"
-                        squared
-                        variant="outline-dark"
-                        class="text-left"
-                        @click="addProperty(icon)"
-                      >
-                        <i :class="`fas fa-${icon.icon}`" />
-                        {{ icon.text }}
-                      </b-button>
-                    </b-button-group>
-                  </b-col>
+                    <!-- Start right buttons -->
+                    <b-col cols="6">
+                      <b-button-group vertical class="w-100">
+                        <b-button
+                          v-for="(icon) in filters.property.icons.slice(6,12)"
+                          :key="icon.text"
+                          :pressed.sync="icon.state"
+                          squared
+                          variant="outline-dark"
+                          class="text-left"
+                          @click="addProperty(icon)"
+                        >
+                          <i :class="`fas fa-${icon.icon}`" />
+                          {{ icon.text }}
+                        </b-button>
+                      </b-button-group>
+                    </b-col>
                   <!-- End right buttons -->
-                </b-row>
-              </b-dropdown-group>
-            </b-dropdown>
-          </b-col>
-          <!-- End property Filter -->
+                  </b-row>
+                </b-dropdown-group>
+              </b-dropdown>
+            </b-col>
+            <!-- End property Filter -->
 
-          <!-- Start price Filter -->
-          <b-col cols="12" md="auto" class="mr-2 d-none d-md-flex align-items-center">
-            <b-dropdown id="price-dropdown" class="w-100" variant="light" right :text="filters.price.text">
-              <b-dropdown-group header="Price" style="width: 300px !important" class="px-3">
-                <vue-slider v-model="filters.price.value" />
-                <small>{{ filters.price.value[0] || 0 }} Kr — {{ filters.price.value[1] || 0 }} Kr</small>
-              </b-dropdown-group>
-            </b-dropdown>
-          </b-col>
-          <!-- End price Filter -->
+            <!-- Start price Filter -->
+            <b-col cols="12" md="auto" class="mr-2 d-none d-md-flex align-items-center">
+              <b-dropdown id="price-dropdown" class="w-100" variant="light" right :text="filters.price.text">
+                <b-dropdown-group header="Price" style="width: 300px !important" class="px-3">
+                  <vue-slider v-model="filters.price.value" />
+                  <small>{{ filters.price.value[0] || 0 }} Kr — {{ filters.price.value[1] || 0 }} Kr</small>
+                </b-dropdown-group>
+              </b-dropdown>
+            </b-col>
+            <!-- End price Filter -->
 
-          <!-- Start yta Filter -->
-          <b-col cols="12" md="auto" class="mr-2 d-none d-lg-flex align-items-center">
-            <b-dropdown id="yta-dropdown" class="w-100" variant="light" right :text="filters.yta.text">
-              <b-dropdown-group header="Yta" style="width: 300px !important" class="px-3">
-                <vue-slider v-model="filters.yta.value" />
-                <small>{{ filters.yta.value[0] || 0 }} m<sup>3</sup> — {{ filters.yta.value[1] || 0 }} m<sup>3</sup></small>
-              </b-dropdown-group>
-            </b-dropdown>
-          </b-col>
-          <!-- End yta Filter -->
+            <!-- Start yta Filter -->
+            <b-col cols="12" md="auto" class="mr-2 d-none d-lg-flex align-items-center">
+              <b-dropdown id="yta-dropdown" class="w-100" variant="light" right :text="filters.yta.text">
+                <b-dropdown-group header="Yta" style="width: 300px !important" class="px-3">
+                  <vue-slider v-model="filters.yta.value" />
+                  <small>{{ filters.yta.value[0] || 0 }} m<sup>3</sup> — {{ filters.yta.value[1] || 0 }} m<sup>3</sup></small>
+                </b-dropdown-group>
+              </b-dropdown>
+            </b-col>
+            <!-- End yta Filter -->
 
-          <!-- Start more Filters -->
-          <b-col cols="12" sm="2" md="auto" class="d-flex d-lg-none align-items-center justify-content-end">
-            <b-button v-b-toggle.more-filters block class="mt-1 mt-sm-0" variant="primary" v-text="'More Filters'" />
-          </b-col>
-          <!-- End more Filters -->
+            <!-- Start more Filters -->
+            <b-col cols="12" sm="2" md="auto" class="d-flex d-lg-none align-items-center justify-content-end">
+              <b-button v-b-toggle.more-filters block class="mt-1 mt-sm-0" variant="primary" v-text="'More Filters'" />
+            </b-col>
+            <!-- End more Filters -->
 
-          <!-- Start layout buttons -->
-          <b-col cols="12" md="auto" class="d-none ml-auto d-md-flex align-items-center justify-content-end">
-            <b-form-group class="p-0 m-0">
-              <b-form-radio-group
-                id="layout-btns"
-                v-model="layout.value"
-                buttons
-                button-variant="outline-primary"
-              >
-                <b-form-radio value="list">
-                  <i class="fas fa-list mr-1" />
-                  List
-                </b-form-radio>
-                <b-form-radio value="map">
-                  <i class="far fa-map mr-1" />
-                  Map
-                </b-form-radio>
-              </b-form-radio-group>
-            </b-form-group>
-          </b-col>
+            <!-- Start layout buttons -->
+            <b-col cols="12" md="auto" class="d-none ml-auto d-md-flex align-items-center justify-content-end">
+              <b-form-group class="p-0 m-0">
+                <b-form-radio-group
+                  id="layout-btns"
+                  v-model="layout.value"
+                  buttons
+                  button-variant="outline-primary"
+                >
+                  <b-form-radio value="list">
+                    <i class="fas fa-list mr-1" />
+                    List
+                  </b-form-radio>
+                  <b-form-radio value="map">
+                    <i class="far fa-map mr-1" />
+                    Map
+                  </b-form-radio>
+                </b-form-radio-group>
+              </b-form-group>
+            </b-col>
           <!-- End layout buttons -->
-        </b-row>
-      </b-container>
-    </b-col>
-    <!-- End filters Bar -->
+          </b-row>
+        </b-container>
+      </b-col>
+      <!-- End filters Bar -->
 
-    <b-col cols="12" :md="layout.value === 'map' ? 6 : 12" class="wrapper">
-      <b-container>
-        <!-- Start Listings -->
-        <b-col
-          v-for="(card, index) in cards"
-          :key="String(index)"
-          class="my-2"
-          cols="12"
-          :md="layout.value === 'map' ? 12 : 6"
-          :lg="layout.value === 'map' ? 6 : 4"
-        >
-          <listing-card :card="card" />
-        </b-col>
+      <b-col cols="12" :md="layout.value === 'map' ? 6 : 12" class="wrapper">
+        <b-container>
+          <!-- Start Listings -->
+          <b-col
+            v-for="(card, index) in cards"
+            :key="String(index)"
+            class="my-2"
+            cols="12"
+            :md="layout.value === 'map' ? 12 : 6"
+            :lg="layout.value === 'map' ? 6 : 4"
+          >
+            <listing-card :card="card" />
+          </b-col>
         <!-- End Listings -->
-      </b-container>
-    </b-col>
+        </b-container>
+      </b-col>
 
-    <!-- Start Map -->
-    <!-- <b-col v-if="layout.value === 'map'" cols="12" md="6" class="map-wrapper d-md-flex">
-      <gmap-map :center="center" :map-type-id="mapTypeId" :zoom="5">
-        <gmap-marker
-          v-for="(item, index) in markers"
-          :key="index"
-          :position="item.position"
-          @click="center = item.position"
-        />
-      </gmap-map>
-    </b-col> -->
-    <!-- End Map -->
-
+      <!-- Start Map -->
+      <b-col v-if="layout.value === 'map'" cols="12" md="6" class="map-wrapper d-md-flex">
+        <gmap-map :center="center" :map-type-id="mapTypeId" :zoom="5">
+          <gmap-marker
+            v-for="(item, index) in markers"
+            :key="index"
+            :position="item.position"
+            @click="center = item.position"
+          />
+        </gmap-map>
+      </b-col>
+      <!-- End Map -->
+    </b-row>
     <!-- Strat Toggle Layout in small screens -->
-    <!-- TODO: ADD BUTTONS HERE -->
-    <!-- End Toggle Layout in small screens -->
-  </b-row>
+    <div class="mobile-btns px-3 d-md-none position-fixed d-flex justify-content-between align-items-center">
+      <b-btn pill variant="dark" class="w-50 mr-2" @click="(layout.value === 'map') ? layout.value = 'list' : layout.value = 'map'">
+        {{ (layout.value === 'map') ? 'list' : 'map' }} View
+      </b-btn>
+
+      <b-btn pill variant="dark" class="w-50">
+        Save search
+      </b-btn>
+    </div>
+  <!-- End Toggle Layout in small screens -->
+  </div>
 </template>
 
 <script>
@@ -611,13 +618,20 @@ export default {
 </script>
 
 <style scoped>
+.mobile-btns {
+  bottom: 5px;
+  left: 50%;
+  width: 100%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+}
 @media (max-width: 767.98px) {
   .map-wrapper {
     padding: 0 !important;
     margin: 0 !important;
     display: block !important;
     position: fixed;
-    z-index: 5;
+    z-index: 25;
     top: 0;
     left: 0;
     width: 100%;
