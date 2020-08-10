@@ -424,13 +424,13 @@
 
           <b-card :title="$t('addListing.inputs.fran')">
             <b-card-body>
-              <b-form-datepicker id="Upptaget-från" v-model="fran" class="mb-2" />
+              <b-form-datepicker id="Upptaget-från" v-model="fran" today-button reset-button class="mb-2" />
             </b-card-body>
           </b-card>
 
           <b-card :title="$t('addListing.inputs.till')">
             <b-card-body>
-              <b-form-datepicker id="Upptaget-till" v-model="till" class="mb-2" />
+              <b-form-datepicker id="Upptaget-till" v-model="till" today-button reset-button class="mb-2" />
             </b-card-body>
           </b-card>
 
@@ -449,7 +449,7 @@
 
           <b-card :title="$t('addListing.inputs.expiry')">
             <b-card-body>
-              <b-form-datepicker id="example-datepicker" v-model="expiry" class="mb-2" />
+              <b-form-datepicker id="example-datepicker" v-model="expiry" today-button reset-button class="mb-2" />
             </b-card-body>
           </b-card>
         </div>
@@ -777,10 +777,10 @@ export default {
           const lang = this.$i18n.getLocaleCookie()
 
           this.lokalOpts = users.map(x => x.name)
-          this.renderEgensKaper = tags.map(x => (lang === 'en') ? x.name.en : x.name.sv)
-          this.cityOptions = regions.map(x => (lang === 'en') ? x.name.en : x.name.sv)
+          this.renderEgensKaper = tags.map(x => x.name[lang])
+          this.cityOptions = regions.map(x => x.name[lang])
           this.kategoriOpts = categories.map((x) => {
-            return { text: (lang === 'en') ? x.name.en : x.name.sv, value: (lang === 'en') ? x.name.en : x.name.sv }
+            return { text: x.name[lang], value: x.name[lang] }
           })
         })
         .catch((err) => {
@@ -789,29 +789,30 @@ export default {
     },
     assignListingToEdit () {
       console.log(this.listing)
-      this.title.en = JSON.parse(this.listing.title).en
-      this.title.sv = JSON.parse(this.listing.title).sv
-      this.Yta = this.listing.yta
-      this.markplan = this.listing.placering
-      this.city = this.listing.stad
-      this.location = this.listing.location
-      this.vagvisningen = this.listing.vagvisningen
-      this.fran = this.listing.fran
-      this.till = this.listing.till
-      this.lokal = this.listing.kontaktperson
-      this.expiry = this.listing.expiry
-      this.minsta = this.listing.minstahyresperiod
-      this.längsta = this.listing.langstahyresperiod
-      this.sasong = this.listing.sasongBoxen
-      this.hamside = this.listing.hemsida
-      this.article.beskreving.en = JSON.parse(this.listing.beskreving).en
-      this.article.beskreving.sv = JSON.parse(this.listing.beskreving).sv
-      this.article.centrum = this.listing.centrumtextarea
+      const { prioteradpris, egenskaper, oppettider, kategori, title, yta, placering, stad, location, vagvisningen, fran, till, kontaktperson, expiry, minstahyresperiod, langstahyresperiod, sasongBoxen, hemsida, beskreving, centrumtextarea, prisperdag, prisperhelg, prisperlanghelg, prispermanad, prispervecka, bildgalleri, cover, planritning, centrumgalleri } = this.listing
+      this.title.en = title.en
+      this.title.sv = title.sv
+      this.Yta = yta
+      this.markplan = placering
+      this.city = stad
+      this.location = location
+      this.vagvisningen = vagvisningen
+      this.fran = fran
+      this.till = till
+      this.lokal = kontaktperson
+      this.expiry = expiry
+      this.minsta = minstahyresperiod
+      this.längsta = langstahyresperiod
+      this.sasong = sasongBoxen
+      this.hamside = hemsida
+      this.article.beskreving.en = beskreving.en
+      this.article.beskreving.sv = beskreving.sv
+      this.article.centrum = centrumtextarea
 
       // ASSIGN DAYS
-      for (const key in this.listing.oppettider) {
-        if (this.listing.oppettider.hasOwnProperty(key)) {
-          const element = this.listing.oppettider[key]
+      for (const key in oppettider) {
+        if (oppettider.hasOwnProperty(key)) {
+          const element = oppettider[key]
           const day = this.days[element.day]
           day.hours = element.times
           day.openTimes = element.oppettider
@@ -819,41 +820,41 @@ export default {
       }
 
       // ASSIGN PRICES
-      this.price.day.val = this.listing.prisperdag
-      this.price.helg.val = this.listing.prisperhelg
-      this.price.langheig.val = this.listing.prisperlanghelg
-      this.price.manad.val = this.listing.prispermanad
-      this.price.veckopris.val = this.listing.prispervecka
+      this.price.day.val = prisperdag
+      this.price.helg.val = prisperhelg
+      this.price.langheig.val = prisperlanghelg
+      this.price.manad.val = prispermanad
+      this.price.veckopris.val = prispervecka
 
       // ASSIGN IMAGES
-      this.images.bildgalleri = this.listing.bildgalleri
-      this.images.cover = this.listing.cover
-      this.images.planritning = this.listing.planritning
-      this.images.centrumgalleri = this.listing.centrumgalleri
+      this.images.bildgalleri = bildgalleri
+      this.images.cover = cover
+      this.images.planritning = planritning
+      this.images.centrumgalleri = centrumgalleri
 
       const prices = [
-        { text: 'day', val: this.listing.prisperdag },
-        { text: 'helg', val: this.listing.prisperhelg },
-        { text: 'langheig', val: this.listing.prisperlanghelg },
-        { text: 'manad', val: this.listing.prispermana },
-        { text: 'veckopris', val: this.listing.prispervecka }
+        { text: 'day', val: prisperdag },
+        { text: 'helg', val: prisperhelg },
+        { text: 'langheig', val: prisperlanghelg },
+        { text: 'manad', val: prispermanad },
+        { text: 'veckopris', val: prispervecka }
       ]
 
       // DETERMINE THE prispervecka
       prices.forEach((price) => {
-        if (Number(price.val) === Number(this.listing.prioteradpris)) {
+        if (Number(price.val) === Number(prioteradpris)) {
           this.price[price.text].temp = true
           this.price.prioteradpris.val = price.val
         }
       })
 
       // ADD TAGS
-      this.listing.egenskaper.forEach((tag) => {
+      egenskaper.forEach((tag) => {
         this.egenskaper[tag] = true
       })
 
       // ADD CATEGORY
-      this.kategori = this.listing.kategori
+      this.kategori = kategori
 
       // ASSIGN YES AND NO INPUTS
       const yesNoFromListing = ['fasta', 'butik', 'mat', 'event']
