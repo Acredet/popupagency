@@ -157,7 +157,7 @@
               <b-input-group>
                 <b-form-input placeholder="Address, City, Zip, Neighborhood, School" />
                 <b-input-group-append>
-                  <b-button variant="outline-success">
+                  <b-button variant="outline-primary">
                     <i class="fas fa-search" />
                   </b-button>
                 </b-input-group-append>
@@ -170,7 +170,7 @@
               <b-dropdown id="plats-dropdown" variant="light" :text="filters.plats.text">
                 <!-- Start first horizontal tab -->
                 <b-dropdown-group header="plats" style="width: 500px !important; overflow: hidden" class="px-2 custom-tab plats">
-                  <b-btn v-for="(country, key) in filters.plats.tabs" :key="key" variant="primary" class="mb-2" @click="filters.plats.currentCountry = key">
+                  <b-btn v-for="(country, key) in filters.plats.tabs" :key="key" variant="primary" class="mb-2 mr-2" @click="filters.plats.currentCountry = key">
                     {{ key }}
                   </b-btn>
                   <!-- Start Tabs -->
@@ -193,23 +193,23 @@
                         <div class="choices">
                           <b-form-group>
                             <b-form-checkbox
-                              v-model="filters.plats.tabs[filters.plats.currentCountry][index].allSelected"
-                              :indeterminate="filters.plats.tabs[filters.plats.currentCountry][index].indeterminate"
-                              :aria-describedby="filters.plats.tabs[filters.plats.currentCountry][index].name"
-                              :aria-controls="filters.plats.tabs[filters.plats.currentCountry][index].name"
+                              v-model="tab.allSelected"
+                              :indeterminate="tab.indeterminate"
+                              :aria-describedby="tab.name"
+                              :aria-controls="tab.name"
                               size="md"
                               @change="toggleAll(index)"
                             >
-                              <b class="font-2">Hela {{ filters.plats.tabs[filters.plats.currentCountry][index].name }}</b>
+                              <b class="font-2">Hela {{ tab.name }}</b>
                             </b-form-checkbox>
                           </b-form-group>
 
                           <b-form-group>
                             <b-form-checkbox-group
-                              :id="filters.plats.tabs[filters.plats.currentCountry][index].name"
-                              v-model="filters.plats.tabs[filters.plats.currentCountry][index].selected"
-                              :options="filters.plats.tabs[filters.plats.currentCountry][index].subcity"
-                              :name="filters.plats.tabs[filters.plats.currentCountry][index].name"
+                              :id="tab.name"
+                              v-model="tab.selected"
+                              :options="(tab.subcity).map(x => x.name = x.name[$i18n.getLocaleCookie()])"
+                              :name="tab.name"
                               aria-label="Individual popup"
                               stacked
                             />
@@ -532,7 +532,7 @@ export default {
     }
   },
   async mounted () {
-    // const lang = this.$i18n.getLocaleCookie()
+    const lang = this.$i18n.getLocaleCookie()
     const promises = [
       this.$axios.$get('/places'),
       this.$axios.$get('/region'),
@@ -544,26 +544,31 @@ export default {
       const regions = res[1].data
       const tags = res[2].data
 
-      console.log('places: ', places)
-      console.log('regions: ', regions)
       console.log('tags: ', tags)
 
       const sortedRegions = this.sortItems(regions, false)
-      console.log(sortedRegions)
+
       sortedRegions.forEach((country) => {
-        this.filters.plats.tabs[country.name] = []
         console.log(country)
-        // country.cities.forEach((city) => {
-        //   this.filters.plats.tabs[country.name].push({
-        //     name: city.name[lang],
-        //     text: `${city.name[lang]} (${city.subCities.length})`,
-        //     allSelected: false, // Shape of the check
-        //     indeterminate: false, // Shape of the check
-        //     selected: [],
-        //     subcity: city.subCities
-        //   })
-        // })
+        if (!country.parent) {
+          this.filters.plats.tabs[country.name[lang]] = []
+        }
+
+        if (country.cities) {
+          country.cities.forEach((city) => {
+            this.filters.plats.tabs[country.name[lang]].push({
+              name: city.name[lang],
+              text: `${city.name[lang]} (${city.subCities.length})`,
+              allSelected: false, // Shape of the check
+              indeterminate: false, // Shape of the check
+              selected: [],
+              subcity: city.subCities
+            })
+          })
+        }
       })
+
+      console.log(this.filters.plats.tabs)
 
       this.cards = places.map((x) => {
         return {
