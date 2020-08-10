@@ -98,42 +98,44 @@
 
           <b-collapse id="plats" accordion="filters" role="tabpanel">
             <div class="px-2">
+              <b-btn v-for="(country, key) in filters.plats.tabs" :key="key" variant="primary" class="mb-2 mr-2" @click="filters.plats.currentCountry = key">
+                {{ key }}
+              </b-btn>
               <ul class="list-unstyled">
                 <li
-                  v-for="(tab, index) in filters.plats.tabs"
-                  :key="String(index)"
+                  v-for="(tab, index) in filters.plats.tabs[filters.plats.currentCountry]"
+                  :key="tab.name"
                   v-b-toggle="tab.name"
                   class="p-2 border font-3 mb-1"
                 >
                   <div class="d-flex justify-content-between align-items-center mb-2">
-                    <span>{{ tab.name }}</span>
+                    <span>{{ tab.text }}</span>
                     <i class="fas fa-caret-down" />
                   </div>
 
                   <b-collapse :id="tab.name" accordion="stad" role="tabpanel">
                     <div class="px-2">
                       <b-form-group>
-                        <template v-slot:label>
-                          <b-form-checkbox
-                            v-model="filters.plats.tabs[index].allSelected"
-                            :indeterminate="filters.plats.tabs[index].indeterminate"
-                            :aria-describedby="filters.plats.tabs[index].name"
-                            :aria-controls="filters.plats.tabs[index].name"
-                            size="md"
-                            @change="toggleAll(index)"
-                          >
-                            <b class="font-2">Hela {{ filters.plats.tabs[index].name }}</b>
-                          </b-form-checkbox>
-                        </template>
+                        <b-form-checkbox
+                          v-model="tab.allSelected"
+                          :indeterminate="tab.indeterminate"
+                          :aria-describedby="tab.name"
+                          :aria-controls="tab.name"
+                          size="md"
+                          @change="toggleAll(index)"
+                        >
+                          <b class="font-2">Hela {{ tab.name }}</b>
+                        </b-form-checkbox>
+                      </b-form-group>
 
+                      <b-form-group>
                         <b-form-checkbox-group
-                          :id="filters.plats.tabs[index].name"
-                          v-model="filters.plats.tabs[index].selected"
-                          :options="filters.plats.tabs[index].options"
-                          :name="filters.plats.tabs[index].name"
+                          :id="tab.name"
+                          v-model="tab.selected"
+                          :options="tab.subcity"
+                          :name="tab.name"
                           aria-label="Individual popup"
                           stacked
-                          @change="placeChoose(index)"
                         />
                       </b-form-group>
                     </div>
@@ -147,6 +149,7 @@
       </b-container>
     </b-sidebar>
     <!-- End SideBar -->
+
     <b-row>
       <!-- Start filters Bar -->
       <b-col cols="12">
@@ -208,7 +211,7 @@
                             <b-form-checkbox-group
                               :id="tab.name"
                               v-model="tab.selected"
-                              :options="(tab.subcity).map(x => x.name = x.name[$i18n.getLocaleCookie()])"
+                              :options="tab.subcity"
                               :name="tab.name"
                               aria-label="Individual popup"
                               stacked
@@ -499,6 +502,9 @@ export default {
     }
   },
   computed: {
+    lang () {
+      return this.$i18n.getLocaleCookie()
+    },
     renderKey () {
       return this.$store.state.changeSidebarRenderKey
     }
@@ -532,7 +538,6 @@ export default {
     }
   },
   async mounted () {
-    const lang = this.$i18n.getLocaleCookie()
     const promises = [
       this.$axios.$get('/places'),
       this.$axios.$get('/region'),
@@ -551,24 +556,25 @@ export default {
       sortedRegions.forEach((country) => {
         console.log(country)
         if (!country.parent) {
-          this.filters.plats.tabs[country.name[lang]] = []
+          this.filters.plats.tabs[country.name[this.lang]] = []
         }
 
         if (country.cities) {
           country.cities.forEach((city) => {
-            this.filters.plats.tabs[country.name[lang]].push({
-              name: city.name[lang],
-              text: `${city.name[lang]} (${city.subCities.length})`,
+            // eslint-disable-next-line no-return-assign
+            const array1 = city.subCities ? city.subCities.map(x => x.name = x.name[this.lang]) : []
+
+            this.filters.plats.tabs[country.name[this.lang]].push({
+              name: city.name[this.lang],
+              text: `${city.name[this.lang]} (${city.subCities.length})`,
               allSelected: false, // Shape of the check
               indeterminate: false, // Shape of the check
               selected: [],
-              subcity: city.subCities
+              subcity: array1
             })
           })
         }
       })
-
-      console.log(this.filters.plats.tabs)
 
       this.cards = places.map((x) => {
         return {
@@ -582,6 +588,7 @@ export default {
   },
   methods: {
     toggleAll (index) {
+      console.log(index)
       const arr = this.filters.plats.tabs[this.filters.plats.currentCountry][index]
       arr.selected =
         (arr.selected.length !== arr.subcity.length)

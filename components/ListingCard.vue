@@ -14,7 +14,6 @@
               width="480px"
               height="320px"
               :alt="card.text"
-              :srcset="`https://popup.dk.se/_nuxt/img/${img}`"
             >
           </template>
         </b-carousel-slide>
