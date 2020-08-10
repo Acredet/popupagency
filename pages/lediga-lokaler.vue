@@ -551,7 +551,7 @@ export default {
       const sortedRegions = this.sortItems(regions, false)
       console.log(sortedRegions)
       sortedRegions.forEach((country) => {
-        // this.filters.plats.tabs[country.name] = []
+        this.filters.plats.tabs[country.name] = []
         console.log(country)
         // country.cities.forEach((city) => {
         //   this.filters.plats.tabs[country.name].push({

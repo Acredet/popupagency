@@ -29,11 +29,8 @@
           show-empty
         >
           <template v-slot:cell(title)="data">
-            <p v-if="$i18n.locale == 'en'" class="text-center">
-              {{ JSON.parse(data.item.title).en }}
-            </p>
-            <p v-else>
-              {{ JSON.parse(data.item.title).sv }}
+            <p class="text-center">
+              {{ data.item.title[$i18n.locale] }}
             </p>
           </template>
 
