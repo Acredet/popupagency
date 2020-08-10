@@ -99,7 +99,7 @@
 
     <b-modal id="delete-modal" centered :title="$t('region.deleteModal.title')">
       <p class="my-4">
-        {{ $t('actions.deleteConfimrMessage') }} {{ ($i18n.getLocaleCookie() === 'en') ? editForm.name.en : editForm.name.sv }}?
+        {{ $t('actions.deleteConfimrMessage') }} {{ editForm.name[$i18n.getLocaleCookie()] }}?
       </p>
 
       <template v-slot:modal-footer="{ ok, cancel }">
@@ -246,32 +246,23 @@
             show-empty
           >
             <template v-slot:cell(name)="data">
-              <p v-if="$i18n.locale == 'en'">
-                {{ data.item.name.en }}
-              </p>
-              <p v-else>
-                {{ data.item.name.sv }}
+              <p>
+                {{ data.item.name[$i18n.locale] }}
               </p>
             </template>
 
             <template v-slot:cell(description)="data">
-              <p v-if="data.item.description && $i18n.locale == 'en'">
-                {{ data.item.description.en }}
-              </p>
-              <p v-else-if="!data.item.description">
-                -
+              <p v-if="data.item.description">
+                {{ data.item.description[$i18n.locale] }}
               </p>
               <p v-else>
-                {{ data.item.description.sv }}
+                -
               </p>
             </template>
 
             <template v-slot:cell(parent)="data">
-              <p v-if="$i18n.locale == 'en'" class="text-center font-wight-bold">
-                {{ (data.item.parent) ? items.filter(x => x._id === data.item.parent)[0].name.en : '-' }}
-              </p>
-              <p v-else class="text-center font-wight-bold">
-                {{ (data.item.parent) ? items.filter(x => x._id === data.item.parent)[0].name.sv : '-' }}
+              <p class="text-center font-wight-bold">
+                {{ (data.item.parent && items.filter(x => x._id === data.item.parent)[0]) ? items.filter(x => x._id === data.item.parent)[0].name[$i18n.locale] : '-' }}
               </p>
             </template>
 
@@ -341,7 +332,8 @@ export default {
       await vm.$axios.$get('/region')
         .then((res) => {
           vm.items = res.data
-          vm.items = vm.sortItems(vm.items, true)
+          // console.log(vm.sortItems(res.data, true))
+          // vm.items = vm.sortItems(res.data, true)
         })
         .catch((err) => {
           this.toast = {
@@ -355,12 +347,12 @@ export default {
     async addRigion () {
       await this.$axios.$post('/region', this.form)
         .then((res) => {
-          this.getItems('region')
+          this.getRigions()
           this.toast = {
             title: this.$t('region.toast.add'),
             variant: 'success',
             visible: true,
-            text: `${this.$t('region.toast.justAdded')} ${(this.$i18n.getLocaleCookie() === 'en') ? this.form.name.en : this.form.name.sv} Region.`
+            text: `${this.$t('region.toast.justAdded')} ${this.form.name[this.$i18n.getLocaleCookie()]} Region.`
           }
         })
         .catch((err) => {
@@ -375,7 +367,7 @@ export default {
     async editRigion () {
       await this.$axios.$patch(`/region/${this.editForm._id}`, this.editForm)
         .then((res) => {
-          this.getItems('region')
+          this.getRigions()
           this.toast = {
             title: this.$t('region.toast.edit'),
             variant: 'success',
