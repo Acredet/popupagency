@@ -81,6 +81,9 @@
 
 <script>
 export default {
+  mounted () {
+    this.$store.commit('changeSidebarRenderKey')
+  },
   methods: {
     changeLang (lang) {
       this.$i18n.setLocale(lang)

@@ -333,7 +333,7 @@ export default {
         .then((res) => {
           vm.items = res.data
           // console.log(vm.sortItems(res.data, true))
-          // vm.items = vm.sortItems(res.data, true)
+          vm.items = vm.sortItems(res.data, true)
         })
         .catch((err) => {
           this.toast = {

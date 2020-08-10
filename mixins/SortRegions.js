@@ -19,6 +19,7 @@ exports.sortItems = {
 
         cities.forEach((city) => {
           city.subCities = []
+
           subCities.forEach((subCity) => {
             if (city._id === subCity.parent) {
               if (withNameSpace && subCity.name.en[0] !== '-') {
@@ -41,7 +42,7 @@ exports.sortItems = {
       })
 
       const all = []
-
+      console.log(all)
       for (let i = 0; i < countries.length; i++) {
         const country = countries[i]
 
@@ -58,7 +59,10 @@ exports.sortItems = {
           all.push(...city.subCities)
         }
       }
-
+      console.log('regions: ', regions)
+      console.log('all: ', all)
+      const difference = [...regions].filter(x => !all.includes(x))
+      console.log('Spent: ', difference)
       return all
     }
   }
