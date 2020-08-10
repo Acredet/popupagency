@@ -208,7 +208,7 @@
         <b-col cols="12" md="8">
           <b-row class="my-2">
             <b-col md="3" class="mb-1 mb-md-0">
-              <b-btn block variant="primary" @click="sortBy = ''; sortItems()">
+              <b-btn block variant="primary" @click="sortBy = ''; sortItems(items, true)">
                 Clear Sort
               </b-btn>
             </b-col>
@@ -323,11 +323,12 @@
 
 <script>
 import { ListingDepedancies } from '@/mixins/ListingDepedancies'
+import { sortItems } from '@/mixins/SortRegions'
 
 export default {
   name: 'ListingRegion',
   layout: 'admin',
-  mixins: [ListingDepedancies],
+  mixins: [ListingDepedancies, sortItems],
   data () {
     return {
       filter: null
@@ -335,73 +336,12 @@ export default {
   },
   mounted () { this.getRigions() },
   methods: {
-    sortItems () {
-      const countries = this.items.filter(x => !x.parent) // Get countries
-      const cities = this.items.filter(x => countries.map(x => x._id).includes(x.parent)) // get cities
-      const subCities = this.items.filter(x => cities.map(x => x._id).includes(x.parent)) // get subCities
-
-      const vm = this
-      this.parentOpts = [...countries, ...cities].map(function (x) {
-        return {
-          text: (vm.$i18n.getLocaleCookie() === 'en') ? x.name.en : x.name.sv,
-          value: x._id
-        }
-      })
-      this.parentOpts.unshift({ text: this.$t('chooseParent'), value: null })
-
-      countries.forEach((x) => {
-        x.cities = []
-
-        cities.forEach((city) => {
-          city.subCities = []
-          subCities.forEach((subCity) => {
-            if (city._id === subCity.parent) {
-              if (subCity.name.en[0] !== '-') {
-                subCity.name.en = '---' + subCity.name.en
-                subCity.name.sv = '---' + subCity.name.sv
-              }
-
-              city.subCities.push(subCity)
-            }
-          })
-
-          if (x._id === city.parent) {
-            if (city.name.en[0] !== '-') {
-              city.name.en = '--' + city.name.en
-              city.name.sv = '--' + city.name.sv
-            }
-            x.cities.push(city)
-          }
-        })
-      })
-
-      const all = []
-
-      for (let i = 0; i < countries.length; i++) {
-        const country = countries[i]
-
-        console.log('country: ', country.name.sv)
-        all.push(country)
-
-        for (let j = 0; j < country.cities.length; j++) {
-          const city = country.cities[j]
-
-          console.log('city: ', city.name.sv)
-          all.push(city)
-
-          console.log('city.subCities: ', ...city.subCities)
-          all.push(...city.subCities)
-        }
-      }
-
-      this.items = all
-    },
     async getRigions () {
       const vm = this
       await vm.$axios.$get('/region')
         .then((res) => {
           vm.items = res.data
-          vm.sortItems()
+          vm.items = vm.sortItems(vm.items, true)
         })
         .catch((err) => {
           this.toast = {

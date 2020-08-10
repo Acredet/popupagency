@@ -4,7 +4,9 @@
     <admin-sidebar :key="renderKey" />
 
     <div class="my-3 content-page">
-      <Nuxt />
+      <transition name="fade">
+        <Nuxt />
+      </transition>
     </div>
     <!-- <admin-footer /> -->
   </div>
@@ -34,12 +36,24 @@ export default {
       this.$router.push('/admin/login')
     }
   }
-
 }
 </script>
 
 <style scoped>
-h1,h2,h3,h4,h5,h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: bold;
 }
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
 </style>

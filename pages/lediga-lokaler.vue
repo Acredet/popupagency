@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="overflow-x: hidden">
     <!-- Sart Sidebar -->
     <b-sidebar
       id="more-filters"
@@ -169,59 +169,57 @@
             <b-col cols="12" md="auto" class="mr-2 d-none d-md-flex align-items-center">
               <b-dropdown id="plats-dropdown" variant="light" :text="filters.plats.text">
                 <!-- Start first horizontal tab -->
-                <div style="width: 500px" class="custom-tab border plats">
-                  <div class="cities w-full">
-                    <!-- Start Tabs -->
-                    <b-tabs
-                      nav-wrapper-class="w-25 h-100 overflow-auto border"
-                      nav-class="d-block p-0 m-0"
-                      pills
-                      card
-                      content-class="overflow-auto"
-                      vertical
+                <b-dropdown-group header="plats" style="width: 500px !important; overflow: hidden" class="px-2 custom-tab plats">
+                  <b-btn v-for="(country, key) in filters.plats.tabs" :key="key" variant="primary" class="mb-2" @click="filters.plats.currentCountry = key">
+                    {{ key }}
+                  </b-btn>
+                  <!-- Start Tabs -->
+                  <b-tabs
+                    nav-wrapper-class="w-25 h-100 overflow-auto border"
+                    nav-class="d-block p-0 m-0"
+                    pills
+                    card
+                    content-class="overflow-auto"
+                    vertical
+                  >
+                    <!-- Start First tab -->
+                    <b-tab
+                      v-for="(tab, index) in filters.plats.tabs[filters.plats.currentCountry]"
+                      :key="tab.name"
+                      title-item-class="tabBtn"
+                      :title="tab.text"
                     >
-                      <!-- Start First tab -->
+                      <b-card-body class="mt-0 pt-0 px-1">
+                        <div class="choices">
+                          <b-form-group>
+                            <b-form-checkbox
+                              v-model="filters.plats.tabs[filters.plats.currentCountry][index].allSelected"
+                              :indeterminate="filters.plats.tabs[filters.plats.currentCountry][index].indeterminate"
+                              :aria-describedby="filters.plats.tabs[filters.plats.currentCountry][index].name"
+                              :aria-controls="filters.plats.tabs[filters.plats.currentCountry][index].name"
+                              size="md"
+                              @change="toggleAll(index)"
+                            >
+                              <b class="font-2">Hela {{ filters.plats.tabs[filters.plats.currentCountry][index].name }}</b>
+                            </b-form-checkbox>
+                          </b-form-group>
 
-                      <b-tab
-                        v-for="(tab, index) in filters.plats.tabs"
-                        :key="String(index)"
-                        title-item-class="tabBtn"
-                        :title="tab.text"
-                      >
-                        <b-card-body class="p-1">
-                          <div class="choices">
-                            <b-form-group>
-                              <template v-slot:label>
-                                <b-form-checkbox
-                                  v-model="filters.plats.tabs[index].allSelected"
-                                  :indeterminate="filters.plats.tabs[index].indeterminate"
-                                  :aria-describedby="filters.plats.tabs[index].name"
-                                  :aria-controls="filters.plats.tabs[index].name"
-                                  size="md"
-                                  @change="toggleAll(index)"
-                                >
-                                  <b class="font-2">Hela {{ filters.plats.tabs[index].name }}</b>
-                                </b-form-checkbox>
-                              </template>
-
-                              <b-form-checkbox-group
-                                :id="filters.plats.tabs[index].name"
-                                v-model="filters.plats.tabs[index].selected"
-                                :options="filters.plats.tabs[index].options"
-                                :name="filters.plats.tabs[index].name"
-                                aria-label="Individual popup"
-                                stacked
-                              />
-                            </b-form-group>
-                          </div>
-                        </b-card-body>
-                      </b-tab>
-                    <!-- End First tab -->
-
+                          <b-form-group>
+                            <b-form-checkbox-group
+                              :id="filters.plats.tabs[filters.plats.currentCountry][index].name"
+                              v-model="filters.plats.tabs[filters.plats.currentCountry][index].selected"
+                              :options="filters.plats.tabs[filters.plats.currentCountry][index].subcity"
+                              :name="filters.plats.tabs[filters.plats.currentCountry][index].name"
+                              aria-label="Individual popup"
+                              stacked
+                            />
+                          </b-form-group>
+                        </div>
+                      </b-card-body>
+                    </b-tab>
                     <!-- End tabs -->
-                    </b-tabs>
-                  </div>
-                </div>
+                  </b-tabs>
+                </b-dropdown-group>
               </b-dropdown>
             </b-col>
             <!-- End plats Filter -->
@@ -330,24 +328,26 @@
 
       <b-col cols="12" :md="layout.value === 'map' ? 6 : 12" class="wrapper">
         <b-container>
-          <!-- Start Listings -->
-          <b-col
-            v-for="(card, index) in cards"
-            :key="String(index)"
-            class="my-2"
-            cols="12"
-            :md="layout.value === 'map' ? 12 : 6"
-            :lg="layout.value === 'map' ? 6 : 4"
-          >
-            <listing-card :card="card" />
-          </b-col>
-        <!-- End Listings -->
+          <b-row>
+            <!-- Start Listings -->
+            <b-col
+              v-for="(card, index) in cards"
+              :key="String(index)"
+              class="my-2"
+              cols="12"
+              :md="layout.value === 'map' ? 12 : 6"
+              :lg="layout.value === 'map' ? 6 : 4"
+            >
+              <listing-card :card="card" />
+            </b-col>
+            <!-- End Listings -->
+          </b-row>
         </b-container>
       </b-col>
 
       <!-- Start Map -->
       <b-col v-if="layout.value === 'map'" cols="12" md="6" class="map-wrapper d-md-flex">
-        <gmap-map :center="center" :map-type-id="mapTypeId" :zoom="5">
+        <gmap-map :key="renderKey" :center="center" :map-type-id="mapTypeId" :zoom="5">
           <gmap-marker
             v-for="(item, index) in markers"
             :key="index"
@@ -360,7 +360,7 @@
     </b-row>
     <!-- Strat Toggle Layout in small screens -->
     <div class="mobile-btns px-3 d-md-none position-fixed d-flex justify-content-between align-items-center">
-      <b-btn pill variant="dark" class="w-50 mr-2" @click="(layout.value === 'map') ? layout.value = 'list' : layout.value = 'map'">
+      <b-btn pill variant="dark" class="w-50 mr-2" @click="(layout.value === 'map') ? layout.value = 'list' : layout.value = 'map'; refreshMap">
         {{ (layout.value === 'map') ? 'list' : 'map' }} View
       </b-btn>
 
@@ -375,6 +375,8 @@
 <script>
 import { BootstrapVue, BIcon } from 'bootstrap-vue'
 import 'vue-slider-component/theme/material.css'
+import { sortItems } from '@/mixins/SortRegions'
+
 let VueSlider
 if (process.browser) {
   VueSlider = require('vue-slider-component')
@@ -394,6 +396,7 @@ export default {
     BIcon,
     VueSlider
   },
+  mixins: [sortItems],
   data () {
     return {
       layout: {
@@ -401,54 +404,9 @@ export default {
       },
       filters: {
         plats: {
+          currentCountry: '',
           text: 'Plats',
-          tabs: [
-            {
-              name: 'Stockholm',
-              text: 'Stockholm (51)',
-              allSelected: false, // Shape of the check
-              indeterminate: false, // Shape of the check
-              selected: [],
-              options: [
-                'Väsby Centrum (4)',
-                'Värmdö Köpcentrum (1)',
-                'Vällingby Centrum (1)',
-                'Tyresö Centrum (6)',
-                'Täby Centrum (7)',
-                'Sollentuna Centrum (1)',
-                'Söderhallarna (1)',
-                'Skrapan (1)',
-                'Skärholmen centrum (5)',
-                'Signalfabriken (1)',
-                'Kungens Kurva Shoppingcenter (1)',
-                'Kista (1)',
-                'Hornstull Galleria (2)',
-                'Haninge Centrum (1)',
-                'Götgatan 31 (1)',
-                'Globen Shopping (2)',
-                'Gallerian (1)',
-                'Farsta Centrum (2)',
-                'Bromma Blocks (3)',
-                'BETA (1)',
-                'Bålsta Centrum (1)',
-                'Arninge Centrum (1)',
-                'Åkersberga Centrum (1)'
-              ]
-            },
-            {
-              name: 'Malmö',
-              text: 'Malmö (11)',
-              allSelected: false, // Shape of the check
-              indeterminate: false, // Shape of the check
-              selected: [],
-              options: [
-                'Triangeln (3)',
-                'Södra Förstadsgatan (1)',
-                'Södertull (1)',
-                'Burlöv centrum (6)'
-              ]
-            }
-          ]
+          tabs: {}
         },
         price: {
           text: 'Price',
@@ -540,6 +498,11 @@ export default {
       ]
     }
   },
+  computed: {
+    renderKey () {
+      return this.$store.state.changeSidebarRenderKey
+    }
+  },
   watch: {
     'filters.price': {
       deep: true,
@@ -569,40 +532,71 @@ export default {
     }
   },
   async mounted () {
-    await this.$axios.$get('/places')
-      .then((res) => {
-        this.cards = res.data.map((x) => {
-          return {
-            images: x.cover,
-            place: x.stad,
-            money: `fr ${x.prispermanad} kr / månad`,
-            text: x.beskreving
-          }
-        })
+    // const lang = this.$i18n.getLocaleCookie()
+    const promises = [
+      this.$axios.$get('/places'),
+      this.$axios.$get('/region'),
+      this.$axios.$get('/tag')
+    ]
+
+    await Promise.all(promises).then((res) => {
+      const places = res[0].data
+      const regions = res[1].data
+      const tags = res[2].data
+
+      console.log('places: ', places)
+      console.log('regions: ', regions)
+      console.log('tags: ', tags)
+
+      const sortedRegions = this.sortItems(regions, false)
+      console.log(sortedRegions)
+      sortedRegions.forEach((country) => {
+        // this.filters.plats.tabs[country.name] = []
+        console.log(country)
+        // country.cities.forEach((city) => {
+        //   this.filters.plats.tabs[country.name].push({
+        //     name: city.name[lang],
+        //     text: `${city.name[lang]} (${city.subCities.length})`,
+        //     allSelected: false, // Shape of the check
+        //     indeterminate: false, // Shape of the check
+        //     selected: [],
+        //     subcity: city.subCities
+        //   })
+        // })
       })
-      .catch(err => console.log(err))
+
+      this.cards = places.map((x) => {
+        return {
+          images: x.cover,
+          place: x.stad,
+          money: `fr ${x.prioteradpris} kr / månad`,
+          text: x.beskreving
+        }
+      })
+    })
   },
   methods: {
     toggleAll (index) {
-      this.filters.plats.tabs[index].selected =
-        this.filters.plats.tabs[index].selected.length !== this.filters.plats.tabs[index].options.length
-          ? this.filters.plats.tabs[index].options.slice()
+      const arr = this.filters.plats.tabs[this.filters.plats.currentCountry][index]
+      arr.selected =
+        (arr.selected.length !== arr.subcity.length)
+          ? arr.subcity.slice()
           : []
     },
     placeChoose (index) {
-      console.log(this.filters.plats.tabs[index].selected.length)
+      const arr = this.filters.plats.tabs[this.filters.plats.currentCountry][index]
       this.$nextTick(() => {
-        if (this.filters.plats.tabs[index].selected.length === 0) {
-          this.filters.plats.tabs[index].indeterminate = false
-          this.filters.plats.tabs[index].allSelected = false
+        if (arr.selected.length === 0) {
+          arr.indeterminate = false
+          arr.allSelected = false
         } else if (
-          this.filters.plats.tabs[index].selected.length === this.filters.plats.tabs[index].options.length
+          arr.selected.length === arr.options.length
         ) {
-          this.filters.plats.tabs[index].indeterminate = false
-          this.filters.plats.tabs[index].allSelected = true
+          arr.indeterminate = false
+          arr.allSelected = true
         } else {
-          this.filters.plats.tabs[index].indeterminate = true
-          this.filters.plats.tabs[index].allSelected = false
+          arr.indeterminate = true
+          arr.allSelected = false
         }
       })
     },
@@ -612,6 +606,9 @@ export default {
       } else {
         this.filters.property.choose[button.text] = true
       }
+    },
+    refreshMap () {
+      this.$store.commit('changeSidebarRenderKey')
     }
   }
 }

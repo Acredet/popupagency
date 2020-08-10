@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="wrapper">
     <Nuxt />
   </div>
 </template>
@@ -14,5 +14,7 @@ export default {
 </script>
 
 <style scoped>
-
+.wrapper {
+  overflow-x: hidden;
+}
 </style>
