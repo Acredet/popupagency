@@ -50,7 +50,10 @@ const PlaceSchema = new mongoose.Schema({
     min: 0
   },
   placering: String,
-  stad: String,
+  stad: {
+    en: String,
+    sv: String
+  },
   plats: String,
   location: { // TODO:
     // type: {

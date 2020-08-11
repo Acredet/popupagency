@@ -22,10 +22,10 @@ exports.getPlaces = async (req, res, next) => {
 exports.addPlace = async (req, res, next) => {
   try {
     for (const key in req.body) {
-        const element = req.body[key];
-        req.body[key] = element !== 'null' ? element : null
-
+      const element = req.body[key];
+      req.body[key] = element !== 'null' ? element : null
     }
+    console.log(req.body);
     let place = new Place({
       title: {
         en: JSON.parse(req.body.title).en,
@@ -47,7 +47,10 @@ exports.addPlace = async (req, res, next) => {
       egenskaper: req.body.egenskaper,
       yta: req.body.yta,
       placering: req.body.placering,
-      stad: req.body.stad,
+      stad: {
+        en: JSON.parse(req.body.stad).name.en,
+        sv: JSON.parse(req.body.stad).name.sv
+      },
       plats: req.body.plats,
       location: req.body.location,
       kategori: req.body.kategori,
@@ -109,31 +112,55 @@ exports.getOnePlace = async (req, res) => {
 // @desc  update a Place
 // @route update /api/Place/id
 // @access Private
-exports.updatePlace = (req, res) => {
+exports.updatePlace = async (req, res) => {
   for (const key in req.body) {
-      const element = req.body[key];
-      req.body[key] = element !== 'null' ? element : null
-
+    const element = req.body[key];
+    req.body[key] = element !== 'null' ? element : null
   }
   let updata = req.body
-  if(updata.oppettider) {
+
+  if (updata.title) {
+    updata.title = {
+      en: JSON.parse(updata.title).en,
+      sv: JSON.parse(updata.title).sv
+    }
+  }
+
+  if (updata.stad) {
+    updata.stad = {
+      en: JSON.parse(updata.stad).name.en,
+      sv: JSON.parse(updata.stad).name.sv
+    }
+  }
+
+  console.log(updata.stad);
+  if (updata.beskreving) {
+    updata.beskreving = {
+      en: JSON.parse(updata.beskreving).en,
+      sv: JSON.parse(updata.beskreving).sv
+    }
+  }
+
+  if (updata.oppettider) {
     updata.oppettider = updata.oppettider.map(x => JSON.parse(x))
   }
-  if(updata.bildgalleri) {
+
+  if (updata.bildgalleri) {
     updata.bildgalleri = JSON.parse(updata.bildgalleri)
   }
-  if(updata.cover) {
+  if (updata.cover) {
     updata.cover = JSON.parse(updata.cover)
   }
-  if(updata.planritning) {
+  if (updata.planritning) {
     updata.planritning = JSON.parse(updata.planritning)
   }
-  if(updata.centrumgalleri) {
+  if (updata.centrumgalleri) {
     updata.centrumgalleri = JSON.parse(updata.centrumgalleri)
   }
   if (!updata.prioteradpris) updata.prioteradpris = 0
 
-  Place.updateOne({ _id: req.params.id }, { $set: updata })
+
+  await Place.updateOne({ _id: req.params.id }, { $set: updata })
     .then(place => res.json({ success: true }))
     .catch(err => res.status(404).json(err.message));
 };

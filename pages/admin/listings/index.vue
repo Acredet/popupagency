@@ -50,6 +50,12 @@
             </p>
           </template>
 
+          <template v-slot:cell(stad)="data">
+            <p class="text-center">
+              {{ data.item.stad[$i18n.locale] }}
+            </p>
+          </template>
+
           <template v-slot:cell(actions)="data">
             <b-dropdown variant="light">
               <template v-slot:button-content>

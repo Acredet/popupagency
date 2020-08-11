@@ -190,12 +190,18 @@
 
           <b-card :title="$t('addListing.inputs.stad')">
             <b-card-body>
-              <b-form-radio-group v-model="city" :stacked="true" :options="cityOptions" :state="stadValid" name="radio-validation">
+              <b-form-radio-group
+                v-model="city"
+                :stacked="true"
+                :options="cityOptions"
+                :state="stadValid"
+                name="radio-validation"
+              >
                 <b-form-invalid-feedback :state="stadValid">
                   {{ $t('addListing.inputs.selectOne') }}
                 </b-form-invalid-feedback>
                 <b-form-valid-feedback :state="stadValid">
-                  {{ $t('addListing.inputs.choosed') }} {{ city }}
+                  {{ $t('forms.valid') }}
                 </b-form-valid-feedback>
               </b-form-radio-group>
             </b-card-body>
@@ -778,7 +784,12 @@ export default {
 
           this.lokalOpts = users.map(x => x.name)
           this.renderEgensKaper = tags.map(x => x.name[lang])
-          this.cityOptions = regions.map(x => x.name[lang])
+          this.cityOptions = regions.map((x) => {
+            return {
+              text: x.name[lang],
+              value: JSON.stringify(x)
+            }
+          })
           this.kategoriOpts = categories.map((x) => {
             return { text: x.name[lang], value: x.name[lang] }
           })
@@ -1038,11 +1049,7 @@ export default {
         console.log(pair[0], ':', pair[1])
       }
       await this.$axios.$patch(`/places/${this.listing._id}`, listing)
-        .then((res) => {
-          this.$nextTick(() => {
-            this.$router.push('/admin/listings/')
-          })
-        })
+        .then(res => this.$router.push('/admin/listings/'))
         .catch((err) => {
           this.toast = {
             title: this.$t('region.toast.error'),
