@@ -47,7 +47,7 @@ module.exports = {
   plugins: [
     { src: '~/plugins/vue2-editor', mode: 'client' },
     // { src: '~/plugins/buefy', mode: 'client' },
-    { src: '~/plugins/gmaps', mode: 'client' }
+    { src: '~/plugins/gmaps', mode: 'client', ssr: true }
   ],
   /*
    ** Auto import components
@@ -131,5 +131,7 @@ module.exports = {
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
    */
-  build: {}
+  build: {
+    transpile: [/^vue2-google-maps($|\/)/]
+  }
 }

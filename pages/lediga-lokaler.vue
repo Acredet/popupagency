@@ -303,13 +303,19 @@
 
       <!-- Start Map -->
       <b-col v-if="layout.value === 'map'" cols="12" md="6" class="map-wrapper d-md-flex">
-        <gmap-map :key="renderKey" :center="center" :map-type-id="mapTypeId" :zoom="5">
-          <gmap-marker
-            v-for="(item, index) in markers"
-            :key="index"
-            :position="item.position"
-            @click="center = item.position"
-          />
+        <gmap-map
+          :key="renderKey"
+          :center="map.center"
+          :map-type-id="map.mapTypeId"
+          :zoom="7"
+        >
+          <gmap-cluster>
+            <gmap-marker
+              v-for="(mark, index) in map.markers"
+              :key="index"
+              :position="mark"
+            />
+          </gmap-cluster>
         </gmap-map>
       </b-col>
       <!-- End Map -->
@@ -355,8 +361,17 @@ export default {
   mixins: [sortItems],
   data () {
     return {
+      map: {
+        center: { lat: 59.334591, lng: 18.063240 },
+        mapTypeId: 'roadmap',
+        markers: [
+          { lat: 10, lng: 10 },
+          { lat: 59.334591, lng: 18.063240 },
+          { lat: 10, lng: 10 }
+        ]
+      },
       layout: {
-        value: 'list'
+        value: 'map'
       },
       filters: {
         plats: {
@@ -379,13 +394,7 @@ export default {
           enableCross: false
         }
       },
-      cards: [],
-      center: { lat: -3.350235, lng: 111.995865 },
-      mapTypeId: 'terrain',
-      markers: [
-        { position: { lat: -0.48585, lng: 117.1466 } },
-        { position: { lat: -6.9127778, lng: 107.6205556 } }
-      ]
+      cards: []
     }
   },
   computed: {
