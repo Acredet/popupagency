@@ -47,45 +47,20 @@
 
           <b-collapse id="property" accordion="filters" role="tabpanel">
             <div class="px-2">
-              <b-row no-gutters>
-                <!-- Start left buttons -->
-                <b-col cols="6">
-                  <b-button-group vertical class="w-100">
-                    <b-button
-                      v-for="(icon) in filters.property.icons.slice(0,6)"
-                      :key="icon.text"
-                      :pressed.sync="icon.state"
-                      variant="outline-dark"
-                      squared
-                      class="text-left"
-                      @click="addProperty(icon)"
-                    >
-                      <i :class="`fas fa-${icon.icon}`" />
-                      {{ icon.text }}
-                    </b-button>
-                  </b-button-group>
-                </b-col>
-                <!-- End Left buttons -->
-
-                <!-- Start right buttons -->
-                <b-col cols="6">
-                  <b-button-group vertical class="w-100">
-                    <b-button
-                      v-for="(icon) in filters.property.icons.slice(6,12)"
-                      :key="icon.text"
-                      :pressed.sync="icon.state"
-                      squared
-                      variant="outline-dark"
-                      class="text-left"
-                      @click="addProperty(icon)"
-                    >
-                      <i :class="`fas fa-${icon.icon}`" />
-                      {{ icon.text }}
-                    </b-button>
-                  </b-button-group>
-                </b-col>
-              <!-- End right buttons -->
-              </b-row>
+              <b-button-group vertical class="d-flex flex-wrap align-items-center justify-content-between flex-row w-100">
+                <b-button
+                  v-for="(icon) in filters.property.icons"
+                  :key="icon.text"
+                  :pressed.sync="icon.state"
+                  variant="outline-primary"
+                  squared
+                  class="text-left m-1"
+                  @click="addProperty(icon)"
+                >
+                  <b-img width="30" :src="`https://popup.dk.se/_nuxt/img/${icon.avatar}`" />
+                  {{ icon.text }}
+                </b-button>
+              </b-button-group>
             </div>
           </b-collapse>
           <!-- End yta Tab -->
@@ -233,45 +208,21 @@
             <b-col cols="12" md="auto" class="mr-2 d-none d-lg-flex align-items-center">
               <b-dropdown id="property-dropdown" class="w-100" variant="light" :text="filters.property.text">
                 <b-dropdown-group header="property" style="width: 300px !important" class="px-1">
-                  <b-row no-gutters>
-                    <!-- Start left buttons -->
-                    <b-col cols="6">
-                      <b-button-group vertical class="w-100">
-                        <b-button
-                          v-for="(icon) in filters.property.icons.slice(0,6)"
-                          :key="icon.text"
-                          :pressed.sync="icon.state"
-                          variant="outline-dark"
-                          squared
-                          class="text-left"
-                          @click="addProperty(icon)"
-                        >
-                          <i :class="`fas fa-${icon.icon}`" />
-                          {{ icon.text }}
-                        </b-button>
-                      </b-button-group>
-                    </b-col>
-                    <!-- End Left buttons -->
-
-                    <!-- Start right buttons -->
-                    <b-col cols="6">
-                      <b-button-group vertical class="w-100">
-                        <b-button
-                          v-for="(icon) in filters.property.icons.slice(6,12)"
-                          :key="icon.text"
-                          :pressed.sync="icon.state"
-                          squared
-                          variant="outline-dark"
-                          class="text-left"
-                          @click="addProperty(icon)"
-                        >
-                          <i :class="`fas fa-${icon.icon}`" />
-                          {{ icon.text }}
-                        </b-button>
-                      </b-button-group>
-                    </b-col>
-                  <!-- End right buttons -->
-                  </b-row>
+                  <b-button-group vertical class="d-flex flex-wrap align-items-center justify-content-between flex-row w-100">
+                    <b-button
+                      v-for="(icon) in filters.property.icons"
+                      :key="icon.text"
+                      :pressed.sync="icon.state"
+                      variant="outline-primary"
+                      squared
+                      style="width: 45%"
+                      class="text-left m-1"
+                      @click="addProperty(icon)"
+                    >
+                      <b-img width="30" :src="`https://popup.dk.se/_nuxt/img/${icon.avatar}`" />
+                      {{ icon.text }}
+                    </b-button>
+                  </b-button-group>
                 </b-dropdown-group>
               </b-dropdown>
             </b-col>
@@ -420,73 +371,7 @@ export default {
         property: {
           text: 'Property type',
           choose: {},
-          icons: [
-            {
-              text: 'Butikslokal',
-              icon: 'shopping-bag',
-              state: false
-            },
-            {
-              text: 'Event',
-              icon: 'calendar-alt',
-              state: false
-            },
-            {
-              text: 'Eventlokal',
-              icon: 'car ml-2',
-              state: false
-            },
-            {
-              text: 'Eventyta',
-              icon: 'calendar-day ml-2',
-              state: false
-            },
-            {
-              text: 'Galleri',
-              icon: 'image ml-2',
-              state: false
-            },
-            {
-              text: 'Showroom',
-              icon: 'warehouse ml-2',
-              state: false
-            },
-            {
-              text: 'Foodtruck',
-              icon: 'truck',
-              state: false
-            },
-            {
-              text: 'Köpcentrum',
-              icon: 'shopping-basket',
-              state: false
-            },
-            {
-              text: 'Marknad',
-              icon: 'store-alt',
-              state: false
-            },
-            {
-              text: 'Beach Market',
-              icon: 'umbrella-beach ml-2',
-              state: false
-            },
-            {
-              text: 'Julmarknad',
-              icon: 'landmark ml-2',
-              state: false
-            },
-            {
-              text: 'Mat & Dryck',
-              icon: 'hamburger',
-              state: false
-            },
-            {
-              text: 'White label popup',
-              icon: 'tag',
-              state: false
-            }
-          ]
+          icons: []
         },
         yta: {
           text: 'Yta',
@@ -584,6 +469,14 @@ export default {
           place: x.stad,
           money: `fr ${x.prioteradpris} kr / månad`,
           text: x.beskreving
+        }
+      })
+
+      this.filters.property.icons = tags.map((x) => {
+        return {
+          text: x.name[this.lang],
+          avatar: x.avatar,
+          state: false
         }
       })
 
