@@ -104,8 +104,8 @@
               <ul class="list-unstyled">
                 <li
                   v-for="(tab, index) in filters.plats.tabs[filters.plats.currentCountry]"
-                  :key="tab.name"
-                  v-b-toggle="tab.name"
+                  :key="`sidebar-${tab.name}`"
+                  v-b-toggle="`sidebar-${tab.name}`"
                   class="p-2 border font-3 mb-1"
                 >
                   <div class="d-flex justify-content-between align-items-center mb-2">
@@ -113,29 +113,30 @@
                     <i class="fas fa-caret-down" />
                   </div>
 
-                  <b-collapse :id="tab.name" accordion="stad" role="tabpanel">
+                  <b-collapse :id="`sidebar-${tab.name}`" accordion="stad" role="tabpanel">
                     <div class="px-2">
-                      <b-form-group>
-                        <b-form-checkbox
-                          v-model="tab.allSelected"
-                          :indeterminate="tab.indeterminate"
-                          :aria-describedby="tab.name"
-                          :aria-controls="tab.name"
-                          size="md"
-                          @change="toggleAll(index)"
-                        >
-                          <b class="font-2">Hela {{ tab.name }}</b>
-                        </b-form-checkbox>
-                      </b-form-group>
+                      <b-form-group :key="renderKey">
+                        <template v-slot:label>
+                          <b-form-checkbox
+                            v-model="tab.allSelected"
+                            :indeterminate="tab.indeterminate"
+                            :aria-describedby="`sidebar-${tab.name}-choose-all`"
+                            :aria-controls="`sidebar-${tab.name}-choose-all`"
+                            size="md"
+                            @change="toggleAll(index)"
+                          >
+                            <b class="font-2">Hela {{ tab.name }}</b>
+                          </b-form-checkbox>
+                        </template>
 
-                      <b-form-group>
                         <b-form-checkbox-group
-                          :id="tab.name"
+                          :id="`sidebar-${tab.name}`"
                           v-model="tab.selected"
                           :options="tab.subcity"
-                          :name="tab.name"
-                          aria-label="Individual popup"
+                          :name="`sidebar-${tab.name}`"
+                          :aria-label="`sidebar-${tab.name}`"
                           stacked
+                          @change="placeChoose(index)"
                         />
                       </b-form-group>
                     </div>
@@ -194,27 +195,28 @@
                     >
                       <b-card-body class="mt-0 pt-0 px-1">
                         <div class="choices">
-                          <b-form-group>
-                            <b-form-checkbox
-                              v-model="tab.allSelected"
-                              :indeterminate="tab.indeterminate"
-                              :aria-describedby="tab.name"
-                              :aria-controls="tab.name"
-                              size="md"
-                              @change="toggleAll(index)"
-                            >
-                              <b class="font-2">Hela {{ tab.name }}</b>
-                            </b-form-checkbox>
-                          </b-form-group>
-
-                          <b-form-group>
+                          <b-form-group :key="renderKey">
+                            <template v-slot:label>
+                              <b-form-checkbox
+                                v-model="tab.allSelected"
+                                :indeterminate="tab.indeterminate"
+                                :aria-describedby="tab.name"
+                                :aria-controls="tab.name"
+                                size="md"
+                                @change="toggleAll(index)"
+                              >
+                                <b class="font-2">Hela {{ tab.name }}</b>
+                              </b-form-checkbox>
+                            </template>
                             <b-form-checkbox-group
                               :id="tab.name"
                               v-model="tab.selected"
                               :options="tab.subcity"
                               :name="tab.name"
-                              aria-label="Individual popup"
+                              class="ml-4"
+                              aria-label="Individual flavours"
                               stacked
+                              @change="placeChoose(index)"
                             />
                           </b-form-group>
                         </div>
@@ -341,7 +343,7 @@
               :md="layout.value === 'map' ? 12 : 6"
               :lg="layout.value === 'map' ? 6 : 4"
             >
-              <listing-card :card="card" />
+              <listing-card :card="card" :layout="layout.value" />
             </b-col>
             <!-- End Listings -->
           </b-row>
@@ -584,12 +586,15 @@ export default {
           text: x.beskreving
         }
       })
+
+      this.filters.plats.currentCountry = Object.keys(this.filters.plats.tabs)[0]
     })
   },
   methods: {
     toggleAll (index) {
-      console.log(index)
       const arr = this.filters.plats.tabs[this.filters.plats.currentCountry][index]
+      console.log(arr)
+      this.$forceUpdate()
       arr.selected =
         (arr.selected.length !== arr.subcity.length)
           ? arr.subcity.slice()
@@ -599,17 +604,21 @@ export default {
       const arr = this.filters.plats.tabs[this.filters.plats.currentCountry][index]
       this.$nextTick(() => {
         if (arr.selected.length === 0) {
+          console.log('None')
           arr.indeterminate = false
           arr.allSelected = false
         } else if (
-          arr.selected.length === arr.options.length
+          arr.selected.length === arr.subcity.length
         ) {
+          console.log('Equal')
           arr.indeterminate = false
           arr.allSelected = true
         } else {
+          console.log('Some')
           arr.indeterminate = true
           arr.allSelected = false
         }
+        this.$forceUpdate()
       })
     },
     addProperty (button) {

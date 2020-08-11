@@ -1,3 +1,29 @@
+<script>
+/* eslint-disable vue/no-v-html */
+import { BootstrapVue, BIcon, BIconGeoAlt, BIconWallet } from 'bootstrap-vue'
+
+export default {
+  components: {
+    // eslint-disable-next-line vue/no-unused-components
+    BootstrapVue,
+    // eslint-disable-next-line vue/no-unused-components
+    BIcon,
+    BIconWallet,
+    BIconGeoAlt
+  },
+  props: {
+    card: {
+      type: Object,
+      default: () => {}
+    },
+    layout: {
+      type: String,
+      default: () => 'list'
+    }
+  }
+}
+</script>
+
 <template>
   <b-card>
     <b-card-body class="p-0">
@@ -20,17 +46,15 @@
       </b-carousel>
     </b-card-body>
 
-    <b-card-text class="p-2">
-      {{ card.text }}
-    </b-card-text>
+    <b-card-text class="p-2" v-html="card.text[$i18n.locale]" />
     <template v-slot:footer>
       <b-row class="p-2">
-        <b-col class="border-right" cols="6">
+        <b-col class="border-md-right" cols="12" :md="layout === 'map' ? 12 : 6">
           <small class="text-muted">
-            <BIconGeoAlt class="text-dark mr-1" />{{ card.place }}
+            <BIconGeoAlt class="text-dark mr-1" />{{ card.place[$i18n.locale] }}
           </small>
         </b-col>
-        <b-col cols="6">
+        <b-col cols="12" :md="layout === 'map' ? 12 : 6">
           <small class="text-muted">
             <BIconWallet class="text-dark mr-1" />{{ card.money }}
           </small>
@@ -39,27 +63,6 @@
     </template>
   </b-card>
 </template>
-
-<script>
-import { BootstrapVue, BIcon, BIconGeoAlt, BIconWallet } from 'bootstrap-vue'
-
-export default {
-  components: {
-    // eslint-disable-next-line vue/no-unused-components
-    BootstrapVue,
-    // eslint-disable-next-line vue/no-unused-components
-    BIcon,
-    BIconWallet,
-    BIconGeoAlt
-  },
-  props: {
-    card: {
-      type: Object,
-      default: () => {}
-    }
-  }
-}
-</script>
 
 <style scoped>
 .card-body {

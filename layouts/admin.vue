@@ -31,6 +31,9 @@ export default {
       return this.$store.state.changeSidebarRenderKey
     }
   },
+  mounted () {
+    this.$store.commit('changeSidebarRenderKey')
+  },
   created () {
     if (!this.$auth.loggedIn) {
       this.$router.push('/admin/login')
