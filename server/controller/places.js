@@ -48,8 +48,8 @@ exports.addPlace = async (req, res, next) => {
       yta: req.body.yta,
       placering: req.body.placering,
       stad: {
-        en: JSON.parse(req.body.stad).name.en,
-        sv: JSON.parse(req.body.stad).name.sv
+        en: JSON.parse(req.body.stad).en,
+        sv: JSON.parse(req.body.stad).sv
       },
       plats: req.body.plats,
       location: req.body.location,
@@ -128,8 +128,8 @@ exports.updatePlace = async (req, res) => {
 
   if (updata.stad) {
     updata.stad = {
-      en: JSON.parse(updata.stad).name.en,
-      sv: JSON.parse(updata.stad).name.sv
+      en: JSON.parse(updata.stad).en,
+      sv: JSON.parse(updata.stad).sv
     }
   }
 

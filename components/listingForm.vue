@@ -787,7 +787,7 @@ export default {
           this.cityOptions = regions.map((x) => {
             return {
               text: x.name[lang],
-              value: JSON.stringify(x)
+              value: JSON.stringify(x.name)
             }
           })
           this.kategoriOpts = categories.map((x) => {
@@ -805,7 +805,7 @@ export default {
       this.title.sv = title.sv
       this.Yta = yta
       this.markplan = placering
-      this.city = stad
+      this.city = JSON.stringify(stad)
       this.location = location
       this.vagvisningen = vagvisningen
       this.fran = fran
