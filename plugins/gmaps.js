@@ -1,12 +1,13 @@
-import Vue from 'vue'
 
+import Vue from 'vue'
 import * as VueGoogleMaps from 'vue2-google-maps'
 import GmapCluster from 'vue2-google-maps/dist/components/cluster'
-Vue.component('GmapCluster', GmapCluster)
 
 Vue.use(VueGoogleMaps, {
   load: {
-    key: process.env.VUE_APP_GOOGLE_MAPS_API_KEY,
-    libraries: 'places'
+    key: 'AIzaSyC0O4NFJx4StGcEq6jbm1R8FNWLxvaqgXY',
+    libraries: 'places' // necessary for places input
   }
 })
+
+Vue.component('GmapCluster', GmapCluster)

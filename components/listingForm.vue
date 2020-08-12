@@ -225,11 +225,6 @@
                     />
                   </gmap-cluster>
                 </gmap-map>
-
-                <gmap-autocomplete
-                  value="Sweden"
-                  @place_changed="setPlace"
-                />
               </div>
               <b-form-group
                 id="location-group"
@@ -565,9 +560,6 @@ export default {
           { lat: 10, lng: 10 }
         ]
       },
-
-      latLng: {},
-
       title: {
         en: null,
         sv: null
