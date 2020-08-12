@@ -210,6 +210,27 @@
 
           <b-card :title="$t('addListing.inputs.plats')">
             <b-card-body>
+              <div class="w-100">
+                <gmap-map
+                  :center="map.center"
+                  :map-type-id="map.mapTypeId"
+                  style="height: 300px"
+                  :zoom="7"
+                >
+                  <gmap-cluster>
+                    <gmap-marker
+                      v-for="(mark, index) in map.markers"
+                      :key="index"
+                      :position="mark"
+                    />
+                  </gmap-cluster>
+                </gmap-map>
+
+                <gmap-autocomplete
+                  value="Sweden"
+                  @place_changed="setPlace"
+                />
+              </div>
               <b-form-group
                 id="location-group"
                 label-for="location"
@@ -535,6 +556,18 @@ export default {
   data () {
     return {
       loadingState: false,
+      map: {
+        center: { lat: 59.334591, lng: 18.063240 },
+        mapTypeId: 'roadmap',
+        markers: [
+          { lat: 10, lng: 10 },
+          { lat: 59.334591, lng: 18.063240 },
+          { lat: 10, lng: 10 }
+        ]
+      },
+
+      latLng: {},
+
       title: {
         en: null,
         sv: null
@@ -761,6 +794,9 @@ export default {
               !!this.kategoryValid &&
               !!this.lokalensValid &&
               !!this.price.prioteradpris.val
+    },
+    renderKey () {
+      return this.$store.state.sidebarRenderKey
     }
   },
   mounted () {
@@ -770,6 +806,14 @@ export default {
     if (this.thereIsListing) { this.assignListingToEdit() }
   },
   methods: {
+    setPlace (place) {
+      if (!place) { return }
+
+      this.latLng = {
+        lat: place.geometry.location.lat(),
+        lng: place.geometry.location.lng()
+      }
+    },
     async preparePageData () {
       const promises = [
         this.$axios.$get('/users/all'),

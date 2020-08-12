@@ -1,7 +1,7 @@
 <template>
   <div id="wrapper">
-    <admin-header :key="renderKey" />
-    <admin-sidebar :key="renderKey" />
+    <admin-header />
+    <admin-sidebar />
 
     <div class="my-3 content-page">
       <transition name="fade">
@@ -26,14 +26,6 @@ export default {
     adminSidebar
   },
   mixins: [AdminPanelDependancies],
-  computed: {
-    renderKey () {
-      return this.$store.state.changeSidebarRenderKey
-    }
-  },
-  mounted () {
-    this.$store.commit('changeSidebarRenderKey')
-  },
   created () {
     if (!this.$auth.loggedIn) {
       this.$router.push('/admin/login')
