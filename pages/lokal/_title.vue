@@ -1,18 +1,52 @@
 <template>
-  <div class="position-relative cover">
-    <div class="position-relative cover--overlay" :style="imgStyles" />
-    <section class="cover--details">
-      <b-container class="h-100">
-        <div class="text-center h-100 d-flex flex-column flex-lg-row align-items-lg-center justify-content-lg-between">
-          <h1 class="font-5">
-            {{ place.title[$i18n.locale] }}
-          </h1>
-          <p class="h2 mb-2">
-            <BIconHeart />
-          </p>
-        </div>
-      </b-container>
-    </section>
+  <div>
+    <!-- Start cover -->
+    <div class="position-relative cover">
+      <div class="position-relative cover--overlay" :style="imgStyles" />
+      <section class="cover--details">
+        <b-container class="h-100">
+          <div class="text-center h-100 d-flex flex-column flex-lg-row align-items-lg-center justify-content-lg-between">
+            <h1 class="font-5">
+              {{ place.title ? place.title[$i18n.locale] : '' }}
+            </h1>
+            <p class="h2 mb-2">
+              <BIconHeart />
+            </p>
+          </div>
+        </b-container>
+      </section>
+    </div>
+    <!-- End cover -->
+    <b-container fluid>
+      <b-tabs no-nav-style :value="tabOpened" fill content-class="mt-3">
+        <template v-slot:tabs-start>
+          <b-row no-gutters class="d-flex flex-nowrap shadow jsutify-content-center w-100 tabs">
+            <b-col v-for="(tab, index) in ['Information', 'Centruminfo', 'Pris', 'Bokningsförfrågan']" :key="tab" class="flex-grow-1" cols="auto">
+              <b-btn
+                squared
+                block
+                variant="light"
+                class="anime-tab anime-tab-fromLeft border-0 bg-transparent"
+                :class="{ 'active': (index === tabOpened) }"
+                @click="tabOpened = index"
+              >
+                {{ tab }}
+              </b-btn>
+            </b-col>
+          </b-row>
+        </template>
+
+        <b-tab title-item-class="d-none" active>
+          <p>I'm the Information tab</p>
+        </b-tab>
+        <b-tab title-item-class="d-none">
+          <p>I'm the Centruminfo tab</p>
+        </b-tab>
+        <b-tab title-item-class="d-none">
+          <p>I'm the Pris tab</p>
+        </b-tab>
+      </b-tabs>
+    </b-container>
   </div>
 </template>
 
@@ -32,7 +66,8 @@ export default {
   },
   data () {
     return {
-      place: {}
+      place: {},
+      tabOpened: 1
     }
   },
   computed: {
@@ -47,7 +82,7 @@ export default {
       }
     }
   },
-  async created () {
+  async beforeCreate () {
     await this.$axios.$get(`/places/${this.$route.params.title}`)
       .then((res) => {
         this.place = res.place
@@ -62,6 +97,37 @@ export default {
 </script>
 
 <style scoped>
+@media screen and (max-width: 576px) {
+  .row.tabs {
+    overflow-x: scroll;
+  }
+}
+.anime-tab {
+  margin:10px;
+  padding:10px 10px;
+  float:left;
+  box-sizing:border-box;
+  transition:0.4s all ease-in-out;
+  position:relative;
+  cursor:pointer;
+}
+.anime-tab:before {
+  position:absolute;
+  bottom:0;
+  background: var(--indigo);
+  height:2px;
+  display:block;
+  content:"";
+  width:0;
+  transition:0.4s all ease-in-out;
+}
+.anime-tab:hover:before ,.anime-tab.active:before {
+  width:100%;
+}
+.anime-tab-fromLeft:before {
+  bottom:0;
+  left:0;
+}
 
 .cover .cover--details::before {
   z-index: -1;

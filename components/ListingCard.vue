@@ -25,7 +25,7 @@ export default {
 </script>
 
 <template>
-  <b-card style="cursor: pointer" @click="$router.push(`/lokal/${card._id}`)">
+  <b-card style="cursor: pointer" @click="$router.push(`/lokal/${card.title.sv}`)">
     <b-card-body class="p-0">
       <b-carousel
         id="carousel-fade"

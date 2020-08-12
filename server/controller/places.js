@@ -104,7 +104,8 @@ exports.deletePlace = (req, res) => {
  * @access Private
  */
 exports.getOnePlace = async (req, res) => {
-  await Place.findById(req.params.id)
+  console.log(req.params.title)
+  await Place.findOne({ 'title.sv': req.params.title })
     .then(place => res.json({ success: true, place }))
     .catch(err => res.status(404).json({ success: false }));
 }

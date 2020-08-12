@@ -6,11 +6,13 @@ const PlaceSchema = new mongoose.Schema({
   title: {
     en: {
       type: String,
-      required: true
+      required: true,
+      unique: true
     },
     sv: {
       type: String,
-      required: true
+      required: true,
+      unique: true
     }
   },
   beskreving: {

@@ -18,7 +18,7 @@ router
   .post(multer.fields(fields), addPlace);
 
 router
-  .route('/:id', auth)
+  .route('/:title', auth)
   .get(getOnePlace)
   .delete(deletePlace)
   .patch(multer.none(), updatePlace)
