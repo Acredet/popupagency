@@ -474,6 +474,8 @@ export default {
 
       this.cards = places.map((x) => {
         return {
+          _id: x._id,
+          title: x.title,
           images: x.cover,
           place: x.stad,
           money: `fr ${x.prioteradpris} kr / månad`,

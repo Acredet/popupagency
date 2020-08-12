@@ -25,7 +25,7 @@ export default {
 </script>
 
 <template>
-  <b-card>
+  <b-card tag="a" :href="`/lokal/${card._id}`">
     <b-card-body class="p-0">
       <b-carousel
         id="carousel-fade"
