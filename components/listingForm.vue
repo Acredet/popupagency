@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <loading :state="loadingState" />
     <b-container>
       <h2 class="my-3">
         {{ $t('addListing.title') }}
@@ -533,6 +534,7 @@ export default {
   },
   data () {
     return {
+      loadingState: false,
       title: {
         en: null,
         sv: null
@@ -762,6 +764,8 @@ export default {
     }
   },
   mounted () {
+    this.loadingState = true
+
     this.preparePageData()
     if (this.thereIsListing) { this.assignListingToEdit() }
   },
@@ -793,13 +797,13 @@ export default {
           this.kategoriOpts = categories.map((x) => {
             return { text: x.name[lang], value: x.name[lang] }
           })
+          this.loadingState = false
         })
         .catch((err) => {
           console.log(err)
         })
     },
     assignListingToEdit () {
-      console.log(this.listing)
       const { prioteradpris, egenskaper, oppettider, kategori, title, yta, placering, stad, location, vagvisningen, fran, till, kontaktperson, expiry, minstahyresperiod, langstahyresperiod, sasongBoxen, hemsida, beskreving, centrumtextarea, prisperdag, prisperhelg, prisperlanghelg, prispermanad, prispervecka, bildgalleri, cover, planritning, centrumgalleri } = this.listing
       this.title.en = title.en
       this.title.sv = title.sv
@@ -872,6 +876,7 @@ export default {
       yesNoFromListing.forEach((input) => {
         this.yesNoInputsVal[input] = this.listing[input]
       })
+      this.loadingState = false
     },
     delteTimeRow (name, index) {
       this.days[name].hours.splice(index, 1)
@@ -966,6 +971,8 @@ export default {
       return listing
     },
     async addListing () {
+      this.loadingState = true
+
       const listing = this.createFormDate()
       await this.$axios.$post('/places', listing)
         .then((res) => {
@@ -986,6 +993,8 @@ export default {
       this.images[name].splice(index, 1)
     },
     async editListing () {
+      this.loadingState = true
+
       const listing = this.createFormDate()
 
       const bildgalleri = this.listing.bildgalleri ? [...this.listing.bildgalleri] : []
