@@ -225,6 +225,10 @@
                     />
                   </gmap-cluster>
                 </gmap-map>
+                <gmap-autocomplete
+                  value="Singapore"
+                  @place_changed="setPlace"
+                />
               </div>
               <b-form-group
                 id="location-group"
