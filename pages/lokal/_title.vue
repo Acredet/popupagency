@@ -17,42 +17,159 @@
       </section>
     </div>
     <!-- End cover -->
-    <b-container fluid>
-      <b-tabs no-nav-style :value="tabOpened" fill content-class="mt-3">
-        <template v-slot:tabs-start>
-          <b-row no-gutters class="d-flex flex-nowrap shadow jsutify-content-center w-100 tabs">
-            <b-col v-for="(tab, index) in ['Information', 'Centruminfo', 'Pris', 'Bokningsförfrågan']" :key="tab" class="flex-grow-1" cols="auto">
-              <b-btn
-                squared
-                block
-                variant="light"
-                class="anime-tab anime-tab-fromLeft border-0 bg-transparent"
-                :class="{ 'active': (index === tabOpened) }"
-                @click="tabOpened = index"
-              >
-                {{ tab }}
-              </b-btn>
-            </b-col>
-          </b-row>
-        </template>
+    <b-tabs no-nav-style :value="tabOpened" fill content-class="mt-3">
+      <template v-slot:tabs-start>
+        <div class="w-100">
+          <div class="shadow w-100 d-flex flex-nowrap">
+            <b-container class="d-flex flex-column flex-nowrap">
+              <b-row no-gutters class="d-flex flex-nowrap jsutify-content-center w-100 tabs">
+                <b-col v-for="(tab, index) in ['Information', 'Centruminfo', 'Pris', 'Bokningsförfrågan']" :key="tab" class="flex-grow-1" cols="auto">
+                  <b-btn
+                    squared
+                    block
+                    variant="light"
+                    class="anime-tab anime-tab-fromLeft border-0 bg-transparent"
+                    :class="{ 'active': (index === tabOpened) }"
+                    @click="tabOpened = index"
+                  >
+                    {{ tab }}
+                  </b-btn>
+                </b-col>
+              </b-row>
+            </b-container>
+          </div>
 
-        <b-tab title-item-class="d-none" active>
-          <p>I'm the Information tab</p>
-        </b-tab>
-        <b-tab title-item-class="d-none">
+          <!-- fEATS SECTION -->
+          <b-container class="d-flex flex-column flex-nowrap my-5">
+            <b-row no-gutters class="d-flex flex-nowrap jsutify-content-center w-100 py-3 tabs">
+              <b-col v-for="(feat) in feats" :key="feat.name" cols="auto" class="d-flex flex-grow-1 flex-column justify-content-center mx-2 align-items-center">
+                <img width="30px" :src="require(`~/assets/img/feats/${feat.name}.png`)" :alt="feat.name">
+                <b v-if="feat.name==='yta-1'" class="pt-1">{{ feat.text }} m<sup>3</sup> </b>
+                <b v-else class="pt-1">{{ feat.text }}</b>
+              </b-col>
+            </b-row>
+          </b-container>
+          <!-- fEATS SECTION -->
+        </div>
+      </template>
+
+      <b-tab title-item-class="d-none" active>
+        <b-container>
+          <b-row>
+            <b-col class="my-3" cols="12" md="6">
+              <b class="font-4">Beskrivning</b>
+              <!-- eslint-disable-next-line vue/no-v-html -->
+              <div class="my-2" v-html="place.beskreving ? place.beskreving[$i18n.locale] : ''" />
+            </b-col>
+            <!-- Start Karta -->
+            <b-col class="my-3" cols="12" md="6">
+              <div class="d-flex justify-content-between">
+                <b class="font-4">Karta</b>
+                <a class="link-main" target="_blank" href="https://www.google.com/maps/dir//56.0992854,12.8043192/@56.0992329,12.7340866,12z">Get Directions</a>
+              </div>
+              <div class="content my-2">
+                <gmap-map
+                  style="width: 100%; height: 300px"
+                  :center="map.center"
+                  :map-type-id="map.mapTypeId"
+                  :zoom="7"
+                >
+                  <gmap-cluster>
+                    <gmap-marker
+                      v-for="(mark, index) in map.markers"
+                      :key="index"
+                      :position="mark"
+                    />
+                  </gmap-cluster>
+                </gmap-map>
+              </div>
+            </b-col>
+            <!-- End Karta -->
+
+            <!-- Start Detaljer -->
+            <b-col class="my-3" cols="12" md="6">
+              <b class="font-4">Detaljer</b>
+              <!-- eslint-disable-next-line vue/no-v-html -->
+              <div class="my-2">
+                <div class="d-flex justify-content-between">
+                  <p>Area</p>
+                  <p>190 m²</p>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between">
+                  <p>Våning/Placering</p>
+                  <p>Markplan</p>
+                </div>
+              </div>
+            </b-col>
+            <!-- End Detaljer -->
+
+            <!-- Start Planritning -->
+            <b-col class="my-3" cols="12" md="6">
+              <b class="font-4">Planritning</b>
+              <!-- eslint-disable-next-line vue/no-v-html -->
+              <div class="my-2">
+                <div class="d-flex justify-content-between">
+                  <p>Area</p>
+                  <p>190 m²</p>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between">
+                  <p>Våning/Placering</p>
+                  <p>Markplan</p>
+                </div>
+              </div>
+            </b-col>
+            <!-- End Planritning -->
+
+            <!-- Start Galleri -->
+            <b-col class="my-3" cols="12">
+              <div class="my-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+                <b class="font-4 mb-2">Galleri</b>
+                <!-- component -->
+                <viewer :images="images">
+                  <b-row no-gutters>
+                    <b-col v-for="src in images" :key="src" cols="12" md="6">
+                      <div class="gallery-images">
+                        <img width="100%" :src="src">
+                      </div>
+                    </b-col>
+                  </b-row>
+                </viewer>
+              </div>
+            </b-col>
+            <!-- End Galleri -->
+          </b-row>
+        </b-container>
+      </b-tab>
+
+      <b-tab title-item-class="d-none">
+        <b-container>
           <p>I'm the Centruminfo tab</p>
-        </b-tab>
-        <b-tab title-item-class="d-none">
+        </b-container>
+      </b-tab>
+
+      <b-tab title-item-class="d-none">
+        <b-container>
           <p>I'm the Pris tab</p>
-        </b-tab>
-      </b-tabs>
-    </b-container>
+        </b-container>
+      </b-tab>
+
+      <b-tab title-item-class="d-none">
+        <b-container>
+          <p>I'm the Pris tab</p>
+        </b-container>
+      </b-tab>
+    </b-tabs>
   </div>
 </template>
 
 <script>
 import { BootstrapVue, BIcon, BIconHeart, BIconHeartFill } from 'bootstrap-vue'
-
+import 'viewerjs/dist/viewer.css'
+import Viewer from 'v-viewer'
+import Vue from 'vue'
+Vue.use(Viewer)
 export default {
   components: {
     // eslint-disable-next-line vue/no-unused-components
@@ -66,11 +183,26 @@ export default {
   },
   data () {
     return {
+      map: {
+        center: { lat: 59.334591, lng: 18.063240 },
+        mapTypeId: 'roadmap',
+        markers: [
+          { lat: 10, lng: 10 },
+          { lat: 59.334591, lng: 18.063240 },
+          { lat: 10, lng: 10 }
+        ]
+      },
       place: {},
-      tabOpened: 1
+      tabOpened: 0
     }
   },
   computed: {
+    images () {
+      return [
+        'https://popup.dk.se/_nuxt/img/1597330709803-cover[]-keychron K2 2.jpg',
+        'https://popup.dk.se/_nuxt/img/1597330709803-cover[]-keychron K2 2.jpg'
+      ]
+    },
     imgStyles () {
       return {
         'min-height': '60vh',
@@ -78,8 +210,18 @@ export default {
         'background-image': `url('https://popup.dk.se/_nuxt/img/${this.place.cover ? this.place.cover[0] : ''}')`,
         'background-position': 'center center',
         'background-attachment': 'fixed',
-        'object-fit': 'fill'
+        'background-size': 'cover'
       }
+    },
+    feats () {
+      return [
+        { name: 'yta-1', text: '190' },
+        { name: 'fasta-oppettider-1', text: 'FASTA ÖPPETTIDER' },
+        { name: 'butik-1', text: 'BUTIK' },
+        { name: 'matodrick-2', text: 'MAT & DRYCK' },
+        { name: 'event-1', text: 'EVENT' },
+        { name: 'sol', text: 'SÄSONG' }
+      ]
     }
   },
   async beforeCreate () {
@@ -91,7 +233,9 @@ export default {
       .catch(res => console.log(res))
   },
   methods: {
-
+    handleClose () {
+      this.key++
+    }
   }
 }
 </script>
@@ -152,4 +296,39 @@ export default {
   padding: 5px;
   color: white;
 }
+
+p {
+  padding: 0;
+  margin: 0
+}
+
+.gallery-images {
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.gallery-images::before {
+  content: '\f00e';
+  color: white;
+  font-size: 12px;
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  display: flex;
+  transform: scale(1);
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: all 0.4s ease;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  position: absolute;
+}
+
+.gallery-images:hover::before {
+  opacity: 1;
+  transform: scale(1.2);
+}
+
 </style>

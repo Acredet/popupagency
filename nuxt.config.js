@@ -46,7 +46,6 @@ module.exports = {
    */
   plugins: [
     { src: '~/plugins/vue2-editor', mode: 'client' },
-    // { src: '~/plugins/buefy', mode: 'client' },
     { src: '~/plugins/gmaps', mode: 'client', ssr: true }
   ],
   /*

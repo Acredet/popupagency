@@ -36,3 +36,11 @@
 table.b-table thead tr[role='row'] { background: #FFF !important }
 table.b-table tbody tr[role='row']:nth-child(even) { background: #eee !important }
 table.b-table tbody tr[role='row']:nth-child(odd) { background: #FFF !important }
+
+.link-main {
+  color: var(--indigo);
+}
+
+.link-main:hover {
+  text-decoration: none
+}
