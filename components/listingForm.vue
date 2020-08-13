@@ -90,8 +90,6 @@
                       class="d-flex mb-1 "
                       cols="12"
                       sm="6"
-                      md="4"
-                      lg="3"
                     >
                       <div class="position-relative">
                         <b-btn variant="danger" class="delete-btn" aria-label="Close" @click="deleteImageFromExistingArray(index, 'bildgalleri')">
@@ -127,8 +125,6 @@
                       class="d-flex mb-1 "
                       cols="12"
                       sm="6"
-                      md="4"
-                      lg="3"
                     >
                       <div class="position-relative">
                         <b-btn type="button" variant="danger" class="delete-btn" aria-label="Close" @click="deleteImageFromExistingArray(index, 'cover')">
@@ -290,8 +286,6 @@
                         class="d-flex mb-1 "
                         cols="12"
                         sm="6"
-                        md="4"
-                        lg="3"
                       >
                         <div class="position-relative">
                           <b-btn type="button" variant="danger" class="delete-btn" aria-label="Close" @click="deleteImageFromExistingArray(index, 'planritning')">
@@ -429,8 +423,6 @@
                         class="d-flex mb-1 "
                         cols="12"
                         sm="6"
-                        md="4"
-                        lg="3"
                       >
                         <div class="position-relative">
                           <b-btn type="button" variant="danger" class="delete-btn" aria-label="Close" @click="deleteImageFromExistingArray(index, 'centrumgalleri')">
