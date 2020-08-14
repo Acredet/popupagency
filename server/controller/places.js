@@ -44,7 +44,7 @@ exports.addPlace = async (req, res, next) => {
       prispervecka: req.body.prispervecka,
       prispermanad: req.body.prispermanad,
       prioteradpris: req.body.prioteradpris,
-      egenskaper: req.body.egenskaper,
+      egenskaper: req.body.egenskaper.map(x => JSON.parse(x)),
       yta: req.body.yta,
       placering: req.body.placering,
       stad: {
@@ -139,6 +139,10 @@ exports.updatePlace = async (req, res) => {
       en: JSON.parse(updata.beskreving).en,
       sv: JSON.parse(updata.beskreving).sv
     }
+  }
+
+  if (updata.egenskaper) {
+    updata.egenskaper = updata.egenskaper.map(x => JSON.parse(x))
   }
 
   if (updata.oppettider) {

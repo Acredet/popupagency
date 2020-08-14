@@ -125,6 +125,15 @@
             </b-col>
             <!-- End Planritning -->
 
+            <!-- Start egenskaper -->
+            <b-col v-if="place.egenskaper" class="my-3" cols="12" md="6">
+              <b class="font-4">Egenskaper</b>
+              <div v-for="tag in place.egenskaper" :key="tag" class="img">
+                <b>{{ tag }}</b>
+              </div>
+            </b-col>
+            <!-- End Planritning -->
+
             <!-- Start Galleri -->
             <b-col class="my-3" cols="12">
               <div class="my-gallery" itemscope itemtype="http://schema.org/ImageGallery">

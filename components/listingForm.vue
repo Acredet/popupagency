@@ -159,17 +159,12 @@
 
           <b-card :title="$t('addListing.inputs.egenskaper')">
             <b-card-body>
-              <b-row>
-                <b-col v-for="(feat,index) in renderEgensKaper" :key="index" cols="12" md="6">
-                  <b-form-checkbox
-                    :id="feat"
-                    v-model="egenskaper[feat]"
-                    class="mb-2"
-                  >
-                    {{ feat }}
-                  </b-form-checkbox>
-                </b-col>
-              </b-row>
+              <b-form-checkbox-group
+                id="egenskaper"
+                v-model="egenskaper"
+                :options="renderEgensKaper"
+                name="tags"
+              />
             </b-card-body>
           </b-card>
 
@@ -619,7 +614,8 @@ export default {
           model: 'manad'
         }
       ],
-      egenskaper: {},
+      allTags: [],
+      egenskaper: [],
       renderEgensKaper: [],
       Yta: null,
       markplan: null,
@@ -627,7 +623,7 @@ export default {
       cityOptions: [],
       kategori: [],
       kategoriOpts: [],
-      location: null,
+      location: 'null',
 
       minsta: null,
       längsta: null,
@@ -819,7 +815,13 @@ export default {
           const lang = this.$i18n.getLocaleCookie()
 
           this.lokalOpts = users.map(x => x.name)
-          this.renderEgensKaper = tags.map(x => x.name[lang])
+          this.allTags = tags
+          this.renderEgensKaper = tags.map((x) => {
+            return {
+              text: x.name[lang],
+              value: { name: x.name[lang], avatar: x.avatar }
+            }
+          })
           this.cityOptions = regions.map((x) => {
             return {
               text: x.name[lang],
@@ -896,9 +898,7 @@ export default {
       })
 
       // ADD TAGS
-      egenskaper.forEach((tag) => {
-        this.egenskaper[tag] = true
-      })
+      this.egenskaper = egenskaper
 
       // ADD CATEGORY
       this.kategori = kategori
@@ -949,12 +949,7 @@ export default {
       listing.append('prioteradpris', this.price.prioteradpris.val)
 
       // ASSIGN TAG
-      for (const key in this.egenskaper) {
-        if (this.egenskaper.hasOwnProperty(key)) {
-          const feat = this.egenskaper[key]
-          if (feat) { listing.append('egenskaper[]', key) }
-        }
-      }
+      this.egenskaper.forEach(feat => listing.append('egenskaper[]', JSON.stringify(feat)))
 
       listing.append('yta', this.Yta)
       listing.append('placering', this.markplan)

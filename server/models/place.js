@@ -46,7 +46,7 @@ const PlaceSchema = new mongoose.Schema({
     type: Number,
     min: 0
   },
-  egenskaper: Array,
+  egenskaper: [Object],
   yta: { // ✔
     type: Number,
     min: 0
