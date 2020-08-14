@@ -140,14 +140,21 @@
               <div class="my-gallery" itemscope itemtype="http://schema.org/ImageGallery">
                 <b class="font-4 mb-2">Galleri</b>
                 <!-- component -->
-                <viewer :images="images">
-                  <b-row no-gutters>
-                    <b-col v-for="src in images" :key="src" cols="12" md="6">
-                      <div class="gallery-images">
-                        <img width="100%" :src="src">
-                      </div>
-                    </b-col>
-                  </b-row>
+                <b-row no-gutters>
+                  <b-col v-for="src in images" :key="src" cols="12" md="6" @click="show2">
+                    <div class="gallery-images">
+                      <img width="100%" :src="src">
+                    </div>
+                  </b-col>
+                </b-row>
+
+                <viewer
+                  ref="viewer2"
+                  :images="images"
+                  class="viewer"
+                  @inited="inited2"
+                >
+                  <img v-for="src in images" :key="src" :src="src" class="d-none">
                 </viewer>
               </div>
             </b-col>
@@ -252,6 +259,13 @@ export default {
     show () {
       // this.$viewer.view(2)
       this.$viewer.show()
+    },
+    inited2 (viewer2) {
+      this.$viewer2 = viewer2
+    },
+    show2 () {
+      // this.$viewer.view(2)
+      this.$viewer2.show()
     }
   }
 }
