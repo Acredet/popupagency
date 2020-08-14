@@ -198,10 +198,7 @@ export default {
   },
   computed: {
     images () {
-      return [
-        'https://popup.dk.se/_nuxt/img/1597330709803-cover[]-keychron K2 2.jpg',
-        'https://popup.dk.se/_nuxt/img/1597330709803-cover[]-keychron K2 2.jpg'
-      ]
+      return !this.place.centrumgalleri ? [] : this.place.centrumgalleri.map(x => `https://popup.dk.se/_nuxt/img/${x}`)
     },
     imgStyles () {
       return {

@@ -2,6 +2,7 @@
   <div>
     <main-navbar />
     <Nuxt />
+    <main-footer />
   </div>
 </template>
 

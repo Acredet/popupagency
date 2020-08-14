@@ -42,7 +42,7 @@
       </div>
     </b-sidebar>
 
-    <b-navbar toggleable="md" fixed="top" type="dark" variant="dark">
+    <b-navbar toggleable="md" fixed="top" type="dark" variant="dark" class="bg-black">
       <b-row class="w-100 d-md-none">
         <b-col cols="6" class="d-flex align-center">
           <b-navbar-toggle target="sidebar-1">
