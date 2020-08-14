@@ -105,19 +105,22 @@
             <!-- End Detaljer -->
 
             <!-- Start Planritning -->
-            <b-col class="my-3" cols="12" md="6">
+            <b-col v-if="place.planritning" class="my-3" cols="12" md="6">
               <b class="font-4">Planritning</b>
-              <!-- eslint-disable-next-line vue/no-v-html -->
-              <div class="my-2">
-                <div class="d-flex justify-content-between">
-                  <p>Area</p>
-                  <p>190 m²</p>
+              <div v-for="img in place.planritning" :key="img" class="img">
+                <div class="planritning rounder-circle" @click="show">
+                  <i class="far fa-file-image font-1 text-secondaty mr-2" />
+                  <span>{{ img }}</span>
                 </div>
-                <hr>
-                <div class="d-flex justify-content-between">
-                  <p>Våning/Placering</p>
-                  <p>Markplan</p>
-                </div>
+
+                <viewer
+                  ref="viewer"
+                  :images="planritningImages"
+                  class="viewer"
+                  @inited="inited"
+                >
+                  <img v-for="src in planritningImages" :key="src" :src="src" class="d-none">
+                </viewer>
               </div>
             </b-col>
             <!-- End Planritning -->
@@ -200,6 +203,9 @@ export default {
     images () {
       return !this.place.centrumgalleri ? [] : this.place.centrumgalleri.map(x => `https://popup.dk.se/_nuxt/img/${x}`)
     },
+    planritningImages () {
+      return !this.place.planritning ? [] : this.place.planritning.map(x => `https://popup.dk.se/_nuxt/img/${x}`)
+    },
     imgStyles () {
       return {
         'min-height': '60vh',
@@ -230,8 +236,12 @@ export default {
       .catch(res => console.log(res))
   },
   methods: {
-    handleClose () {
-      this.key++
+    inited (viewer) {
+      this.$viewer = viewer
+    },
+    show () {
+      // this.$viewer.view(2)
+      this.$viewer.show()
     }
   }
 }
@@ -326,6 +336,23 @@ p {
 .gallery-images:hover::before {
   opacity: 1;
   transform: scale(1.2);
+}
+
+.planritning {
+  cursor: pointer;
+}
+
+.planritning i{
+  transition: all 0.4s ease;
+  border: 1px solid var(--dark);
+  padding: 10px;
+  border-radius: 50%;
+}
+
+.planritning:hover i{
+  color: white;
+  border: 1px solid var(--indigo);
+  background: var(--indigo);
 }
 
 </style>
