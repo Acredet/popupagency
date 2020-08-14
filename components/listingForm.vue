@@ -819,7 +819,7 @@ export default {
           this.renderEgensKaper = tags.map((x) => {
             return {
               text: x.name[lang],
-              value: { name: x.name[lang], avatar: x.avatar }
+              value: { name: x.name, avatar: x.avatar }
             }
           })
           this.cityOptions = regions.map((x) => {

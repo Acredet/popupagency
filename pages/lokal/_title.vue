@@ -129,7 +129,8 @@
             <b-col v-if="place.egenskaper" class="my-3" cols="12" md="6">
               <b class="font-4">Egenskaper</b>
               <div v-for="tag in place.egenskaper" :key="tag" class="img">
-                <b>{{ tag }}</b>
+                <img :src="`https://popup.dk.se/_nuxt/img/${tag.avatar}`" :alt="tag.name[$i18n.locale]">
+                <b>{{ tag.name[$i18n.locale] }}</b>
               </div>
             </b-col>
             <!-- End Planritning -->

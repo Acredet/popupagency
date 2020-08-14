@@ -120,8 +120,8 @@ module.exports = {
     VUE_APP_GOOGLE_MAPS_API_KEY: process.env.VUE_APP_GOOGLE_MAPS_API_KEY
   },
   axios: {
-    baseURL: '/api'
-    // baseURL: 'https://popup.dk.se/api'
+    // baseURL: '/api'
+    baseURL: 'https://popup.dk.se/api'
   },
   router: {
     linkActiveClass: 'active'
