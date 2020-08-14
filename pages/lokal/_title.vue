@@ -53,7 +53,7 @@
         </div>
       </template>
 
-      <b-tab title-item-class="d-none" active>
+      <b-tab title-item-class="d-none" class="my-4" active>
         <b-container>
           <b-row>
             <b-col class="my-3" cols="12" md="6">
@@ -93,7 +93,7 @@
               <div class="my-2">
                 <div class="d-flex justify-content-between">
                   <p>Area</p>
-                  <p>190 m²</p>
+                  <p>{{ place.yta ? place.yta : '190' }} m²</p>
                 </div>
                 <hr>
                 <div class="d-flex justify-content-between">
@@ -128,7 +128,7 @@
             <!-- Start egenskaper -->
             <b-col v-if="place.egenskaper" class="my-3" cols="12" md="6">
               <b class="font-4">Egenskaper</b>
-              <div v-for="tag in place.egenskaper" :key="tag" class="img">
+              <div v-for="tag in place.egenskaper" :key="tag.name[$i18n.locale]" class="img">
                 <img :src="`https://popup.dk.se/_nuxt/img/${tag.avatar}`" :alt="tag.name[$i18n.locale]">
                 <b>{{ tag.name[$i18n.locale] }}</b>
               </div>
@@ -154,7 +154,7 @@
                   class="viewer"
                   @inited="inited2"
                 >
-                  <img v-for="src in images" :key="src" :src="src" class="d-none">
+                  <img v-for="src in images" :key="`${src}-imaged`" :src="src" class="d-none">
                 </viewer>
               </div>
             </b-col>
@@ -163,21 +163,189 @@
         </b-container>
       </b-tab>
 
-      <b-tab title-item-class="d-none">
+      <b-tab title-item-class="d-none" class="my-4">
         <b-container>
-          <p>I'm the Centruminfo tab</p>
+          <b>Hemsida</b>
+          <p>{{ place.hemsida }}</p>
         </b-container>
       </b-tab>
 
-      <b-tab title-item-class="d-none">
+      <b-tab title-item-class="d-none" class="my-4">
         <b-container>
           <p>I'm the Pris tab</p>
         </b-container>
       </b-tab>
 
-      <b-tab title-item-class="d-none">
+      <b-tab title-item-class="d-none" class="my-4">
         <b-container>
-          <p>I'm the Pris tab</p>
+          <b-form>
+            <b class="font-3">Send us a booking request:</b>
+            <b-row>
+              <!-- Start user name -->
+              <b-col cols="12">
+                <b-form-group
+                  class="my-2"
+                  label="Your name"
+                  label-class="font-weight-bold"
+                  label-for="username"
+                >
+                  <b-form-input
+                    id="username"
+                    v-model="form.name"
+                    autocomplete="off"
+                    size="sm"
+                  />
+                </b-form-group>
+              </b-col>
+              <!-- End user name -->
+
+              <!-- Start email -->
+              <b-col cols="12" md="6">
+                <b-form-group
+                  class="my-2"
+                  label="E-mail"
+                  label-class="font-weight-bold"
+                  label-for="email"
+                >
+                  <b-form-input
+                    id="email"
+                    v-model="form.email"
+                    type="email"
+                    autocomplete="off"
+                    size="sm"
+                  />
+                </b-form-group>
+              </b-col>
+              <!-- End email -->
+
+              <!-- Start Phone -->
+              <b-col cols="12" md="6">
+                <b-form-group
+                  class="my-2"
+                  label="Phone"
+                  label-class="font-weight-bold"
+                  label-for="Phone"
+                >
+                  <b-form-input
+                    id="Phone"
+                    v-model="form.phone"
+                    autocomplete="off"
+                    size="sm"
+                  />
+                </b-form-group>
+              </b-col>
+              <!-- End Phone -->
+
+              <!-- Start Business -->
+              <b-col cols="12" md="6">
+                <b-form-group
+                  class="my-2"
+                  label="Business"
+                  label-class="font-weight-bold"
+                  label-for="Business"
+                >
+                  <b-form-input
+                    id="Business"
+                    v-model="form.business"
+                    autocomplete="off"
+                    size="sm"
+                  />
+                </b-form-group>
+              </b-col>
+              <!-- End Business -->
+
+              <!-- Start Website -->
+              <b-col cols="12" md="6">
+                <b-form-group
+                  class="my-2"
+                  label="Website"
+                  label-class="font-weight-bold"
+                  label-for="Website"
+                >
+                  <b-form-input
+                    id="Website"
+                    v-model="form.website"
+                    autocomplete="off"
+                    size="sm"
+                  />
+                </b-form-group>
+              </b-col>
+              <!-- End Website -->
+
+              <!-- Start From -->
+              <b-col cols="12" md="6">
+                <b-form-group
+                  class="my-2"
+                  label="Fr.om"
+                  label-class="font-weight-bold"
+                  label-for="from"
+                >
+                  <b-form-datepicker
+                    id="from"
+                    v-model="form.from"
+                    today-button
+                    reset-button
+                    close-button
+                    size="sm"
+                    class="mb-2"
+                  />
+                </b-form-group>
+              </b-col>
+              <!-- End From -->
+
+              <!-- Start empty -->
+              <b-col cols="12" md="6">
+                <b-form-group
+                  class="my-2"
+                  label="Empty"
+                  label-class="font-weight-bold"
+                  label-for="Empty"
+                >
+                  <b-form-datepicker
+                    id="Empty"
+                    v-model="form.empty"
+                    today-button
+                    reset-button
+                    close-button
+                    size="sm"
+                    class="mb-2"
+                  />
+                </b-form-group>
+              </b-col>
+              <!-- End empty -->
+
+              <!-- Start details -->
+              <b-col cols="12">
+                <b-form-group
+                  class="my-2"
+                  label="What do you want to do in the room?"
+                  label-class="font-weight-bold"
+                  label-for="details"
+                >
+                  <b-form-textarea
+                    id="details"
+                    size="sm"
+                  />
+                </b-form-group>
+              </b-col>
+              <!-- End details -->
+              <b-col cols="12">
+                <b-form-checkbox
+                  id="GDPR"
+                  v-model="form.GDPR"
+                  name="GDPR"
+                  :value="true"
+                  :unchecked-value="false"
+                >
+                  I agree that the Popup Agency processes my personal info in accordance with GDPR rules .
+                </b-form-checkbox>
+              </b-col>
+
+              <b-btn class="m-2" size="lg" type="button" variant="primary" @click="sendForm">
+                send
+              </b-btn>
+            </b-row>
+          </b-form>
         </b-container>
       </b-tab>
     </b-tabs>
@@ -213,7 +381,18 @@ export default {
         ]
       },
       place: {},
-      tabOpened: 0
+      tabOpened: 0,
+      form: {
+        name: '',
+        email: '',
+        phone: '',
+        business: '',
+        website: '',
+        empty: '',
+        from: '',
+        details: '',
+        GDPR: false
+      }
     }
   },
   computed: {
@@ -235,7 +414,7 @@ export default {
     },
     feats () {
       return [
-        { name: 'yta-1', text: '190' },
+        { name: 'yta-1', text: this.place.yta || '' },
         { name: 'fasta-oppettider-1', text: 'FASTA ÖPPETTIDER' },
         { name: 'butik-1', text: 'BUTIK' },
         { name: 'matodrick-2', text: 'MAT & DRYCK' },
@@ -253,6 +432,9 @@ export default {
       .catch(res => console.log(res))
   },
   methods: {
+    sendForm () {
+      alert('Not working yet 😉')
+    },
     inited (viewer) {
       this.$viewer = viewer
     },
