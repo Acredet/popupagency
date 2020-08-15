@@ -6,12 +6,12 @@ const PlaceSchema = new mongoose.Schema({
   title: {
     en: {
       type: String,
-      required: true,
+      // required: true,
       unique: true
     },
     sv: {
       type: String,
-      required: true,
+      // required: true,
       unique: true
     }
   },
@@ -106,9 +106,9 @@ const PlaceSchema = new mongoose.Schema({
 })
 
 // Geocode & create location
-// PlaceSchema.pre("save", async function(next) {
-//   const loc = await geocoder.geocode(this.plats);
-//   console.log(loc);
+PlaceSchema.pre("save", async function(next) {
+  const loc = await geocoder.geocode(this.plats);
+  console.log(loc);
   // this.location = {
   //   type: "Point",
   //   coordinates: [loc[0].longitude, loc[0].latitude],
@@ -116,8 +116,8 @@ const PlaceSchema = new mongoose.Schema({
   // };
 
   // // Do not save plats
-  // this.plats = undefined;
-  // next();
-// });
+  this.plats = loc;
+  next();
+});
 
 module.exports = mongoose.model('Place', PlaceSchema)

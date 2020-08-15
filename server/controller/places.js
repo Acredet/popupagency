@@ -20,76 +20,77 @@ exports.getPlaces = async (req, res, next) => {
 // @route POST /api/places
 // @access Public
 exports.addPlace = async (req, res, next) => {
-  // let place = new Place({
-  //   plats: req.body.plats
-  // })
-  // await place.save()
+  let place = new Place({
+    plats: req.body.plats
+  })
+  place = await place.save()
+  res.send(place)
 
-  try {
-    for (const key in req.body) {
-      const element = req.body[key];
-      req.body[key] = element !== 'null' ? element : null
-    }
-    console.log(req.body);
-    let place = new Place({
-      title: {
-        en: JSON.parse(req.body.title).en,
-        sv: JSON.parse(req.body.title).sv
-      },
-      beskreving: {
-        en: JSON.parse(req.body.beskreving).en,
-        sv: JSON.parse(req.body.beskreving).sv
-      },
-      bildgalleri: req.files['bildgalleri[]'] ? req.files['bildgalleri[]'].map(x => x.filename) : [],
-      cover: req.files['cover[]'] ? req.files['cover[]'].map(x => x.filename) : [],
-      epost: req.body.epost,
-      prisperdag: req.body.prisperdag,
-      prisperhelg: req.body.prisperhelg,
-      prisperlanghelg: req.body.prisperlanghelg,
-      prispervecka: req.body.prispervecka,
-      prispermanad: req.body.prispermanad,
-      prioteradpris: req.body.prioteradpris,
-      egenskaper: req.body.egenskaper.map(x => JSON.parse(x)),
-      yta: req.body.yta,
-      placering: req.body.placering,
-      stad: {
-        en: JSON.parse(req.body.stad).en,
-        sv: JSON.parse(req.body.stad).sv
-      },
-      plats: req.body.plats,
-      location: req.body.location,
-      kategori: req.body.kategori,
-      planritning: req.files['planritning[]'] ? req.files['planritning[]'].map(x => x.filename) : [],
-      minstahyresperiod: req.body.minstahyresperiod,
-      langstahyresperiod: req.body.langstahyresperiod,
-      fasta: req.body.fasta,
-      butik: req.body.butik,
-      mat: req.body.mat,
-      event: req.body.event,
-      sasongBoxen: req.body.sasongBoxen,
-      hemsida: req.body.hemsida,
-      centrumtextarea: req.body.centrumtextarea,
-      oppettider: req.body.oppettider.map(x => JSON.parse(x)),
-      timezone: 'timezone',
-      vagvisningen: req.body.vagvisningen,
-      centrumgalleri: req.files['centrumgalleri[]'] ? req.files['centrumgalleri[]'].map(x => x.filename) : [],
-      fran: req.body.fran,
-      till: req.body.till,
-      kontaktperson: req.body.kontaktperson,
-      expiry: req.body.expiry,
-    })
-    place = await place.save()
-    res.status(201).json({
-      success: true,
-      data: place
-    });
-  } catch (err) {
-    console.error(err);
-    if (err.code === 11000) {
-      return res.status(400).json({ error: "This Place already exists" });
-    }
-    res.status(500).json({ error: "Server error" });
-  }
+  // try {
+  //   for (const key in req.body) {
+  //     const element = req.body[key];
+  //     req.body[key] = element !== 'null' ? element : null
+  //   }
+  //   console.log(req.body);
+  //   let place = new Place({
+  //     title: {
+  //       en: JSON.parse(req.body.title).en,
+  //       sv: JSON.parse(req.body.title).sv
+  //     },
+  //     beskreving: {
+  //       en: JSON.parse(req.body.beskreving).en,
+  //       sv: JSON.parse(req.body.beskreving).sv
+  //     },
+  //     bildgalleri: req.files['bildgalleri[]'] ? req.files['bildgalleri[]'].map(x => x.filename) : [],
+  //     cover: req.files['cover[]'] ? req.files['cover[]'].map(x => x.filename) : [],
+  //     epost: req.body.epost,
+  //     prisperdag: req.body.prisperdag,
+  //     prisperhelg: req.body.prisperhelg,
+  //     prisperlanghelg: req.body.prisperlanghelg,
+  //     prispervecka: req.body.prispervecka,
+  //     prispermanad: req.body.prispermanad,
+  //     prioteradpris: req.body.prioteradpris,
+  //     egenskaper: req.body.egenskaper.map(x => JSON.parse(x)),
+  //     yta: req.body.yta,
+  //     placering: req.body.placering,
+  //     stad: {
+  //       en: JSON.parse(req.body.stad).en,
+  //       sv: JSON.parse(req.body.stad).sv
+  //     },
+  //     plats: req.body.plats,
+  //     location: req.body.location,
+  //     kategori: req.body.kategori,
+  //     planritning: req.files['planritning[]'] ? req.files['planritning[]'].map(x => x.filename) : [],
+  //     minstahyresperiod: req.body.minstahyresperiod,
+  //     langstahyresperiod: req.body.langstahyresperiod,
+  //     fasta: req.body.fasta,
+  //     butik: req.body.butik,
+  //     mat: req.body.mat,
+  //     event: req.body.event,
+  //     sasongBoxen: req.body.sasongBoxen,
+  //     hemsida: req.body.hemsida,
+  //     centrumtextarea: req.body.centrumtextarea,
+  //     oppettider: req.body.oppettider.map(x => JSON.parse(x)),
+  //     timezone: 'timezone',
+  //     vagvisningen: req.body.vagvisningen,
+  //     centrumgalleri: req.files['centrumgalleri[]'] ? req.files['centrumgalleri[]'].map(x => x.filename) : [],
+  //     fran: req.body.fran,
+  //     till: req.body.till,
+  //     kontaktperson: req.body.kontaktperson,
+  //     expiry: req.body.expiry,
+  //   })
+  //   place = await place.save()
+  //   res.status(201).json({
+  //     success: true,
+  //     data: place
+  //   });
+  // } catch (err) {
+  //   console.error(err);
+  //   if (err.code === 11000) {
+  //     return res.status(400).json({ error: "This Place already exists" });
+  //   }
+  //   res.status(500).json({ error: "Server error" });
+  // }
 };
 
 
