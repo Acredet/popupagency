@@ -142,11 +142,11 @@
                 <!-- component -->
                 <b-row no-gutters>
                   <b-col
-                    v-for="src in images"
+                    v-for="(src, index) in images"
                     :key="src"
                     cols="12"
                     md="6"
-                    @click="show2"
+                    @click="show2(index)"
                   >
                     <div class="gallery-images" style="height: 320px">
                       <img width="100%" :src="src" style="height: 320px">
@@ -451,9 +451,9 @@ export default {
     inited2 (viewer2) {
       this.$viewer2 = viewer2
     },
-    show2 () {
-      // this.$viewer.view(2)
-      this.$viewer2.show()
+    show2 (number) {
+      this.$viewer2.view(number)
+      // this.$viewer2.show()
     }
   }
 }
