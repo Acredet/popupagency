@@ -20,6 +20,11 @@ exports.getPlaces = async (req, res, next) => {
 // @route POST /api/places
 // @access Public
 exports.addPlace = async (req, res, next) => {
+  // let place = new Place({
+  //   plats: req.body.plats
+  // })
+  // await place.save()
+
   try {
     for (const key in req.body) {
       const element = req.body[key];

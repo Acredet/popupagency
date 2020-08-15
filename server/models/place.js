@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 // const { min } = require("~/static/plugins/moment/moment");
-// const geocoder = require("../utils/geocoder");
+const geocoder = require("../utils/geocoder");
 
 const PlaceSchema = new mongoose.Schema({
   title: {
@@ -57,7 +57,8 @@ const PlaceSchema = new mongoose.Schema({
     sv: String
   },
   plats: String,
-  location: { // TODO:
+  location: {
+    type: String
     // type: {
     //   type: String,
     //   enum: ['Point']
@@ -67,7 +68,6 @@ const PlaceSchema = new mongoose.Schema({
     //   index: '2dsphere'
     // },
     // formattedAddress: String
-    type: String
   },
   kategori: Array,
   planritning: Array,
@@ -106,17 +106,18 @@ const PlaceSchema = new mongoose.Schema({
 })
 
 // Geocode & create location
-/* PlaceSchema.pre("save", async function(next) {
-  const loc = await geocoder.geocode(this.address);
-  this.location = {
-    type: "Point",
-    coordinates: [loc[0].longitude, loc[0].latitude],
-    formattedAddress: loc[0].formattedAddress
-  };
+// PlaceSchema.pre("save", async function(next) {
+//   const loc = await geocoder.geocode(this.plats);
+//   console.log(loc);
+  // this.location = {
+  //   type: "Point",
+  //   coordinates: [loc[0].longitude, loc[0].latitude],
+  //   formattedAddress: loc[0].formattedAddress
+  // };
 
-  // Do not save address
-  this.address = undefined;
-  next();
-}); */
+  // // Do not save plats
+  // this.plats = undefined;
+  // next();
+// });
 
 module.exports = mongoose.model('Place', PlaceSchema)
