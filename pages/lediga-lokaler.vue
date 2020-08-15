@@ -126,7 +126,7 @@
     </b-sidebar>
     <!-- End SideBar -->
 
-    <b-row>
+    <b-row class="mt-2">
       <!-- Start filters Bar -->
       <b-col cols="12">
         <b-container fluid>

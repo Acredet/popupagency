@@ -1,7 +1,9 @@
 <template>
   <div>
     <main-navbar />
-    <Nuxt />
+    <div class="my-5 pt-4">
+      <Nuxt />
+    </div>
     <main-footer />
   </div>
 </template>

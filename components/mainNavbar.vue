@@ -42,8 +42,8 @@
       </div>
     </b-sidebar>
 
-    <b-navbar toggleable="md" fixed="top" type="dark" variant="dark" class="bg-black">
-      <b-row class="w-100 d-md-none">
+    <b-navbar toggleable="lg" fixed="top" type="dark" variant="dark" class="bg-black">
+      <b-row class="w-100 d-lg-none">
         <b-col cols="6" class="d-flex align-center">
           <b-navbar-toggle target="sidebar-1">
             <!-- Start sidebar -->
@@ -53,7 +53,7 @@
         </b-col>
 
         <b-col cols="6">
-          <b-navbar-brand href="#">
+          <b-navbar-brand to="/">
             <b-img src="~/assets/img/logo-white.png" class="logo" />
           </b-navbar-brand>
         </b-col>
@@ -65,7 +65,7 @@
 
           <b-nav-item-dropdown
             toggle-class="text-white font-3"
-            menu-class="animate__animated animate__zoomIn"
+            menu-class="animate__animated animate__fadeInUp animate__faster"
             text="Tjänster"
             left
           >
@@ -86,7 +86,7 @@
 
           <b-nav-item-dropdown
             toggle-class="text-white font-3"
-            menu-class="animate__animated animate__zoomIn"
+            menu-class="animate__animated animate__fadeInUp animate__faster"
             text="Om oss"
             left
           >
@@ -113,7 +113,7 @@
 
           <b-nav-item-dropdown
             toggle-class="text-white font-3"
-            menu-class="animate__animated animate__zoomIn"
+            menu-class="animate__animated animate__fadeInUp animate__faster"
             text="Lediga popups"
             left
           >
