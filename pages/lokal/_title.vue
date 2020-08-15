@@ -141,9 +141,15 @@
                 <b class="font-4 mb-2">Galleri</b>
                 <!-- component -->
                 <b-row no-gutters>
-                  <b-col v-for="src in images" :key="src" cols="12" md="6" @click="show2">
-                    <div class="gallery-images">
-                      <img width="100%" :src="src">
+                  <b-col
+                    v-for="src in images"
+                    :key="src"
+                    cols="12"
+                    md="6"
+                    @click="show2"
+                  >
+                    <div class="gallery-images" style="height: 320px">
+                      <img width="100%" :src="src" style="height: 320px">
                     </div>
                   </b-col>
                 </b-row>

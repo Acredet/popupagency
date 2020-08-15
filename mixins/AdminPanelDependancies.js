@@ -119,17 +119,10 @@ exports.AdminPanelDependancies = {
   head () {
     return {
       link: [
-        { href: '/plugins/morris/morris.css', rel: 'stylesheet', type: 'text/css' },
-        { href: '/css/metismenu.min.css', rel: 'stylesheet', type: 'text/css' },
-        { href: '/css/style.css', rel: 'stylesheet', type: 'text/css', body: true }
+        { href: '/css/admin-styles.css', rel: 'stylesheet', type: 'text/css' }
       ],
       script: [
-        { src: '/js/jquery.min.js' },
-        { src: '/js/bootstrap.bundle.min.js' },
-        { src: '/js/metisMenu.min.js' },
-        { src: '/js/jquery.slimscroll.js' },
-        { src: '/js/waves.min.js' },
-        { src: '/plugins/jquery-sparkline/jquery.sparkline.min.js' }
+        { src: '/js/adminfiles.js' }
       ]
     }
   }
