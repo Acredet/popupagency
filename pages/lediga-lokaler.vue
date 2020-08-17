@@ -19,7 +19,7 @@
 
           <b-collapse id="price" accordion="filters" role="tabpanel">
             <div class="px-2">
-              <vue-slider v-model="filters.price.value" />
+              <vue-slider v-model="filters.price.value" :min="filters.price.min" :max="filters.price.max" @change="priceChanged" />
               <small>{{ filters.price.value[0] || 0 }} Kr — {{ filters.price.value[1] || 0 }} Kr</small>
             </div>
           </b-collapse>
@@ -33,7 +33,7 @@
 
           <b-collapse id="yta" accordion="filters" role="tabpanel">
             <div class="px-2">
-              <vue-slider v-model="filters.yta.value" />
+              <vue-slider v-model="filters.yta.value" :min="filters.yta.min" :max="filters.yta.max" @change="ytaChanged" />
               <small>{{ filters.yta.value[0] || 0 }} m<sup>3</sup> — {{ filters.yta.value[1] || 0 }} m<sup>3</sup></small>
             </div>
           </b-collapse>
@@ -232,7 +232,7 @@
             <b-col cols="12" md="auto" class="mr-2 d-none d-md-flex align-items-center">
               <b-dropdown id="price-dropdown" class="w-100" variant="light" right :text="filters.price.text">
                 <b-dropdown-group header="Price" style="width: 300px !important" class="px-3">
-                  <vue-slider v-model="filters.price.value" />
+                  <vue-slider v-model="filters.price.value" :min="filters.price.min" :max="filters.price.max" @change="priceChanged" />
                   <small>{{ filters.price.value[0] || 0 }} Kr — {{ filters.price.value[1] || 0 }} Kr</small>
                 </b-dropdown-group>
               </b-dropdown>
@@ -243,7 +243,7 @@
             <b-col cols="12" md="auto" class="mr-2 d-none d-lg-flex align-items-center">
               <b-dropdown id="yta-dropdown" class="w-100" variant="light" right :text="filters.yta.text">
                 <b-dropdown-group header="Yta" style="width: 300px !important" class="px-3">
-                  <vue-slider v-model="filters.yta.value" />
+                  <vue-slider v-model="filters.yta.value" :min="filters.yta.min" :max="filters.yta.max" @change="ytaChanged" />
                   <small>{{ filters.yta.value[0] || 0 }} m<sup>3</sup> — {{ filters.yta.value[1] || 0 }} m<sup>3</sup></small>
                 </b-dropdown-group>
               </b-dropdown>
@@ -381,6 +381,8 @@ export default {
         },
         price: {
           text: 'Price',
+          min: 0,
+          max: 0,
           value: [0, 100]
         },
         property: {
@@ -390,11 +392,14 @@ export default {
         },
         yta: {
           text: 'Yta',
+          min: 0,
+          max: 0,
           value: [0, 100],
           enableCross: false
         }
       },
-      cards: []
+      cards: [],
+      AllPlaces: []
     }
   },
   computed: {
@@ -433,7 +438,7 @@ export default {
       }
     }
   },
-  async mounted () {
+  async beforeCreate () {
     const promises = [
       this.$axios.$get('/places'),
       this.$axios.$get('/region'),
@@ -445,7 +450,42 @@ export default {
       const regions = res[1].data
       const tags = res[2].data
 
-      console.log('tags: ', tags)
+      this.AllPlaces = places
+      let minimumPrice = 0
+      let maximumPrice = 0
+      let minimumYta = 0
+      let maximumYta = 0
+
+      this.AllPlaces.forEach((place) => {
+        // Get minimum and maximum price
+        if (place.prioteradpris < minimumPrice && place.prioteradpris < maximumPrice) {
+          minimumPrice = place.prioteradpris
+        } else if (place.prioteradpris > minimumPrice && place.prioteradpris > maximumPrice) {
+          maximumPrice = place.prioteradpris
+        }
+
+        // Get minimum and maximum Yta
+        if (place.yta < minimumYta && place.yta < maximumYta) {
+          minimumYta = place.yta
+        } else if (place.yta > minimumYta && place.yta > maximumYta) {
+          maximumYta = place.yta
+        }
+      })
+
+      this.filters.price.min = minimumPrice
+      this.filters.price.max = maximumPrice
+      this.filters.yta.min = minimumYta
+      this.filters.yta.max = maximumYta
+
+      this.filters.price.value = [this.filters.price.min, this.filters.price.max]
+      this.filters.yta.value = [this.filters.yta.min, this.filters.yta.max]
+
+      if (this.filters.price.min >= this.filters.price.max) {
+        this.filters.price.max *= 100
+      }
+      if (this.filters.yta.min >= this.filters.yta.max) {
+        this.filters.yta.max *= 100
+      }
 
       const sortedRegions = this.sortItems(regions, false)
 
@@ -477,6 +517,8 @@ export default {
           _id: x._id,
           title: x.title,
           images: x.cover,
+          prioteradpris: x.prioteradpris,
+          yta: x.yta,
           place: x.stad,
           money: `fr ${x.prioteradpris} kr / månad`,
           text: x.beskreving
@@ -495,6 +537,36 @@ export default {
     })
   },
   methods: {
+    priceChanged (w, r) {
+      this.cards = this.AllPlaces.filter(x => x.prioteradpris > w[0] && x.prioteradpris < w[1]).map((x) => {
+        return {
+          _id: x._id,
+          title: x.title,
+          images: x.cover,
+          place: x.stad,
+          prioteradpris: x.prioteradpris,
+          yta: x.yta,
+          money: `fr ${x.prioteradpris} kr / månad`,
+          text: x.beskreving
+        }
+      })
+      console.log('priceChanged', w, this.cards)
+    },
+    ytaChanged (w, r) {
+      this.cards = this.AllPlaces.filter(x => x.yta > w[0] && x.yta < w[1]).map((x) => {
+        return {
+          _id: x._id,
+          title: x.title,
+          images: x.cover,
+          prioteradpris: x.prioteradpris,
+          yta: x.yta,
+          place: x.stad,
+          money: `fr ${x.prioteradpris} kr / månad`,
+          text: x.beskreving
+        }
+      })
+      console.log('ytaChanged', w, this.cards)
+    },
     toggleAll (index) {
       const arr = this.filters.plats.tabs[this.filters.plats.currentCountry][index]
       console.log(arr)
