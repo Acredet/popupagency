@@ -202,6 +202,7 @@
           <b-card :title="$t('addListing.inputs.plats')">
             <b-card-body>
               <div class="w-100">
+                {{ latLng }}
                 <gmap-map
                   :center="map.center"
                   :map-type-id="map.mapTypeId"
@@ -542,6 +543,7 @@ export default {
   data () {
     return {
       loadingState: false,
+      latLng: null,
       map: {
         center: { lat: 59.334591, lng: 18.063240 },
         mapTypeId: 'roadmap',
