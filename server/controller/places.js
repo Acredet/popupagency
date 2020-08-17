@@ -23,12 +23,23 @@ exports.getPlaces = async (req, res, next) => {
 // @access Public
 exports.addPlace = async (req, res, next) => {
   try {
+    // Delete null values
     for (const key in req.body) {
       const element = req.body[key]
       req.body[key] = element !== 'null' ? element : null
     }
-    console.log(req.body)
-    const place = new Place({
+
+    // Geocode Address
+    let location = JSON.parse(req.body.location)
+    const loc = await geocoder.reverse({ lat: Number(location.lat), lon: Number(location.lng) })
+    console.log('After Geo: ', loc)
+    location = {
+      coordinates: [loc[0].longitude, loc[0].latitude],
+      formattedAddress: loc[0].formattedAddress
+    }
+
+    // Create Place
+    let place = new Place({
       title: {
         en: JSON.parse(req.body.title).en,
         sv: JSON.parse(req.body.title).sv
@@ -54,7 +65,7 @@ exports.addPlace = async (req, res, next) => {
         sv: JSON.parse(req.body.stad).sv
       },
       plats: req.body.plats,
-      location: req.body.location,
+      location,
       kategori: req.body.kategori,
       planritning: req.files['planritning[]'] ? req.files['planritning[]'].map(x => x.filename) : [],
       minstahyresperiod: req.body.minstahyresperiod,
@@ -76,18 +87,11 @@ exports.addPlace = async (req, res, next) => {
       expiry: req.body.expiry
     })
 
-    const loc = await geocoder.reverse(place.location)
-    console.log(loc)
-    // place.location = {
-    //   coordinates: [loc[0].longitude, loc[0].latitude],
-    //   formattedAddress: loc[0].formattedAddress
-    // }
-
-    // place = await place.save()
-    // res.status(201).json({
-    //   success: true,
-    //   data: place
-    // })
+    place = await place.save()
+    res.status(201).json({
+      success: true,
+      data: place
+    })
   } catch (err) {
     console.error(err)
     if (err.code === 11000) {
@@ -171,6 +175,17 @@ exports.updatePlace = async (req, res) => {
     updata.centrumgalleri = JSON.parse(updata.centrumgalleri)
   }
   if (!updata.prioteradpris) { updata.prioteradpris = 0 }
+
+  // Geocode Address
+  if (updata.location) {
+    let location = JSON.parse(updata.location)
+    const loc = await geocoder.reverse({ lat: Number(location.lat), lon: Number(location.lng) })
+    console.log('After Geo: ', loc)
+    location = {
+      coordinates: [loc[0].longitude, loc[0].latitude],
+      formattedAddress: loc[0].formattedAddress
+    }
+  }
 
   await Place.updateOne({ _id: req.params.id }, { $set: updata })
     .then(place => res.json({ success: true }))

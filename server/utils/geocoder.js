@@ -3,7 +3,7 @@ require('dotenv')
 
 const options = {
   provider: 'google',
-  httpAdapter: 'https',
+  // httpAdapter: 'https',
   apiKey: process.env.VUE_APP_GOOGLE_MAPS_API_KEY, // for Mapquest, OpenCage, Google Premier
   formatter: null
 }

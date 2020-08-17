@@ -202,7 +202,6 @@
           <b-card :title="$t('addListing.inputs.plats')">
             <b-card-body>
               <div class="w-100">
-                {{ location }}
                 <gmap-map
                   :center="map.center"
                   :map-type-id="map.mapTypeId"
@@ -217,14 +216,30 @@
                     />
                   </gmap-cluster>
                 </gmap-map>
-                <gmap-autocomplete
-                  @place_changed="setPlace"
-                />
+                <div class="my-2">
+                  <b-form-group
+                    id="address-group"
+                    label="Address:"
+                    label-class="font-weight-bold "
+                    label-for="address"
+                  >
+                    <gmap-autocomplete id="address" class="form-control" @place_changed="setPlace" />
+                    <b-form-invalid-feedback :state="addressValid">
+                      {{ $t('forms.required') }}
+                    </b-form-invalid-feedback>
+
+                    <b-form-valid-feedback :state="addressValid">
+                      {{ $t('forms.valid') }}
+                    </b-form-valid-feedback>
+                  </b-form-group>
+                </div>
               </div>
               <b-row>
                 <b-col cols="12" md="6">
                   <b-form-group
                     id="location-lang-group"
+                    label="longitude:"
+                    label-class="font-weight-bold "
                     label-for="location-lang"
                   >
                     <b-form-input
@@ -248,6 +263,8 @@
                 <b-col cols="12" md="6">
                   <b-form-group
                     id="location-lat-group"
+                    label="Latitude:"
+                    label-class="font-weight-bold "
                     label-for="location-lat"
                   >
                     <b-form-input
@@ -781,6 +798,9 @@ export default {
     titleValidEn () {
       return !!this.title.en
     },
+    addressValid () {
+      return this.location.lng && this.location.lat
+    },
     titleValidSv () {
       return !!this.title.sv
     },
@@ -815,9 +835,9 @@ export default {
   },
   watch: {
     location (val) {
-      console.log('location: ', val)
-      this.map.center = val
-      this.map.markers = [val]
+      console.log('location: ', { lat: Number(val.lat), lng: Number(val.lng) })
+      this.map.center = { lat: Number(val.lat), lng: Number(val.lng) }
+      this.map.markers = [{ lat: Number(val.lat), lng: Number(val.lng) }]
     }
   },
   mounted () {
@@ -986,6 +1006,7 @@ export default {
       listing.append('prioteradpris', this.price.prioteradpris.val)
 
       // ASSIGN TAG
+      listing.append('location', JSON.stringify(this.location))
       this.egenskaper.forEach(feat => listing.append('egenskaper[]', JSON.stringify(feat)))
 
       listing.append('yta', this.Yta)
@@ -1138,7 +1159,6 @@ export default {
 
 <style scoped>
 /* ö ä Å Ö å */
-
 .card-title {
   font-weight: 800
 }
