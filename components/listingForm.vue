@@ -780,12 +780,10 @@ export default {
     }
   },
   watch: {
-    location: {
-      immediate: true,
-      handler (val) {
-        this.map.center = val
-        this.map.markers = [val]
-      }
+    location (val) {
+      console.log('location: ', val)
+      this.map.center = val
+      this.map.markers = [val]
     }
   },
   mounted () {

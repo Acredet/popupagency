@@ -1,7 +1,7 @@
 /* eslint-disable no-sequences */
 exports.AdminPanelDependancies = {
   mounted () {
-    this.initApp()
+    this.$nextTick(this.initApp())
   },
   methods: {
     initApp () {
@@ -119,7 +119,7 @@ exports.AdminPanelDependancies = {
   head () {
     return {
       link: [
-        { href: '/css/admin-styles.css', rel: 'stylesheet', type: 'text/css' }
+        { href: '/css/admin-styles.css', rel: 'stylesheet', type: 'text/css', body: true }
       ],
       script: [
         { src: '/js/adminfiles.js' }
