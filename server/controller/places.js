@@ -203,10 +203,10 @@ exports.updatePlace = async (req, res) => {
 
   // Geocode Address
   if (updata.location) {
-    let location = JSON.parse(updata.location)
+    const location = JSON.parse(updata.location)
     const loc = await geocoder.reverse({ lat: Number(location.lat), lon: Number(location.lng) })
     console.log('After Geo: ', loc)
-    location = {
+    updata.location = {
       coordinates: [loc[0].longitude, loc[0].latitude],
       formattedAddress: loc[0].formattedAddress
     }

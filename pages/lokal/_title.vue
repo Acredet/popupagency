@@ -433,6 +433,15 @@ export default {
     await this.$axios.$get(`/places/${this.$route.params.title}`)
       .then((res) => {
         this.place = res.place
+        this.map = {
+          center: { lng: res.place.location.coordinates[0], lat: res.place.location.coordinates[1] },
+          mapTypeId: 'roadmap',
+          markers: [
+            { lng: res.place.location.coordinates[0], lat: res.place.location.coordinates[1] },
+            { lat: 59.334591, lng: 18.063240 },
+            { lat: 10, lng: 10 }
+          ]
+        }
         console.log(res.place)
       })
       .catch(res => console.log(res))

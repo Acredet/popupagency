@@ -223,7 +223,7 @@
                     label-class="font-weight-bold "
                     label-for="address"
                   >
-                    <gmap-autocomplete id="address" v-model="formattedAddress" class="form-control" @place_changed="setPlace" />
+                    <gmap-autocomplete id="address" class="form-control" @place_changed="setPlace" />
                     <p v-if="$route.params.id" class="font-weight-bold">
                       location: {{ formattedAddress }}
                     </p>
