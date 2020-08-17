@@ -7,7 +7,8 @@ const {
   addPlace,
   deletePlace,
   updatePlace,
-  getOnePlace
+  getOnePlace,
+  getAddress
 } = require('../controller/places')
 const fields = [{ name: 'bildgalleri[]' }, { name: 'cover[]' }, { name: 'planritning[]' }, { name: 'centrumgalleri[]' }]
 const router = express.Router()
@@ -22,6 +23,8 @@ router
   .get(getOnePlace)
   .delete(deletePlace)
   .patch(multer.none(), updatePlace)
+
+router.post('/address', getAddress)
 
 router.post('/images', multer.fields(fields), (req, res) => {
   console.log(req.files[req.body.name], req.body.name)

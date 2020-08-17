@@ -18,6 +18,31 @@ exports.getPlaces = async (req, res, next) => {
   }
 }
 
+/**
+ * @description Get Adderss from coordinates
+ * @param { Number } lng
+ * @param { Number } lat
+ * @return { String } Address
+*/
+exports.getAddress = async (req, res, next) => {
+  try {
+    // Geocode Address
+    const location = req.body.location
+    const loc = await geocoder.reverse({ lat: Number(location.lat), lon: Number(location.lng) })
+
+    res.status(201).json({
+      coordinates: [loc[0].longitude, loc[0].latitude],
+      formattedAddress: loc[0].formattedAddress
+    })
+  } catch (error) {
+    console.error(error)
+    if (error.code === 11000) {
+      return res.status(400).json({ error: 'This Place already exists' })
+    }
+    res.status(500).json({ error: 'Server error' })
+  }
+}
+
 // @desc  Create a place
 // @route POST /api/places
 // @access Public
@@ -57,7 +82,7 @@ exports.addPlace = async (req, res, next) => {
       prispervecka: req.body.prispervecka,
       prispermanad: req.body.prispermanad,
       prioteradpris: req.body.prioteradpris,
-      egenskaper: req.body.egenskaper.map(x => JSON.parse(x)),
+      egenskaper: req.body.egenskaper ? req.body.egenskaper.map(x => JSON.parse(x)) : [],
       yta: req.body.yta,
       placering: req.body.placering,
       stad: {

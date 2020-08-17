@@ -223,14 +223,10 @@
                     label-class="font-weight-bold "
                     label-for="address"
                   >
-                    <gmap-autocomplete id="address" class="form-control" @place_changed="setPlace" />
-                    <b-form-invalid-feedback :state="addressValid">
-                      {{ $t('forms.required') }}
-                    </b-form-invalid-feedback>
-
-                    <b-form-valid-feedback :state="addressValid">
-                      {{ $t('forms.valid') }}
-                    </b-form-valid-feedback>
+                    <gmap-autocomplete id="address" v-model="formattedAddress" class="form-control" @place_changed="setPlace" />
+                    <p v-if="$route.params.id" class="font-weight-bold">
+                      location: {{ formattedAddress }}
+                    </p>
                   </b-form-group>
                 </div>
               </div>
@@ -591,6 +587,7 @@ export default {
         mapTypeId: 'roadmap',
         markers: []
       },
+      formattedAddress: null,
       title: {
         en: null,
         sv: null
@@ -798,9 +795,6 @@ export default {
     titleValidEn () {
       return !!this.title.en
     },
-    addressValid () {
-      return this.location.lng && this.location.lat
-    },
     titleValidSv () {
       return !!this.title.sv
     },
@@ -834,10 +828,22 @@ export default {
     }
   },
   watch: {
-    location (val) {
-      console.log('location: ', { lat: Number(val.lat), lng: Number(val.lng) })
-      this.map.center = { lat: Number(val.lat), lng: Number(val.lng) }
-      this.map.markers = [{ lat: Number(val.lat), lng: Number(val.lng) }]
+    location: {
+      deep: true,
+      handler (val) {
+        console.log(val)
+        if (val.lat && val.lng) {
+          const co = { lat: Number(val.lat), lng: Number(val.lng) }
+          console.log('location: ', { location: co })
+          this.$axios.post('/places/address', { location: co })
+            .then((res) => {
+              this.formattedAddress = res.data.formattedAddress
+            })
+            .catch(err => alert(err))
+          this.map.center = co
+          this.map.markers = [co]
+        }
+      }
     }
   },
   mounted () {
@@ -900,8 +906,9 @@ export default {
       this.title.sv = title.sv
       this.Yta = yta
       this.markplan = placering
-      this.city = JSON.stringify(stad)
-      this.location = location
+      this.city = stad ? JSON.stringify(stad) : ''
+      this.location = { lng: location.coordinates[0], lat: location.coordinates[1] }
+      this.formattedAddress = location.formattedAddress
       this.vagvisningen = vagvisningen
       this.fran = fran
       this.till = till
