@@ -202,7 +202,7 @@
           <b-card :title="$t('addListing.inputs.plats')">
             <b-card-body>
               <div class="w-100">
-                {{ latLng }}
+                {{ location }}
                 <gmap-map
                   :center="map.center"
                   :map-type-id="map.mapTypeId"
@@ -218,7 +218,6 @@
                   </gmap-cluster>
                 </gmap-map>
                 <gmap-autocomplete
-                  value="Singapore"
                   @place_changed="setPlace"
                 />
               </div>
@@ -543,15 +542,10 @@ export default {
   data () {
     return {
       loadingState: false,
-      latLng: null,
       map: {
         center: { lat: 59.334591, lng: 18.063240 },
         mapTypeId: 'roadmap',
-        markers: [
-          { lat: 10, lng: 10 },
-          { lat: 59.334591, lng: 18.063240 },
-          { lat: 10, lng: 10 }
-        ]
+        markers: []
       },
       title: {
         en: null,
@@ -625,7 +619,7 @@ export default {
       cityOptions: [],
       kategori: [],
       kategoriOpts: [],
-      location: 'null',
+      location: null,
 
       minsta: null,
       längsta: null,
@@ -785,6 +779,15 @@ export default {
       return this.$store.state.sidebarRenderKey
     }
   },
+  watch: {
+    location: {
+      immediate: true,
+      handler (val) {
+        this.map.center = val
+        this.map.markers = [val]
+      }
+    }
+  },
   mounted () {
     this.loadingState = true
 
@@ -795,7 +798,7 @@ export default {
     setPlace (place) {
       if (!place) { return }
 
-      this.latLng = {
+      this.location = {
         lat: place.geometry.location.lat(),
         lng: place.geometry.location.lng()
       }

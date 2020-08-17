@@ -58,16 +58,15 @@ const PlaceSchema = new mongoose.Schema({
   },
   plats: String,
   location: {
-    type: String
-    // type: {
-    //   type: String,
-    //   enum: ['Point']
-    // },
-    // coordinates: {
-    //   type: [Number],
-    //   index: '2dsphere'
-    // },
-    // formattedAddress: String
+    type: {
+      type: String,
+      enum: ['Point']
+    },
+    coordinates: {
+      type: [Number],
+      index: '2dsphere'
+    },
+    formattedAddress: String
   },
   kategori: Array,
   planritning: Array,
@@ -107,16 +106,13 @@ const PlaceSchema = new mongoose.Schema({
 
 // Geocode & create location
 PlaceSchema.pre("save", async function(next) {
-  const loc = await geocoder.geocode(this.plats);
+  const loc = await geocoder.geocode(this.location);
   console.log(loc);
-  // this.location = {
-  //   type: "Point",
-  //   coordinates: [loc[0].longitude, loc[0].latitude],
-  //   formattedAddress: loc[0].formattedAddress
-  // };
-
-  // // Do not save plats
-  this.plats = loc;
+  this.location = {
+    type: "Point",
+    coordinates: [loc[0].longitude, loc[0].latitude],
+    formattedAddress: loc[0].formattedAddress
+  };
   next();
 });
 
