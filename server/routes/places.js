@@ -1,5 +1,5 @@
-const express = require("express");
-const auth = require("../middleware/auth");
+const express = require('express')
+const auth = require('../middleware/auth')
 const { multer } = require('../middleware/upload')
 
 const {
@@ -8,14 +8,14 @@ const {
   deletePlace,
   updatePlace,
   getOnePlace
-} = require("../controller/places");
+} = require('../controller/places')
 const fields = [{ name: 'bildgalleri[]' }, { name: 'cover[]' }, { name: 'planritning[]' }, { name: 'centrumgalleri[]' }]
-const router = express.Router();
+const router = express.Router()
 
 router
-  .route("/", auth)
+  .route('/', auth)
   .get(getPlaces)
-  .post(multer.fields(fields), addPlace);
+  .post(multer.fields(fields), addPlace)
 
 router
   .route('/:id', auth)
@@ -28,4 +28,4 @@ router.post('/images', multer.fields(fields), (req, res) => {
   const names = req.files[req.body.name].map(file => file.filename)
   return res.status(200).json(...names)
 })
-module.exports = router;
+module.exports = router

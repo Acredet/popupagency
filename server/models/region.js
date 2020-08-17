@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 const regionSchema = new mongoose.Schema({
   name: {
     en: {
@@ -17,6 +17,6 @@ const regionSchema = new mongoose.Schema({
     en: String,
     sv: String
   }
-});
+})
 
-module.exports = mongoose.model("Region", regionSchema);
+module.exports = mongoose.model('Region', regionSchema)

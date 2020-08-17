@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 const tagSchema = new mongoose.Schema({
   name: {
     en: {
@@ -20,6 +20,6 @@ const tagSchema = new mongoose.Schema({
   avatar: {
     type: String
   }
-});
+})
 
-module.exports = mongoose.model("Tag", tagSchema);
+module.exports = mongoose.model('Tag', tagSchema)

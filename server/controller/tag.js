@@ -1,21 +1,21 @@
-const Tag = require("../models/tag");
+const Tag = require('../models/tag')
 
 // @desc  Get all tags
 // @route GET /api/tag
 // @access Public
 exports.gettag = async (req, res, next) => {
   try {
-    const tag = await Tag.find();
+    const tag = await Tag.find()
     return res.status(200).json({
       success: true,
       ResultsNumber: tag.length,
       data: tag
-    });
+    })
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Server error" });
+    console.error(err)
+    res.status(500).json({ error: 'Server error' })
   }
-};
+}
 
 // @desc  Create a tag
 // @route POST /api/tag
@@ -36,19 +36,19 @@ exports.addtag = async (req, res, next) => {
     })
     await tag.save()
       .then(result => res.status(201).json({
-          success: true,
-          data: tag
-        })
+        success: true,
+        data: tag
+      })
       )
       .catch(err => res.status(400).json(err))
   } catch (err) {
-    console.error(err);
+    console.error(err)
     if (err.code === 11000) {
-      return res.status(400).json({ error: "This tag already exists" });
+      return res.status(400).json({ error: 'This tag already exists' })
     }
-    res.status(500).json({ error: "Server error" });
+    res.status(500).json({ error: 'Server error' })
   }
-};
+}
 
 // @desc  Delete a Tag
 // @route Delete /api/Tag/id
@@ -56,8 +56,8 @@ exports.addtag = async (req, res, next) => {
 exports.deleteTag = (req, res) => {
   Tag.findById(req.params.id)
     .then(tag => tag.remove().then(() => res.json({ success: true })))
-    .catch(err => res.status(404).json({ success: false }));
-};
+    .catch(err => res.status(404).json(err.message))
+}
 
 // @desc  update a Tag
 // @route update /api/Tag/id
@@ -65,5 +65,5 @@ exports.deleteTag = (req, res) => {
 exports.updateTag = async (req, res) => {
   await Tag.updateOne({ _id: req.params.id }, { $set: req.body })
     .then(tag => res.json({ success: true }))
-    .catch(err => res.status(404).json({ success: false }));
-};
+    .catch(err => res.status(404).json(err.message))
+}

@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 const categorySchema = new mongoose.Schema({
   name: {
     en: {
@@ -20,6 +20,6 @@ const categorySchema = new mongoose.Schema({
   avatar: {
     type: String
   }
-});
+})
 
-module.exports = mongoose.model("Category", categorySchema);
+module.exports = mongoose.model('Category', categorySchema)

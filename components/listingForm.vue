@@ -221,26 +221,53 @@
                   @place_changed="setPlace"
                 />
               </div>
-              <b-form-group
-                id="location-group"
-                label-for="location"
-              >
-                <b-form-input
-                  id="location"
-                  v-model="location"
-                  required
-                  autocomplete="off"
-                  :state="locationValid"
-                  :placeholder="$t('addListing.inputs.plats')"
-                />
-                <b-form-invalid-feedback :state="locationValid">
-                  {{ $t('forms.required') }}
-                </b-form-invalid-feedback>
+              <b-row>
+                <b-col cols="12" md="6">
+                  <b-form-group
+                    id="location-lang-group"
+                    label-for="location-lang"
+                  >
+                    <b-form-input
+                      id="location-lang"
+                      v-model="location.lng"
+                      required
+                      autocomplete="off"
+                      :state="locationValidLNG"
+                      :placeholder="$t('addListing.inputs.plats')"
+                    />
+                    <b-form-invalid-feedback :state="locationValidLNG">
+                      {{ $t('forms.required') }}
+                    </b-form-invalid-feedback>
 
-                <b-form-valid-feedback :state="locationValid">
-                  {{ $t('forms.valid') }}
-                </b-form-valid-feedback>
-              </b-form-group>
+                    <b-form-valid-feedback :state="locationValidLNG">
+                      {{ $t('forms.valid') }}
+                    </b-form-valid-feedback>
+                  </b-form-group>
+                </b-col>
+
+                <b-col cols="12" md="6">
+                  <b-form-group
+                    id="location-lat-group"
+                    label-for="location-lat"
+                  >
+                    <b-form-input
+                      id="location-lat"
+                      v-model="location.lat"
+                      required
+                      autocomplete="off"
+                      :state="locationValidLAT"
+                      :placeholder="$t('addListing.inputs.plats')"
+                    />
+                    <b-form-invalid-feedback :state="locationValidLAT">
+                      {{ $t('forms.required') }}
+                    </b-form-invalid-feedback>
+
+                    <b-form-valid-feedback :state="locationValidLAT">
+                      {{ $t('forms.valid') }}
+                    </b-form-valid-feedback>
+                  </b-form-group>
+                </b-col>
+              </b-row>
             </b-card-body>
           </b-card>
 
@@ -484,7 +511,7 @@
             <i class="fas fa-exclamation-triangle" />
             {{ $t('addListing.errors.stad') }}
           </p>
-          <p v-if="!locationValid" class="font-weight-bold">
+          <p v-if="!locationValidLNG || !locationValidLAT" class="font-weight-bold">
             <i class="fas fa-exclamation-triangle" />
             {{ $t('addListing.errors.location') }}
           </p>
@@ -619,7 +646,10 @@ export default {
       cityOptions: [],
       kategori: [],
       kategoriOpts: [],
-      location: null,
+      location: {
+        lat: null,
+        lng: null
+      },
 
       minsta: null,
       längsta: null,
@@ -757,8 +787,11 @@ export default {
     stadValid () {
       return !!this.city
     },
-    locationValid () {
-      return !!this.location
+    locationValidLNG () {
+      return !!this.location.lng
+    },
+    locationValidLAT () {
+      return !!this.location.lat
     },
     kategoryValid () {
       return this.kategori.length > 0
@@ -770,7 +803,8 @@ export default {
       return !!this.titleValidEn &&
               !!this.titleValidSv &&
               !!this.stadValid &&
-              !!this.locationValid &&
+              !!this.locationValidLNG &&
+              !!this.locationValidLAT &&
               !!this.kategoryValid &&
               !!this.lokalensValid &&
               !!this.price.prioteradpris.val

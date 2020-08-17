@@ -1,19 +1,19 @@
-const express = require("express");
-const auth = require("../middleware/auth");
+const express = require('express')
+const auth = require('../middleware/auth')
 
 const {
   getregion,
   addregion,
   deleteRegion,
   updateRegion
-} = require("../controller/region");
-const router = express.Router();
+} = require('../controller/region')
+const router = express.Router()
 
 router
-  .route("/", auth)
+  .route('/', auth)
   .get(getregion)
-  .post(addregion);
+  .post(addregion)
 
-router.delete("/:id", auth, deleteRegion);
-router.patch("/:id", auth, updateRegion);
-module.exports = router;
+router.delete('/:id', auth, deleteRegion)
+router.patch('/:id', auth, updateRegion)
+module.exports = router

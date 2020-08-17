@@ -112,13 +112,13 @@ module.exports = {
       }
     }
   },
+  env: {
+    VUE_APP_GOOGLE_MAPS_API_KEY: process.env.VUE_APP_GOOGLE_MAPS_API_KEY
+  },
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
-  env: {
-    VUE_APP_GOOGLE_MAPS_API_KEY: process.env.VUE_APP_GOOGLE_MAPS_API_KEY
-  },
   axios: {
     baseURL: '/api'
     // baseURL: 'https://popup.dk.se/api'

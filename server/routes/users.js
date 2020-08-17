@@ -1,5 +1,5 @@
-const express = require("express");
-const auth = require("../middleware/auth");
+const express = require('express')
+const auth = require('../middleware/auth')
 const {
   getUser,
   addUser,
@@ -7,15 +7,15 @@ const {
   authenticate,
   deleteUser,
   updateUser
-} = require("../controller/users");
+} = require('../controller/users')
 // const { User, validate } = require('../models/user')
-const router = express.Router();
+const router = express.Router()
 
-router.get("/me", auth, getUser);
-router.post("/", addUser);
-router.get("/all", auth, getAllUsers);
-router.post("/auth", authenticate);
-router.post("/logout", auth, (req, res) => res.status(200).json({ success: true }));
-router.delete("/:id", auth, deleteUser);
-router.patch("/:id", auth, updateUser);
-module.exports = router;
+router.get('/me', auth, getUser)
+router.post('/', addUser)
+router.get('/all', auth, getAllUsers)
+router.post('/auth', authenticate)
+router.post('/logout', auth, (req, res) => res.status(200).json({ success: true }))
+router.delete('/:id', auth, deleteUser)
+router.patch('/:id', auth, updateUser)
+module.exports = router

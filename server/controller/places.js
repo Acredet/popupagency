@@ -1,20 +1,22 @@
-const Place = require("../models/place");
+const Place = require('../models/place')
+const geocoder = require('../utils/geocoder')
+
 // @desc  Get all places
 // @route GET /api/places
 // @access Public
 exports.getPlaces = async (req, res, next) => {
   try {
-    const places = await Place.find({});
+    const places = await Place.find({})
     return res.status(200).json({
       success: true,
       ResultsNumber: places.length,
       data: places
-    });
+    })
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Server error" });
+    console.error(err)
+    res.status(500).json({ error: 'Server error' })
   }
-};
+}
 
 // @desc  Create a place
 // @route POST /api/places
@@ -22,11 +24,11 @@ exports.getPlaces = async (req, res, next) => {
 exports.addPlace = async (req, res, next) => {
   try {
     for (const key in req.body) {
-      const element = req.body[key];
+      const element = req.body[key]
       req.body[key] = element !== 'null' ? element : null
     }
-    console.log(req.body);
-    let place = new Place({
+    console.log(req.body)
+    const place = new Place({
       title: {
         en: JSON.parse(req.body.title).en,
         sv: JSON.parse(req.body.title).sv
@@ -71,22 +73,29 @@ exports.addPlace = async (req, res, next) => {
       fran: req.body.fran,
       till: req.body.till,
       kontaktperson: req.body.kontaktperson,
-      expiry: req.body.expiry,
+      expiry: req.body.expiry
     })
-    place = await place.save()
-    res.status(201).json({
-      success: true,
-      data: place
-    });
-  } catch (err) {
-    console.error(err);
-    if (err.code === 11000) {
-      return res.status(400).json({ error: "This Place already exists" });
-    }
-    res.status(500).json({ error: "Server error" });
-  }
-};
 
+    const loc = await geocoder.reverse(place.location)
+    console.log(loc)
+    // place.location = {
+    //   coordinates: [loc[0].longitude, loc[0].latitude],
+    //   formattedAddress: loc[0].formattedAddress
+    // }
+
+    // place = await place.save()
+    // res.status(201).json({
+    //   success: true,
+    //   data: place
+    // })
+  } catch (err) {
+    console.error(err)
+    if (err.code === 11000) {
+      return res.status(400).json({ error: 'This Place already exists' })
+    }
+    res.status(500).json({ error: 'Server error' })
+  }
+}
 
 // @desc  Delete a Place
 // @route Delete /api/Place/id
@@ -94,8 +103,8 @@ exports.addPlace = async (req, res, next) => {
 exports.deletePlace = (req, res) => {
   Place.findById(req.params.id)
     .then(place => place.remove().then(() => res.json({ success: true })))
-    .catch(err => res.status(404).json({ success: false }));
-};
+    .catch(err => res.status(404).json(err.message))
+}
 
 /**
  * @description Get one place
@@ -106,7 +115,7 @@ exports.deletePlace = (req, res) => {
 exports.getOnePlace = async (req, res) => {
   await Place.findOne({ 'title.sv': req.params.id })
     .then(place => res.json({ success: true, place }))
-    .catch(err => res.status(404).json({ success: false }));
+    .catch(err => res.status(404).json(err.message))
 }
 
 // @desc  update a Place
@@ -114,10 +123,10 @@ exports.getOnePlace = async (req, res) => {
 // @access Private
 exports.updatePlace = async (req, res) => {
   for (const key in req.body) {
-    const element = req.body[key];
+    const element = req.body[key]
     req.body[key] = element !== 'null' ? element : null
   }
-  let updata = req.body
+  const updata = req.body
 
   if (updata.title) {
     updata.title = {
@@ -133,7 +142,7 @@ exports.updatePlace = async (req, res) => {
     }
   }
 
-  console.log(updata.stad);
+  console.log(updata.stad)
   if (updata.beskreving) {
     updata.beskreving = {
       en: JSON.parse(updata.beskreving).en,
@@ -161,10 +170,9 @@ exports.updatePlace = async (req, res) => {
   if (updata.centrumgalleri) {
     updata.centrumgalleri = JSON.parse(updata.centrumgalleri)
   }
-  if (!updata.prioteradpris) updata.prioteradpris = 0
-
+  if (!updata.prioteradpris) { updata.prioteradpris = 0 }
 
   await Place.updateOne({ _id: req.params.id }, { $set: updata })
     .then(place => res.json({ success: true }))
-    .catch(err => res.status(404).json(err.message));
-};
+    .catch(err => res.status(404).json(err.message))
+}
