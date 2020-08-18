@@ -282,10 +282,10 @@
       </b-col>
       <!-- End filters Bar -->
 
+      <!-- Start Listings -->
       <b-col cols="12" :md="layout.value === 'map' ? 6 : 12" class="wrapper">
         <b-container>
           <b-row>
-            <!-- Start Listings -->
             <b-col
               v-for="(card, index) in cards"
               :key="String(index)"
@@ -296,10 +296,10 @@
             >
               <listing-card :card="card" :layout="layout.value" @showPlace="setCenter($event)" />
             </b-col>
-            <!-- End Listings -->
           </b-row>
         </b-container>
       </b-col>
+      <!-- End Listings -->
 
       <!-- Start Map -->
       <b-col v-if="layout.value === 'map'" cols="12" md="6" class="map-wrapper d-md-flex">
@@ -320,6 +320,7 @@
       </b-col>
       <!-- End Map -->
     </b-row>
+
     <!-- Strat Toggle Layout in small screens -->
     <div class="mobile-btns px-3 d-md-none position-fixed d-flex justify-content-between align-items-center">
       <b-btn pill variant="dark" class="w-50 mr-2" @click="(layout.value === 'map') ? layout.value = 'list' : layout.value = 'map'; refreshMap">
@@ -446,51 +447,16 @@ export default {
     ]
 
     await Promise.all(promises).then((res) => {
-      const places = res[0].data
+      this.AllPlaces = res[0].data
       const regions = res[1].data
       const tags = res[2].data
 
-      this.AllPlaces = places
-      let minimumPrice = 0
-      let maximumPrice = 0
-      let minimumYta = 0
-      let maximumYta = 0
-
-      this.AllPlaces.forEach((place) => {
-        // Get minimum and maximum price
-        if (place.prioteradpris < minimumPrice && place.prioteradpris < maximumPrice) {
-          minimumPrice = place.prioteradpris
-        } else if (place.prioteradpris > minimumPrice && place.prioteradpris > maximumPrice) {
-          maximumPrice = place.prioteradpris
-        }
-
-        // Get minimum and maximum Yta
-        if (place.yta < minimumYta && place.yta < maximumYta) {
-          minimumYta = place.yta
-        } else if (place.yta > minimumYta && place.yta > maximumYta) {
-          maximumYta = place.yta
-        }
-      })
-
-      this.filters.price.min = minimumPrice
-      this.filters.price.max = maximumPrice
-      this.filters.yta.min = minimumYta
-      this.filters.yta.max = maximumYta
-
-      this.filters.price.value = [this.filters.price.min, this.filters.price.max]
-      this.filters.yta.value = [this.filters.yta.min, this.filters.yta.max]
-
-      if (this.filters.price.min >= this.filters.price.max) {
-        this.filters.price.max *= 100
-      }
-      if (this.filters.yta.min >= this.filters.yta.max) {
-        this.filters.yta.max *= 100
-      }
+      this.filters.price.value = this.getMinAndMax('price', 'prioteradpris')
+      this.filters.yta.value = this.getMinAndMax('yta', 'yta')
 
       const sortedRegions = this.sortItems(regions, false)
 
       sortedRegions.forEach((country) => {
-        console.log(country)
         if (!country.parent) {
           this.filters.plats.tabs[country.name[this.lang]] = []
         }
@@ -512,20 +478,7 @@ export default {
         }
       })
 
-      this.cards = places.map((x) => {
-        return {
-          _id: x._id,
-          title: x.title,
-          images: x.cover,
-          location: x.location,
-          prioteradpris: x.prioteradpris,
-          yta: x.yta,
-          place: x.stad,
-          money: `fr ${x.prioteradpris} kr / månad`,
-          text: x.beskreving
-        }
-      })
-      this.pinMarkers()
+      this.pinMarkers(this.AllPlaces)
 
       this.filters.property.icons = tags.map((x) => {
         return {
@@ -543,37 +496,56 @@ export default {
       this.layout.value = 'map'
       this.map.center = { lng: x[0], lat: x[1] }
     },
-    pinMarkers () {
+    /**
+     * @description Use it to map place into cards
+     * @param { Object } x place
+     */
+    createCard (x) {
+      return {
+        _id: x._id,
+        title: x.title,
+        images: x.cover,
+        location: x.location,
+        place: x.stad,
+        prioteradpris: x.prioteradpris,
+        yta: x.yta,
+        money: `fr ${x.prioteradpris} kr / månad`,
+        text: x.beskreving
+      }
+    },
+    /**
+     * @param { String } Obj the object in the instance
+     * @param { String } prop the property you want to fitler with
+     */
+    getMinAndMax (obj, prop) {
+      let min = 0; let max = 0
+      this.AllPlaces.forEach((place) => {
+        // Get minimum and maximum price
+        if (place[prop] < min && place[prop] < max) {
+          min = place[prop]
+        } else if (place[prop] > min && place[prop] > max) {
+          max = place[prop]
+        }
+      })
+      this.filters[obj].min = min
+      this.filters[obj].max = max
+
+      if (this.filters[obj].min >= this.filters[obj].max) {
+        this.filters[obj].max *= 100
+      }
+
+      return [min, max]
+    },
+    pinMarkers (places) {
+      this.cards = places.map(x => this.createCard(x))
       this.map.markers = this.cards.map((x) => { return { lng: x.location.coordinates[0], lat: x.location.coordinates[1] } })
     },
     priceChanged (w, r) {
-      this.cards = this.AllPlaces.filter(x => (x.prioteradpris >= w[0] && x.prioteradpris < w[1])).map((x) => {
-        return {
-          _id: x._id,
-          title: x.title,
-          images: x.cover,
-          place: x.stad,
-          prioteradpris: x.prioteradpris,
-          yta: x.yta,
-          money: `fr ${x.prioteradpris} kr / månad`,
-          text: x.beskreving
-        }
-      })
+      this.cards = this.AllPlaces.filter(x => (x.prioteradpris >= w[0] && x.prioteradpris <= w[1])).map(x => this.createCard(x))
       console.log('priceChanged', w, this.cards)
     },
     ytaChanged (w, r) {
-      this.cards = this.AllPlaces.filter(x => x.yta > w[0] && x.yta < w[1]).map((x) => {
-        return {
-          _id: x._id,
-          title: x.title,
-          images: x.cover,
-          prioteradpris: x.prioteradpris,
-          yta: x.yta,
-          place: x.stad,
-          money: `fr ${x.prioteradpris} kr / månad`,
-          text: x.beskreving
-        }
-      })
+      this.cards = this.AllPlaces.filter(x => x.yta >= w[0] && x.yta <= w[1]).map(x => this.createCard(x))
       console.log('ytaChanged', w, this.cards)
     },
     toggleAll (index) {
