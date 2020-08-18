@@ -134,7 +134,7 @@
             <!-- Start Search Input -->
             <b-col cols="12" sm="9" md="4" class="mr-2 d-flex align-items-center">
               <b-input-group>
-                <b-form-input placeholder="Address, City, Zip, Neighborhood, School" />
+                <b-form-input v-model="searchInput" placeholder="Address, City, Zip, Neighborhood, School" />
                 <b-input-group-append>
                   <b-button variant="outline-primary">
                     <i class="fas fa-search" />
@@ -374,6 +374,7 @@ export default {
       layout: {
         value: 'map'
       },
+      searchInput: '',
       filters: {
         plats: {
           currentCountry: '',
@@ -415,7 +416,6 @@ export default {
     'filters.price': {
       deep: true,
       handler (val) {
-        console.log(val)
         if (!val.min && !val.max) {
           this.filters.price.text = 'Price'
         } else if (val.min && !val.max) {
@@ -428,7 +428,6 @@ export default {
     'filters.property.choose': {
       deep: true,
       handler (val) {
-        console.log(val)
         if (val.length === 0) {
           this.filters.property.text = 'Property type'
         } else if (val.length === 8) {
@@ -437,6 +436,12 @@ export default {
           this.filters.property.text = val.join()
         }
       }
+    },
+    searchInput (val) {
+      const re = new RegExp(val, 'ig')
+
+      const cards = this.AllPlaces.filter(place => place.title[this.$i18n.locale].match(re))
+      this.cards = (!cards || cards.length === 0) ? [] : cards.map(x => this.createCard(x))
     }
   },
   async beforeCreate () {
@@ -492,15 +497,27 @@ export default {
     })
   },
   methods: {
+    // Map Functions
     setCenter (x) {
       this.layout.value = 'map'
       this.map.center = { lng: x[0], lat: x[1] }
     },
+    pinMarkers (places) {
+      this.cards = places.map(x => this.createCard(x))
+      this.map.markers = this.cards.map((x) => { return { lng: x.location.coordinates[0], lat: x.location.coordinates[1] } })
+    },
+    refreshMap () {
+      this.$store.commit('changeSidebarRenderKey')
+    },
+
+    // Utils
     /**
      * @description Use it to map place into cards
      * @param { Object } x place
      */
     createCard (x) {
+      // console.log(x.stad[this.lang])
+      // console.log(this.filters.plats.tabs[x.stad[this.lang]])
       return {
         _id: x._id,
         title: x.title,
@@ -536,21 +553,16 @@ export default {
 
       return [min, max]
     },
-    pinMarkers (places) {
-      this.cards = places.map(x => this.createCard(x))
-      this.map.markers = this.cards.map((x) => { return { lng: x.location.coordinates[0], lat: x.location.coordinates[1] } })
-    },
+
+    // Filters Functions
     priceChanged (w, r) {
       this.cards = this.AllPlaces.filter(x => (x.prioteradpris >= w[0] && x.prioteradpris <= w[1])).map(x => this.createCard(x))
-      console.log('priceChanged', w, this.cards)
     },
     ytaChanged (w, r) {
       this.cards = this.AllPlaces.filter(x => x.yta >= w[0] && x.yta <= w[1]).map(x => this.createCard(x))
-      console.log('ytaChanged', w, this.cards)
     },
     toggleAll (index) {
       const arr = this.filters.plats.tabs[this.filters.plats.currentCountry][index]
-      console.log(arr)
       this.$forceUpdate()
       arr.selected =
         (arr.selected.length !== arr.subcity.length)
@@ -561,17 +573,14 @@ export default {
       const arr = this.filters.plats.tabs[this.filters.plats.currentCountry][index]
       this.$nextTick(() => {
         if (arr.selected.length === 0) {
-          console.log('None')
           arr.indeterminate = false
           arr.allSelected = false
         } else if (
           arr.selected.length === arr.subcity.length
         ) {
-          console.log('Equal')
           arr.indeterminate = false
           arr.allSelected = true
         } else {
-          console.log('Some')
           arr.indeterminate = true
           arr.allSelected = false
         }
@@ -584,9 +593,6 @@ export default {
       } else {
         this.filters.property.choose[button.text] = true
       }
-    },
-    refreshMap () {
-      this.$store.commit('changeSidebarRenderKey')
     }
   }
 }

@@ -52,6 +52,9 @@ export default {
     </b-card-header>
 
     <b-card-body class="p-2">
+      <h3 class="font-weight-bold">
+        {{ card.title[$i18n.locale] }}
+      </h3>
       <div v-html="card.text[$i18n.locale]" />
 
       <b-btn variant="primary" :to="`/lokal/${card.title.sv}`">
