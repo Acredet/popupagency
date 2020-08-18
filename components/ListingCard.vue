@@ -30,21 +30,21 @@ export default {
 </script>
 
 <template>
-  <b-card>
+  <b-card v-if="card">
     <b-card-header class="p-0">
       <b-carousel
         id="carousel-fade"
         style="text-shadow: 0px 0px 2px #000"
         indicators
       >
-        <b-carousel-slide v-for="(img, index) in card.images" :key="String(index)" :img-src="`https://popup.dk.se/_nuxt/img/${img}`">
+        <b-carousel-slide v-for="(img, index) in card.cover" :key="String(index)" :img-src="`https://popup.dk.se/_nuxt/img/${img}`">
           <template v-slot:img>
             <img
               :src="`https://popup.dk.se/_nuxt/img/${img}`"
               class="img-fluid"
               width="480px"
               height="320px"
-              :alt="card.text"
+              :alt="card.beskreving"
             >
           </template>
         </b-carousel-slide>
@@ -55,7 +55,7 @@ export default {
       <h3 class="font-weight-bold">
         {{ card.title[$i18n.locale] }}
       </h3>
-      <div v-html="card.text[$i18n.locale]" />
+      <div v-if="card.beskreving" v-html="card.beskreving[$i18n.locale]" />
 
       <b-btn variant="primary" :to="`/lokal/${card.title.sv}`">
         More Details
@@ -71,7 +71,7 @@ export default {
         </b-col>
         <b-col cols="12" :md="layout === 'map' ? 12 : 6">
           <small class="text-muted">
-            <BIconWallet class="text-dark mr-1" />{{ card.money }}
+            <BIconWallet class="text-dark mr-1" />{{ `fr ${card.prioteradpris} kr / månad` }}
           </small>
         </b-col>
       </b-row>
