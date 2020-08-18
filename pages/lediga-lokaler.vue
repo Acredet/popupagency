@@ -294,7 +294,7 @@
               :md="layout.value === 'map' ? 12 : 6"
               :lg="layout.value === 'map' ? 6 : 4"
             >
-              <listing-card :card="card" :layout="layout.value" />
+              <listing-card :card="card" :layout="layout.value" @showPlace="setCenter($event)" />
             </b-col>
             <!-- End Listings -->
           </b-row>
@@ -517,6 +517,7 @@ export default {
           _id: x._id,
           title: x.title,
           images: x.cover,
+          location: x.location,
           prioteradpris: x.prioteradpris,
           yta: x.yta,
           place: x.stad,
@@ -524,6 +525,7 @@ export default {
           text: x.beskreving
         }
       })
+      this.pinMarkers()
 
       this.filters.property.icons = tags.map((x) => {
         return {
@@ -537,8 +539,15 @@ export default {
     })
   },
   methods: {
+    setCenter (x) {
+      this.layout.value = 'map'
+      this.map.center = { lng: x[0], lat: x[1] }
+    },
+    pinMarkers () {
+      this.map.markers = this.cards.map((x) => { return { lng: x.location.coordinates[0], lat: x.location.coordinates[1] } })
+    },
     priceChanged (w, r) {
-      this.cards = this.AllPlaces.filter(x => x.prioteradpris > w[0] && x.prioteradpris < w[1]).map((x) => {
+      this.cards = this.AllPlaces.filter(x => (x.prioteradpris >= w[0] && x.prioteradpris < w[1])).map((x) => {
         return {
           _id: x._id,
           title: x.title,
