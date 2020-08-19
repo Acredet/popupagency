@@ -651,7 +651,10 @@ export default {
         const re = new RegExp(this.filters.used.search, 'ig')
         let existedTag
         for (const i of x.egenskaper) {
-          if (!existedTag) {
+          if (this.filters.property.choose.length === 0) {
+            existedTag = true
+            break
+          } else if (!existedTag) {
             console.log(this.filters.property.choose.map(tags => tags.text))
             console.log(i.name[this.$i18n.locale])
             existedTag = this.filters.property.choose.map(tags => tags.text).includes(i.name[this.$i18n.locale])
@@ -663,20 +666,20 @@ export default {
         const thereIsChoosePlace = (used.plats.length <= 1) ? true : used.plats.includes(x.stad[this.$i18n.locale])
         const thereIsSearch = (!this.filters.used.search) ? true : x.title[this.$i18n.locale].match(re)
 
-        // console.log('x.prioteradpris >= used.price[0] : ', x.prioteradpris >= used.price[0])
-        // console.log('x.prioteradpris <= used.price[1]: ', x.prioteradpris <= used.price[1])
-        // console.log(' x.yta >= used.yta[0]: ', x.yta >= used.yta[0])
-        // console.log(' x.yta <= used.yta[1]: ', x.yta <= used.yta[1])
-        // console.log('thereIsChoosePlace: ', thereIsChoosePlace)
-        // console.log('thereIsSearch ', thereIsSearch)
-        // console.log('existedTag ? existedTag : false', existedTag)
+        console.log('x.prioteradpris >= used.price[0] : ', x.prioteradpris >= used.price[0])
+        console.log('x.prioteradpris <= used.price[1]: ', x.prioteradpris <= used.price[1])
+        console.log(' x.yta >= used.yta[0]: ', x.yta >= used.yta[0])
+        console.log(' x.yta <= used.yta[1]: ', x.yta <= used.yta[1])
+        console.log('thereIsChoosePlace: ', thereIsChoosePlace)
+        console.log('thereIsSearch ', thereIsSearch)
+        console.log('existedTag ? existedTag ', existedTag)
 
-        // console.log('result: ', (x.prioteradpris >= used.price[0] &&
-        //   x.prioteradpris <= used.price[1]) &&
-        //   (x.yta >= used.yta[0] &&
-        //   x.yta <= used.yta[1]) &&
-        //   thereIsChoosePlace &&
-        //   thereIsSearch && (existedTag))
+        console.log('result: ', (x.prioteradpris >= used.price[0] &&
+          x.prioteradpris <= used.price[1]) &&
+          (x.yta >= used.yta[0] &&
+          x.yta <= used.yta[1]) &&
+          thereIsChoosePlace &&
+          thereIsSearch && (existedTag))
 
         return (
           (x.prioteradpris >= used.price[0] &&
@@ -684,7 +687,8 @@ export default {
           (x.yta >= used.yta[0] &&
           x.yta <= used.yta[1]) &&
           thereIsChoosePlace &&
-          thereIsSearch && (existedTag)
+          // eslint-disable-next-line no-unneeded-ternary
+          thereIsSearch && (!existedTag ? false : true)
         )
       })
 
