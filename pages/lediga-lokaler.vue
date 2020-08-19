@@ -203,6 +203,7 @@
                   </b-btn>
                   <!-- Start Tabs -->
                   <b-tabs
+                    v-model="filters.plats.currentCity"
                     nav-wrapper-class="w-25 h-100 overflow-auto border"
                     nav-class="d-block p-0 m-0"
                     pills
@@ -471,9 +472,10 @@ export default {
       layout: {
         value: 'map'
       },
-      searchInput: '',
+      searchInput: null,
       filters: {
         used: {
+          search: null,
           price: [],
           plats: [],
           property: [],
@@ -481,6 +483,7 @@ export default {
         },
         plats: {
           currentCountry: '',
+          currentCity: 0,
           text: 'Plats',
           tabs: {}
         },
@@ -516,25 +519,9 @@ export default {
     }
   },
   watch: {
-    'filters.price': {
-      deep: true,
-      handler (val) {
-        if (!val.min && !val.max) {
-          this.filters.price.text = 'Price'
-        } else if (val.min && !val.max) {
-          this.filters.price.text = `Min $${val.min}`
-        } else {
-          this.filters.price.text = `Max $${val.max}`
-        }
-      }
-    },
     searchInput (val) {
-      const re = new RegExp(val, 'ig')
-
-      const cards = this.AllPlaces.filter(place =>
-        place.title[this.$i18n.locale].match(re)
-      )
-      this.cards = !cards || cards.length === 0 ? [] : cards
+      this.filters.used.search = val
+      this.doFilter()
     }
   },
   async beforeCreate () {
@@ -549,8 +536,13 @@ export default {
       const regions = res[1].data
       const tags = res[2].data
 
-      this.filters.price.value = this.getMinAndMax('price', 'prioteradpris')
-      this.filters.yta.value = this.getMinAndMax('yta', 'yta')
+      const minMaxPrice = this.getMinAndMax('price', 'prioteradpris')
+      const minMaxYta = this.getMinAndMax('yta', 'yta')
+
+      this.filters.price.value = minMaxPrice
+      this.filters.used.price = minMaxPrice
+      this.filters.yta.value = minMaxYta
+      this.filters.used.yta = minMaxYta
 
       const sortedRegions = this.sortItems(regions, false)
 
@@ -641,27 +633,76 @@ export default {
     // Filters Functions
     doFilter () {
       const used = this.filters.used
-      const selctedCities = [this.filters.plats.currentCountry]
+      const plats = this.filters.plats
 
-      for (const key in this.filters.plats.tabs) {
-        if (this.filters.plats.tabs.hasOwnProperty(key)) {
-          const country = this.filters.plats.tabs[key]
+      used.plats = [plats.currentCountry]
+      // const selectedCity = [plats.currentCountry]
+
+      for (const key in plats.tabs) {
+        if (plats.tabs.hasOwnProperty(key)) {
+          const country = plats.tabs[key]
           country.forEach((city) => {
-            selctedCities.push(...city.selected)
+            used.plats.push(...city.selected)
           })
         }
       }
 
       this.cards = this.AllPlaces.filter((x) => {
-        return (x.prioteradpris >= used.price[0] && x.prioteradpris <= used.price[1]) &&
-          (x.yta >= used.yta[0] && x.yta <= used.yta[1])
+        const re = new RegExp(this.filters.used.search, 'ig')
+        let existedTag
+        for (const i of x.egenskaper) {
+          if (!existedTag) {
+            console.log(this.filters.property.choose.map(tags => tags.text))
+            console.log(i.name[this.$i18n.locale])
+            existedTag = this.filters.property.choose.map(tags => tags.text).includes(i.name[this.$i18n.locale])
+          } else {
+            break
+          }
+        }
+
+        const thereIsChoosePlace = (used.plats.length <= 1) ? true : used.plats.includes(x.stad[this.$i18n.locale])
+        const thereIsSearch = (!this.filters.used.search) ? true : x.title[this.$i18n.locale].match(re)
+
+        // console.log('x.prioteradpris >= used.price[0] : ', x.prioteradpris >= used.price[0])
+        // console.log('x.prioteradpris <= used.price[1]: ', x.prioteradpris <= used.price[1])
+        // console.log(' x.yta >= used.yta[0]: ', x.yta >= used.yta[0])
+        // console.log(' x.yta <= used.yta[1]: ', x.yta <= used.yta[1])
+        // console.log('thereIsChoosePlace: ', thereIsChoosePlace)
+        // console.log('thereIsSearch ', thereIsSearch)
+        // console.log('existedTag ? existedTag : false', existedTag)
+
+        // console.log('result: ', (x.prioteradpris >= used.price[0] &&
+        //   x.prioteradpris <= used.price[1]) &&
+        //   (x.yta >= used.yta[0] &&
+        //   x.yta <= used.yta[1]) &&
+        //   thereIsChoosePlace &&
+        //   thereIsSearch && (existedTag))
+
+        return (
+          (x.prioteradpris >= used.price[0] &&
+          x.prioteradpris <= used.price[1]) &&
+          (x.yta >= used.yta[0] &&
+          x.yta <= used.yta[1]) &&
+          thereIsChoosePlace &&
+          thereIsSearch && (existedTag)
+        )
       })
+
+      if (
+        this.filters.used.plats.length === 1 &&
+        this.filters.used.price.length === 2 &&
+        this.filters.used.property.length === 0 &&
+        this.filters.used.yta.length === 2 &&
+        this.filters.used.search === null
+      ) { this.cards = this.AllPlaces }
     },
     priceChanged (w) {
       this.filters.used.price = w
+      console.log(w)
+      this.filters.price.text = `Max $${w[1]}`
       this.doFilter()
     },
-    ytaChanged (w, r) {
+    ytaChanged (w) {
       this.filters.used.yta = w
       this.doFilter()
     },
@@ -669,16 +710,23 @@ export default {
       const arr = this.filters.plats.tabs[this.filters.plats.currentCountry][
         index
       ]
-      this.$forceUpdate()
-      arr.selected =
+      // console.log(arr)
+
+      const subcities =
         arr.selected.length !== arr.subcity.length ? arr.subcity.slice() : []
+      arr.selected = arr.selected.includes(arr.name)
+        ? (arr.selected = [])
+        : (arr.selected = [arr.name, ...subcities])
+
+      this.doFilter()
+      this.$forceUpdate()
     },
     placeChoose (index) {
       const arr = this.filters.plats.tabs[this.filters.plats.currentCountry][
         index
       ]
       this.$nextTick(() => {
-        if (arr.selected.length === 0) {
+        if (arr.selected.length === 2) {
           arr.indeterminate = false
           arr.allSelected = false
         } else if (arr.selected.length === arr.subcity.length) {
@@ -693,28 +741,20 @@ export default {
       })
     },
     addProperty (button) {
-      this.filters.property.choose = this.filters.property.icons.filter(
-        x => x.state
-      )
-      if (this.filters.property.choose.length === 0) {
-        this.cards = this.AllPlaces
-      } else {
-        let u
-        this.cards = this.AllPlaces.filter((place) => {
-          place.egenskaper.forEach((tag) => {
-            if (
-              this.filters.property.choose
-                .map(tags => tags.text)
-                .includes(tag.name[this.$i18n.locale])
-            ) {
-              u = true
-              return
-            }
-            u = false
-          })
-          return u
-        })
-      }
+      const x = this.filters.property.icons.filter(x => x.state)
+      this.filters.property.choose = x
+      this.filters.used.property = x
+      // if (this.filters.property.choose.length === 0) {
+      //   this.cards = this.AllPlaces
+      // } else {
+      //   this.cards = this.AllPlaces.filter((place) => {
+      //     for (const i of place.egenskaper) {
+      //       const existed = this.filters.property.choose.map(tags => tags.text).includes(i.name[this.$i18n.locale])
+      //       return existed
+      //     }
+      //   })
+      // }
+      this.doFilter()
     }
   }
 }
