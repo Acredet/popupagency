@@ -403,9 +403,10 @@
 
       <!-- Start Map -->
       <b-col v-if="layout.value === 'map'" cols="12" md="6" class="map-wrapper d-md-flex">
-        <gmap-map :key="renderKey" :center="map.center" :map-type-id="map.mapTypeId" :zoom="7">
+        <gmap-map ref="mapRef" :key="renderKey" :center="map.center" :map-type-id="map.mapTypeId" :zoom="7">
+          <gmap-info-window :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen" @closeclick="infoWinOpen=false" />
           <gmap-cluster>
-            <gmap-marker v-for="(mark, index) in map.markers" :key="index" :position="mark" />
+            <gmap-marker v-for="(mark, index) in map.markers" :key="index" :clickable="true" :position="mark" @click="toggleInfoWindow(mark, index)" />
           </gmap-cluster>
         </gmap-map>
       </b-col>
@@ -463,11 +464,19 @@ export default {
       map: {
         center: { lat: 59.334591, lng: 18.06324 },
         mapTypeId: 'roadmap',
-        markers: [
-          { lat: 10, lng: 10 },
-          { lat: 59.334591, lng: 18.06324 },
-          { lat: 10, lng: 10 }
-        ]
+        markers: []
+      },
+      infoWindowPos: null,
+      infoWinOpen: false,
+      currentMidx: null,
+
+      infoOptions: {
+        content: '',
+        // optional: offset infowindow so it visually sits nicely on top of our marker
+        pixelOffset: {
+          width: 0,
+          height: -35
+        }
       },
       layout: {
         value: 'map'
@@ -593,15 +602,34 @@ export default {
     },
     pinMarkers (places) {
       this.cards = places
-      this.map.markers = this.cards.map((x) => {
+      this.map.markers = this.cards.map((x, i) => {
         return {
           lng: x.location.coordinates[0],
-          lat: x.location.coordinates[1]
+          lat: x.location.coordinates[1],
+          infoText: `<strong>Marker ${x.location.coordinates[1]}}</strong>`
         }
       })
     },
     refreshMap () {
       this.$store.commit('changeSidebarRenderKey')
+    },
+    toggleInfoWindow (marker, idx) {
+      console.log(marker)
+      console.log(idx)
+      this.infoWindowPos = {
+        lng: marker.lng,
+        lat: marker.lat
+      }
+      this.infoOptions.content = marker.infoText
+
+      // check if its the same marker that was selected if yes toggle
+      if (this.currentMidx === idx) {
+        this.infoWinOpen = !this.infoWinOpen
+      } else {
+        // if different marker set infowindow to open and reset current marker index
+        this.infoWinOpen = true
+        this.currentMidx = idx
+      }
     },
 
     // Utils
@@ -733,7 +761,7 @@ export default {
         if (arr.selected.length === 2) {
           arr.indeterminate = false
           arr.allSelected = false
-        } else if (arr.selected.length === arr.subcity.length) {
+        } else if (arr.selected.length === arr.subcity.length + 2) {
           arr.indeterminate = false
           arr.allSelected = true
         } else {
@@ -748,16 +776,6 @@ export default {
       const x = this.filters.property.icons.filter(x => x.state)
       this.filters.property.choose = x
       this.filters.used.property = x
-      // if (this.filters.property.choose.length === 0) {
-      //   this.cards = this.AllPlaces
-      // } else {
-      //   this.cards = this.AllPlaces.filter((place) => {
-      //     for (const i of place.egenskaper) {
-      //       const existed = this.filters.property.choose.map(tags => tags.text).includes(i.name[this.$i18n.locale])
-      //       return existed
-      //     }
-      //   })
-      // }
       this.doFilter()
     }
   }
