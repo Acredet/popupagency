@@ -404,7 +404,9 @@
       <!-- Start Map -->
       <b-col v-if="layout.value === 'map'" cols="12" md="6" class="map-wrapper d-md-flex">
         <gmap-map ref="mapRef" :key="renderKey" :center="map.center" :map-type-id="map.mapTypeId" :zoom="7">
-          <gmap-info-window :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen" @closeclick="infoWinOpen=false" />
+          <gmap-info-window :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen" @closeclick="infoWinOpen=false">
+            <p>hey</p>
+          </gmap-info-window>
           <gmap-cluster>
             <gmap-marker v-for="(mark, index) in map.markers" :key="index" :clickable="true" :position="mark" @click="toggleInfoWindow(mark, index)" />
           </gmap-cluster>
@@ -602,11 +604,19 @@ export default {
     },
     pinMarkers (places) {
       this.cards = places
-      this.map.markers = this.cards.map((x, i) => {
+      this.map.markers = this.cards.map((x) => {
         return {
           lng: x.location.coordinates[0],
           lat: x.location.coordinates[1],
-          infoText: `<strong>Marker ${x.location.coordinates[1]}}</strong>`
+          infoText: `
+            <a class="d-block" href='/lokal/${x.title.sv}'>
+              <div style="background-image: url('https://popup.dk.se/_nuxt/img/${x.cover[0]}'); width: 200px; height: 200px; background-size: cover; background-repeat: no-repeat"/>
+              <div >
+                <div style="z-index: 4;position: absolute;  bottom: 0;  left: 0; width: 100%;  padding: 5px;  background: rgba(0,0,0,0.8); color: black;" />
+                <h3 style="padding: 0, margin: 0; color: white">${x.title.sv}</h3>
+              </div>
+            </a>
+          `
         }
       })
     },
