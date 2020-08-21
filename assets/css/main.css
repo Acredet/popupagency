@@ -3,6 +3,70 @@
   scrollbar-width: thin;
 }
 
+/* Skeleton */
+
+.skeleton {
+  height: 400px;
+}
+
+
+.skeleton:empty::after{
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-image:
+    /* layer 2: header */
+    -webkit-gradient(linear, left top, right top, color-stop(0, rgba(211, 211, 211, 0)), color-stop(50%, rgba(211, 211, 211, 0.8)), to(rgba(211, 211, 211, 0))),
+    linear-gradient(#ccc 245px, transparent 0),
+    linear-gradient(#bbb 40px, transparent 0), /* Title */
+    linear-gradient(#bbb 80px, transparent 0), /* description */
+    linear-gradient(#bbb 80px, transparent 0), /* description */
+    linear-gradient(#bbb 80px, transparent 0), /* description */
+    linear-gradient(#bbb 40px, transparent 0), /* button */
+    /* layer 0: card bg */
+    /* gray rectangle that covers whole element */
+    linear-gradient(#eee 100%, transparent 0);
+
+    background-size:
+    200px 100%,  /* anim */
+    100% 250px,  /* header */
+    /* width height */
+    70px 20px, /* title */
+    180px 15px, /* description */
+    150px 15px, /* description */
+    120px 15px, /* description */
+    80px 25px, /* button */
+    100% 100%;  /* card bg */
+
+    background-position:
+    /* x y */
+    -150% 10px,   /* anim */
+    0 0,  /* header */
+    10px 255px, /* title */
+    10px 290px, /* description */
+    10px 310px, /* description */
+    10px 330px, /* description */
+    10px 365px, /* button */
+    0 0;        /* card bg */
+    animation: loading 1.5s infinite;
+}
+
+
+@keyframes loading {
+  to {
+    background-position:
+      350% 0,
+      0 0,  /* header */
+      10px 255px, /* title */
+      10px 290px, /* description */
+      10px 310px, /* description */
+      10px 330px, /* description */
+      10px 365px, /* button */
+      0 0        /* card bg */
+  }
+}
 
 ::-webkit-scrollbar {
   width: 6px;               /* width of the entire scrollbar */

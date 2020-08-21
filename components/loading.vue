@@ -1,5 +1,5 @@
 <template>
-  <div v-if="loading" class="loading">
+  <div v-if="state" class="loading">
     <img src="/images/logo-white.svg" alt style="height: 100px">
     <b-spinner class="mt-3 mr-1" variant="light" type="grow" label="Spinning" />
   </div>
@@ -10,18 +10,7 @@ export default {
   props: {
     state: {
       type: Boolean,
-      default: () => true
-    }
-  },
-  data: () => ({
-    loading: false
-  }),
-  watch: {
-    state: {
-      immediate: true,
-      handler (val) {
-        this.loading = val
-      }
+      default: () => false
     }
   }
 }

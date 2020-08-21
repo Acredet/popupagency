@@ -1,6 +1,6 @@
 <template>
   <div style="overflow-x: hidden">
-    <loading :state="loading" />
+    <loading :state="loadingState" />
     <!-- Sart Sidebar -->
     <b-sidebar
       id="more-filters"
@@ -386,7 +386,67 @@
       <!-- Start Listings -->
       <b-col cols="12" :md="layout.value === 'map' ? 6 : 12" class="wrapper">
         <b-container>
-          <b-row>
+          <b-row v-if="loadingCards && cards.length <= 0">
+            <b-col
+              v-for="(card, index) in 5"
+              :key="String(index)"
+              class="my-2"
+              cols="12"
+              :md="layout.value === 'map' ? 12 : 6"
+              :lg="layout.value === 'map' ? 6 : 4"
+            >
+              <div class="skeleton" />
+            </b-col>
+          </b-row>
+
+          <b-row v-else>
+            <b-col cols="12" class="d-flex justify-content-between align-items-center">
+              <b-dropdown id="sorting" :text="sortedBy" class="m-md-2">
+                <b-dropdown-item @click="sorting('latest')">
+                  Latest
+                </b-dropdown-item>
+                <b-dropdown-divider />
+                <b-dropdown-item @click="sorting('oldest')">
+                  Oldest
+                </b-dropdown-item>
+                <b-dropdown-divider />
+                <b-dropdown-item @click="sorting('priceLowToHigh')">
+                  Price (Low to High)
+                </b-dropdown-item>
+                <b-dropdown-divider />
+                <b-dropdown-item @click="sorting('priceHighToLow')">
+                  Price (High to Low)
+                </b-dropdown-item>
+                <b-dropdown-divider />
+                <b-dropdown-item @click="sorting('sizeLowToHigh')">
+                  Size (Low to High)
+                </b-dropdown-item>
+                <b-dropdown-divider />
+                <b-dropdown-item @click="sorting('sizeHighToLow')">
+                  Size (High to Low)
+                </b-dropdown-item>
+              </b-dropdown>
+
+              <p>{{ cards.length }} lokaler</p>
+
+              <b-form-group class="p-0 m-0">
+                <b-form-radio-group
+                  id="layout-btns"
+                  v-model="layout.value"
+                  buttons
+                  button-variant="outline-primary"
+                >
+                  <b-form-radio value="list">
+                    <i class="fas fa-list mr-1" />
+                    List
+                  </b-form-radio>
+                  <b-form-radio value="map">
+                    <i class="far fa-map mr-1" />
+                    Map
+                  </b-form-radio>
+                </b-form-radio-group>
+              </b-form-group>
+            </b-col>
             <b-col
               v-for="(card, index) in cards"
               :key="String(index)"
@@ -464,7 +524,9 @@ export default {
   mixins: [sortItems],
   data () {
     return {
-      loading: false,
+      loadingState: false,
+      loadingCards: false,
+      sortedBy: 'Latest',
       map: {
         center: { lat: 59.334591, lng: 18.06324 },
         mapTypeId: 'roadmap',
@@ -538,7 +600,7 @@ export default {
     }
   },
   async created () {
-    this.loading = true
+    this.loadingCards = true
     const promises = [
       this.$axios.$get('/places'),
       this.$axios.$get('/region'),
@@ -597,8 +659,8 @@ export default {
       this.filters.plats.currentCountry = Object.keys(
         this.filters.plats.tabs
       )[0]
-      this.loading = false
     })
+    this.loadingCards = false
   },
   methods: {
     // Map Functions
@@ -674,6 +736,7 @@ export default {
 
     // Filters Functions
     doFilter () {
+      this.loadingCards = true
       const used = this.filters.used
       const plats = this.filters.plats
 
@@ -741,6 +804,30 @@ export default {
         this.filters.used.yta.length === 2 &&
         this.filters.used.search === null
       ) { this.cards = this.AllPlaces }
+
+      this.loadingCards = false
+    },
+    sorting (sort) {
+      console.log(this.cards)
+      if (sort === 'latest') {
+        this.sortedBy = 'Latest'
+        this.cards = this.cards.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
+      } else if (sort === 'oldest') {
+        this.sortedBy = 'Oldest'
+        this.cards = this.cards.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      } else if (sort === 'priceLowToHigh') {
+        this.sortedBy = 'priceLowToHigh'
+        this.cards = this.cards.sort((a, b) => a.prioteradpris - b.prioteradpris)
+      } else if (sort === 'priceHighToLow') {
+        this.sortedBy = 'priceHighToLow'
+        this.cards = this.cards.sort((a, b) => b.prioteradpris - a.prioteradpris)
+      } else if (sort === 'sizeLowToHigh') {
+        this.sortedBy = 'sizeLowToHigh'
+        this.cards = this.cards.sort((a, b) => a.yta - b.yta)
+      } else if (sort === 'sizeHighToLow') {
+        this.sortedBy = 'sizeHighToLow'
+        this.cards = this.cards.sort((a, b) => b.yta - a.yta)
+      }
     },
     priceChanged (w) {
       this.filters.used.price = w
