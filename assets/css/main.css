@@ -1,5 +1,24 @@
 * {
   font-family: 'Abel', sans-serif;
+  scrollbar-width: thin;
+}
+
+
+::-webkit-scrollbar {
+  width: 6px;               /* width of the entire scrollbar */
+}
+::-webkit-scrollbar-track {
+  background-color: silver;        /* color of the tracking area */
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--indigo);    /* color of the scroll thumb */
+  border-radius: 20px;       /* roundness of the scroll thumb */
+  border: 1px solid var(--indigo);  /* creates padding around scroll thumb */
+}
+
+/* Removes padding from map cards */
+.gm-style-iw.gm-style-iw-c {
+  padding: 0 !important;
 }
 
 :root {

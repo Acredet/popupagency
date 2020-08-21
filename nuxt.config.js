@@ -46,7 +46,7 @@ module.exports = {
    */
   plugins: [
     { src: '~/plugins/vue2-editor', mode: 'client' },
-    { src: '~/plugins/gmaps', mode: 'client', ssr: true }
+    { src: '~/plugins/gmaps', mode: 'client', ssr: true },
   ],
   /*
    ** Auto import components

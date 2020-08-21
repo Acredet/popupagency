@@ -1,5 +1,6 @@
 <template>
   <div style="overflow-x: hidden">
+    <loading :state="loading" />
     <!-- Sart Sidebar -->
     <b-sidebar
       id="more-filters"
@@ -463,6 +464,7 @@ export default {
   mixins: [sortItems],
   data () {
     return {
+      loading: false,
       map: {
         center: { lat: 59.334591, lng: 18.06324 },
         mapTypeId: 'roadmap',
@@ -535,7 +537,8 @@ export default {
       this.doFilter()
     }
   },
-  async beforeCreate () {
+  async created () {
+    this.loading = true
     const promises = [
       this.$axios.$get('/places'),
       this.$axios.$get('/region'),
@@ -594,6 +597,7 @@ export default {
       this.filters.plats.currentCountry = Object.keys(
         this.filters.plats.tabs
       )[0]
+      this.loading = false
     })
   },
   methods: {
