@@ -553,7 +553,7 @@ export default {
       sortedBy: 'Latest',
       map: {
         center: { lat: 59.334591, lng: 18.06324 },
-        mapTypeId: 'roadmap',
+        mapTypeId: 'list',
         markers: []
       },
       infoWindowPos: null,
