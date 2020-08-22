@@ -178,7 +178,16 @@
 
       <b-tab title-item-class="d-none" class="my-4">
         <b-container>
-          <p>I'm the Pris tab</p>
+          <ul class="row">
+            <li
+              v-for="price in ['prioteradpris', 'prisperdag', 'prisperhelg', 'prisperlanghelg', 'prispermanad', 'prispervecka']"
+              :key="price"
+              class="d-flex mb-1 col-12 col-md-6 justify-content-between align-items-center"
+            >
+              <b>{{ price }}:</b>
+              <span>${{ place[price] }}</span>
+            </li>
+          </ul>
         </b-container>
       </b-tab>
 
@@ -355,6 +364,29 @@
         </b-container>
       </b-tab>
     </b-tabs>
+
+    <section class="my-3">
+      <h2 class="text-center">
+        You May Also Be Interested In
+      </h2>
+      <b-container>
+        <p v-if="similar.length === 0" class="text-secondary text-center">
+          There are no similar listings
+        </p>
+        <b-row v-else>
+          <b-col
+            v-for="(card, index) in similar"
+            :key="String(index)"
+            class="my-2"
+            cols="12"
+            md="6"
+            lg="4"
+          >
+            <listing-card :card="card" :layout="'list'" />
+          </b-col>
+        </b-row>
+      </b-container>
+    </section>
   </div>
 </template>
 
@@ -387,6 +419,7 @@ export default {
         ]
       },
       place: {},
+      similar: [],
       tabOpened: 0,
       form: {
         name: '',
@@ -421,11 +454,11 @@ export default {
     feats () {
       return [
         { name: 'yta-1', text: this.place.yta || '' },
-        { name: 'fasta-oppettider-1', text: 'FASTA ÖPPETTIDER' },
-        { name: 'butik-1', text: 'BUTIK' },
-        { name: 'matodrick-2', text: 'MAT & DRYCK' },
-        { name: 'event-1', text: 'EVENT' },
-        { name: 'sol', text: 'SÄSONG' }
+        { name: this.place.fasta ? 'fasta-oppettider-1' : 'fasta-oppettider-2', text: 'FASTA ÖPPETTIDER' },
+        { name: this.place.butik ? 'butik-1' : 'butik-2', text: 'BUTIK' },
+        { name: this.place.mat ? 'matodrick-1' : 'matodrick-2', text: 'MAT & DRYCK' },
+        { name: this.place.event ? 'event-1' : 'event-2', text: 'EVENT' },
+        { name: this.place.sasongBoxen ? 'sol' : 'solstol', text: 'SÄSONG' }
       ]
     }
   },
@@ -433,6 +466,7 @@ export default {
     await this.$axios.$get(`/places/${this.$route.params.title}`)
       .then((res) => {
         this.place = res.place
+        this.similar = res.similar.filter(x => x._id !== x.place._id)
         this.map = {
           center: { lng: res.place.location.coordinates[0], lat: res.place.location.coordinates[1] },
           mapTypeId: 'roadmap',

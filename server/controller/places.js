@@ -143,7 +143,13 @@ exports.deletePlace = (req, res) => {
  */
 exports.getOnePlace = async (req, res) => {
   await Place.findOne({ 'title.sv': req.params.id })
-    .then(place => res.json({ success: true, place }))
+    .then(async (place) => {
+      await Place.find({ 'stad.sv': place.stad.sv })
+        .then((places) => {
+          res.json({ success: true, place, similar: places })
+        })
+        .catch(err => res.status(404).json(err.message))
+    })
     .catch(err => res.status(404).json(err.message))
 }
 
