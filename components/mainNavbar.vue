@@ -117,7 +117,7 @@
             text="Lediga popups"
             left
           >
-            <b-dropdown-item href="#">
+            <b-dropdown-item to="/lediga-lokaler" href="#">
               Lediga popups
             </b-dropdown-item>
 

@@ -679,12 +679,17 @@ export default {
         return {
           lng: x.location.coordinates[0],
           lat: x.location.coordinates[1],
+          // <div style="z-index: 4;position: absolute;  bottom: 0;  left: 0; width: 100%;  padding: 5px;  background: rgba(0,0,0,0.8); color: black;" />
           infoText: `
-            <a class="d-block" href='/lokal/${x.title.sv}'>
-              <div style="background-image: url('https://popup.dk.se/_nuxt/img/${x.cover[0]}'); width: 200px; height: 200px; background-size: cover; background-repeat: no-repeat"/>
-              <div >
-                <div style="z-index: 4;position: absolute;  bottom: 0;  left: 0; width: 100%;  padding: 5px;  background: rgba(0,0,0,0.8); color: black;" />
-                <h3 style="padding: 0, margin: 0; color: white">${x.title.sv}</h3>
+            <a class="map-popup px-2 d-block text-dark" href='/lokal/${x.title.sv}'>
+              <div style="background-image: url('https://popup.dk.se/_nuxt/img/${x.cover[0]}')" class="cover flex-wrap d-flex justify-content-end flex-column align-items-start" />
+                <div class="overlay">
+                  <p class="text-white font-2 p-0 m-0">${x.title.sv}</p>
+                  <p class="text-white font-4 p-0 m-0">$${x.prioteradpris}</p>
+                </div>
+              </div>
+              <div>
+                <p class="p-0 m-0">${x.location.formattedAddress}</p>
               </div>
             </a>
           `
