@@ -158,6 +158,15 @@
             </div>
           </b-collapse>
           <!-- End yta Tab -->
+          <li>
+            <b-button
+              block
+              class="mt-1 mt-sm-0"
+              variant="warning"
+              @click="clearFilters"
+              v-text="'Clear Filters'"
+            />
+          </li>
         </ul>
       </b-container>
     </b-sidebar>
@@ -333,6 +342,16 @@
                   </small>
                 </b-dropdown-group>
               </b-dropdown>
+            </b-col>
+
+            <b-col cols="12" md="auto" class="mr-2 d-none d-lg-flex align-items-center">
+              <b-button
+                block
+                class="mt-1 mt-sm-0"
+                variant="warning"
+                @click="clearFilters"
+                v-text="'Clear Filters'"
+              />
             </b-col>
             <!-- End yta Filter -->
 
@@ -778,8 +797,8 @@ export default {
           }
         }
 
-        const thereIsChoosePlace = (used.plats.length <= 1) ? true : used.plats.includes(x.stad[this.$i18n.locale])
-        const thereIsSearch = (!this.filters.used.search) ? true : x.title[this.$i18n.locale].match(re)
+        const thereIsChoosePlace = (used.plats.length <= 1) ? true : used.plats.includes(x.stad.en)
+        const thereIsSearch = (!this.filters.used.search) ? true : x.title.en.match(re)
 
         console.log('x.prioteradpris >= used.price[0] : ', x.prioteradpris >= used.price[0])
         console.log('x.prioteradpris <= used.price[1]: ', x.prioteradpris <= used.price[1])
@@ -839,6 +858,11 @@ export default {
         this.cards = this.cards.sort((a, b) => b.yta - a.yta)
       }
     },
+    clearFilters () {
+      this.filters.used = { search: null, price: [0, 76], plats: [], property: [], yta: [0, 4234] }
+      this.cards = this.AllPlaces
+    },
+
     priceChanged (w) {
       this.filters.used.price = w
       console.log(w)
