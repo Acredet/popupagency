@@ -465,11 +465,16 @@
       <!-- Start Map -->
       <b-col v-if="layout.value === 'map'" cols="12" md="6" class="map-wrapper d-md-flex">
         <gmap-map ref="mapRef" :key="renderKey" :center="map.center" :map-type-id="map.mapTypeId" :zoom="7">
-          <gmap-info-window :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen" @closeclick="infoWinOpen=false">
-            <p>hey</p>
-          </gmap-info-window>
+          <gmap-info-window :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen" @closeclick="infoWinOpen=false" />
           <gmap-cluster>
-            <gmap-marker v-for="(mark, index) in map.markers" :key="index" :clickable="true" :position="mark" @click="toggleInfoWindow(mark, index)" />
+            <gmap-marker
+              v-for="(mark, index) in map.markers"
+              :key="index"
+              :clickable="true"
+              :position="mark"
+              :icon="require(`@/assets/img/marker.svg`)"
+              @click="toggleInfoWindow(mark, index)"
+            />
           </gmap-cluster>
         </gmap-map>
       </b-col>
