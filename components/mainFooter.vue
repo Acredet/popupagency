@@ -4,24 +4,18 @@
       <b-row>
         <!-- Start Om oss col -->
         <b-col cols="12" md="6" xl="3" class="mb-4 animate__animated animate__slideInLeft animate__delay-1s">
-          <h5 class="text-white mb-4 font-weight-bold">
-            Om oss
-          </h5>
-          <p class="text-light m-0 p-0">
-            Popup Agency är en nytänkande uthyrningskonsult som på ett roligt och otraditionellt arbetssätt möter framtidens krav inom handeln med korttidsavtal och popup butiker.
-          </p>
-          <b class="text-white my-2 d-block">Vi är matchmakern som hjälper dig från idé till popup.</b>
+          <h5 class="text-white mb-4 font-weight-bold" v-text="$t('mainFooter.aboutUS.label')" />
+          <p class="text-light m-0 p-0" v-text="$t('mainFooter.aboutUS.text')" />
+          <b class="text-white my-2 d-block" v-text="$t('mainFooter.aboutUS.boldText')" />
         </b-col>
         <!-- End Om oss col -->
 
         <!-- start Om oss col -->
         <b-col cols="12" md="6" xl="3" class="mb-4 animate__animated animate__slideInUp animate__delay-1s">
-          <h5 class="text-white mb-4 font-weight-bold">
-            Snabba länkar
-          </h5>
+          <h5 class="text-white mb-4 font-weight-bold" v-text="$t('mainFooter.links.text')" />
           <b-row>
             <b-col v-for="link in links" :key="link.text" cols="12" md="6">
-              <nuxt-link class="footer-link" :to="link.url">
+              <nuxt-link class="footer-link" :to="`${$t('link')}${link.url}`">
                 <i v-if="link.check" class="fas fa-check text-info mr-1" />
                 {{ link.text }}
               </nuxt-link>
@@ -32,9 +26,7 @@
 
         <!-- start Om oss col -->
         <b-col cols="12" md="6" xl="3" class="mb-4 animate__animated animate__slideInUp animate__delay-1s">
-          <h5 class="text-white mb-4 font-weight-bold">
-            Kontakt info
-          </h5>
+          <h5 class="text-white mb-4 font-weight-bold" v-text="$t('mainFooter.contactInfo')" />
 
           <a href="mailto:hej@popupagency.se" class="d-block mb-1 text-white">
             <i class="far fa-envelope mr-2" />
@@ -72,15 +64,15 @@ export default {
   data () {
     return {
       links: [
-        { text: 'Hem', url: '/Lediga-lokaler' },
-        { text: 'Medarbetare', url: '/Lediga-lokaler' },
-        { text: 'Om oss', url: '/Lediga-lokaler' },
-        { text: 'Lediga jobb', url: '/Lediga-lokaler' },
-        { text: 'Hyr en popup', url: '/Lediga-lokaler' },
-        { text: 'Popup News', url: '/Lediga-lokaler' },
-        { text: 'Hyr ut din lokal', url: '/Lediga-lokaler' },
-        { text: 'Hantering av personuppgifter', check: true, url: '/Lediga-lokaler' },
-        { text: 'Lediga lokaler', check: true, url: '/Lediga-lokaler' }
+        { text: this.$t('mainFooter.links.home'), url: 'lediga-lokaler' },
+        { text: this.$t('mainFooter.links.coworker'), url: 'lediga-lokaler' },
+        { text: this.$t('mainFooter.links.aboutUs'), url: 'lediga-lokaler' },
+        { text: this.$t('mainFooter.links.freeJobs'), url: 'lediga-lokaler' },
+        { text: this.$t('mainFooter.links.rentAPopup'), url: 'lediga-lokaler' },
+        { text: this.$t('mainFooter.links.popupNews'), url: 'lediga-lokaler' },
+        { text: this.$t('mainFooter.links.rentOutYourPremises'), url: 'lediga-lokaler' },
+        { text: this.$t('mainFooter.links.handlingOfPersonalData'), check: true, url: 'lediga-lokaler' },
+        { text: this.$t('mainFooter.links.availableFacilities'), check: true, url: 'lediga-lokaler' }
       ],
       socialLinks: [
         { icon: 'fab fa-facebook-f', href: 'https://sv-se.facebook.com/popupagency', color: '#3b5998' },

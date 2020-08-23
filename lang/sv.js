@@ -89,6 +89,26 @@ export default {
       text: 'webbplatsinställningar'
     }
   },
+  mainFooter: {
+    aboutUS: {
+      label: 'Om oss',
+      text: 'Popup Agency är en nytänkande uthyrningskonsult som på ett roligt och otraditionellt arbetssätt möter framtidens krav inom handeln med korttidsavtal och popup butiker.',
+      boldText: 'Vi är matchmakern som hjälper dig från idé till popup.'
+    },
+    links: {
+      text: 'Quick links',
+      home: 'Hem',
+      coworker: 'Medarbetare',
+      aboutUs: 'Om oss',
+      freeJobs: 'Lediga jobb',
+      rentAPopup: 'Hyr en popup',
+      popupNews: 'Popup News',
+      rentOutYourPremises: 'Hyr ut din lokal',
+      handlingOfPersonalData: 'Hantering av personuppgifter',
+      availableFacilities: 'Lediga lokaler'
+    },
+    contactInfo: 'Kontaktinfo'
+  },
   chooseParent: 'Välj förälder ..',
   region: {
     title: 'Regions:',

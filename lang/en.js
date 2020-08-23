@@ -89,6 +89,26 @@ export default {
       text: 'site settings'
     }
   },
+  mainFooter: {
+    aboutUS: {
+      label: 'About us',
+      text: 'Popup Agency is an innovative rental consultant who, in a fun and non-traditional way of working, meets the demands of the future in the trade of short-term contracts and popup stores.',
+      boldText: 'We are the matchmaker who helps you from idea to popup.'
+    },
+    links: {
+      text: 'Quick links',
+      home: 'Home',
+      coworker: 'Coworker',
+      aboutUs: 'About us',
+      freeJobs: 'Free jobs',
+      rentAPopup: 'Rent a popup',
+      popupNews: 'Popup News',
+      rentOutYourPremises: 'Rent out your premises',
+      handlingOfPersonalData: 'Handling of personal data',
+      availableFacilities: 'Available facilities'
+    },
+    contactInfo: 'Contactinfo'
+  },
   chooseParent: 'Choose parent..',
   region: {
     title: 'Rigions:',
