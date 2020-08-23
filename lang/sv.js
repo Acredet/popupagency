@@ -17,6 +17,16 @@ export default {
     required: 'Obligatoriskt.',
     atLeast8: 'At Minst 8 charchters.',
     notMatch: 'Detta ska matcha med lösenordet',
+    somethingWrong: 'Det är något fel',
+    forgotPassword: 'Har du glömt ditt lösenord?',
+    email: {
+      title: 'E-post:',
+      holder: 'Ange din e-post'
+    },
+    password: {
+      title: 'Passwrod:',
+      holder: 'Ange ditt lösenord'
+    },
     match: 'matchade',
     name: {
       title: 'namn',
@@ -49,6 +59,10 @@ export default {
     name: 'namn',
     description: 'Beskrivning',
     parent: 'Förälder'
+  },
+  login: {
+    welcome: 'Välkommen tillbaka!',
+    signIn: 'Logga in för att fortsätta till adminpanelen.'
   },
   chooseParent: 'Välj förälder ..',
   region: {

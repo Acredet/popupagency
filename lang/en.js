@@ -15,9 +15,19 @@ export default {
   forms: {
     valid: 'Good to go.',
     required: 'Required.',
+    somethingWrong: 'There is something wrong',
     atLeast8: 'At Least 8 charchters.',
+    forgotPassword: 'Forgot your password?',
     notMatch: 'This should match with the password',
     match: 'Matched',
+    email: {
+      title: 'Email:',
+      holder: 'Enter your email'
+    },
+    password: {
+      title: 'Passwrod:',
+      holder: 'Enter your password'
+    },
     name: {
       title: 'Name:',
       holder: 'Enter your name',
@@ -49,6 +59,10 @@ export default {
     name: 'Name',
     description: 'Description',
     parent: 'Parent'
+  },
+  login: {
+    welcome: 'Welcome Back !',
+    signIn: 'Sign in to continue to Admin panel.'
   },
   chooseParent: 'Choose parent..',
   region: {
