@@ -64,6 +64,25 @@ export default {
     welcome: 'Välkommen tillbaka!',
     signIn: 'Logga in för att fortsätta till adminpanelen.'
   },
+  adminSidebar: {
+    main: 'Main',
+    listing: {
+      text: 'Listning',
+      addNewListing: 'Lägg till ny lista',
+      allListings: 'Alla listor',
+      region: 'Region',
+      tags: 'Taggar',
+      categories: 'Kategorier'
+    },
+    users: {
+      text: 'Användare',
+      allUsers: 'Alla användare',
+      addUser: 'Lägg till användare'
+    },
+    siteSettings: {
+      text: 'webbplatsinställningar'
+    }
+  },
   chooseParent: 'Välj förälder ..',
   region: {
     title: 'Regions:',

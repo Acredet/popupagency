@@ -6,13 +6,11 @@
       <div id="sidebar-menu">
         <!-- Left Menu Start -->
         <ul id="side-menu" class="metismenu">
-          <li class="menu-title">
-            Main
-          </li>
+          <li class="menu-title" v-text="$t('adminSidebar.main')" />
 
           <li>
             <a href="javascript:void(0);" class="waves-effect"><i class="far fa-map" />
-              <span> Listing <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right" /></span> </span>
+              <span> {{ $t('adminSidebar.listing.text') }} <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right" /></span> </span>
             </a>
             <ul class="submenu">
               <li v-for="link in links" :key="link.url">
@@ -25,18 +23,14 @@
 
           <li>
             <a href="javascript:void(0);" class="waves-effect"><i class="far fa-user" />
-              <span> User <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right" /></span> </span>
+              <span> {{ this.$t('adminSidebar.users.text') }} <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right" /></span> </span>
             </a>
             <ul class="submenu">
               <li>
-                <nuxt-link exact :to="`${$t('link')}admin/users/`">
-                  All Users
-                </nuxt-link>
+                <nuxt-link exact :to="`${$t('link')}admin/users/`" v-text="$t('adminSidebar.users.allUsers')" />
               </li>
               <li>
-                <nuxt-link exact :to="`${$t('link')}admin/users/add`">
-                  Add User
-                </nuxt-link>
+                <nuxt-link exact :to="`${$t('link')}admin/users/add`" v-text="$t('adminSidebar.users.addUser')" />
               </li>
             </ul>
           </li>
@@ -44,7 +38,7 @@
           <li>
             <nuxt-link exact class="waves-effect" :to="`${$t('link')}admin/settings`">
               <i class="fas fa-cog" />
-              <span> site settings </span>
+              <span> {{ $t('adminSidebar.siteSettings.text') }} </span>
             </nuxt-link>
           </li>
         </ul>
@@ -63,23 +57,23 @@ export default {
     return {
       links: [
         {
-          text: 'Add new listing',
+          text: this.$t('adminSidebar.listing.addNewListing'),
           url: 'add'
         },
         {
-          text: 'All listings',
+          text: this.$t('adminSidebar.listing.allListings'),
           url: ''
         },
         {
-          text: 'Region',
+          text: this.$t('adminSidebar.listing.region'),
           url: 'region'
         },
         {
-          text: 'Tags',
+          text: this.$t('adminSidebar.listing.tags'),
           url: 'tags'
         },
         {
-          text: 'Categories',
+          text: this.$t('adminSidebar.listing.categories'),
           url: 'categories'
         }
       ]

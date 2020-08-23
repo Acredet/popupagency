@@ -64,6 +64,25 @@ export default {
     welcome: 'Welcome Back !',
     signIn: 'Sign in to continue to Admin panel.'
   },
+  adminSidebar: {
+    main: 'Main',
+    listing: {
+      text: 'Listing',
+      addNewListing: 'Add new listing',
+      allListings: 'All listings',
+      region: 'Region',
+      tags: 'Tags',
+      categories: 'Categories'
+    },
+    users: {
+      text: 'Users',
+      allUsers: 'All Users',
+      addUser: 'Add User'
+    },
+    siteSettings: {
+      text: 'site settings'
+    }
+  },
   chooseParent: 'Choose parent..',
   region: {
     title: 'Rigions:',
