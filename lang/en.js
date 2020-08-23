@@ -109,6 +109,29 @@ export default {
     },
     contactInfo: 'Contactinfo'
   },
+  ledigaLokaler: {
+    filters: {
+      clear: 'Clear Filters',
+      more: 'More Filters',
+      place: 'Place',
+      price: 'Price',
+      propertyType: 'Property type',
+      surface: 'surface',
+      max: 'Max'
+    },
+    sorting: {
+      latest: 'Latest',
+      oldest: 'Oldest',
+      priceLowToHigh: 'Price (Low to High)',
+      priceHighToLow: 'Price (High to Low)',
+      sizeLowToHigh: 'Size (Low to High)',
+      sizeHighToLow: 'Size (High to Low)'
+    },
+    lsiting: 'Listing',
+    list: 'List',
+    map: 'Map',
+    view: 'Se'
+  },
   mainNavbar: {
     contactUs: 'Contact us',
     services: 'Services',

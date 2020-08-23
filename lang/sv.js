@@ -124,6 +124,29 @@ export default {
     seeAllCities: 'Se alla städer',
     howDoesPopupWork: 'Hur fungerar popup?'
   },
+  ledigaLokaler: {
+    filters: {
+      clear: 'Rensa filter',
+      more: 'Fler filter',
+      place: 'plats',
+      price: 'Pris',
+      propertyType: 'Property type',
+      surface: 'yta',
+      max: 'Max'
+    },
+    sorting: {
+      latest: 'Senaste',
+      oldest: 'Äldst',
+      priceLowToHigh: 'Pris (lågt till högt)',
+      priceHighToLow: 'Pris (högt till lågt)',
+      sizeLowToHigh: 'Storlek (låg till hög)',
+      sizeHighToLow: 'Storlek (hög till låg)'
+    },
+    lsiting: 'Listing',
+    list: 'Lista',
+    map: 'Karta',
+    view: 'Se'
+  },
   chooseParent: 'Välj förälder ..',
   region: {
     title: 'Regions:',

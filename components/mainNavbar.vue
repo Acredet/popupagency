@@ -133,7 +133,12 @@
             {{ $t('mainNavbar.howDoesPopupWork') }}
           </b-nav-item>
 
-          <b-nav-item>English</b-nav-item>
+          <b-nav-item v-if="$i18n.locale == 'sv'" @click="changeLang('en')">
+            English
+          </b-nav-item>
+          <b-nav-item v-else @click="changeLang('sv')">
+            Swedish
+          </b-nav-item>
 
           <b-nav-item>
             <b-icon-heart-fill />
@@ -244,6 +249,12 @@ export default {
           }
         }
       ]
+    }
+  },
+  methods: {
+    changeLang (lang) {
+      this.$i18n.setLocale(lang)
+      this.$store.commit('changeSidebarRenderKey')
     }
   }
 }

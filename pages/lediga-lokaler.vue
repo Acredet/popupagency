@@ -164,7 +164,7 @@
               class="mt-1 mt-sm-0"
               variant="warning"
               @click="clearFilters"
-              v-text="'Clear Filters'"
+              v-text="$t('ledigaLokaler.filters.clear')"
             />
           </li>
         </ul>
@@ -182,7 +182,7 @@
               <b-input-group>
                 <b-form-input
                   v-model="searchInput"
-                  placeholder="Address, City, Zip, Neighborhood, School"
+                  placeholder="Listing Name"
                 />
                 <b-input-group-append>
                   <b-button variant="outline-primary">
@@ -198,7 +198,7 @@
               <b-dropdown id="plats-dropdown" variant="light" :text="filters.plats.text">
                 <!-- Start first horizontal tab -->
                 <b-dropdown-group
-                  header="plats"
+                  :header="$t('ledigaLokaler.filters.place')"
                   style="width: 500px !important; overflow: hidden"
                   class="px-2 custom-tab plats"
                 >
@@ -272,7 +272,7 @@
                 variant="light"
                 :text="filters.property.text"
               >
-                <b-dropdown-group header="property" style="width: 300px !important" class="px-1">
+                <b-dropdown-group :header="$t('ledigaLokaler.filters.propertyType')" style="width: 300px !important" class="px-1">
                   <b-button-group
                     vertical
                     class="d-flex flex-wrap align-items-center justify-content-between flex-row w-100"
@@ -305,7 +305,7 @@
                 right
                 :text="filters.price.text"
               >
-                <b-dropdown-group header="Price" style="width: 300px !important" class="px-3">
+                <b-dropdown-group :header="$t('ledigaLokaler.filters.price')" style="width: 300px !important" class="px-3">
                   <vue-slider
                     v-model="filters.price.value"
                     :min="filters.price.min"
@@ -327,7 +327,7 @@
                 right
                 :text="filters.yta.text"
               >
-                <b-dropdown-group header="Yta" style="width: 300px !important" class="px-3">
+                <b-dropdown-group :header="$t('ledigaLokaler.filters.surface')" style="width: 300px !important" class="px-3">
                   <vue-slider
                     v-model="filters.yta.value"
                     :min="filters.yta.min"
@@ -350,7 +350,7 @@
                 class="mt-1 mt-sm-0"
                 variant="warning"
                 @click="clearFilters"
-                v-text="'Clear Filters'"
+                v-text="$t('ledigaLokaler.filters.clear')"
               />
             </b-col>
             <!-- End yta Filter -->
@@ -367,7 +367,7 @@
                 block
                 class="mt-1 mt-sm-0"
                 variant="primary"
-                v-text="'More Filters'"
+                v-text="$t('ledigaLokaler.filters.more')"
               />
             </b-col>
             <!-- End more Filters -->
@@ -385,13 +385,13 @@
                   buttons
                   button-variant="outline-primary"
                 >
-                  <b-form-radio value="list">
+                  <b-form-radio :value="$t('ledigaLokaler.list')">
                     <i class="fas fa-list mr-1" />
-                    List
+                    {{ $t('ledigaLokaler.list') }}
                   </b-form-radio>
-                  <b-form-radio value="map">
+                  <b-form-radio :value="$t('ledigaLokaler.map')">
                     <i class="far fa-map mr-1" />
-                    Map
+                    {{ $t('ledigaLokaler.map') }}
                   </b-form-radio>
                 </b-form-radio-group>
               </b-form-group>
@@ -403,7 +403,7 @@
       <!-- End filters Bar -->
 
       <!-- Start Listings -->
-      <b-col cols="12" :md="layout.value === 'map' ? 6 : 12" class="wrapper">
+      <b-col cols="12" :md="layout.value === $t('ledigaLokaler.map') ? 6 : 12" class="wrapper">
         <b-container>
           <b-row v-if="loadingCards && cards.length <= 0">
             <b-col
@@ -411,8 +411,8 @@
               :key="String(index)"
               class="my-2"
               cols="12"
-              :md="layout.value === 'map' ? 12 : 6"
-              :lg="layout.value === 'map' ? 6 : 4"
+              :md="layout.value === $t('ledigaLokaler.map') ? 12 : 6"
+              :lg="layout.value === $t('ledigaLokaler.map') ? 6 : 4"
             >
               <div class="skeleton" />
             </b-col>
@@ -421,47 +421,47 @@
           <b-row v-else>
             <b-col cols="12" class="d-flex justify-content-between align-items-center">
               <b-dropdown id="sorting" :text="sortedBy" class="m-md-2">
-                <b-dropdown-item @click="sorting('latest')">
-                  Latest
+                <b-dropdown-item @click="sorting($t('ledigaLokaler.sorting.latest'))">
+                  {{ $t('ledigaLokaler.sorting.latest') }}
                 </b-dropdown-item>
                 <b-dropdown-divider />
-                <b-dropdown-item @click="sorting('oldest')">
-                  Oldest
+                <b-dropdown-item @click="sorting($t('ledigaLokaler.sorting.latest'))">
+                  {{ $t('ledigaLokaler.sorting.oldest') }}
                 </b-dropdown-item>
                 <b-dropdown-divider />
-                <b-dropdown-item @click="sorting('priceLowToHigh')">
-                  Price (Low to High)
+                <b-dropdown-item @click="sorting($t('ledigaLokaler.sorting.latest'))">
+                  {{ $t('ledigaLokaler.sorting.priceLowToHigh') }}
                 </b-dropdown-item>
                 <b-dropdown-divider />
-                <b-dropdown-item @click="sorting('priceHighToLow')">
-                  Price (High to Low)
+                <b-dropdown-item @click="sorting($t('ledigaLokaler.sorting.latest'))">
+                  {{ $t('ledigaLokaler.sorting.priceHighToLow') }}
                 </b-dropdown-item>
                 <b-dropdown-divider />
-                <b-dropdown-item @click="sorting('sizeLowToHigh')">
-                  Size (Low to High)
+                <b-dropdown-item @click="sorting($t('ledigaLokaler.sorting.latest'))">
+                  {{ $t('ledigaLokaler.sorting.sizeLowToHigh') }}
                 </b-dropdown-item>
                 <b-dropdown-divider />
-                <b-dropdown-item @click="sorting('sizeHighToLow')">
-                  Size (High to Low)
+                <b-dropdown-item @click="sorting($t('ledigaLokaler.sorting.latest'))">
+                  {{ $t('ledigaLokaler.sorting.sizeHighToLow') }}
                 </b-dropdown-item>
               </b-dropdown>
 
-              <p>{{ cards.length }} lokaler</p>
+              <p>{{ cards.length }} {{ $t('ledigaLokaler.lsiting') }}</p>
 
-              <b-form-group class="p-0 m-0">
+              <b-form-group class="d-block d-md-none p-0 m-0">
                 <b-form-radio-group
                   id="layout-btns"
                   v-model="layout.value"
                   buttons
                   button-variant="outline-primary"
                 >
-                  <b-form-radio value="list">
+                  <b-form-radio :value="$t('ledigaLokaler.list')">
                     <i class="fas fa-list mr-1" />
-                    List
+                    {{ $t('ledigaLokaler.list') }}
                   </b-form-radio>
-                  <b-form-radio value="map">
+                  <b-form-radio :value="$t('ledigaLokaler.map')">
                     <i class="far fa-map mr-1" />
-                    Map
+                    {{ $t('ledigaLokaler.map') }}
                   </b-form-radio>
                 </b-form-radio-group>
               </b-form-group>
@@ -471,8 +471,8 @@
               :key="String(index)"
               class="my-2"
               cols="12"
-              :md="layout.value === 'map' ? 12 : 6"
-              :lg="layout.value === 'map' ? 6 : 4"
+              :md="layout.value === $t('ledigaLokaler.map') ? 12 : 6"
+              :lg="layout.value === $t('ledigaLokaler.map') ? 6 : 4"
             >
               <listing-card :card="card" :layout="layout.value" @showPlace="setCenter($event)" />
             </b-col>
@@ -482,7 +482,7 @@
       <!-- End Listings -->
 
       <!-- Start Map -->
-      <b-col v-if="layout.value === 'map'" cols="12" md="6" class="map-wrapper d-md-flex">
+      <b-col v-if="layout.value === $t('ledigaLokaler.map')" cols="12" md="6" class="map-wrapper d-md-flex">
         <gmap-map ref="mapRef" :key="renderKey" :center="map.center" :map-type-id="map.mapTypeId" :zoom="7">
           <gmap-info-window :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen" @closeclick="infoWinOpen=false" />
           <gmap-cluster>
@@ -508,9 +508,9 @@
         pill
         variant="dark"
         class="w-50 mr-2"
-        @click="(layout.value === 'map') ? layout.value = 'list' : layout.value = 'map'; refreshMap"
+        @click="(layout.value === $t('ledigaLokaler.map')) ? layout.value = $t('ledigaLokaler.list') : layout.value = $t('ledigaLokaler.map'); refreshMap"
       >
-        {{ (layout.value === 'map') ? 'list' : 'map' }} View
+        {{ (layout.value === $t('ledigaLokaler.map')) ? $t('ledigaLokaler.list') : $t('ledigaLokaler.map') }} {{ $t('ledigaLokaler.view') }}
       </b-btn>
 
       <b-btn pill variant="dark" class="w-50">
@@ -550,7 +550,7 @@ export default {
     return {
       loadingState: false,
       loadingCards: false,
-      sortedBy: 'Latest',
+      sortedBy: this.$t('ledigaLokaler.sorting.latest'),
       map: {
         center: { lat: 59.334591, lng: 18.06324 },
         mapTypeId: 'roadmap',
@@ -569,7 +569,7 @@ export default {
         }
       },
       layout: {
-        value: 'list'
+        value: this.$t('ledigaLokaler.list')
       },
       searchInput: null,
       filters: {
@@ -583,22 +583,22 @@ export default {
         plats: {
           currentCountry: '',
           currentCity: 0,
-          text: 'Plats',
+          text: this.$t('ledigaLokaler.filters.place'),
           tabs: {}
         },
         price: {
-          text: 'Price',
+          text: this.$t('ledigaLokaler.filters.price'),
           min: 0,
           max: 0,
           value: [0, 100]
         },
         property: {
-          text: 'Property type',
+          text: this.$t('ledigaLokaler.filters.propertyType'),
           choose: [],
           icons: []
         },
         yta: {
-          text: 'Yta',
+          text: this.$t('ledigaLokaler.filters.surface'),
           min: 0,
           max: 0,
           value: [0, 100],
@@ -689,7 +689,7 @@ export default {
   methods: {
     // Map Functions
     setCenter (x) {
-      this.layout.value = 'map'
+      this.layout.value = this.$t('ledigaLokaler.map')
       this.map.center = { lng: x[0], lat: x[1] }
     },
     pinMarkers (places) {
@@ -700,7 +700,7 @@ export default {
           lat: x.location.coordinates[1],
           // <div style="z-index: 4;position: absolute;  bottom: 0;  left: 0; width: 100%;  padding: 5px;  background: rgba(0,0,0,0.8); color: black;" />
           infoText: `
-            <a class="map-popup px-2 d-block text-dark" href='/lokal/${x.title.sv}'>
+            <a class="map-popup px-2 d-block text-dark" href='${this.$t('link')}lokal/${x.title.sv}'>
               <div style="background-image: url('https://popup.dk.se/_nuxt/img/${x.cover[0]}')" class="cover flex-wrap d-flex justify-content-end flex-column align-items-start" />
                 <div class="overlay">
                   <p class="text-white font-2 p-0 m-0">${x.title.sv}</p>
@@ -719,8 +719,6 @@ export default {
       this.$store.commit('changeSidebarRenderKey')
     },
     toggleInfoWindow (marker, idx) {
-      console.log(marker)
-      console.log(idx)
       this.infoWindowPos = {
         lng: marker.lng,
         lat: marker.lat
@@ -838,23 +836,23 @@ export default {
     },
     sorting (sort) {
       console.log(this.cards)
-      if (sort === 'latest') {
-        this.sortedBy = 'Latest'
+      if (sort === this.$t('ledigaLokaler.sorting.latest')) {
+        this.sortedBy = this.$t('ledigaLokaler.sorting.latest')
         this.cards = this.cards.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
-      } else if (sort === 'oldest') {
-        this.sortedBy = 'Oldest'
+      } else if (sort === this.$t('ledigaLokaler.sorting.oldest')) {
+        this.sortedBy = this.$t('ledigaLokaler.sorting.oldest')
         this.cards = this.cards.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-      } else if (sort === 'priceLowToHigh') {
-        this.sortedBy = 'priceLowToHigh'
+      } else if (sort === this.$t('ledigaLokaler.sorting.priceLowToHigh')) {
+        this.sortedBy = this.$t('ledigaLokaler.sorting.priceLowToHigh')
         this.cards = this.cards.sort((a, b) => a.prioteradpris - b.prioteradpris)
-      } else if (sort === 'priceHighToLow') {
-        this.sortedBy = 'priceHighToLow'
+      } else if (sort === this.$t('ledigaLokaler.sorting.priceHighToLow')) {
+        this.sortedBy = this.$t('ledigaLokaler.sorting.priceHighToLow')
         this.cards = this.cards.sort((a, b) => b.prioteradpris - a.prioteradpris)
-      } else if (sort === 'sizeLowToHigh') {
-        this.sortedBy = 'sizeLowToHigh'
+      } else if (sort === this.$t('ledigaLokaler.sorting.sizeLowToHigh')) {
+        this.sortedBy = this.$t('ledigaLokaler.sorting.sizeLowToHigh')
         this.cards = this.cards.sort((a, b) => a.yta - b.yta)
-      } else if (sort === 'sizeHighToLow') {
-        this.sortedBy = 'sizeHighToLow'
+      } else if (sort === this.$t('ledigaLokaler.sorting.sizeHighToLow')) {
+        this.sortedBy = this.$t('ledigaLokaler.sorting.sizeHighToLow')
         this.cards = this.cards.sort((a, b) => b.yta - a.yta)
       }
     },
@@ -866,7 +864,7 @@ export default {
     priceChanged (w) {
       this.filters.used.price = w
       console.log(w)
-      this.filters.price.text = `Max $${w[1]}`
+      this.filters.price.text = `${this.$t('ledigaLokaler.filters.max')} $${w[1]}`
       this.doFilter()
     },
     ytaChanged (w) {
