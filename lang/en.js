@@ -109,6 +109,21 @@ export default {
     },
     contactInfo: 'Contactinfo'
   },
+  mainNavbar: {
+    contactUs: 'Contact us',
+    services: 'Services',
+    allServices: 'All services',
+    rentAPopupLocally: 'Rent a popup locally',
+    rentOutYourPremises: 'Rent out your premises',
+    aboutUs: 'About us',
+    whoAreThePopupAgency: 'Who are the Popup Agency',
+    whatIsAPopup: 'What is a popup?',
+    contact: 'Contact',
+    blogAndPress: 'Blog and press',
+    freePopups: 'Available Popups',
+    seeAllCities: 'See all cities',
+    howDoesPopupWork: 'How does popup work?'
+  },
   chooseParent: 'Choose parent..',
   region: {
     title: 'Rigions:',

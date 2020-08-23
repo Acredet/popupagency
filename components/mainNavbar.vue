@@ -61,49 +61,50 @@
 
       <b-collapse id="navbar-toggle-collapse" is-nav>
         <b-navbar-nav class="w-100 d-sm-flex justify-content-sm-between align-items-sm-center">
-          <b-nav-item>Kontakta oss</b-nav-item>
-
+          <b-nav-item>
+            {{ $t('mainNavbar.contactUs') }}
+          </b-nav-item>
           <b-nav-item-dropdown
             toggle-class="text-white font-3"
             menu-class="animate__animated animate__fadeInUp animate__faster"
-            text="Tjänster"
+            :text="$t('mainNavbar.services')"
             left
           >
             <b-dropdown-item href="#">
-              Alla tjänster
+              {{ $t('mainNavbar.allServices') }}
             </b-dropdown-item>
 
             <b-dd-divider />
 
             <b-dropdown-item href="#">
-              Hyr en popup lokal
+              {{ $t('mainNavbar.rentAPopupLocally') }}
             </b-dropdown-item>
             <b-dd-divider />
             <b-dropdown-item href="#">
-              Hyr ut din lokal
+              {{ $t('mainNavbar.rentOutYourPremises') }}
             </b-dropdown-item>
           </b-nav-item-dropdown>
 
           <b-nav-item-dropdown
             toggle-class="text-white font-3"
             menu-class="animate__animated animate__fadeInUp animate__faster"
-            text="Om oss"
+            :text="$t('mainNavbar.aboutUs')"
             left
           >
             <b-dropdown-item href="#">
-              Vilka är Popup Agency
+              {{ $t('mainNavbar.whoAreThePopupAgency') }}
             </b-dropdown-item>
 
             <b-dd-divider />
 
             <b-dropdown-item href="#">
-              Vad är en popup?
+              {{ $t('mainNavbar.whatIsAPopup') }}
             </b-dropdown-item>
 
             <b-dd-divider />
 
             <b-dropdown-item href="#">
-              Kontakt
+              {{ $t('mainNavbar.contact') }}
             </b-dropdown-item>
           </b-nav-item-dropdown>
 
@@ -114,21 +115,23 @@
           <b-nav-item-dropdown
             toggle-class="text-white font-3"
             menu-class="animate__animated animate__fadeInUp animate__faster"
-            text="Lediga popups"
+            :text="$t('mainNavbar.blogAndPress')"
             left
           >
-            <b-dropdown-item to="/lediga-lokaler" href="#">
-              Lediga popups
+            <b-dropdown-item :to="`${$t('link')}lediga-lokaler`" href="#">
+              {{ $t('mainNavbar.freePopups') }}
             </b-dropdown-item>
 
             <b-dd-divider />
 
             <b-dropdown-item href="#">
-              Se alla städer
+              {{ $t('mainNavbar.seeAllCities') }}
             </b-dropdown-item>
           </b-nav-item-dropdown>
 
-          <b-nav-item>Hur fungerar popup?</b-nav-item>
+          <b-nav-item>
+            {{ $t('mainNavbar.howDoesPopupWork') }}
+          </b-nav-item>
 
           <b-nav-item>English</b-nav-item>
 
@@ -165,79 +168,79 @@ export default {
       links: [
         {
           label: {
-            text: 'Kontakta oss',
-            url: '/'
+            text: this.$t('mainNavbar.contactUs'),
+            url: ''
           }
         },
         {
           label: {
-            text: 'Tjänster'
+            text: this.$t('mainNavbar.services')
           },
           subList: [
             {
-              text: 'Alla tjänster',
-              url: '/'
+              text: this.$t('mainNavbar.allServices'),
+              url: ''
             },
             {
-              text: 'Hyr en popup lokal',
-              url: '/'
+              text: this.$t('mainNavbar.rentAPopupLocally'),
+              url: ''
             },
             {
-              text: 'Hyr ut din lokal',
-              url: '/'
+              text: this.$t('mainNavbar.rentOutYourPremises'),
+              url: ''
             }
           ]
         },
         {
           label: {
-            text: 'Om oss'
+            text: this.$t('mainNavbar.aboutUs')
           },
           subList: [
             {
-              text: 'Vilka är Popup Agency',
-              url: '/'
+              text: this.$t('mainNavbar.whoAreThePopupAgency'),
+              url: ''
             },
             {
-              text: 'Vad är en popup?',
-              url: '/'
+              text: this.$t('mainNavbar.whatIsAPopup'),
+              url: ''
             },
             {
-              text: 'Kontakt',
-              url: '/'
+              text: this.$t('mainNavbar.contact'),
+              url: ''
             }
           ]
         },
         {
           label: {
-            text: 'Blogg och press',
-            url: '/'
+            text: this.$t('mainNavbar.blogAndPress'),
+            url: ''
           }
         },
         {
           label: {
-            text: 'Lediga popups'
+            text: this.$t('mainNavbar.freePopups')
           },
           subList: [
             {
-              text: 'Lediga popups',
-              url: '/'
+              text: this.$t('mainNavbar.freePopups'),
+              url: ''
             },
             {
-              text: 'Se alla städer',
-              url: '/'
+              text: this.$t('mainNavbar.seeAllCities'),
+              url: ''
             }
           ]
         },
         {
           label: {
-            text: 'Hur fungerar popup?',
-            url: '/'
+            text: this.$t('mainNavbar.howDoesPopupWork'),
+            url: ''
           }
         },
         {
           label: {
             text: 'English',
-            url: '/'
+            url: ''
           }
         }
       ]

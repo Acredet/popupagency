@@ -109,6 +109,21 @@ export default {
     },
     contactInfo: 'Kontaktinfo'
   },
+  mainNavbar: {
+    contactUs: 'Kontakta oss',
+    services: 'Tjänster',
+    allServices: 'Alla tjänster',
+    rentAPopupLocally: 'Hyr en popup lokal',
+    rentOutYourPremises: 'Hyr ut din lokal',
+    aboutUs: 'Om oss',
+    whoAreThePopupAgency: 'Vilka är Popup Agency',
+    whatIsAPopup: 'Vad är en popup?',
+    contact: 'Kontakt',
+    blogAndPress: 'Blogg och press',
+    freePopups: 'Lediga popups',
+    seeAllCities: 'Se alla städer',
+    howDoesPopupWork: 'Hur fungerar popup?'
+  },
   chooseParent: 'Välj förälder ..',
   region: {
     title: 'Regions:',
