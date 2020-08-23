@@ -17,13 +17,15 @@
       </section>
     </div>
     <!-- End cover -->
+
     <b-tabs no-nav-style :value="tabOpened" fill content-class="mt-3">
       <template v-slot:tabs-start>
         <div class="w-100">
+          <!-- Start Tabs buttons -->
           <div class="shadow w-100 d-flex flex-nowrap">
             <b-container class="d-flex flex-column flex-nowrap">
               <b-row no-gutters class="d-flex flex-nowrap jsutify-content-center w-100 tabs">
-                <b-col v-for="(tab, index) in ['Information', 'Centruminfo', 'Pris', 'Bokningsförfrågan']" :key="tab" class="flex-grow-1" cols="auto">
+                <b-col v-for="(tab, index) in $t('singleListing.tabs')" :key="tab" class="flex-grow-1" cols="auto">
                   <b-btn
                     squared
                     block
@@ -38,8 +40,9 @@
               </b-row>
             </b-container>
           </div>
+          <!-- End Tabs buttons -->
 
-          <!-- fEATS SECTION -->
+          <!-- Start fEATS SECTION -->
           <b-container class="d-flex flex-column flex-nowrap my-5">
             <b-row no-gutters class="d-flex flex-nowrap jsutify-content-center w-100 py-3 tabs">
               <b-col v-for="(feat) in feats" :key="feat.name" cols="auto" class="d-flex flex-grow-1 flex-column justify-content-center mx-2 align-items-center">
@@ -49,7 +52,7 @@
               </b-col>
             </b-row>
           </b-container>
-          <!-- fEATS SECTION -->
+          <!-- End fEATS SECTION -->
         </div>
       </template>
 
@@ -57,15 +60,15 @@
         <b-container>
           <b-row>
             <b-col class="my-3" cols="12" md="6">
-              <b class="font-4">Beskrivning</b>
+              <b class="font-4">{{ $t('singleListing.info.description') }}</b>
               <!-- eslint-disable-next-line vue/no-v-html -->
               <div class="my-2" v-html="place.beskreving ? place.beskreving[$i18n.locale] : ''" />
             </b-col>
             <!-- Start Karta -->
             <b-col class="my-3" cols="12" md="6">
               <div class="d-flex justify-content-between">
-                <b class="font-4">Karta</b>
-                <a class="link-main" target="_blank" href="https://www.google.com/maps/dir//56.0992854,12.8043192/@56.0992329,12.7340866,12z">Get Directions</a>
+                <b class="font-4">{{ $t('singleListing.info.map') }}</b>
+                <a v-if="place.location" class="link-main" target="_blank" :href="`https://www.google.com/maps/dir//${place.location.coordinates[1]},${place.location.coordinates[0]}/@${place.location.coordinates[1]},${place.location.coordinates[0]},12z`">{{ $t('singleListing.info.directions') }}</a>
               </div>
               <div class="content my-2">
                 <gmap-map
@@ -78,6 +81,7 @@
                     <gmap-marker
                       v-for="(mark, index) in map.markers"
                       :key="index"
+                      :icon="require(`@/assets/img/marker.svg`)"
                       :position="mark"
                     />
                   </gmap-cluster>
@@ -88,16 +92,16 @@
 
             <!-- Start Detaljer -->
             <b-col class="my-3" cols="12" md="6">
-              <b class="font-4">Detaljer</b>
+              <b class="font-4">{{ $t('singleListing.info.details') }}</b>
               <!-- eslint-disable-next-line vue/no-v-html -->
               <div class="my-2">
                 <div class="d-flex justify-content-between">
-                  <p>Area</p>
+                  <p>{{ $t('singleListing.info.area') }}</p>
                   <p>{{ place.yta ? place.yta : '190' }} m²</p>
                 </div>
                 <hr>
                 <div class="d-flex justify-content-between">
-                  <p>Våning/Placering</p>
+                  <p>{{ $t('singleListing.info.floor') }}</p>
                   <p>Markplan</p>
                 </div>
               </div>
@@ -106,7 +110,7 @@
 
             <!-- Start Planritning -->
             <b-col v-if="place.planritning" class="my-3" cols="12" md="6">
-              <b class="font-4">Planritning</b>
+              <b class="font-4">{{ $t('singleListing.info.floorPlan') }}</b>
               <div v-for="img in place.planritning" :key="img" class="img">
                 <div class="planritning rounder-circle" @click="show">
                   <i class="far fa-file-image font-1 text-secondaty mr-2" />
@@ -127,7 +131,7 @@
 
             <!-- Start egenskaper -->
             <b-col v-if="place.egenskaper" class="my-3" cols="12" md="6">
-              <b class="font-4">Egenskaper</b>
+              <b class="font-4">{{ $t('singleListing.info.characteristics') }}</b>
               <div v-for="tag in place.egenskaper" :key="tag.name[$i18n.locale]" class="img">
                 <img :src="`https://popup.dk.se/_nuxt/img/${tag.avatar}`" :alt="tag.name[$i18n.locale]">
                 <b>{{ tag.name[$i18n.locale] }}</b>
@@ -138,7 +142,7 @@
             <!-- Start Galleri -->
             <b-col class="my-3" cols="12">
               <div class="my-gallery" itemscope itemtype="http://schema.org/ImageGallery">
-                <b class="font-4 mb-2">Galleri</b>
+                <b class="font-4 mb-2">{{ $t('singleListing.info.gallery') }}</b>
                 <!-- component -->
                 <b-row no-gutters>
                   <b-col
@@ -171,7 +175,7 @@
 
       <b-tab title-item-class="d-none" class="my-4">
         <b-container>
-          <b>Hemsida</b>
+          <b>{{ $t('singleListing.info.website') }}</b>
           <p>{{ place.hemsida }}</p>
         </b-container>
       </b-tab>
@@ -180,7 +184,7 @@
         <b-container>
           <ul class="row">
             <li
-              v-for="price in ['prioteradpris', 'prisperdag', 'prisperhelg', 'prisperlanghelg', 'prispermanad', 'prispervecka']"
+              v-for="price in $t('singleListing.info.priceList')"
               :key="price"
               class="d-flex mb-1 col-12 col-md-6 justify-content-between align-items-center"
             >
@@ -200,7 +204,7 @@
               <b-col cols="12">
                 <b-form-group
                   class="my-2"
-                  label="Your name"
+                  :label="$t('forms.name.title')"
                   label-class="font-weight-bold"
                   label-for="username"
                 >
@@ -218,7 +222,7 @@
               <b-col cols="12" md="6">
                 <b-form-group
                   class="my-2"
-                  label="E-mail"
+                  :label="$t('forms.email.title')"
                   label-class="font-weight-bold"
                   label-for="email"
                 >
@@ -237,7 +241,7 @@
               <b-col cols="12" md="6">
                 <b-form-group
                   class="my-2"
-                  label="Phone"
+                  :label="$t('forms.phone.title')"
                   label-class="font-weight-bold"
                   label-for="Phone"
                 >
@@ -255,7 +259,7 @@
               <b-col cols="12" md="6">
                 <b-form-group
                   class="my-2"
-                  label="Business"
+                  :label="$t('forms.phone.business')"
                   label-class="font-weight-bold"
                   label-for="Business"
                 >
@@ -273,7 +277,7 @@
               <b-col cols="12" md="6">
                 <b-form-group
                   class="my-2"
-                  label="Website"
+                  :label="$t('singleListing.info.website')"
                   label-class="font-weight-bold"
                   label-for="Website"
                 >
@@ -291,7 +295,7 @@
               <b-col cols="12" md="6">
                 <b-form-group
                   class="my-2"
-                  label="Fr.om"
+                  :label="$t('singleListing.form.from')"
                   label-class="font-weight-bold"
                   label-for="from"
                 >
@@ -312,7 +316,7 @@
               <b-col cols="12" md="6">
                 <b-form-group
                   class="my-2"
-                  label="Empty"
+                  :label="$t('singleListing.form.empty')"
                   label-class="font-weight-bold"
                   label-for="Empty"
                 >
@@ -333,7 +337,7 @@
               <b-col cols="12">
                 <b-form-group
                   class="my-2"
-                  label="What do you want to do in the room?"
+                  :label="$t('singleListing.form.details')"
                   label-class="font-weight-bold"
                   label-for="details"
                 >
@@ -352,12 +356,12 @@
                   :value="true"
                   :unchecked-value="false"
                 >
-                  I agree that the Popup Agency processes my personal info in accordance with GDPR rules .
+                  {{ $t('singleListing.info.GDPR') }}
                 </b-form-checkbox>
               </b-col>
 
               <b-btn class="m-2" size="lg" type="button" variant="primary" @click="sendForm">
-                send
+                {{ $t('actions.submit') }}
               </b-btn>
             </b-row>
           </b-form>
@@ -367,11 +371,11 @@
 
     <section class="my-3">
       <h2 class="text-center">
-        You May Also Be Interested In
+        {{ $t('singleListing.intersedIn') }}
       </h2>
       <b-container>
         <p v-if="similar.length === 0" class="text-secondary text-center">
-          There are no similar listings
+          {{ $t('singleListing.noSimilar') }}
         </p>
         <b-row v-else>
           <b-col
@@ -412,11 +416,7 @@ export default {
       map: {
         center: { lat: 59.334591, lng: 18.063240 },
         mapTypeId: 'roadmap',
-        markers: [
-          { lat: 10, lng: 10 },
-          { lat: 59.334591, lng: 18.063240 },
-          { lat: 10, lng: 10 }
-        ]
+        markers: []
       },
       place: {},
       similar: [],
@@ -454,19 +454,19 @@ export default {
     feats () {
       return [
         { name: 'yta-1', text: this.place.yta || '' },
-        { name: this.place.fasta ? 'fasta-oppettider-1' : 'fasta-oppettider-2', text: 'FASTA ÖPPETTIDER' },
-        { name: this.place.butik ? 'butik-1' : 'butik-2', text: 'BUTIK' },
-        { name: this.place.mat ? 'matodrick-1' : 'matodrick-2', text: 'MAT & DRYCK' },
-        { name: this.place.event ? 'event-1' : 'event-2', text: 'EVENT' },
-        { name: this.place.sasongBoxen ? 'sol' : 'solstol', text: 'SÄSONG' }
+        { name: this.place.fasta ? 'fasta-oppettider-1' : 'fasta-oppettider-2', text: this.$t('singleListing.feats.fasta') },
+        { name: this.place.butik ? 'butik-1' : 'butik-2', text: this.$t('singleListing.feats.butik') },
+        { name: this.place.mat ? 'matodrick-1' : 'matodrick-2', text: this.$t('singleListing.feats.mat') },
+        { name: this.place.event ? 'event-1' : 'event-2', text: this.$t('singleListing.feats.event') },
+        { name: this.place.sasongBoxen ? 'sol' : 'solstol', text: this.$t('singleListing.feats.sasong') }
       ]
     }
   },
-  async beforeCreate () {
+  async created () {
     await this.$axios.$get(`/places/${this.$route.params.title}`)
       .then((res) => {
         this.place = res.place
-        this.similar = res.similar.filter(x => x._id !== x.place._id)
+        this.similar = res.similar.filter(x => x._id !== this.place._id)
         this.map = {
           center: { lng: res.place.location.coordinates[0], lat: res.place.location.coordinates[1] },
           mapTypeId: 'roadmap',
@@ -474,7 +474,6 @@ export default {
             { lng: res.place.location.coordinates[0], lat: res.place.location.coordinates[1] }
           ]
         }
-        console.log(res.place)
       })
       .catch(res => console.log(res))
   },
@@ -486,7 +485,6 @@ export default {
       this.$viewer = viewer
     },
     show () {
-      // this.$viewer.view(2)
       this.$viewer.show()
     },
     inited2 (viewer2) {
@@ -494,7 +492,6 @@ export default {
     },
     show2 (number) {
       this.$viewer2.view(number)
-      // this.$viewer2.show()
     }
   }
 }

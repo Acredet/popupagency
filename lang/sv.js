@@ -23,6 +23,14 @@ export default {
       title: 'E-post:',
       holder: 'Ange din e-post'
     },
+    phone: {
+      title: 'Telefon:',
+      holder: 'Ange din telefon'
+    },
+    business: {
+      title: 'Företag:',
+      holder: 'Ange din Företag'
+    },
     password: {
       title: 'Passwrod:',
       holder: 'Ange ditt lösenord'
@@ -147,6 +155,37 @@ export default {
     list: 'Lista',
     map: 'Karta',
     view: 'Se'
+  },
+  singleListing: {
+    tabs: ['Information', 'Centruminfo', 'Pris', 'Bokningsförfrågan'],
+    feats: {
+      fasta: 'FASTA ÖPPETTIDER',
+      butik: 'BUTIK',
+      mat: 'MAT & DRYCK',
+      event: 'EVENT',
+      sasong: 'SÄSONG'
+    },
+    info: {
+      description: 'Beskrivning',
+      map: 'Karta',
+      details: 'Detaljer',
+      area: 'Area',
+      floor: 'Våning/Placering',
+      floorPlan: 'Planritning',
+      characteristics: 'Egenskaper',
+      gallery: 'Galleri',
+      website: 'Hemsida',
+      directions: 'Få vägbeskrivningar',
+      priceList: ['prioteradpris', 'prisperdag', 'prisperhelg', 'prisperlanghelg', 'prispermanad', 'prispervecka']
+    },
+    form: {
+      from: 'Fr.om',
+      empty: 'Empty',
+      details: 'What do you want to do in the room?',
+      GDPR: 'Jag accepterar att Popup Agency behandlar min personliga information i enlighet med GDPR-regler.'
+    },
+    intersedIn: 'Du kanske också är intresserad av',
+    noSimilar: 'Det finns inga liknande listor'
   },
   chooseParent: 'Välj förälder ..',
   region: {

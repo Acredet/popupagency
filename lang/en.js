@@ -24,6 +24,14 @@ export default {
       title: 'Email:',
       holder: 'Enter your email'
     },
+    phone: {
+      title: 'Phone:',
+      holder: 'Enter your phone'
+    },
+    business: {
+      title: 'Company:',
+      holder: 'Enter your Company'
+    },
     password: {
       title: 'Passwrod:',
       holder: 'Enter your password'
@@ -147,6 +155,37 @@ export default {
     freePopups: 'Available Popups',
     seeAllCities: 'See all cities',
     howDoesPopupWork: 'How does popup work?'
+  },
+  singleListing: {
+    tabs: ['Information', 'Center info', 'Price', 'Booking request'],
+    feats: {
+      fasta: 'FIXED OPENING HOURS',
+      butik: 'BUTIK',
+      mat: 'FOOD & DRINK',
+      event: 'EVENT',
+      sasong: 'SEASON'
+    },
+    info: {
+      description: 'Description',
+      map: 'Map',
+      details: 'Details',
+      area: 'Area',
+      floor: 'Floor / Location',
+      floorPlan: 'Floor plan',
+      characteristics: 'Properties',
+      gallery: 'Gallery',
+      website: 'Homepage',
+      directions: 'Get Directions',
+      priceList: ['prioteradpris', 'prisperdag', 'prisperhelg', 'prisperlanghelg', 'prispermanad', 'prispervecka']
+    },
+    form: {
+      from: 'Fr.om',
+      empty: 'Empty',
+      details: 'What do you want to do in the room?',
+      GDPR: 'I accept that the Popup Agency processes my personal information in accordance with GDPR rules.'
+    },
+    intersedIn: 'You May Also Be Interested In',
+    noSimilar: 'There are no similar listings'
   },
   chooseParent: 'Choose parent..',
   region: {
