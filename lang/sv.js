@@ -64,6 +64,12 @@ export default {
     welcome: 'Välkommen tillbaka!',
     signIn: 'Logga in för att fortsätta till adminpanelen.'
   },
+  adminHeader: {
+    login: 'Logga in',
+    profile: 'Profil',
+    logout: 'Logga ut',
+    languages: 'språk'
+  },
   adminSidebar: {
     main: 'Main',
     listing: {

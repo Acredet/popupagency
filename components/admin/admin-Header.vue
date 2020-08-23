@@ -28,17 +28,15 @@
             >
               {{ $auth.user.name }}
             </a>
-            <nuxt-link v-else class="nav-link text-dark font-weight-bold font-3 waves-effect nav-user" to="/admin/login">
-              login
-            </nuxt-link>
+            <nuxt-link v-else class="nav-link text-dark font-weight-bold font-3 waves-effect nav-user" :to="`${$t('link')}admin/login`" v-text="$t('adminHeader.login')" />
             <div v-if="$auth.loggedIn" class="dropdown-menu dropdown-menu-right profile-dropdown ">
               <!-- item-->
-              <nuxt-link exact class="dropdown-item" :to="`/admin/users/profile/${$auth.user._id}`">
-                <i class="fas fa-user" /> Profile
+              <nuxt-link exact class="dropdown-item" :to="`${$t('link')}admin/users/profile/${$auth.user._id}`">
+                <i class="fas fa-user" /> {{ $t('adminHeader.profile') }}
               </nuxt-link>
               <div class="dropdown-divider" />
               <button type="button" class="dropdown-item text-danger" @click="logout">
-                <i class="fas fa-power-off text-danger" /> Logout
+                <i class="fas fa-power-off text-danger" /> {{ $t('adminHeader.logout') }}
               </button>
             </div>
           </div>
@@ -60,7 +58,7 @@
               data-toggle="dropdown"
               aria-haspopup="true"
               aria-expanded="false"
-            >Languages</a>
+            >{{ $t('adminHeader.languages') }}</a>
 
             <div class="py-0 dropdown-menu" aria-labelledby="dropdownMenuLink">
               <b-button class="dropdown-item" @click="changeLang('en')">

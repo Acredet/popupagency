@@ -64,6 +64,12 @@ export default {
     welcome: 'Welcome Back !',
     signIn: 'Sign in to continue to Admin panel.'
   },
+  adminHeader: {
+    login: 'Login',
+    profile: 'Profile',
+    logout: 'Logout',
+    languages: 'Languages'
+  },
   adminSidebar: {
     main: 'Main',
     listing: {
