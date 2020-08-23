@@ -127,6 +127,7 @@ export default {
       sizeLowToHigh: 'Size (Low to High)',
       sizeHighToLow: 'Size (High to Low)'
     },
+    moreDetails: 'More Details',
     lsiting: 'Listing',
     list: 'List',
     map: 'Map',

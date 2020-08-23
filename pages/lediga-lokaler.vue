@@ -419,7 +419,7 @@
           </b-row>
 
           <b-row v-else>
-            <b-col cols="12" class="d-flex justify-content-between align-items-center">
+            <b-col cols="12" class="d-flex sticky justify-content-between align-items-center">
               <b-dropdown id="sorting" :text="sortedBy" class="m-md-2">
                 <b-dropdown-item @click="sorting($t('ledigaLokaler.sorting.latest'))">
                   {{ $t('ledigaLokaler.sorting.latest') }}
@@ -446,9 +446,11 @@
                 </b-dropdown-item>
               </b-dropdown>
 
-              <p>{{ cards.length }} {{ $t('ledigaLokaler.lsiting') }}</p>
+              <p class="p-0 m-0">
+                {{ cards.length }} {{ $t('ledigaLokaler.lsiting') }}
+              </p>
 
-              <b-form-group class="d-block d-md-none p-0 m-0">
+              <b-form-group class="p-0 m-0">
                 <b-form-radio-group
                   id="layout-btns"
                   v-model="layout.value"

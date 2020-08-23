@@ -46,7 +46,7 @@ export default {
                   class="img-fluid"
                   width="480px"
                   style="min-height:320px"
-                  :alt="card.beskreving"
+                  :alt="card.title[$i18n.locale]"
                 >
               </template>
             </b-carousel-slide>
@@ -59,19 +59,19 @@ export default {
           </h3>
           <div v-if="card.beskreving" v-html="card.beskreving[$i18n.locale]" />
 
-          <b-btn variant="primary" :to="`/lokal/${card.title.sv}`">
-            More Details
+          <b-btn size="sm" variant="primary" :to="`${$t('link')}lokal/${card.title.sv}`">
+            {{ $t('ledigaLokaler.moreDetails') }}
           </b-btn>
         </b-card-body>
 
         <template v-slot:footer>
           <b-row class="p-2">
-            <b-col class="border-md-right" cols="12" :md="layout === 'map' ? 12 : 6">
+            <b-col class="border-md-right" cols="12" :md="layout === $t('ledigaLokaler.map') ? 12 : 6">
               <small class="text-muted" style="cursor: pointer" @click="showPlace(card.location.coordinates)">
                 <BIconGeoAlt class="text-dark mr-1" />{{ card.location.formattedAddress }}
               </small>
             </b-col>
-            <b-col cols="12" :md="layout === 'map' ? 12 : 6">
+            <b-col cols="12" :md="layout === $t('ledigaLokaler.map') ? 12 : 6">
               <small class="text-muted">
                 <BIconWallet class="text-dark mr-1" />{{ `fr ${card.prioteradpris} kr / månad` }}
               </small>

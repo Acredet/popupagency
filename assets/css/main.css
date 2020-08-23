@@ -9,7 +9,12 @@
   height: 400px;
 }
 
-
+div.sticky {
+  top: 0;
+  z-index: 889;
+  background: white;
+  position: sticky;
+}
 .skeleton:empty::after{
   content: "";
   display: block;

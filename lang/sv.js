@@ -142,7 +142,8 @@ export default {
       sizeLowToHigh: 'Storlek (låg till hög)',
       sizeHighToLow: 'Storlek (hög till låg)'
     },
-    lsiting: 'Listing',
+    moreDetails: 'Fler detaljer',
+    lsiting: 'Lista',
     list: 'Lista',
     map: 'Karta',
     view: 'Se'
