@@ -405,7 +405,16 @@
       <!-- Start Listings -->
       <b-col cols="12" :md="layout.value === $t('ledigaLokaler.map') ? 6 : 12" class="wrapper">
         <b-container>
-          <b-row v-if="loadingCards && cards.length <= 0">
+          <!-- Start if empty -->
+          <b-row v-if="cards.length === 0" align-h="center" align-content="center">
+            <p class="text-center text-secondary">
+              There is No Listing yet
+            </p>
+          </b-row>
+          <!-- End if empty -->
+
+          <!-- start lodaing -->
+          <b-row v-else-if="loadingCards && cards.length <= 0">
             <b-col
               v-for="(card, index) in 5"
               :key="String(index)"
@@ -417,7 +426,9 @@
               <div class="skeleton" />
             </b-col>
           </b-row>
+          <!-- End lodaing -->
 
+          <!-- start if Listing -->
           <b-row v-else>
             <b-col cols="12" class="d-flex sticky justify-content-between align-items-center">
               <b-dropdown id="sorting" :text="sortedBy" class="m-md-2">
@@ -479,6 +490,7 @@
               <listing-card :card="card" :layout="layout.value" @showPlace="setCenter($event)" />
             </b-col>
           </b-row>
+          <!-- End if Listing -->
         </b-container>
       </b-col>
       <!-- End Listings -->
@@ -625,8 +637,17 @@ export default {
       this.doFilter()
     }
   },
+  mounted () {
+    if (window.innerWidth >= '768') {
+      this.layout.value = this.$t('ledigaLokaler.map')
+    }
+
+    this.loadingCards = false
+    this.loadingState = false
+  },
   async created () {
     this.loadingCards = true
+    this.loadingState = true
     const promises = [
       this.$axios.$get('/places'),
       this.$axios.$get('/region'),
@@ -686,7 +707,6 @@ export default {
         this.filters.plats.tabs
       )[0]
     })
-    this.loadingCards = false
   },
   methods: {
     // Map Functions

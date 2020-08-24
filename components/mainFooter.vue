@@ -1,5 +1,5 @@
 <template>
-  <footer class="bg-black py-5">
+  <footer id="footer" class="bg-black py-5">
     <b-container>
       <b-row>
         <!-- Start Om oss col -->
