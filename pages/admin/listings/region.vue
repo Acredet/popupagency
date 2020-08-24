@@ -319,21 +319,23 @@ import { sortItems } from '@/mixins/SortRegions'
 export default {
   name: 'ListingRegion',
   layout: 'admin',
-  mixins: [ListingDepedancies, sortItems],
+  mixins: [sortItems, ListingDepedancies],
   data () {
     return {
-      filter: null
+      filter: null,
+      sortBy: null
     }
   },
-  mounted () { this.getRigions() },
+  beforeMount () { this.getRigions() },
   methods: {
     async getRigions () {
       const vm = this
       await vm.$axios.$get('/region')
         .then((res) => {
-          vm.items = res.data
-          // console.log(vm.sortItems(res.data, true))
+          // vm.items = res.data
           vm.items = vm.sortItems(res.data, true)
+          console.log(this.items)
+          this.$forceUpdate()
         })
         .catch((err) => {
           this.toast = {
@@ -348,6 +350,17 @@ export default {
       await this.$axios.$post('/region', this.form)
         .then((res) => {
           this.getRigions()
+          this.form = {
+            name: {
+              en: '',
+              sv: ''
+            },
+            parent: null,
+            description: {
+              en: '',
+              sv: ''
+            }
+          }
           this.toast = {
             title: this.$t('region.toast.add'),
             variant: 'success',

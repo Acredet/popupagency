@@ -42,27 +42,29 @@ exports.sortItems = {
       })
 
       const all = []
-      console.log(all)
+      // console.log(all)
       for (let i = 0; i < countries.length; i++) {
         const country = countries[i]
 
-        console.log('country: ', country.name.sv)
+        // console.log('country: ', country.name.sv)
         all.push(country)
 
         for (let j = 0; j < country.cities.length; j++) {
           const city = country.cities[j]
 
-          console.log('city: ', city.name.sv)
+          // console.log('city: ', city.name.sv)
           all.push(city)
 
-          console.log('city.subCities: ', ...city.subCities)
+          // console.log('city.subCities: ', ...city.subCities)
           all.push(...city.subCities)
         }
       }
-      console.log('regions: ', regions)
-      console.log('all: ', all)
-      const difference = [...regions].filter(x => !all.includes(x))
-      console.log('Spent: ', difference)
+
+      // console.log('regions: ', regions)
+      // console.log('all: ', all)
+      // const difference = [...regions].filter(x => !all.includes(x))
+      // console.log('Spent: ', difference)
+
       return all
     }
   }

@@ -5,7 +5,7 @@
     <div class="content">
       <b-modal id="delete-modal" centered :title="$t('allListing.deleteModal.title')">
         <p class="my-4">
-          {{ $t('actions.deleteConfimrMessage') }} {{ editForm.title }}?
+          {{ $t('actions.deleteConfimrMessage') }} {{ editForm.title ? editForm.title[$i18n.locale] : '' }}?
         </p>
 
         <template v-slot:modal-footer="{ ok, cancel }">
