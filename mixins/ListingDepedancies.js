@@ -238,6 +238,9 @@ exports.ListingDepedancies = {
             text: err.message
           }
         })
+    },
+    getParent (parentId) {
+      return this.items.filter(x => x._id === parentId)
     }
   }
 }

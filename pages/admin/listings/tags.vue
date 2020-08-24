@@ -123,7 +123,7 @@
 
     <b-modal id="delete-modal" centered :title="$t('tag.deleteModal.title')">
       <p class="my-4">
-        {{ $t('actions.deleteConfimrMessage') }} {{ ($i18n.getLocaleCookie() === 'en') ? editForm.name.en : editForm.name.sv }}?
+        {{ $t('actions.deleteConfimrMessage') }} {{ editForm.name[$i18n.locale] }}?
       </p>
 
       <template v-slot:modal-footer="{ ok, cancel }">
@@ -249,32 +249,20 @@
             show-empty
           >
             <template v-slot:cell(name)="data">
-              <p v-if="$i18n.locale == 'en'">
-                {{ data.item.name.en }}
-              </p>
-              <p v-else>
-                {{ data.item.name.sv }}
+              <p>
+                {{ data.item.name[$i18n.locale] }}
               </p>
             </template>
 
             <template v-slot:cell(description)="data">
-              <p v-if="data.item.description && $i18n.locale == 'en'">
-                {{ data.item.description.en }}
-              </p>
-              <p v-else-if="!data.item.description">
-                -
-              </p>
-              <p v-else>
-                {{ data.item.description.sv }}
+              <p v-if="data.item.description">
+                {{ data.item.description[$i18n.locale] }}
               </p>
             </template>
 
             <template v-slot:cell(parent)="data">
-              <p v-if="$i18n.locale == 'en'" class="text-center font-wight-bold">
-                {{ (data.item.parent) ? items.filter(x => x._id === data.item.parent)[0].name.en : '-' }}
-              </p>
-              <p v-else class="text-center font-wight-bold">
-                {{ (data.item.parent) ? items.filter(x => x._id === data.item.parent)[0].name.en : '-' }}
+              <p class="text-center font-wight-bold">
+                {{ getParent(data.item.parent).length > 0 ? getParent(data.item.parent)[0].name[$i18n.locale] : '-' }}
               </p>
             </template>
 

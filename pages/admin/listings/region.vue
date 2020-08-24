@@ -262,7 +262,7 @@
 
             <template v-slot:cell(parent)="data">
               <p class="text-center font-wight-bold">
-                {{ (data.item.parent && items.filter(x => x._id === data.item.parent)[0]) ? items.filter(x => x._id === data.item.parent)[0].name[$i18n.locale] : '-' }}
+                {{ getParent(data.item.parent).length > 0 ? getParent(data.item.parent)[0].name[$i18n.locale] : '-' }}
               </p>
             </template>
 
