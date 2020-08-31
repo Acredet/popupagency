@@ -111,6 +111,7 @@ export default {
             appendToast: true,
             variant: 'danger'
           })
+          this.busy = false
         })
       this.$store.commit('changeSidebarRenderKey')
     }

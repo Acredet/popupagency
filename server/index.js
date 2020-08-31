@@ -10,6 +10,7 @@ const users = require('./routes/users')
 const region = require('./routes/region')
 const tag = require('./routes/tag')
 const category = require('./routes/category')
+const mail = require('./routes/mail')
 const app = express()
 
 // Bodyparser Middleware  cors
@@ -22,6 +23,7 @@ app.use('/api/users', users)
 app.use('/api/region', region)
 app.use('/api/category', category)
 app.use('/api/tag', tag)
+app.use('/api/mail', mail)
 
 // Import and Set Nuxt.js options
 nuxtConfig.dev = process.env.NODE_ENV !== 'production'
