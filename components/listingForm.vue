@@ -160,11 +160,16 @@
           <b-card :title="$t('addListing.inputs.egenskaper')">
             <b-card-body>
               <b-form-checkbox-group
+                v-if="renderEgensKaper.length > 0"
                 id="egenskaper"
                 v-model="egenskaper"
                 :options="renderEgensKaper"
                 name="tags"
               />
+              <p v-else class="text-secondary">
+                There is options to choose from you can add more in
+                <nuxt-link :to="`${$t('link')}admin/listings/tags`" v-text="'Tags'" />
+              </p>
             </b-card-body>
           </b-card>
 
@@ -287,6 +292,7 @@
           <b-card :title="$t('addListing.inputs.kategori')">
             <b-card-body>
               <b-form-checkbox-group
+                v-if="kategoriOpts.length > 0"
                 v-model="kategori"
                 :options="kategoriOpts"
                 :state="kategoryValid"
@@ -299,6 +305,10 @@
                   {{ $t('forms.valid') }}
                 </b-form-valid-feedback>
               </b-form-checkbox-group>
+              <p v-else class="text-secondary">
+                There is options to choose from you can add more in
+                <nuxt-link :to="`${$t('link')}admin/listings/categories`" v-text="$t('addListing.inputs.kategori')" />
+              </p>
             </b-card-body>
           </b-card>
 
@@ -353,13 +363,15 @@
 
           <b-card v-for="(input) in yesNoInputs" :key="input.name" :title="input.title">
             <b-card-body>
-              <b-form-group>
-                <b-form-radio v-model="yesNoInputsVal[input.model]" :name="input.name" value="true">
-                  {{ $t('addListing.inputs.yes') }}
-                </b-form-radio>
-                <b-form-radio v-model="yesNoInputsVal[input.model]" :name="input.name" value="false">
-                  {{ $t('addListing.inputs.no') }}
-                </b-form-radio>
+              <b-form-group row>
+                <b-form-radio-group :id="input.name" v-model="yesNoInputsVal[input.model]" :name="input.name">
+                  <b-form-radio :value="true">
+                    {{ $t('addListing.inputs.yes') }}
+                  </b-form-radio>
+                  <b-form-radio :value="false">
+                    {{ $t('addListing.inputs.no') }}
+                  </b-form-radio>
+                </b-form-radio-group>
               </b-form-group>
             </b-card-body>
           </b-card>

@@ -155,22 +155,6 @@ a.map-popup > div.cover div.overlay{
 }
 
 
-/* Make footer always at bottom */
-#page-container {
-  position: relative;
-  min-height: 100vh;
-}
-
-#content-wrap {
-  padding-bottom: 500px;    /* Footer height */
-}
-
-#footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-}
-
 .tabBtn {
   border-radius: 0;
   background-color: white;

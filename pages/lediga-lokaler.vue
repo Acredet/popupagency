@@ -1,5 +1,5 @@
 <template>
-  <div style="overflow-x: hidden">
+  <div style="overflow-x: hidden" class="mt-3">
     <loading :state="loadingState" />
     <!-- Sart Sidebar -->
     <b-sidebar
@@ -436,23 +436,23 @@
                   {{ $t('ledigaLokaler.sorting.latest') }}
                 </b-dropdown-item>
                 <b-dropdown-divider />
-                <b-dropdown-item @click="sorting($t('ledigaLokaler.sorting.latest'))">
+                <b-dropdown-item @click="sorting($t('ledigaLokaler.sorting.oldest'))">
                   {{ $t('ledigaLokaler.sorting.oldest') }}
                 </b-dropdown-item>
                 <b-dropdown-divider />
-                <b-dropdown-item @click="sorting($t('ledigaLokaler.sorting.latest'))">
+                <b-dropdown-item @click="sorting($t('ledigaLokaler.sorting.priceLowToHigh'))">
                   {{ $t('ledigaLokaler.sorting.priceLowToHigh') }}
                 </b-dropdown-item>
                 <b-dropdown-divider />
-                <b-dropdown-item @click="sorting($t('ledigaLokaler.sorting.latest'))">
+                <b-dropdown-item @click="sorting($t('ledigaLokaler.sorting.priceHighToLow'))">
                   {{ $t('ledigaLokaler.sorting.priceHighToLow') }}
                 </b-dropdown-item>
                 <b-dropdown-divider />
-                <b-dropdown-item @click="sorting($t('ledigaLokaler.sorting.latest'))">
+                <b-dropdown-item @click="sorting($t('ledigaLokaler.sorting.sizeLowToHigh'))">
                   {{ $t('ledigaLokaler.sorting.sizeLowToHigh') }}
                 </b-dropdown-item>
                 <b-dropdown-divider />
-                <b-dropdown-item @click="sorting($t('ledigaLokaler.sorting.latest'))">
+                <b-dropdown-item @click="sorting($t('ledigaLokaler.sorting.sizeHighToLow'))">
                   {{ $t('ledigaLokaler.sorting.sizeHighToLow') }}
                 </b-dropdown-item>
               </b-dropdown>
@@ -788,6 +788,7 @@ export default {
       this.loadingCards = true
       const used = this.filters.used
       const plats = this.filters.plats
+      const chooesdTags = this.filters.property.choose
 
       used.plats = [plats.currentCountry]
       // const selectedCity = [plats.currentCountry]
@@ -802,84 +803,101 @@ export default {
       }
 
       this.cards = this.AllPlaces.filter((x) => {
-        const re = new RegExp(this.filters.used.search, 'ig')
+        const re = new RegExp(this.filters.used.search, 'ig') // Search input
+
+        console.log('asdsadddsfdasda', x.egenskaper)
+        // Find Tags
         let existedTag
-        for (const i of x.egenskaper) {
-          if (this.filters.property.choose.length === 0) {
-            existedTag = true
-            break
-          } else if (!existedTag) {
-            console.log(this.filters.property.choose.map(tags => tags.text))
-            console.log(i.name[this.$i18n.locale])
-            existedTag = this.filters.property.choose.map(tags => tags.text).includes(i.name[this.$i18n.locale])
-          } else {
-            break
+        if (x.egenskaper.length === 0) {
+          existedTag = true
+        } else {
+          for (const i of x.egenskaper) {
+            if (chooesdTags.length === 0) { // If There is no property filter
+              existedTag = true
+              break
+            } else if (!existedTag) { // If There is a property filter and we didn't get the existed tag yet
+              console.log(chooesdTags.map(tags => tags.text))
+              console.log(i.name[this.$i18n.locale])
+              existedTag = chooesdTags.map(tags => tags.text).includes(i.name[this.$i18n.locale])
+            }
           }
         }
 
         const thereIsChoosePlace = (used.plats.length <= 1) ? true : used.plats.includes(x.stad.en)
         const thereIsSearch = (!this.filters.used.search) ? true : x.title.en.match(re)
 
-        console.log('x.prioteradpris >= used.price[0] : ', x.prioteradpris >= used.price[0])
+        console.log('=====================START======================')
+        console.log(`x.prioteradpris(${x.prioteradpris}) >= used.price[0] : `, x.prioteradpris >= used.price[0])
         console.log('x.prioteradpris <= used.price[1]: ', x.prioteradpris <= used.price[1])
-        console.log(' x.yta >= used.yta[0]: ', x.yta >= used.yta[0])
+        console.log(`x.yta(${x.prioteradpris}) >= used.yta[0]: `, x.yta >= used.yta[0])
         console.log(' x.yta <= used.yta[1]: ', x.yta <= used.yta[1])
         console.log('thereIsChoosePlace: ', thereIsChoosePlace)
         console.log('thereIsSearch ', thereIsSearch)
         console.log('existedTag ? existedTag ', existedTag)
 
-        console.log('result: ', (x.prioteradpris >= used.price[0] &&
-          x.prioteradpris <= used.price[1]) &&
-          (x.yta >= used.yta[0] &&
-          x.yta <= used.yta[1]) &&
+        const result =
+          (x.prioteradpris >= used.price[0] && x.prioteradpris <= used.price[1]) &&
+          (x.yta >= used.yta[0] && x.yta <= used.yta[1]) &&
           thereIsChoosePlace &&
-          thereIsSearch && (existedTag))
+          thereIsSearch &&
+          existedTag
 
-        return (
-          (x.prioteradpris >= used.price[0] &&
-          x.prioteradpris <= used.price[1]) &&
-          (x.yta >= used.yta[0] &&
-          x.yta <= used.yta[1]) &&
-          thereIsChoosePlace &&
-          // eslint-disable-next-line no-unneeded-ternary
-          thereIsSearch && (!existedTag ? false : true)
-        )
+        console.log('result: ', result)
+        console.log('=====================END======================')
+
+        return result
       })
 
-      if (
-        this.filters.used.plats.length === 1 &&
-        this.filters.used.price.length === 2 &&
-        this.filters.used.property.length === 0 &&
-        this.filters.used.yta.length === 2 &&
-        this.filters.used.search === null
-      ) { this.cards = this.AllPlaces }
+      // if (
+      //   this.filters.used.plats.length === 1 &&
+      //   this.filters.used.price.length === 2 &&
+      //   this.filters.used.property.length === 0 &&
+      //   this.filters.used.yta.length === 2 &&
+      //   (this.filters.used.search === null || this.filters.used.search === '')
+      // ) { this.cards = this.AllPlaces }
 
       this.loadingCards = false
     },
     sorting (sort) {
       console.log(this.cards)
       if (sort === this.$t('ledigaLokaler.sorting.latest')) {
+        // console.log(1)
         this.sortedBy = this.$t('ledigaLokaler.sorting.latest')
         this.cards = this.cards.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
       } else if (sort === this.$t('ledigaLokaler.sorting.oldest')) {
+        // console.log(2)
         this.sortedBy = this.$t('ledigaLokaler.sorting.oldest')
         this.cards = this.cards.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
       } else if (sort === this.$t('ledigaLokaler.sorting.priceLowToHigh')) {
+        // console.log(3)
         this.sortedBy = this.$t('ledigaLokaler.sorting.priceLowToHigh')
         this.cards = this.cards.sort((a, b) => a.prioteradpris - b.prioteradpris)
       } else if (sort === this.$t('ledigaLokaler.sorting.priceHighToLow')) {
+        // console.log(4)
         this.sortedBy = this.$t('ledigaLokaler.sorting.priceHighToLow')
         this.cards = this.cards.sort((a, b) => b.prioteradpris - a.prioteradpris)
       } else if (sort === this.$t('ledigaLokaler.sorting.sizeLowToHigh')) {
+        // console.log(5)
         this.sortedBy = this.$t('ledigaLokaler.sorting.sizeLowToHigh')
         this.cards = this.cards.sort((a, b) => a.yta - b.yta)
       } else if (sort === this.$t('ledigaLokaler.sorting.sizeHighToLow')) {
+        // console.log(6)
         this.sortedBy = this.$t('ledigaLokaler.sorting.sizeHighToLow')
         this.cards = this.cards.sort((a, b) => b.yta - a.yta)
       }
     },
     clearFilters () {
-      this.filters.used = { search: null, price: [0, 76], plats: [], property: [], yta: [0, 4234] }
+      const minMaxPrice = this.getMinAndMax('price', 'prioteradpris')
+      const minMaxYta = this.getMinAndMax('yta', 'yta')
+
+      this.filters.price.value = minMaxPrice
+      this.filters.used.price = minMaxPrice
+      this.filters.yta.value = minMaxYta
+      this.filters.used.yta = minMaxYta
+
+      this.filters.used.search = null
+      this.filters.used.plats = ['Sverige']
+      this.filters.used.property = []
       this.cards = this.AllPlaces
     },
 

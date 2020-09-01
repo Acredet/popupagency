@@ -44,8 +44,7 @@ export default {
                 <img
                   :src="`https://popup.dk.se/_nuxt/img/${img}`"
                   class="img-fluid"
-                  width="480px"
-                  style="min-height:320px"
+                  style="height:200px"
                   :alt="card.title[$i18n.locale]"
                 >
               </template>
@@ -53,16 +52,16 @@ export default {
           </b-carousel>
         </b-card-header>
 
-        <b-card-body class="p-2">
-          <h3 class="font-weight-bold">
+        <b-card-text class="p-2">
+          <h5 class="font-weight-bold">
             {{ card.title[$i18n.locale] }}
-          </h3>
+          </h5>
           <div v-if="card.beskreving" v-html="card.beskreving[$i18n.locale]" />
 
           <b-btn size="sm" variant="primary" :to="`${$t('link')}lokal/${card.title.sv}`">
             {{ $t('ledigaLokaler.moreDetails') }}
           </b-btn>
-        </b-card-body>
+        </b-card-text>
 
         <template v-slot:footer>
           <b-row class="p-2">
@@ -90,7 +89,11 @@ export default {
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
 }
+.card {
+  height: 500px !important;
+}
 .card-body {
+  overflow-y: scroll;
   padding: 0;
 }
 .card-footer {

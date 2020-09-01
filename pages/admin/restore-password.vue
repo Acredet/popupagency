@@ -4,7 +4,7 @@
       This user does not exit!
     </b-alert>
 
-    <b-modal id="email-sent" title="Check your inbox">
+    <b-modal id="email-sent" title="Check your inbox" @ok="weOk">
       <p class="my-4">
         We sent you a link to reset your paswword
       </p>
@@ -66,6 +66,9 @@ export default {
     }
   },
   methods: {
+    weOk () {
+      this.$router.push(`${this.$t('link')}admin/login`)
+    },
     async getuserEmail () {
       await this.$axios.post('/mail/', { email: this.userEmail })
         .then(() => this.$bvModal.show('email-sent'))
