@@ -34,7 +34,18 @@
         <b-col cols="4">
           <small><b>yta: 130</b></small>
         </b-col>
+
         <b-col cols="12">
+          <small class="text-muted">
+            <BIconWallet class="text-dark mr-1" />{{ `fr ${card.prioteradpris} kr / månad` }}
+          </small>
+        </b-col>
+
+        <b-col cols="12">
+          <hr class="my-0 py-0">
+        </b-col>
+
+        <b-col v-b-tooltip.hover :title="card.location.formattedAddress" cols="12">
           <!-- Add this to focus on the place on map: @click="showPlace(card.location.coordinates)" -->
           <small class="text-muted" style="cursor: pointer">
             <BIconGeoAlt class="text-dark mr-1" />{{ card.location.formattedAddress }}
@@ -111,5 +122,8 @@ export default {
 .listing-card--content {
   color: black;
   height: 94px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>

@@ -766,7 +766,7 @@ export default {
     singleClick (e) {
       this.setCenter([e.center_.lng(), e.center_.lat()])
       console.log(this.map.zoom)
-      this.map.zoom = (this.map.zoom < 7) ? 7 : this.map.zoom + 1
+      this.map.zoom = (this.map.zoom < 7) ? 7 : (this.map.zoom + 1)
     },
     mapResized (e) {
       this.map.zoom = e
