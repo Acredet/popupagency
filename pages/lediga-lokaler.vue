@@ -484,8 +484,9 @@
               :key="String(index)"
               class="my-2"
               cols="12"
-              :md="layout.value === $t('ledigaLokaler.map') ? 12 : 6"
+              :md="6"
               :lg="layout.value === $t('ledigaLokaler.map') ? 6 : 4"
+              :xl="layout.value === $t('ledigaLokaler.map') ? 4 : 3"
             >
               <listing-card :card="card" :layout="layout.value" @showPlace="setCenter($event)" />
             </b-col>
@@ -497,9 +498,16 @@
 
       <!-- Start Map -->
       <b-col v-if="layout.value === $t('ledigaLokaler.map')" cols="12" md="6" class="map-wrapper d-md-flex">
-        <gmap-map ref="mapRef" :key="renderKey" :center="map.center" :map-type-id="map.mapTypeId" :zoom="7">
+        <gmap-map
+          ref="mapRef"
+          :key="renderKey"
+          :center="map.center"
+          :map-type-id="map.mapTypeId"
+          :zoom="map.zoom"
+          @zoom_changed="mapResized"
+        >
           <gmap-info-window :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen" @closeclick="infoWinOpen=false" />
-          <gmap-cluster>
+          <gmap-cluster @click="singleClick">
             <gmap-marker
               v-for="(mark, index) in map.markers"
               :key="index"
@@ -515,9 +523,7 @@
     </b-row>
 
     <!-- Strat Toggle Layout in small screens -->
-    <div
-      class="mobile-btns px-3 d-md-none position-fixed d-flex justify-content-between align-items-center"
-    >
+    <div class="mobile-btns px-3 d-md-none position-fixed d-flex justify-content-between align-items-center">
       <b-btn
         pill
         variant="dark"
@@ -568,6 +574,7 @@ export default {
       map: {
         center: { lat: 59.334591, lng: 18.06324 },
         mapTypeId: 'roadmap',
+        zoom: 7,
         markers: []
       },
       infoWindowPos: null,
@@ -755,6 +762,14 @@ export default {
         this.infoWinOpen = true
         this.currentMidx = idx
       }
+    },
+    singleClick (e) {
+      this.setCenter([e.center_.lng(), e.center_.lat()])
+      console.log(this.map.zoom)
+      this.map.zoom = (this.map.zoom < 7) ? 7 : this.map.zoom + 1
+    },
+    mapResized (e) {
+      this.map.zoom = e
     },
 
     // Utils
