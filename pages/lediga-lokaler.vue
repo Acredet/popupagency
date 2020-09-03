@@ -498,9 +498,6 @@
 
       <!-- Start Map -->
       <b-col v-if="layout.value === $t('ledigaLokaler.map')" cols="12" md="6" class="map-wrapper d-md-flex">
-        <b-btn variant="primary" @click="getNearbyPlaces (map.center.lat, map.center.lng, 'hospital')">
-          hey
-        </b-btn>
         <gmap-map
           ref="mapRef"
           :key="renderKey"
@@ -667,16 +664,6 @@ export default {
 
     await Promise.all(promises).then((res) => {
       this.AllPlaces = res[0].data
-
-      // formatCities
-      this.AllPlaces.forEach((place) => {
-        const length = place.location.formattedAddress.length
-        const indexOfLastComma = place.location.formattedAddress.lastIndexOf(',')
-        const country = place.location.formattedAddress.slice(indexOfLastComma, length)
-
-        console.log(country)
-      })
-
       const regions = res[1].data
       const tags = res[2].data
 
@@ -845,6 +832,7 @@ export default {
           const country = plats.tabs[key]
           country.forEach((city) => {
             used.plats.push(...city.selected)
+            console.log(used.plats)
           })
         }
       }

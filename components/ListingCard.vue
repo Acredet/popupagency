@@ -25,17 +25,17 @@
     <!-- Start card Info -->
     <div class="listing-card--content pt-1">
       <b-row no-gutters>
-        <b-col cols="7" class="border-right border-bottom pr-1 pl-3">
-          <small class="text-muted">
-            <BIconWallet class="text-dark mr-1" />{{ `fr ${card.prioteradpris} kr / månad` }}
-          </small>
-        </b-col>
-
         <b-col class="border-bottom px-1" cols="5">
           <!-- Add this to focus on the place on map: @click="showPlace(card.location.coordinates)" -->
           <small class="text-muted" style="cursor: pointer">
             <!-- <BIconGeoAlt class="text-dark mr-1" />{{ card.location.formattedAddress }} -->
             <BIconGeoAlt class="text-dark mr-1" />{{ card.stad[$i18n.locale] }}
+          </small>
+        </b-col>
+
+        <b-col cols="7" class="border-left border-bottom pl-1 pr-3">
+          <small class="text-muted">
+            <BIconWallet class="text-dark mr-1" />{{ `fr ${card.prioteradpris} kr / månad` }}
           </small>
         </b-col>
       </b-row>
