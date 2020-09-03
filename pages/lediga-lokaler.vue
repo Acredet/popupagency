@@ -498,6 +498,9 @@
 
       <!-- Start Map -->
       <b-col v-if="layout.value === $t('ledigaLokaler.map')" cols="12" md="6" class="map-wrapper d-md-flex">
+        <b-btn variant="primary" @click="getNearbyPlaces (map.center.lat, map.center.lng, 'hospital')">
+          hey
+        </b-btn>
         <gmap-map
           ref="mapRef"
           :key="renderKey"
@@ -770,6 +773,24 @@ export default {
     },
     mapResized (e) {
       this.map.zoom = e
+    },
+    getNearbyPlaces (lat, lng, placeType) {
+      let url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?'
+
+      url += `location=${lat},${lng}`
+      url += '&radius=10000'
+      url += `&types=${placeType}`
+      url += '&sensor=true'
+      url += '&key=AIzaSyCwwawqFjvbUv_ke0pviP0rHqACQB-MoaE'
+
+      console.log(url)
+      this.$axios.$get(url, { headers: { 'Access-Control-Allow-Origin': '*' } })
+        .then((res) => {
+          console.log(res.results)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     },
 
     // Utils
