@@ -658,6 +658,7 @@ export default {
   async created () {
     this.loadingCards = true
     this.loadingState = true
+
     const promises = [
       this.$axios.$get('/places'),
       this.$axios.$get('/region'),
@@ -666,6 +667,16 @@ export default {
 
     await Promise.all(promises).then((res) => {
       this.AllPlaces = res[0].data
+
+      // formatCities
+      this.AllPlaces.forEach((place) => {
+        const length = place.location.formattedAddress.length
+        const indexOfLastComma = place.location.formattedAddress.lastIndexOf(',')
+        const country = place.location.formattedAddress.slice(indexOfLastComma, length)
+
+        console.log(country)
+      })
+
       const regions = res[1].data
       const tags = res[2].data
 
