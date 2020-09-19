@@ -25,12 +25,12 @@
             <client-only>
               <div class="px-2">
                 <vue-slider
-                  v-model="filters.price.value"
+                  v-model="filters.used.price"
                   :min="filters.price.min"
                   :max="filters.price.max"
                   @change="priceChanged"
                 />
-                <small>{{ filters.price.value[0] || 0 }} Kr — {{ filters.price.value[1] || 0 }} Kr</small>
+                <small>{{ filters.used.price[0] || 0 }} Kr — {{ filters.used.price[1] || 0 }} Kr</small>
               </div>
             </client-only>
           </b-collapse>
@@ -49,15 +49,15 @@
             <client-only>
               <div class="px-2">
                 <vue-slider
-                  v-model="filters.yta.value"
+                  v-model="filters.used.yta"
                   :min="filters.yta.min"
                   :max="filters.yta.max"
                   @change="ytaChanged"
                 />
                 <small>
-                  {{ filters.yta.value[0] || 0 }} m
+                  {{ filters.used.yta[0] || 0 }} m
                   <sup>3</sup>
-                  — {{ filters.yta.value[1] || 0 }} m
+                  — {{ filters.used.yta[1] || 0 }} m
                   <sup>3</sup>
                 </small>
               </div>
@@ -291,7 +291,7 @@
                       class="text-left m-1"
                       @click="addProperty(icon)"
                     >
-                      <b-img width="30" :src="`https://popup.dk.se/_nuxt/img/${icon.avatar}`" />
+                      <b-img v-if="icon.avatar" width="30" :src="`https://popup.dk.se/_nuxt/img/${icon.avatar}`" />
                       {{ icon.text }}
                     </b-button>
                   </b-button-group>
@@ -311,12 +311,12 @@
               >
                 <b-dropdown-group :header="$t('ledigaLokaler.filters.price')" style="width: 300px !important" class="px-3">
                   <vue-slider
-                    v-model="filters.price.value"
+                    v-model="filters.used.price"
                     :min="filters.price.min"
                     :max="filters.price.max"
                     @change="priceChanged"
                   />
-                  <small>{{ filters.price.value[0] || 0 }} Kr — {{ filters.price.value[1] || 0 }} Kr</small>
+                  <small>{{ filters.used.price[0] || 0 }} Kr — {{ filters.used.price[1] || 0 }} Kr</small>
                 </b-dropdown-group>
               </b-dropdown>
             </b-col>
@@ -333,15 +333,15 @@
               >
                 <b-dropdown-group :header="$t('ledigaLokaler.filters.surface')" style="width: 300px !important" class="px-3">
                   <vue-slider
-                    v-model="filters.yta.value"
+                    v-model="filters.used.yta"
                     :min="filters.yta.min"
                     :max="filters.yta.max"
                     @change="ytaChanged"
                   />
                   <small>
-                    {{ filters.yta.value[0] || 0 }} m
+                    {{ filters.used.yta[0] || 0 }} m
                     <sup>3</sup>
-                    — {{ filters.yta.value[1] || 0 }} m
+                    — {{ filters.used.yta[1] || 0 }} m
                     <sup>3</sup>
                   </small>
                 </b-dropdown-group>
@@ -567,8 +567,7 @@ export default {
         price: {
           text: this.$t('ledigaLokaler.filters.price'),
           min: 0,
-          max: 0,
-          value: [0, 100]
+          max: 0
         },
         property: {
           text: this.$t('ledigaLokaler.filters.propertyType'),
@@ -579,7 +578,6 @@ export default {
           text: this.$t('ledigaLokaler.filters.surface'),
           min: 0,
           max: 0,
-          value: [0, 100],
           enableCross: false
         }
       },
@@ -627,9 +625,7 @@ export default {
       const minMaxPrice = this.getMinAndMax('price', 'prioteradpris')
       const minMaxYta = this.getMinAndMax('yta', 'yta')
 
-      this.filters.price.value = minMaxPrice
       this.filters.used.price = minMaxPrice
-      this.filters.yta.value = minMaxYta
       this.filters.used.yta = minMaxYta
 
       const sortedRegions = this.sortItems(regions, false)
@@ -708,7 +704,7 @@ export default {
       this.loadingCards = true
       const used = this.filters.used
       const plats = this.filters.plats
-      const chooesdTags = this.filters.property.choose
+      const chooesdTags = this.filters.used.property
 
       used.plats = [plats.currentCountry]
       // const selectedCity = [plats.currentCountry]
@@ -805,21 +801,27 @@ export default {
       }
     },
     clearFilters () {
-      const minMaxPrice = this.getMinAndMax('price', 'prioteradpris')
-      const minMaxYta = this.getMinAndMax('yta', 'yta')
+      const { price, yta } = this.filters
 
-      // this.filters.price.value = minMaxPrice
-      this.filters.used.price = minMaxPrice
-      // this.filters.yta.value = minMaxYta
-      this.filters.used.yta = minMaxYta
+      // Reset Price
+      this.filters.used.price = [price.min, price.max]
+      this.filters.price.text = this.$t('ledigaLokaler.filters.price')
 
+      // Reset yta
+      this.filters.yta.text = this.$t('ledigaLokaler.filters.surface')
+      this.filters.used.yta = [yta.min, yta.max]
+
+      // Reset search
       this.filters.used.search = null
+
+      // Reset Places
       this.filters.used.plats = ['Sverige']
 
-      this.filters.price.text = this.$t('ledigaLokaler.filters.price')
-      this.filters.yta.text = this.$t('ledigaLokaler.filters.surface')
-
+      // Reset Properties
+      this.filters.property.icons.forEach((x) => { x.state = false })
       this.filters.used.property = []
+
+      // Reset cards
       this.cards = this.AllPlaces
     },
 
@@ -878,7 +880,6 @@ export default {
     },
     addProperty (button) {
       const x = this.filters.property.icons.filter(x => x.state)
-      this.filters.property.choose = x
       this.filters.used.property = x
       this.doFilter()
     }

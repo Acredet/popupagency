@@ -24,6 +24,10 @@
 </template>
 
 <script>
+/** DOCS
+ * This component takes all listing and pin them in the map
+ * and add popup to the markers when it's clicked.
+ */
 export default {
   props: {
     allPlaces: {

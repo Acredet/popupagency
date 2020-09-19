@@ -34,7 +34,13 @@
   color: white
 }
 
-.btn-outline-primary:hover, .btn-outline-primary:focus, .btn-outline-primary:not(:disabled):not(.disabled).active, .btn-primary:hover, .btn-primary:focus, .btn-primary:not(:disabled):not(.disabled):active {
+.btn-outline-primary:focus,  .btn-primary:focus {
+  background-color: white;
+  border-color: var(--primary-hover);
+  color: black
+}
+
+.btn-outline-primary:hover, .btn-outline-primary:not(:disabled):not(.disabled).active, .btn-primary:hover, .btn-primary:not(:disabled):not(.disabled):active {
   background-color: var(--primary-hover);
   border-color: var(--primary-hover);
   color: white
