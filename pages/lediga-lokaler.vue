@@ -642,9 +642,15 @@ export default {
               ? city.subCities.map(x => (x.name = x.name[this.lang]))
               : []
 
+            let all = 0
+            city.subCities.forEach((subCity) => {
+              // console.log('subCity: ', subCity.name)
+              all += this.AllPlaces.filter(place => place.stad[this.lang] === subCity.name).length
+            })
+
             this.filters.plats.tabs[country.name[this.lang]].push({
               name: city.name[this.lang],
-              text: `${city.name[this.lang]} (${city.subCities.length})`,
+              text: `${city.name[this.lang]} (${all})`,
               allSelected: false, // Shape of the check
               indeterminate: false, // Shape of the check
               selected: [],
@@ -821,6 +827,23 @@ export default {
       this.filters.property.icons.forEach((x) => { x.state = false })
       this.filters.used.property = []
 
+      // Reset places
+      const tabs = this.filters.plats.tabs
+      for (const country in tabs) {
+        if (tabs.hasOwnProperty(country)) {
+          const element = tabs[country]
+          element.forEach((x) => {
+            x.selected = []
+            this.$nextTick(() => {
+              x.allSelected = false
+              x.indeterminate = false
+            })
+          })
+        }
+      }
+
+      this.$forceUpdate()
+
       // Reset cards
       this.cards = this.AllPlaces
     },
@@ -850,19 +873,14 @@ export default {
       ]
       // console.log(arr)
 
-      const subcities =
-        arr.selected.length !== arr.subcity.length ? arr.subcity.slice() : []
-      arr.selected = arr.selected.includes(arr.name)
-        ? (arr.selected = [])
-        : (arr.selected = [arr.name, ...subcities])
+      const subcities = arr.selected.length !== arr.subcity.length ? arr.subcity.slice() : []
+      arr.selected = arr.selected.includes(arr.name) ? (arr.selected = []) : (arr.selected = [arr.name, ...subcities])
 
       this.doFilter()
       this.$forceUpdate()
     },
     placeChoose (index) {
-      const arr = this.filters.plats.tabs[this.filters.plats.currentCountry][
-        index
-      ]
+      const arr = this.filters.plats.tabs[this.filters.plats.currentCountry][index]
       this.$nextTick(() => {
         if (arr.selected.length === 2) {
           arr.indeterminate = false
