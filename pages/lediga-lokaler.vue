@@ -816,6 +816,9 @@ export default {
 
       return [min, max]
     },
+    formatPrices (num) {
+      return String(num).replace(/(?<!\..*)(\d)(?=(?:\d{3})+(?:\.|$))/g, '$1 ')
+    },
 
     // Filters Functions
     doFilter () {
@@ -831,6 +834,7 @@ export default {
         if (plats.tabs.hasOwnProperty(key)) {
           const country = plats.tabs[key]
           country.forEach((city) => {
+            [...city.selected].forEach(x => console.log(`Unicode of ${x}: `, String.fromCharCode(x)))
             used.plats.push(...city.selected)
             console.log(used.plats)
           })
@@ -862,6 +866,7 @@ export default {
         const thereIsSearch = (!this.filters.used.search) ? true : x.title.en.match(re)
 
         console.log('=====================START======================')
+        console.log('x.stad', x.stad)
         console.log(`x.prioteradpris(${x.prioteradpris}) >= used.price[0] : `, x.prioteradpris >= used.price[0])
         console.log('x.prioteradpris <= used.price[1]: ', x.prioteradpris <= used.price[1])
         console.log(`x.yta(${x.prioteradpris}) >= used.yta[0]: `, x.yta >= used.yta[0])
@@ -895,29 +900,24 @@ export default {
     },
     sorting (sort) {
       console.log(this.cards)
+      this.sortedBy = sort
       if (sort === this.$t('ledigaLokaler.sorting.latest')) {
         // console.log(1)
-        this.sortedBy = this.$t('ledigaLokaler.sorting.latest')
         this.cards = this.cards.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
       } else if (sort === this.$t('ledigaLokaler.sorting.oldest')) {
         // console.log(2)
-        this.sortedBy = this.$t('ledigaLokaler.sorting.oldest')
         this.cards = this.cards.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
       } else if (sort === this.$t('ledigaLokaler.sorting.priceLowToHigh')) {
         // console.log(3)
-        this.sortedBy = this.$t('ledigaLokaler.sorting.priceLowToHigh')
         this.cards = this.cards.sort((a, b) => a.prioteradpris - b.prioteradpris)
       } else if (sort === this.$t('ledigaLokaler.sorting.priceHighToLow')) {
         // console.log(4)
-        this.sortedBy = this.$t('ledigaLokaler.sorting.priceHighToLow')
         this.cards = this.cards.sort((a, b) => b.prioteradpris - a.prioteradpris)
       } else if (sort === this.$t('ledigaLokaler.sorting.sizeLowToHigh')) {
         // console.log(5)
-        this.sortedBy = this.$t('ledigaLokaler.sorting.sizeLowToHigh')
         this.cards = this.cards.sort((a, b) => a.yta - b.yta)
       } else if (sort === this.$t('ledigaLokaler.sorting.sizeHighToLow')) {
         // console.log(6)
-        this.sortedBy = this.$t('ledigaLokaler.sorting.sizeHighToLow')
         this.cards = this.cards.sort((a, b) => b.yta - a.yta)
       }
     },
@@ -925,13 +925,17 @@ export default {
       const minMaxPrice = this.getMinAndMax('price', 'prioteradpris')
       const minMaxYta = this.getMinAndMax('yta', 'yta')
 
-      this.filters.price.value = minMaxPrice
+      // this.filters.price.value = minMaxPrice
       this.filters.used.price = minMaxPrice
-      this.filters.yta.value = minMaxYta
+      // this.filters.yta.value = minMaxYta
       this.filters.used.yta = minMaxYta
 
       this.filters.used.search = null
       this.filters.used.plats = ['Sverige']
+
+      this.filters.price.text = this.$t('ledigaLokaler.filters.price')
+      this.filters.yta.text = this.$t('ledigaLokaler.filters.surface')
+
       this.filters.used.property = []
       this.cards = this.AllPlaces
     },
@@ -939,11 +943,20 @@ export default {
     priceChanged (w) {
       this.filters.used.price = w
       console.log(w)
-      this.filters.price.text = `${this.$t('ledigaLokaler.filters.max')} $${w[1]}`
+      if (w[0] === this.filters.price.min && w[1] === this.filters.price.max) {
+        this.filters.price.text = this.$t('ledigaLokaler.filters.price')
+      } else {
+        this.filters.price.text = `${this.formatPrices(w[0])}Kr - ${this.formatPrices(w[1])}Kr`
+      }
       this.doFilter()
     },
     ytaChanged (w) {
       this.filters.used.yta = w
+      if (w[0] === this.filters.yta.min && w[1] === this.filters.yta.max) {
+        this.filters.yta.text = this.$t('ledigaLokaler.filters.surface')
+      } else {
+        this.filters.yta.text = `${this.formatPrices(w[0])}m3 - ${this.formatPrices(w[1])}m3`
+      }
       this.doFilter()
     },
     toggleAll (index) {
