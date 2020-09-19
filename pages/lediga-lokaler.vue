@@ -22,15 +22,17 @@
           </li>
 
           <b-collapse id="price" accordion="filters" role="tabpanel">
-            <div class="px-2">
-              <vue-slider
-                v-model="filters.price.value"
-                :min="filters.price.min"
-                :max="filters.price.max"
-                @change="priceChanged"
-              />
-              <small>{{ filters.price.value[0] || 0 }} Kr — {{ filters.price.value[1] || 0 }} Kr</small>
-            </div>
+            <client-only>
+              <div class="px-2">
+                <vue-slider
+                  v-model="filters.price.value"
+                  :min="filters.price.min"
+                  :max="filters.price.max"
+                  @change="priceChanged"
+                />
+                <small>{{ filters.price.value[0] || 0 }} Kr — {{ filters.price.value[1] || 0 }} Kr</small>
+              </div>
+            </client-only>
           </b-collapse>
           <!-- End Price Tab -->
 
@@ -44,20 +46,22 @@
           </li>
 
           <b-collapse id="yta" accordion="filters" role="tabpanel">
-            <div class="px-2">
-              <vue-slider
-                v-model="filters.yta.value"
-                :min="filters.yta.min"
-                :max="filters.yta.max"
-                @change="ytaChanged"
-              />
-              <small>
-                {{ filters.yta.value[0] || 0 }} m
-                <sup>3</sup>
-                — {{ filters.yta.value[1] || 0 }} m
-                <sup>3</sup>
-              </small>
-            </div>
+            <client-only>
+              <div class="px-2">
+                <vue-slider
+                  v-model="filters.yta.value"
+                  :min="filters.yta.min"
+                  :max="filters.yta.max"
+                  @change="ytaChanged"
+                />
+                <small>
+                  {{ filters.yta.value[0] || 0 }} m
+                  <sup>3</sup>
+                  — {{ filters.yta.value[1] || 0 }} m
+                  <sup>3</sup>
+                </small>
+              </div>
+            </client-only>
           </b-collapse>
           <!-- End yta Tab -->
 
@@ -430,6 +434,7 @@
 
           <!-- start if Listing -->
           <b-row v-else>
+            <!-- Start Listing header -->
             <b-col cols="12" class="d-flex sticky justify-content-between align-items-center">
               <b-dropdown id="sorting" :text="sortedBy" class="m-md-2">
                 <b-dropdown-item @click="sorting($t('ledigaLokaler.sorting.latest'))">
@@ -460,25 +465,10 @@
               <p class="p-0 m-0">
                 {{ cards.length }} {{ $t('ledigaLokaler.lsiting') }}
               </p>
-
-              <b-form-group class="p-0 m-0">
-                <b-form-radio-group
-                  id="layout-btns"
-                  v-model="layout.value"
-                  buttons
-                  button-variant="outline-primary"
-                >
-                  <b-form-radio :value="$t('ledigaLokaler.list')">
-                    <i class="fas fa-list mr-1" />
-                    {{ $t('ledigaLokaler.list') }}
-                  </b-form-radio>
-                  <b-form-radio :value="$t('ledigaLokaler.map')">
-                    <i class="far fa-map mr-1" />
-                    {{ $t('ledigaLokaler.map') }}
-                  </b-form-radio>
-                </b-form-radio-group>
-              </b-form-group>
             </b-col>
+            <!-- End Listing header -->
+
+            <!-- Start Listing -->
             <b-col
               v-for="(card, index) in cards"
               :key="String(index)"
@@ -490,6 +480,7 @@
             >
               <listing-card :card="card" :layout="layout.value" @showPlace="setCenter($event)" />
             </b-col>
+            <!-- End Listing -->
           </b-row>
           <!-- End if Listing -->
         </b-container>
@@ -498,26 +489,7 @@
 
       <!-- Start Map -->
       <b-col v-if="layout.value === $t('ledigaLokaler.map')" cols="12" md="6" class="map-wrapper d-md-flex">
-        <gmap-map
-          ref="mapRef"
-          :key="renderKey"
-          :center="map.center"
-          :map-type-id="map.mapTypeId"
-          :zoom="map.zoom"
-          @zoom_changed="mapResized"
-        >
-          <gmap-info-window :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen" @closeclick="infoWinOpen=false" />
-          <gmap-cluster @click="singleClick">
-            <gmap-marker
-              v-for="(mark, index) in map.markers"
-              :key="index"
-              :clickable="true"
-              :position="mark"
-              :icon="require(`@/assets/img/marker.svg`)"
-              @click="toggleInfoWindow(mark, index)"
-            />
-          </gmap-cluster>
-        </gmap-map>
+        <GMap :all-places="AllPlaces" />
       </b-col>
       <!-- End Map -->
     </b-row>
@@ -546,6 +518,8 @@ import { BootstrapVue, BIcon } from 'bootstrap-vue'
 import 'vue-slider-component/theme/material.css'
 import { sortItems } from '@/mixins/SortRegions'
 
+import GMap from '@/components/lediga/Map'
+
 let VueSlider
 if (process.browser) {
   VueSlider = require('vue-slider-component')
@@ -559,6 +533,7 @@ if (process.browser) {
 export default {
   name: 'LedigaLokaler',
   components: {
+    GMap,
     // eslint-disable-next-line vue/no-unused-components
     BootstrapVue,
     // eslint-disable-next-line vue/no-unused-components
@@ -571,24 +546,6 @@ export default {
       loadingState: false,
       loadingCards: false,
       sortedBy: this.$t('ledigaLokaler.sorting.latest'),
-      map: {
-        center: { lat: 59.334591, lng: 18.06324 },
-        mapTypeId: 'roadmap',
-        zoom: 7,
-        markers: []
-      },
-      infoWindowPos: null,
-      infoWinOpen: false,
-      currentMidx: null,
-
-      infoOptions: {
-        content: '',
-        // optional: offset infowindow so it visually sits nicely on top of our marker
-        pixelOffset: {
-          width: 0,
-          height: -35
-        }
-      },
       layout: {
         value: this.$t('ledigaLokaler.list')
       },
@@ -701,7 +658,7 @@ export default {
         }
       })
 
-      this.pinMarkers(this.AllPlaces)
+      this.cards = this.AllPlaces
 
       this.filters.property.icons = tags.map((x) => {
         return {
@@ -717,80 +674,6 @@ export default {
     })
   },
   methods: {
-    // Map Functions
-    setCenter (x) {
-      this.layout.value = this.$t('ledigaLokaler.map')
-      this.map.center = { lng: x[0], lat: x[1] }
-    },
-    pinMarkers (places) {
-      this.cards = places
-      this.map.markers = this.cards.map((x) => {
-        return {
-          lng: x.location.coordinates[0],
-          lat: x.location.coordinates[1],
-          // <div style="z-index: 4;position: absolute;  bottom: 0;  left: 0; width: 100%;  padding: 5px;  background: rgba(0,0,0,0.8); color: black;" />
-          infoText: `
-            <a class="map-popup px-2 d-block text-dark" href='${this.$t('link')}lokal/${x.title.sv}'>
-              <div style="background-image: url('https://popup.dk.se/_nuxt/img/${x.cover[0]}')" class="cover flex-wrap d-flex justify-content-end flex-column align-items-start" />
-                <div class="overlay">
-                  <p class="text-white font-2 p-0 m-0">${x.title.sv}</p>
-                  <p class="text-white font-4 p-0 m-0">$${x.prioteradpris}</p>
-                </div>
-              </div>
-              <div>
-                <p class="p-0 m-0">${x.location.formattedAddress}</p>
-              </div>
-            </a>
-          `
-        }
-      })
-    },
-    refreshMap () {
-      this.$store.commit('changeSidebarRenderKey')
-    },
-    toggleInfoWindow (marker, idx) {
-      this.infoWindowPos = {
-        lng: marker.lng,
-        lat: marker.lat
-      }
-      this.infoOptions.content = marker.infoText
-
-      // check if its the same marker that was selected if yes toggle
-      if (this.currentMidx === idx) {
-        this.infoWinOpen = !this.infoWinOpen
-      } else {
-        // if different marker set infowindow to open and reset current marker index
-        this.infoWinOpen = true
-        this.currentMidx = idx
-      }
-    },
-    singleClick (e) {
-      this.setCenter([e.center_.lng(), e.center_.lat()])
-      console.log(this.map.zoom)
-      this.map.zoom = (this.map.zoom < 7) ? 7 : (this.map.zoom + 1)
-    },
-    mapResized (e) {
-      this.map.zoom = e
-    },
-    getNearbyPlaces (lat, lng, placeType) {
-      let url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?'
-
-      url += `location=${lat},${lng}`
-      url += '&radius=10000'
-      url += `&types=${placeType}`
-      url += '&sensor=true'
-      url += '&key=AIzaSyCwwawqFjvbUv_ke0pviP0rHqACQB-MoaE'
-
-      console.log(url)
-      this.$axios.$get(url, { headers: { 'Access-Control-Allow-Origin': '*' } })
-        .then((res) => {
-          console.log(res.results)
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    },
-
     // Utils
     /**
      * @param { String } Obj the object in the instance
@@ -955,7 +838,7 @@ export default {
       if (w[0] === this.filters.yta.min && w[1] === this.filters.yta.max) {
         this.filters.yta.text = this.$t('ledigaLokaler.filters.surface')
       } else {
-        this.filters.yta.text = `${this.formatPrices(w[0])}m3 - ${this.formatPrices(w[1])}m3`
+        this.filters.yta.text = `${this.formatPrices(w[0])}m2 - ${this.formatPrices(w[1])}m2`
       }
       this.doFilter()
     },
