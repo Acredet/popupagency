@@ -13,10 +13,7 @@
       <b-container class="py-2">
         <ul class="list-unstyled">
           <!-- Start Price Tab -->
-          <li
-            v-b-toggle="'price'"
-            class="p-2 border d-flex justify-content-between align-items-center font-3 mb-1"
-          >
+          <li v-b-toggle="'price'" class="p-2 border d-flex justify-content-between align-items-center font-3 mb-1">
             <span>{{ filters.price.text }}</span>
             <i class="fas fa-caret-down" />
           </li>
@@ -24,12 +21,7 @@
           <b-collapse id="price" accordion="filters" role="tabpanel">
             <client-only>
               <div class="px-2">
-                <vue-slider
-                  v-model="filters.used.price"
-                  :min="filters.price.min"
-                  :max="filters.price.max"
-                  @change="priceChanged"
-                />
+                <vue-slider v-model="filters.used.price" :min="filters.price.min" :max="filters.price.max" @change="priceChanged" />
                 <small>{{ filters.used.price[0] || 0 }} Kr — {{ filters.used.price[1] || 0 }} Kr</small>
               </div>
             </client-only>
@@ -37,10 +29,7 @@
           <!-- End Price Tab -->
 
           <!-- Start yta Tab -->
-          <li
-            v-b-toggle="'yta'"
-            class="p-2 border d-flex justify-content-between align-items-center font-3 mb-1"
-          >
+          <li v-b-toggle="'yta'" class="p-2 border d-flex justify-content-between align-items-center font-3 mb-1">
             <span>{{ filters.yta.text }}</span>
             <i class="fas fa-caret-down" />
           </li>
@@ -48,12 +37,7 @@
           <b-collapse id="yta" accordion="filters" role="tabpanel">
             <client-only>
               <div class="px-2">
-                <vue-slider
-                  v-model="filters.used.yta"
-                  :min="filters.yta.min"
-                  :max="filters.yta.max"
-                  @change="ytaChanged"
-                />
+                <vue-slider v-model="filters.used.yta" :min="filters.yta.min" :max="filters.yta.max" @change="ytaChanged" />
                 <small>
                   {{ filters.used.yta[0] || 0 }} m
                   <sup>3</sup>
@@ -66,20 +50,14 @@
           <!-- End yta Tab -->
 
           <!-- Start yta Tab -->
-          <li
-            v-b-toggle="'property'"
-            class="p-2 border d-flex justify-content-between align-items-center font-3 mb-1"
-          >
+          <li v-b-toggle="'property'" class="p-2 border d-flex justify-content-between align-items-center font-3 mb-1">
             <span>{{ filters.property.text }}</span>
             <i class="fas fa-caret-down" />
           </li>
 
           <b-collapse id="property" accordion="filters" role="tabpanel">
             <div class="px-2">
-              <b-button-group
-                vertical
-                class="d-flex flex-wrap align-items-center justify-content-between flex-row w-100"
-              >
+              <b-button-group vertical class="d-flex flex-wrap align-items-center justify-content-between flex-row w-100">
                 <b-button
                   v-for="(icon) in filters.property.icons"
                   :key="icon.text"
@@ -98,10 +76,7 @@
           <!-- End yta Tab -->
 
           <!-- Start yta Tab -->
-          <li
-            v-b-toggle="'plats'"
-            class="p-2 border d-flex justify-content-between align-items-center font-3 mb-1"
-          >
+          <li v-b-toggle="'plats'" class="p-2 border d-flex justify-content-between align-items-center font-3 mb-1">
             <span>Plats</span>
             <i class="fas fa-caret-down" />
           </li>
@@ -163,13 +138,7 @@
           </b-collapse>
           <!-- End yta Tab -->
           <li>
-            <b-button
-              block
-              class="mt-1 mt-sm-0"
-              variant="warning"
-              @click="clearFilters"
-              v-text="$t('ledigaLokaler.filters.clear')"
-            />
+            <b-button block class="mt-1 mt-sm-0" variant="warning" @click="clearFilters" v-text="$t('ledigaLokaler.filters.clear')" />
           </li>
         </ul>
       </b-container>
@@ -270,17 +239,9 @@
 
             <!-- Start property Filter -->
             <b-col cols="12" md="auto" class="mr-2 d-none d-lg-flex align-items-center">
-              <b-dropdown
-                id="property-dropdown"
-                class="w-100"
-                variant="light"
-                :text="filters.property.text"
-              >
+              <b-dropdown id="property-dropdown" class="w-100" variant="light" :text="filters.property.text">
                 <b-dropdown-group :header="$t('ledigaLokaler.filters.propertyType')" style="width: 300px !important" class="px-1">
-                  <b-button-group
-                    vertical
-                    class="d-flex flex-wrap align-items-center justify-content-between flex-row w-100"
-                  >
+                  <b-button-group vertical class="d-flex flex-wrap align-items-center justify-content-between flex-row w-100">
                     <b-button
                       v-for="(icon) in filters.property.icons"
                       :key="icon.text"
@@ -408,11 +369,11 @@
 
       <!-- Start Listings -->
       <b-col cols="12" :md="layout.value === $t('ledigaLokaler.map') ? 6 : 12" class="wrapper">
-        <b-container>
+        <b-container class="h-100">
           <!-- Start if empty -->
-          <b-row v-if="cards.length === 0" align-h="center" align-content="center">
+          <b-row v-if="cards.length === 0" align-h="center" align-content="center" class="h-100">
             <p class="text-center text-secondary">
-              There is No Listing yet
+              There are no listings.
             </p>
           </b-row>
           <!-- End if empty -->
@@ -489,7 +450,9 @@
 
       <!-- Start Map -->
       <b-col v-if="layout.value === $t('ledigaLokaler.map')" cols="12" md="6" class="map-wrapper d-md-flex">
-        <GMap :all-places="AllPlaces" />
+        <client-only>
+          <GMap :all-places="cards" />
+        </client-only>
       </b-col>
       <!-- End Map -->
     </b-row>
@@ -808,6 +771,8 @@ export default {
     },
     clearFilters () {
       const { price, yta } = this.filters
+      // reset search
+      this.searchInput = null
 
       // Reset Price
       this.filters.used.price = [price.min, price.max]

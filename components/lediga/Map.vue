@@ -62,8 +62,10 @@ export default {
       return this.$store.state.changeSidebarRenderKey
     }
   },
-  mounted () {
-    this.pinMarkers(this.allPlaces)
+  watch: {
+    allPlaces (newValue) {
+      this.pinMarkers(this.allPlaces)
+    }
   },
   methods: {
     setCenter (x) {
