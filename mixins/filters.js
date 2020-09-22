@@ -222,7 +222,7 @@ export default {
       arr.selected = arr.selected.includes(arr.name) ? (arr.selected = []) : (arr.selected = [arr.name, ...subcities])
 
       // Upadte the filters in vuex
-      const finalArray = []
+      const finalArray = [this.filters.plats.currentCountry]
       this.filters.plats.tabs[this.filters.plats.currentCountry].forEach((x) => {
         finalArray.push(...x.selected)
       })
@@ -245,6 +245,15 @@ export default {
           arr.indeterminate = true
           arr.allSelected = false
         }
+
+        // Upadte the filters in vuex
+        const finalArray = [this.filters.plats.currentCountry]
+        this.filters.plats.tabs[this.filters.plats.currentCountry].forEach((x) => {
+          finalArray.push(...x.selected)
+        })
+
+        this.filters.used.plats = finalArray
+
         this.$forceUpdate()
         this.doFilter()
       })

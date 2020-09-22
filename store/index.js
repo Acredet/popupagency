@@ -121,7 +121,7 @@ export const actions = {
           }
         }
 
-        const thereIsChoosePlace = (realUsed.length <= 1) ? true : realUsed.includes(x.stad.en)
+        const thereIsChoosePlace = (realUsed.length <= 1) ? true : realUsed.includes(x.stad[this.$i18n.locale])
         const thereIsSearch = (!used.search) ? true : x.title.en.match(re)
 
         console.log('=====================START======================')
