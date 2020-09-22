@@ -14,6 +14,15 @@ export const mutations = {
   },
   usedFilters (state, filters) {
     Object.assign(state.used, filters)
+  },
+  resetFilters (state) {
+    state.used = {
+      search: null,
+      price: [],
+      plats: [],
+      property: [],
+      yta: []
+    }
   }
 }
 

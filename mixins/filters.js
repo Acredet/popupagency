@@ -1,6 +1,9 @@
 export default {
   data () {
     return {
+      layout: {
+        value: this.$t('ledigaLokaler.list')
+      },
       filters: {
         used: {
           search: null,
@@ -47,71 +50,65 @@ export default {
         // console.log(newValue)
         this.$store.dispatch('filters/updateFilters', newValue)
       }
+    },
+    regions: {
+      immediate: true,
+      deep: true,
+      handler (newValue) {
+        const minMaxPrice = this.getMinAndMax('price', 'prioteradpris')
+        const minMaxYta = this.getMinAndMax('yta', 'yta')
+
+        this.filters.used.price = minMaxPrice
+        this.filters.used.yta = minMaxYta
+
+        const sortedRegions = this.sortItems(this.regions, false)
+
+        sortedRegions.forEach((country) => {
+          console.log(country)
+          if (!country.parent) {
+            this.filters.plats.tabs[country.name[this.lang]] = []
+          }
+
+          if (country.cities) {
+            country.cities.forEach((city) => {
+              // eslint-disable-next-line no-return-assign
+              const array1 = city.subCities
+                ? city.subCities.map(x => ((x.name && x.name[this.lang]) ? x.name[this.lang] : x.name))
+                : []
+
+              let all = 0
+              city.subCities.forEach((subCity) => {
+                // console.log('subCity: ', subCity.name)
+                all += this.AllPlaces.filter(place => place.stad[this.lang] === subCity.name).length
+              })
+
+              this.filters.plats.tabs[country.name[this.lang]].push({
+                name: city.name[this.lang],
+                text: `${city.name[this.lang]} (${all})`,
+                allSelected: false, // Shape of the check
+                indeterminate: false, // Shape of the check
+                selected: [],
+                subcity: array1
+              })
+            })
+          }
+        })
+
+        this.filters.property.icons = this.tags.map((x) => {
+          if (x._id) {
+            return {
+              text: x.name[this.lang],
+              avatar: x.avatar,
+              state: false
+            }
+          }
+        })
+
+        this.filters.plats.currentCountry = Object.keys(this.filters.plats.tabs)[0]
+      }
     }
   },
-  async created () {
-    const promises = [
-      this.$axios.$get('/region'),
-      this.$axios.$get('/tag')
-    ]
-
-    await Promise.all(promises).then((res) => {
-      const regions = res[0].data
-      const tags = res[1].data
-
-      const minMaxPrice = this.getMinAndMax('price', 'prioteradpris')
-      const minMaxYta = this.getMinAndMax('yta', 'yta')
-
-      this.filters.used.price = minMaxPrice
-      this.filters.used.yta = minMaxYta
-
-      const sortedRegions = this.sortItems(regions, false)
-
-      sortedRegions.forEach((country) => {
-        if (!country.parent) {
-          this.filters.plats.tabs[country.name[this.lang]] = []
-        }
-
-        if (country.cities) {
-          country.cities.forEach((city) => {
-            // eslint-disable-next-line no-return-assign
-            const array1 = city.subCities
-              ? city.subCities.map(x => (x.name = x.name[this.lang]))
-              : []
-
-            let all = 0
-            city.subCities.forEach((subCity) => {
-              // console.log('subCity: ', subCity.name)
-              all += this.AllPlaces.filter(place => place.stad[this.lang] === subCity.name).length
-            })
-
-            this.filters.plats.tabs[country.name[this.lang]].push({
-              name: city.name[this.lang],
-              text: `${city.name[this.lang]} (${all})`,
-              allSelected: false, // Shape of the check
-              indeterminate: false, // Shape of the check
-              selected: [],
-              subcity: array1
-            })
-          })
-        }
-      })
-
-      this.filters.property.icons = tags.map((x) => {
-        return {
-          text: x.name[this.lang],
-          avatar: x.avatar,
-          state: false
-        }
-      })
-
-      this.filters.plats.currentCountry = Object.keys(
-        this.filters.plats.tabs
-      )[0]
-    })
-  },
   methods: {
-    // Utils
     /**
      * @param { String } Obj the object in the instance
      * @param { String } prop the property you want to fitler with
@@ -140,7 +137,6 @@ export default {
       return String(num).replace(/(?<!\..*)(\d)(?=(?:\d{3})+(?:\.|$))/g, '$1 ')
     },
 
-    // Filters Functions
     doFilter () {
       this.loadingCards = true
       const used = this.filters.used
@@ -221,25 +217,6 @@ export default {
     sorting (sort) {
       console.log(this.cards)
       this.sortedBy = sort
-      if (sort === this.$t('ledigaLokaler.sorting.latest')) {
-        // console.log(1)
-        this.cards = this.cards.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
-      } else if (sort === this.$t('ledigaLokaler.sorting.oldest')) {
-        // console.log(2)
-        this.cards = this.cards.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-      } else if (sort === this.$t('ledigaLokaler.sorting.priceLowToHigh')) {
-        // console.log(3)
-        this.cards = this.cards.sort((a, b) => a.prioteradpris - b.prioteradpris)
-      } else if (sort === this.$t('ledigaLokaler.sorting.priceHighToLow')) {
-        // console.log(4)
-        this.cards = this.cards.sort((a, b) => b.prioteradpris - a.prioteradpris)
-      } else if (sort === this.$t('ledigaLokaler.sorting.sizeLowToHigh')) {
-        // console.log(5)
-        this.cards = this.cards.sort((a, b) => a.yta - b.yta)
-      } else if (sort === this.$t('ledigaLokaler.sorting.sizeHighToLow')) {
-        // console.log(6)
-        this.cards = this.cards.sort((a, b) => b.yta - a.yta)
-      }
     },
     clearFilters () {
       const { price, yta } = this.filters
@@ -284,6 +261,7 @@ export default {
       // Reset cards
       this.cards = this.AllPlaces
     },
+
     ytaChanged (type, w) {
       console.log(w)
       if (type === 'yta') {

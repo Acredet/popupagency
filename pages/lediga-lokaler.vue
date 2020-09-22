@@ -7,7 +7,7 @@
     <b-row class="mt-2">
       <!-- Start filters Bar -->
       <b-col cols="12">
-        <filter-bar />
+        <filter-bar @changeLayout="layout.value = $event" />
       </b-col>
       <!-- End filters Bar -->
 
@@ -121,6 +121,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 import GMap from '@/components/lediga/Map'
 import filterSidebar from '@/components/lediga/fitlerSidebar'
 import filterBar from '@/components/lediga/filterBar'
@@ -139,17 +140,22 @@ export default {
       sortedBy: this.$t('ledigaLokaler.sorting.latest'),
       layout: {
         value: this.$t('ledigaLokaler.list')
-      },
-      cards: [],
-      AllPlaces: []
+      }
     }
   },
   computed: {
+    ...mapGetters({
+      AllPlaces: 'listings',
+      cards: 'cards'
+    }),
     lang () {
       return this.$i18n.getLocaleCookie()
     }
   },
   mounted () {
+    this.loadingCards = true
+    this.loadingState = true
+
     if (window.innerWidth >= '768') {
       this.layout.value = this.$t('ledigaLokaler.map')
     }
@@ -158,15 +164,16 @@ export default {
     this.loadingState = false
   },
   async created () {
-    this.loadingCards = true
-    this.loadingState = true
-
-    await this.$axios.get('/places')
-      .then((res) => {
-        this.AllPlaces = res.data.data
-        this.cards = res.data.data
-      })
-      .catch(err => console.log(err))
+    await this.getTags()
+    await this.getListings()
+    await this.getRegions()
+  },
+  methods: {
+    ...mapActions({
+      getListings: 'getListings',
+      getRegions: 'getRegions',
+      getTags: 'getTags'
+    })
   }
 }
 </script>

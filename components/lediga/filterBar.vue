@@ -19,13 +19,7 @@
         <b-dropdown id="plats-dropdown" variant="light" :text="filters.plats.text">
           <!-- Start first horizontal tab -->
           <b-dropdown-group :header="$t('ledigaLokaler.filters.place')" style="width: 500px !important; overflow: hidden" class="px-2 custom-tab plats">
-            <b-btn
-              v-for="(country, key) in filters.plats.tabs"
-              :key="key"
-              variant="primary"
-              class="mb-2 mr-2"
-              @click="filters.plats.currentCountry = key"
-            >
+            <b-btn v-for="(country, key) in filters.plats.tabs" :key="key" variant="primary" class="mb-2 mr-2" @click="filters.plats.currentCountry = key">
               {{ key }}
             </b-btn>
             <!-- Start Tabs -->
@@ -137,18 +131,9 @@
       <!-- End more Filters -->
 
       <!-- Start layout buttons -->
-      <b-col
-        cols="12"
-        md="auto"
-        class="d-none ml-auto d-md-flex align-items-center justify-content-end"
-      >
+      <b-col cols="12" md="auto" class="d-none ml-auto d-md-flex align-items-center justify-content-end">
         <b-form-group class="p-0 m-0">
-          <b-form-radio-group
-            id="layout-btns"
-            v-model="layout.value"
-            buttons
-            button-variant="outline-primary"
-          >
+          <b-form-radio-group id="layout-btns" v-model="layout" buttons button-variant="outline-primary">
             <b-form-radio :value="$t('ledigaLokaler.list')">
               <i class="fas fa-list mr-1" />
               {{ $t('ledigaLokaler.list') }}
@@ -183,15 +168,24 @@ export default {
     ytaFilter
   },
   mixins: [sortItems, allFilters],
+  data () {
+    return {
+      layout: this.$t('ledigaLokaler.list')
+    }
+  },
   computed: {
     ...mapGetters({
-      renderer: 'renderKey',
-      used: 'filters/used'
+      used: 'filters/used',
+      AllPlaces: 'listings',
+      regions: 'regions',
+      renderKey: 'renderKey',
+      tags: 'tags'
     })
+  },
+  watch: {
+    layout (newValue) {
+      this.$emit('changeLayout', this.layout)
+    }
   }
 }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

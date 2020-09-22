@@ -133,6 +133,9 @@ export default {
   mixins: [sortItems, allFilters],
   computed: {
     ...mapGetters({
+      AllPlaces: 'listings',
+      regions: 'regions',
+      tags: 'tags',
       used: 'filters/used'
     })
   }
