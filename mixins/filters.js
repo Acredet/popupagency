@@ -46,9 +46,18 @@ export default {
     'filters.used': {
       immediate: true,
       deep: true,
-      handler (newValue) {
+      handler (val) {
         // console.log(newValue)
-        this.$store.dispatch('filters/updateFilters', newValue)
+        if (
+          val.search === '' &&
+          val.price[0] === this.filters.price.min &&
+          val.price[1] === this.filters.price.max &&
+          val.yta[0] === this.filters.yta.min &&
+          val.yta[1] === this.filters.yta.max
+        ) { this.cards = this.AllPlaces } else {
+          this.$store.dispatch('filters/updateFilters', val)
+          this.doFilter()
+        }
       }
     },
     regions: {
@@ -151,23 +160,19 @@ export default {
       // reset search
       this.searchInput = null
 
-      // Reset Price
-      this.filters.used.price = [price.min, price.max]
       this.filters.price.text = this.$t('ledigaLokaler.filters.price')
-
-      // Reset yta
       this.filters.yta.text = this.$t('ledigaLokaler.filters.surface')
-      this.filters.used.yta = [yta.min, yta.max]
-
-      // Reset search
-      this.filters.used.search = null
-
-      // Reset Places
-      this.filters.used.plats = ['Sverige']
-
       // Reset Properties
-      this.filters.property.icons.forEach((x) => { x.state = false })
-      this.filters.used.property = []
+      this.$store.dispatch('filters/clearFilters', this.filters.property.icons)
+      this.$store.dispatch('resetCards')
+
+      this.filters.used = {
+        price: [price.min, price.max],
+        yta: [yta.min, yta.max],
+        search: null,
+        plats: [this.filters.plats.currentCountry],
+        property: []
+      }
 
       // Reset places
       const tabs = this.filters.plats.tabs
@@ -185,9 +190,6 @@ export default {
       }
 
       this.$forceUpdate()
-
-      // Reset cards
-      this.cards = this.AllPlaces
     },
 
     ytaChanged (type, w) {
@@ -207,7 +209,7 @@ export default {
           this.filters.price.text = `${this.formatPrices(w[0])}Kr - ${this.formatPrices(w[1])}Kr`
         }
       }
-      this.doFilter()
+      this.$nextTick(() => this.doFilter())
     },
     toggleAll (index) {
       const arr = this.filters.plats.tabs[this.filters.plats.currentCountry][

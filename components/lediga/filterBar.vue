@@ -33,12 +33,7 @@
               vertical
             >
               <!-- Start First tab -->
-              <b-tab
-                v-for="(tab, index) in filters.plats.tabs[filters.plats.currentCountry]"
-                :key="tab.name"
-                title-item-class="tabBtn"
-                :title="tab.text"
-              >
+              <b-tab v-for="(tab, index) in filters.plats.tabs[filters.plats.currentCountry]" :key="tab.name" title-item-class="tabBtn" :title="tab.text">
                 <b-card-body class="mt-0 pt-0 px-1">
                   <div class="choices">
                     <b-form-group :key="renderKey">

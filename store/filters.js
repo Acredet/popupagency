@@ -29,6 +29,9 @@ export const mutations = {
       if (x.text === obj.button.text) { x.state = !x.state }
       return x.state
     })
+  },
+  clearFilter (state, icons) {
+    state.used.property = icons.forEach((x) => { x.state = false })
   }
 }
 
@@ -38,6 +41,9 @@ export const actions = {
   },
   updateFilters ({ commit }, fitlers) {
     commit('usedFilters', fitlers)
+  },
+  clearFilters ({ commit, dispatch }, icons) {
+    commit('clearFilter', icons)
   }
 }
 
