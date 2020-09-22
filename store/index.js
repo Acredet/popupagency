@@ -62,17 +62,17 @@ export const actions = {
       .catch(err => console.log(err))
   },
   sortCards ({ commit }, sortType) {
-    if (sortType === this.$t('ledigaLokaler.sorting.latest')) {
+    if (sortType === this.$i18n.t('ledigaLokaler.sorting.latest')) {
       commit('sortCards', 'latest')
-    } else if (sortType === this.$t('ledigaLokaler.sorting.oldest')) {
+    } else if (sortType === this.$i18n.t('ledigaLokaler.sorting.oldest')) {
       commit('sortCards', 'oldest')
-    } else if (sortType === this.$t('ledigaLokaler.sorting.priceLowToHigh')) {
+    } else if (sortType === this.$i18n.t('ledigaLokaler.sorting.priceLowToHigh')) {
       commit('sortCards', 'priceLowToHigh')
-    } else if (sortType === this.$t('ledigaLokaler.sorting.priceHighToLow')) {
+    } else if (sortType === this.$i18n.t('ledigaLokaler.sorting.priceHighToLow')) {
       commit('sortCards', 'priceHighToLow')
-    } else if (sortType === this.$t('ledigaLokaler.sorting.sizeLowToHigh')) {
+    } else if (sortType === this.$i18n.t('ledigaLokaler.sorting.sizeLowToHigh')) {
       commit('sortCards', 'sizeLowToHigh')
-    } else if (sortType === this.$t('ledigaLokaler.sorting.sizeHighToLow')) {
+    } else if (sortType === this.$i18n.t('ledigaLokaler.sorting.sizeHighToLow')) {
       commit('sortCards', 'sizeHighToLow')
     }
   }

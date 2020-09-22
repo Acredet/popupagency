@@ -7,12 +7,12 @@
     <b-row class="mt-2">
       <!-- Start filters Bar -->
       <b-col cols="12">
-        <filter-bar @changeLayout="layout.value = $event" />
+        <filter-bar @changeLayout="layout = $event" />
       </b-col>
       <!-- End filters Bar -->
 
       <!-- Start Listings -->
-      <b-col cols="12" :md="layout.value === $t('ledigaLokaler.map') ? 6 : 12" class="wrapper">
+      <b-col cols="12" :md="layout === $t('ledigaLokaler.map') ? 6 : 12" class="wrapper">
         <b-container class="h-100">
           <!-- Start if empty -->
           <b-row v-if="cards.length === 0" align-h="center" align-content="center" class="h-100">
@@ -29,8 +29,8 @@
               :key="String(index)"
               class="my-2"
               cols="12"
-              :md="layout.value === $t('ledigaLokaler.map') ? 12 : 6"
-              :lg="layout.value === $t('ledigaLokaler.map') ? 6 : 4"
+              :md="layout === $t('ledigaLokaler.map') ? 12 : 6"
+              :lg="layout === $t('ledigaLokaler.map') ? 6 : 4"
             >
               <div class="skeleton" />
             </b-col>
@@ -42,27 +42,27 @@
             <!-- Start Listing header -->
             <b-col cols="12" class="d-flex sticky justify-content-between align-items-center">
               <b-dropdown id="sorting" :text="sortedBy" class="m-md-2">
-                <b-dropdown-item @click="sorting($t('ledigaLokaler.sorting.latest'))">
+                <b-dropdown-item @click="sortCards($t('ledigaLokaler.sorting.latest'))">
                   {{ $t('ledigaLokaler.sorting.latest') }}
                 </b-dropdown-item>
                 <b-dropdown-divider />
-                <b-dropdown-item @click="sorting($t('ledigaLokaler.sorting.oldest'))">
+                <b-dropdown-item @click="sortCards($t('ledigaLokaler.sorting.oldest'))">
                   {{ $t('ledigaLokaler.sorting.oldest') }}
                 </b-dropdown-item>
                 <b-dropdown-divider />
-                <b-dropdown-item @click="sorting($t('ledigaLokaler.sorting.priceLowToHigh'))">
+                <b-dropdown-item @click="sortCards($t('ledigaLokaler.sorting.priceLowToHigh'))">
                   {{ $t('ledigaLokaler.sorting.priceLowToHigh') }}
                 </b-dropdown-item>
                 <b-dropdown-divider />
-                <b-dropdown-item @click="sorting($t('ledigaLokaler.sorting.priceHighToLow'))">
+                <b-dropdown-item @click="sortCards($t('ledigaLokaler.sorting.priceHighToLow'))">
                   {{ $t('ledigaLokaler.sorting.priceHighToLow') }}
                 </b-dropdown-item>
                 <b-dropdown-divider />
-                <b-dropdown-item @click="sorting($t('ledigaLokaler.sorting.sizeLowToHigh'))">
+                <b-dropdown-item @click="sortCards($t('ledigaLokaler.sorting.sizeLowToHigh'))">
                   {{ $t('ledigaLokaler.sorting.sizeLowToHigh') }}
                 </b-dropdown-item>
                 <b-dropdown-divider />
-                <b-dropdown-item @click="sorting($t('ledigaLokaler.sorting.sizeHighToLow'))">
+                <b-dropdown-item @click="sortCards($t('ledigaLokaler.sorting.sizeHighToLow'))">
                   {{ $t('ledigaLokaler.sorting.sizeHighToLow') }}
                 </b-dropdown-item>
               </b-dropdown>
@@ -80,10 +80,10 @@
               class="my-2"
               cols="12"
               :md="6"
-              :lg="layout.value === $t('ledigaLokaler.map') ? 6 : 4"
-              :xl="layout.value === $t('ledigaLokaler.map') ? 4 : 3"
+              :lg="layout === $t('ledigaLokaler.map') ? 6 : 4"
+              :xl="layout === $t('ledigaLokaler.map') ? 4 : 3"
             >
-              <listing-card :card="card" :layout="layout.value" @showPlace="setCenter($event)" />
+              <listing-card :card="card" :layout="layout" @showPlace="setCenter($event)" />
             </b-col>
             <!-- End Listing -->
           </b-row>
@@ -93,7 +93,7 @@
       <!-- End Listings -->
 
       <!-- Start Map -->
-      <b-col v-if="layout.value === $t('ledigaLokaler.map')" cols="12" md="6" class="map-wrapper d-md-flex">
+      <b-col v-if="layout === $t('ledigaLokaler.map')" cols="12" md="6" class="map-wrapper d-md-flex">
         <client-only>
           <GMap :all-places="cards" />
         </client-only>
@@ -107,9 +107,9 @@
         pill
         variant="dark"
         class="w-50 mr-2"
-        @click="(layout.value === $t('ledigaLokaler.map')) ? layout.value = $t('ledigaLokaler.list') : layout.value = $t('ledigaLokaler.map'); refreshMap"
+        @click="(layout === $t('ledigaLokaler.map')) ? layout = $t('ledigaLokaler.list') : layout = $t('ledigaLokaler.map'); refreshMap"
       >
-        {{ (layout.value === $t('ledigaLokaler.map')) ? $t('ledigaLokaler.list') : $t('ledigaLokaler.map') }} {{ $t('ledigaLokaler.view') }}
+        {{ (layout === $t('ledigaLokaler.map')) ? $t('ledigaLokaler.list') : $t('ledigaLokaler.map') }} {{ $t('ledigaLokaler.view') }}
       </b-btn>
 
       <b-btn pill variant="dark" class="w-50">
@@ -138,9 +138,7 @@ export default {
       loadingState: false,
       loadingCards: false,
       sortedBy: this.$t('ledigaLokaler.sorting.latest'),
-      layout: {
-        value: this.$t('ledigaLokaler.list')
-      }
+      layout: this.$t('ledigaLokaler.list')
     }
   },
   computed: {
@@ -157,7 +155,7 @@ export default {
     this.loadingState = true
 
     if (window.innerWidth >= '768') {
-      this.layout.value = this.$t('ledigaLokaler.map')
+      this.layout = this.$t('ledigaLokaler.map')
     }
 
     this.loadingCards = false
@@ -172,6 +170,7 @@ export default {
     ...mapActions({
       getListings: 'getListings',
       getRegions: 'getRegions',
+      sortCards: 'sortCards',
       getTags: 'getTags'
     })
   }
