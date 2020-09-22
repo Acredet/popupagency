@@ -94,7 +94,7 @@ export default {
           }
         })
 
-        this.filters.property.icons = this.tags.map((x) => {
+        this.filters.property.icons = [...this.tags].map((x) => {
           if (x._id) {
             return {
               text: x.name[this.lang],
@@ -139,79 +139,7 @@ export default {
 
     doFilter () {
       this.loadingCards = true
-      const used = this.filters.used
-      const plats = this.filters.plats
-      const chooesdTags = this.filters.used.property
-
-      used.plats = [plats.currentCountry]
-      // const selectedCity = [plats.currentCountry]
-
-      for (const key in plats.tabs) {
-        if (plats.tabs.hasOwnProperty(key)) {
-          const country = plats.tabs[key]
-          country.forEach((city) => {
-            [...city.selected].forEach(x => console.log(`Unicode of ${x}: `, String.fromCharCode(x)))
-            used.plats.push(...city.selected)
-            console.log(used.plats)
-          })
-        }
-      }
-
-      this.cards = this.AllPlaces.filter((x) => {
-        const re = new RegExp(this.filters.used.search, 'ig') // Search input
-
-        console.log('asdsadddsfdasda', x.egenskaper)
-        // Find Tags
-        let existedTag
-        if (x.egenskaper.length === 0) {
-          existedTag = true
-        } else {
-          for (const i of x.egenskaper) {
-            if (chooesdTags.length === 0) { // If There is no property filter
-              existedTag = true
-              break
-            } else if (!existedTag) { // If There is a property filter and we didn't get the existed tag yet
-              console.log(chooesdTags.map(tags => tags.text))
-              console.log(i.name[this.$i18n.locale])
-              existedTag = chooesdTags.map(tags => tags.text).includes(i.name[this.$i18n.locale])
-            }
-          }
-        }
-
-        const thereIsChoosePlace = (used.plats.length <= 1) ? true : used.plats.includes(x.stad.en)
-        const thereIsSearch = (!this.filters.used.search) ? true : x.title.en.match(re)
-
-        console.log('=====================START======================')
-        console.log('x.stad', x.stad)
-        console.log(`x.prioteradpris(${x.prioteradpris}) >= used.price[0] : `, x.prioteradpris >= used.price[0])
-        console.log('x.prioteradpris <= used.price[1]: ', x.prioteradpris <= used.price[1])
-        console.log(`x.yta(${x.prioteradpris}) >= used.yta[0]: `, x.yta >= used.yta[0])
-        console.log(' x.yta <= used.yta[1]: ', x.yta <= used.yta[1])
-        console.log('thereIsChoosePlace: ', thereIsChoosePlace)
-        console.log('thereIsSearch ', thereIsSearch)
-        console.log('existedTag ? existedTag ', existedTag)
-
-        const result =
-          (x.prioteradpris >= used.price[0] && x.prioteradpris <= used.price[1]) &&
-          (x.yta >= used.yta[0] && x.yta <= used.yta[1]) &&
-          thereIsChoosePlace &&
-          thereIsSearch &&
-          existedTag
-
-        console.log('result: ', result)
-        console.log('=====================END======================')
-
-        return result
-      })
-
-      // if (
-      //   this.filters.used.plats.length === 1 &&
-      //   this.filters.used.price.length === 2 &&
-      //   this.filters.used.property.length === 0 &&
-      //   this.filters.used.yta.length === 2 &&
-      //   (this.filters.used.search === null || this.filters.used.search === '')
-      // ) { this.cards = this.AllPlaces }
-
+      this.$store.dispatch('filterPlaces', this.filters.plats)
       this.loadingCards = false
     },
     sorting (sort) {
@@ -287,8 +215,17 @@ export default {
       ]
       // console.log(arr)
 
+      // Upadte the selected states in this country
       const subcities = arr.selected.length !== arr.subcity.length ? arr.subcity.slice() : []
       arr.selected = arr.selected.includes(arr.name) ? (arr.selected = []) : (arr.selected = [arr.name, ...subcities])
+
+      // Upadte the filters in vuex
+      const finalArray = []
+      this.filters.plats.tabs[this.filters.plats.currentCountry].forEach((x) => {
+        finalArray.push(...x.selected)
+      })
+
+      this.filters.used.plats = finalArray
 
       this.doFilter()
       this.$forceUpdate()
@@ -310,9 +247,9 @@ export default {
         this.doFilter()
       })
     },
-    addProperty () {
-      const x = this.filters.property.icons.filter(x => x.state)
-      this.filters.used.property = x
+    addProperty (button) {
+      const icons = this.filters.property.icons
+      this.$store.commit('filters/changeStateOfPropertInput', { button, icons })
       this.doFilter()
     }
   }

@@ -36,6 +36,15 @@ export const mutations = {
     } else if (sortType === 'sizeHighToLow') {
       state.cards = state.cards.sort((a, b) => b.yta - a.yta)
     }
+  },
+  cards (state, cards) {
+    state.cards = cards
+  },
+  changeStateOfPropertInput (state, obj) {
+    state.used.property = obj.icons.filter((x) => {
+      if (x.text === obj.button.text) { x.state = !x.state }
+      return x.state
+    })
   }
 }
 
@@ -75,6 +84,71 @@ export const actions = {
     } else if (sortType === this.$i18n.t('ledigaLokaler.sorting.sizeHighToLow')) {
       commit('sortCards', 'sizeHighToLow')
     }
+  },
+  filterPlaces ({ commit, rootGetters }, plats, query) {
+    const used = rootGetters['filters/used']
+    const realUsed = [...used.plats]
+    const listings = rootGetters.listings
+    const chooesdTags = [...used.property]
+
+    // const selectedCity = [plats.currentCountry]
+
+    for (const key in plats.tabs) {
+      if (plats.tabs.hasOwnProperty(key)) {
+        const country = [...plats.tabs[key]]
+        country.forEach((city) => {
+          [...city.selected].forEach(x => console.log(`Unicode of ${x}: `, String.fromCharCode(x)))
+          realUsed.push(...city.selected)
+          console.log(realUsed)
+        })
+      }
+    }
+
+    const cards = listings.filter((x) => {
+      const re = new RegExp(used.search, 'ig') // Search input
+
+      // Find Tags
+      let existedTag
+      if (x.egenskaper.length === 0) {
+        existedTag = true
+      } else {
+        for (const i of x.egenskaper) {
+          if (chooesdTags.length === 0) { // If There is no property filter
+            existedTag = true
+            break
+          } else if (!existedTag) { // If There is a property filter and we didn't get the existed tag yet
+            existedTag = chooesdTags.map(tags => tags.text).includes(i.name[this.$i18n.locale])
+          }
+        }
+      }
+
+      const thereIsChoosePlace = (realUsed.length <= 1) ? true : realUsed.includes(x.stad.en)
+      const thereIsSearch = (!used.search) ? true : x.title.en.match(re)
+
+      console.log('=====================START======================')
+      console.log('x.stad', x.stad)
+      console.log(`x.prioteradpris(${x.prioteradpris}) >= used.price[0](${used.price[0]}) : `, x.prioteradpris >= used.price[0])
+      console.log('x.prioteradpris <= used.price[1]: ', x.prioteradpris <= used.price[1])
+      console.log(`x.yta(${x.yta}) >= used.yta[0]: `, x.yta >= used.yta[0])
+      console.log(' x.yta <= used.yta[1]: ', x.yta <= used.yta[1])
+      console.log('thereIsChoosePlace: ', thereIsChoosePlace)
+      console.log('thereIsSearch ', thereIsSearch)
+      console.log('existedTag ? existedTag ', existedTag)
+
+      const result =
+            (x.prioteradpris >= used.price[0] && x.prioteradpris <= used.price[1]) &&
+            (x.yta >= used.yta[0] && x.yta <= used.yta[1]) &&
+            thereIsChoosePlace &&
+            thereIsSearch &&
+            existedTag
+
+      console.log('result: ', result)
+      console.log('=====================END======================')
+
+      return result
+    })
+
+    commit('cards', cards)
   }
 }
 

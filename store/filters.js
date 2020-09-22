@@ -23,6 +23,12 @@ export const mutations = {
       property: [],
       yta: []
     }
+  },
+  changeStateOfPropertInput (state, obj) {
+    state.used.property = obj.icons.filter((x) => {
+      if (x.text === obj.button.text) { x.state = !x.state }
+      return x.state
+    })
   }
 }
 

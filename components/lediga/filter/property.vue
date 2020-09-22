@@ -3,7 +3,7 @@
     <b-button
       v-for="(icon) in icons"
       :key="icon.text"
-      :pressed.sync="icon.state"
+      :pressed="icon.state"
       variant="outline-primary"
       squared
       :style="{ width: sideBar ? '100%' : '45%' }"
