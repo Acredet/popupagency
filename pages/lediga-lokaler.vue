@@ -95,7 +95,7 @@
       <!-- Start Map -->
       <b-col v-if="layout === $t('ledigaLokaler.map')" cols="12" md="6" class="map-wrapper d-md-flex">
         <client-only>
-          <GMap :all-places="cards" />
+          <GMap :all-places="cards" @setCenter="layout = $t('ledigaLokaler.map')" />
         </client-only>
       </b-col>
       <!-- End Map -->

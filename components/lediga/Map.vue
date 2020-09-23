@@ -69,7 +69,7 @@ export default {
   },
   methods: {
     setCenter (x) {
-      this.layout.value = this.$t('ledigaLokaler.map')
+      this.$emit('setCenter')
       this.map.center = { lng: x[0], lat: x[1] }
     },
     pinMarkers (places) {
