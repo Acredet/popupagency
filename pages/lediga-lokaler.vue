@@ -162,6 +162,7 @@ export default {
     this.loadingState = false
   },
   async created () {
+    this.loadingState = true
     await this.getTags()
     await this.getListings()
     await this.getRegions()

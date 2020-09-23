@@ -12,6 +12,9 @@
         <b-collapse id="price" accordion="filters" role="tabpanel">
           <div class="px-2">
             <yta-filter :identifier="0" :slider-type="'price'" :min-and-max="filters.price" @ytaChanged="ytaChanged('price', $event)" />
+            <b-btn variant="primary" @click="doFilter">
+              Ok
+            </b-btn>
           </div>
         </b-collapse>
         <!-- End Price Tab -->
@@ -25,6 +28,9 @@
         <b-collapse id="yta" accordion="filters" role="tabpanel">
           <div class="px-2">
             <yta-filter :identifier="1" :slider-type="'yta'" :min-and-max="filters.yta" @ytaChanged="ytaChanged('yta', $event)" />
+            <b-btn variant="primary" @click="doFilter">
+              Ok
+            </b-btn>
           </div>
         </b-collapse>
         <!-- End yta Tab -->
@@ -38,6 +44,9 @@
         <b-collapse id="property" accordion="filters" role="tabpanel">
           <div class="px-2">
             <property-filter :side-bar="true" :icons="filters.property.icons" @iconChoosed="addProperty($event)" />
+            <b-btn variant="primary" @click="doFilter">
+              Ok
+            </b-btn>
           </div>
         </b-collapse>
         <!-- End yta Tab -->
@@ -76,6 +85,7 @@
                     <b-form-group :key="renderKey">
                       <template v-slot:label>
                         <b-form-checkbox
+                          :key="renderKey"
                           v-model="tab.allSelected"
                           :indeterminate="tab.indeterminate"
                           :aria-describedby="`sidebar-${tab.name}-choose-all`"
@@ -97,6 +107,9 @@
                         @change="placeChoose(index)"
                       />
                     </b-form-group>
+                    <b-btn variant="primary" @click="doFilter">
+                      Ok
+                    </b-btn>
                   </div>
                 </b-collapse>
               </li>
@@ -133,6 +146,7 @@ export default {
   mixins: [sortItems, allFilters],
   computed: {
     ...mapGetters({
+      renderKey: 'renderKey',
       AllPlaces: 'listings',
       regions: 'regions',
       tags: 'tags',

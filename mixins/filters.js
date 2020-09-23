@@ -56,7 +56,6 @@ export default {
           val.yta[1] === this.filters.yta.max
         ) { this.cards = this.AllPlaces } else {
           this.$store.dispatch('filters/updateFilters', val)
-          this.doFilter()
         }
       }
     },
@@ -174,6 +173,13 @@ export default {
         property: []
       }
 
+      this.filters.plats.tabs[this.filters.plats.currentCountry].forEach((arr) => {
+        console.log('arr: dswa', arr)
+        arr.indeterminate = false
+        arr.allSelected = false
+        this.$store.dispatch('changeSidebarRenderKey')
+      })
+
       // Reset places
       const tabs = this.filters.plats.tabs
       for (const country in tabs) {
@@ -188,8 +194,6 @@ export default {
           })
         }
       }
-
-      this.$forceUpdate()
     },
 
     ytaChanged (type, w) {
@@ -209,17 +213,28 @@ export default {
           this.filters.price.text = `${this.formatPrices(w[0])}Kr - ${this.formatPrices(w[1])}Kr`
         }
       }
-      this.$nextTick(() => this.doFilter())
+      // this.$nextTick(() => this.doFilter())
     },
     toggleAll (index) {
-      const arr = this.filters.plats.tabs[this.filters.plats.currentCountry][
-        index
-      ]
+      const arr = this.filters.plats.tabs[this.filters.plats.currentCountry][index]
       // console.log(arr)
 
       // Upadte the selected states in this country
       const subcities = arr.selected.length !== arr.subcity.length ? arr.subcity.slice() : []
       arr.selected = arr.selected.includes(arr.name) ? (arr.selected = []) : (arr.selected = [arr.name, ...subcities])
+
+      this.$nextTick(() => {
+        if (arr.selected.length === 0) {
+          arr.indeterminate = false
+          arr.allSelected = false
+        } else if (arr.selected.length === arr.subcity.length + 1 || arr.selected.length === arr.subcity.length) {
+          arr.indeterminate = false
+          arr.allSelected = true
+        } else {
+          arr.indeterminate = true
+          arr.allSelected = false
+        }
+      })
 
       // Upadte the filters in vuex
       const finalArray = [this.filters.plats.currentCountry]
@@ -229,16 +244,16 @@ export default {
 
       this.filters.used.plats = finalArray
 
-      this.doFilter()
-      this.$forceUpdate()
+      this.$store.dispatch('changeSidebarRenderKey')
     },
     placeChoose (index) {
       const arr = this.filters.plats.tabs[this.filters.plats.currentCountry][index]
+
       this.$nextTick(() => {
-        if (arr.selected.length === 2) {
+        if (arr.selected.length === 0) {
           arr.indeterminate = false
           arr.allSelected = false
-        } else if (arr.selected.length === arr.subcity.length + 2) {
+        } else if (arr.selected.length === arr.subcity.length + 1 || arr.selected.length === arr.subcity.length) {
           arr.indeterminate = false
           arr.allSelected = true
         } else {
@@ -254,14 +269,13 @@ export default {
 
         this.filters.used.plats = finalArray
 
-        this.$forceUpdate()
-        this.doFilter()
+        this.$store.dispatch('changeSidebarRenderKey')
       })
     },
     addProperty (button) {
       const icons = this.filters.property.icons
       this.$store.commit('filters/changeStateOfPropertInput', { button, icons })
-      this.doFilter()
+      // this.doFilter()
     }
   }
 }

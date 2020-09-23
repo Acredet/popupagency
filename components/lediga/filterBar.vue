@@ -6,7 +6,7 @@
         <b-input-group>
           <b-form-input v-model="filters.used.search" placeholder="Listing Name" />
           <b-input-group-append>
-            <b-button variant="outline-primary">
+            <b-button variant="outline-primary" @click="doFilter">
               <i class="fas fa-search" />
             </b-button>
           </b-input-group-append>
@@ -39,6 +39,7 @@
                     <b-form-group :key="renderKey">
                       <template v-slot:label>
                         <b-form-checkbox
+                          :key="renderKey"
                           v-model="tab.allSelected"
                           :indeterminate="tab.indeterminate"
                           :aria-describedby="tab.name"
@@ -65,6 +66,10 @@
               </b-tab>
               <!-- End tabs -->
             </b-tabs>
+
+            <b-btn variant="primary" @click="doFilter">
+              Ok
+            </b-btn>
           </b-dropdown-group>
         </b-dropdown>
       </b-col>
@@ -75,6 +80,9 @@
         <b-dropdown id="property-dropdown" class="w-100" variant="light" :text="filters.property.text">
           <b-dropdown-group :header="$t('ledigaLokaler.filters.propertyType')" style="width: 300px !important" class="px-1">
             <property-filter :icons="filters.property.icons" @iconChoosed="addProperty($event)" />
+            <b-btn variant="primary" @click="doFilter">
+              Ok
+            </b-btn>
           </b-dropdown-group>
         </b-dropdown>
       </b-col>
@@ -87,6 +95,9 @@
             <client-only>
               <yta-filter :identifier="2" :slider-type="'price'" :min-and-max="filters.price" @ytaChanged="ytaChanged('price', $event)" />
             </client-only>
+            <b-btn variant="primary" @click="doFilter">
+              Ok
+            </b-btn>
           </b-dropdown-group>
         </b-dropdown>
       </b-col>
@@ -99,6 +110,9 @@
             <client-only>
               <yta-filter :identifier="10" :slider-type="'yta'" :min-and-max="filters.yta" @ytaChanged="ytaChanged('yta', $event)" />
             </client-only>
+            <b-btn variant="primary" @click="doFilter">
+              Ok
+            </b-btn>
           </b-dropdown-group>
         </b-dropdown>
       </b-col>
