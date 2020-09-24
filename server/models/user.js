@@ -24,6 +24,10 @@ const userSchema = new mongoose.Schema({
   role: {
     type: String,
     default: 'searcher'
+  },
+  fav: {
+    type: [String],
+    default: []
   }
 },
 { timestamps: { createdAt: 'created_at' } })

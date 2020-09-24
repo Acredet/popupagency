@@ -9,8 +9,9 @@
             <h1 class="font-5">
               {{ place.title ? place.title[$i18n.locale] : '' }}
             </h1>
-            <p class="h2 mb-2">
-              <BIconHeart />
+            <p class="heartIcon h2 mb-2">
+              <BIconHeart v-if="!$auth.loggedIn || ($auth.user.fav.findIndex(x => x === this.place._id) === -1)" @click="AddToFav" />
+              <b-icon-heart-fill v-else @click="AddToFav" />
             </p>
           </div>
         </b-container>
@@ -478,6 +479,28 @@ export default {
       .catch(res => console.log(res))
   },
   methods: {
+    async AddToFav () {
+      if (!this.$auth.loggedIn) {
+        this.$store.dispatch('redirectLink', this.$route.path)
+        this.$router.push('login')
+      } else {
+        const update = {}
+        Object.assign(update, this.$auth.user)
+        update.fav = [...this.$auth.user.fav]
+        const index = update.fav.findIndex(x => x === this.place._id)
+        if (index === -1) {
+          update.fav.push(this.place._id)
+        } else {
+          update.fav.splice(index, 1)
+        }
+        await this.$axios.patch(`/users/${this.$auth.user._id}`, update)
+          .then(async (res) => {
+            console.log(res)
+            await this.$auth.fetchUser()
+          })
+          .catch(err => console.log(err))
+      }
+    },
     sendForm () {
       alert('Not working yet 😉')
     },
@@ -503,6 +526,11 @@ export default {
     overflow-x: scroll;
   }
 }
+
+.heartIcon {
+  cursor: pointer;
+}
+
 .anime-tab {
   margin:10px;
   padding:10px 10px;

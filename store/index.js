@@ -4,7 +4,8 @@ export const state = () => ({
   listings: [],
   cards: [],
   regions: [],
-  tags: []
+  tags: [],
+  loginRedirectLink: ''
 })
 
 export const mutations = {
@@ -39,6 +40,9 @@ export const mutations = {
   },
   cards (state, cards) {
     state.cards = cards
+  },
+  saveRedirectLink (state, link) {
+    state.loginRedirectLink = link
   }
 }
 
@@ -149,6 +153,9 @@ export const actions = {
 
       commit('cards', cards)
     }
+  },
+  redirectLink ({ commit }, link) {
+    commit('saveRedirectLink', link)
   }
 }
 
@@ -167,5 +174,8 @@ export const getters = {
   },
   tags (state) {
     return state.tags
+  },
+  loginRedirectLink (state) {
+    return state.loginRedirectLink
   }
 }

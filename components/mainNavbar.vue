@@ -1,12 +1,6 @@
 <template>
   <div>
-    <b-sidebar
-      id="sidebar-1"
-      backdrop-variant="dark"
-      backdrop
-      shadow
-      no-header
-    >
+    <b-sidebar id="sidebar-1" backdrop-variant="dark" backdrop shadow no-header>
       <div class="d-flex justify-content-end bg-white pt-2 px-2">
         <i v-b-toggle.sidebar-1 class="ml-auto fas fa-times font-4 text-dark" />
       </div>
@@ -61,6 +55,14 @@
 
       <b-collapse id="navbar-toggle-collapse" is-nav>
         <b-navbar-nav class="w-100 d-sm-flex justify-content-sm-between align-items-sm-center">
+          <b-nav-item>
+            <nuxt-link v-if="!$auth.loggedIn" to="/login">
+              login
+            </nuxt-link>
+            <p v-else @click="$auth.logout('local')">
+              log out
+            </p>
+          </b-nav-item>
           <b-nav-item>
             {{ $t('mainNavbar.contactUs') }}
           </b-nav-item>
@@ -171,6 +173,12 @@ export default {
   data () {
     return {
       links: [
+        {
+          label: {
+            text: 'login',
+            url: '/login'
+          }
+        },
         {
           label: {
             text: this.$t('mainNavbar.contactUs'),
