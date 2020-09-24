@@ -59,6 +59,7 @@ export default {
             { url: '/users/add', text: this.$t('adminSidebar.users.addUser') },
             { url: '/users/role/admin', text: 'Admins' },
             { url: '/users/role/manager', text: 'Listing Managers' },
+            { url: '/users/role/owner', text: 'Listing Owners' },
             { url: '/users/role/searcher', text: 'Searchers' }
           ]
         },
@@ -75,7 +76,7 @@ export default {
           text: 'User Listings',
           icon: 'far fa-map',
           subMenu: [
-            { url: '/listings/user-listing', text: 'My places' },
+            { url: `/listings/user-listing/${this.$auth.loggedIn ? this.$auth.user._id : ''}`, text: 'My places' },
             { url: '/listings/add', text: this.$t('adminSidebar.listing.addNewListing') }
           ]
         }
