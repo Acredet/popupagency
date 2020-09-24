@@ -1,45 +1,25 @@
 <template>
   <!-- ========== Left Sidebar Start ========== -->
-  <div class="left side-menu">
+  <div v-if="$auth.user" :key="renderKey" class="left side-menu">
     <div id="remove-scroll" class="slimscroll-menu">
       <!--- Sidemenu -->
       <div id="sidebar-menu">
         <!-- Left Menu Start -->
-        <ul id="side-menu" class="metismenu">
+        <ul id="side-menu" :key="renderKey - 50" class="metismenu">
           <li class="menu-title" v-text="$t('adminSidebar.main')" />
 
-          <li>
-            <a href="javascript:void(0);" class="waves-effect"><i class="far fa-map" />
-              <span> {{ $t('adminSidebar.listing.text') }} <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right" /></span> </span>
+          <li v-for="list in realLinks" v-show="$auth.user && list.accessableFor.includes($auth.user.role)" :key="list.text">
+            <a href="javascript:void(0);" class="waves-effect">
+              <i :class="list.icon" />
+              <span> {{ list.text }} <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right" /></span> </span>
             </a>
-            <ul class="submenu">
-              <li v-for="link in links" :key="link.url">
-                <nuxt-link exact :to="`${$t('link')}admin/listings/${link.url}`">
+            <ul v-if="list.subMenu.length > 0" class="submenu">
+              <li v-for="link in list.subMenu" :key="link.url">
+                <nuxt-link exact :to="`${$t('link')}admin${link.url}`">
                   {{ link.text }}
                 </nuxt-link>
               </li>
             </ul>
-          </li>
-
-          <li>
-            <a href="javascript:void(0);" class="waves-effect"><i class="far fa-user" />
-              <span> {{ this.$t('adminSidebar.users.text') }} <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right" /></span> </span>
-            </a>
-            <ul class="submenu">
-              <li>
-                <nuxt-link exact :to="`${$t('link')}admin/users/`" v-text="$t('adminSidebar.users.allUsers')" />
-              </li>
-              <li>
-                <nuxt-link exact :to="`${$t('link')}admin/users/add`" v-text="$t('adminSidebar.users.addUser')" />
-              </li>
-            </ul>
-          </li>
-
-          <li>
-            <nuxt-link exact class="waves-effect" :to="`${$t('link')}admin/settings`">
-              <i class="fas fa-cog" />
-              <span> {{ $t('adminSidebar.siteSettings.text') }} </span>
-            </nuxt-link>
           </li>
         </ul>
       </div>
@@ -52,32 +32,57 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   data () {
     return {
-      links: [
+      realLinks: [
         {
-          text: this.$t('adminSidebar.listing.addNewListing'),
-          url: 'add'
+          accessableFor: ['manager', 'admin'],
+          text: this.$t('adminSidebar.listing.text'),
+          icon: 'far fa-map',
+          subMenu: [
+            { url: '/listings/add', text: this.$t('adminSidebar.listing.addNewListing') },
+            { url: '/listings/', text: this.$t('adminSidebar.listing.allListings') },
+            { url: '/listings/region', text: this.$t('adminSidebar.listing.region') },
+            { url: '/listings/tags', text: this.$t('adminSidebar.listing.tags') },
+            { url: '/listings/categories', text: this.$t('adminSidebar.listing.categories') }
+          ]
         },
         {
-          text: this.$t('adminSidebar.listing.allListings'),
-          url: ''
+          accessableFor: ['manager', 'admin'],
+          text: this.$t('adminSidebar.users.text'),
+          icon: 'far fa-user',
+          subMenu: [
+            { url: '/users/', text: this.$t('adminSidebar.users.allUsers') },
+            { url: '/users/add', text: this.$t('adminSidebar.users.addUser') },
+            { url: '/users/role/admin', text: 'Admins' },
+            { url: '/users/role/manager', text: 'Listing Managers' },
+            { url: '/users/role/searcher', text: 'Searchers' }
+          ]
         },
         {
-          text: this.$t('adminSidebar.listing.region'),
-          url: 'region'
-        },
-        {
-          text: this.$t('adminSidebar.listing.tags'),
-          url: 'tags'
-        },
-        {
-          text: this.$t('adminSidebar.listing.categories'),
-          url: 'categories'
+          accessableFor: ['admin'],
+          text: this.$t('adminSidebar.siteSettings.text'),
+          icon: 'fas fa-cog',
+          subMenu: [
+            { url: '/settings/', text: this.$t('adminSidebar.siteSettings.text') }
+          ]
         }
       ]
     }
+  },
+  computed: {
+    ...mapGetters({
+      renderKey: 'renderKey'
+    })
+  },
+  mounted () {
+    this.$emit('initAppPlease')
+  },
+  updated () {
+    this.$emit('initAppPlease')
   }
 }
 </script>

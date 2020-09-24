@@ -108,3 +108,14 @@ exports.updateUser = (req, res) => {
     .then(user => res.json({ success: true }))
     .catch(err => res.status(404).json(err.message))
 }
+
+/**
+ * @description Returns Users Filterd By Role
+ * @route GET /api/user/:role
+ * @private
+ */
+exports.getUsersByRole = async (req, res) => {
+  await User.find({ role: req.params.role })
+    .then(users => res.status(200).json(users))
+    .catch(err => res.status(400).json(err))
+}

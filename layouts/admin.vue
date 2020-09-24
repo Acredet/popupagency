@@ -1,7 +1,7 @@
 <template>
   <div id="wrapper">
     <admin-header />
-    <admin-sidebar />
+    <admin-sidebar @initAppPlease="initApp" />
 
     <div class="my-3 content-page">
       <transition name="fade">

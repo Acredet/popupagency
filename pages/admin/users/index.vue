@@ -6,19 +6,8 @@
           <b-form-input id="name" v-model="user.name" autocomplete="off" required :placeholder="$t('allUsers.editModal.name.holder')" />
         </b-form-group>
 
-        <b-form-group
-          id="Email-group"
-          :label="$t('allUsers.editModal.email.label')"
-          label-for="email"
-          :description="$t('allUsers.editModal.email.desc')"
-        >
-          <b-form-input
-            id="email"
-            v-model="user.email"
-            type="email"
-            required
-            :placeholder="$t('allUsers.editModal.email.holder')"
-          />
+        <b-form-group id="Email-group" :label="$t('allUsers.editModal.email.label')" label-for="email" :description="$t('allUsers.editModal.email.desc')">
+          <b-form-input id="email" v-model="user.email" type="email" required :placeholder="$t('allUsers.editModal.email.holder')" />
         </b-form-group>
       </b-form>
 
@@ -58,6 +47,19 @@
         responsive="sm"
         show-empty
       >
+        <template v-slot:cell(role)="data">
+          <b-form-group>
+            <b-form-radio-group
+              v-model="data.item.role"
+              stacked
+              :options="[{text: 'Admin', value: 'admin'}, {text: 'Manager', value: 'manager'}, {text: 'Searcher', value: 'searcher'}]"
+              switches
+              :disabled="data.item.role.disabled"
+              @change="changeUserRole(data.item)"
+            />
+          </b-form-group>
+        </template>
+
         <template v-slot:cell(actions)="data">
           <b-dropdown variant="light">
             <template v-slot:button-content>
@@ -97,6 +99,7 @@ export default {
   layout: 'admin',
   data () {
     return {
+      selected: [],
       toast: {
         title: null,
         variant: null,
@@ -108,6 +111,7 @@ export default {
       fields: [
         { key: 'name', label: this.$t('allUsers.table.header.name'), sortable: true },
         { key: 'email', label: this.$t('allUsers.table.header.email'), sortable: true },
+        { key: 'role', label: 'Role' },
         { key: 'actions', label: this.$t('tables.actions') }
       ],
       items: null,
@@ -124,6 +128,10 @@ export default {
     async getUsers () {
       await this.$axios.$get('/users/all')
         .then((res) => {
+          if (this.$auth.user === 'admin') {
+            const currentUser = res.data.filter(user => user._id === this.$auth.user._id)[0]
+            currentUser.role = { text: currentUser.role, disabled: true }
+          }
           this.items = res.data
         })
         .catch((err) => {
@@ -177,6 +185,16 @@ export default {
             text: err.message
           }
           Object.assign(this.user, {})
+        })
+    },
+    async changeUserRole (user) {
+      console.log(user)
+      await this.$axios.patch(`/users/${user._id}`, user)
+        .then(async (res) => {
+          console.log(res)
+          await this.$auth.fetchUser()
+          this.$store.dispatch('changeSidebarRenderKey')
+          this.getUsers()
         })
     }
   }
