@@ -10,7 +10,7 @@
               {{ place.title ? place.title[$i18n.locale] : '' }}
             </h1>
             <p class="heartIcon h2 mb-2">
-              <BIconHeart v-if="!$auth.loggedIn || ($auth.user.fav.findIndex(x => x === this.place._id) === -1)" @click="AddToFav" />
+              <BIconHeart v-if="!$auth.loggedIn || ($auth.user.fav.findIndex(x => x === this.place.title.sv) === -1)" @click="AddToFav" />
               <b-icon-heart-fill v-else @click="AddToFav" />
             </p>
           </div>
@@ -487,9 +487,9 @@ export default {
         const update = {}
         Object.assign(update, this.$auth.user)
         update.fav = [...this.$auth.user.fav]
-        const index = update.fav.findIndex(x => x === this.place._id)
+        const index = update.fav.findIndex(x => x === this.place.title.sv)
         if (index === -1) {
-          update.fav.push(this.place._id)
+          update.fav.push(this.place.title.sv)
         } else {
           update.fav.splice(index, 1)
         }

@@ -120,7 +120,7 @@
             :text="$t('mainNavbar.blogAndPress')"
             left
           >
-            <b-dropdown-item :to="`${$t('link')}lediga-lokaler`" href="#">
+            <b-dropdown-item :to="`${$t('link')}lediga-lokaler`">
               {{ $t('mainNavbar.freePopups') }}
             </b-dropdown-item>
 
@@ -142,7 +142,7 @@
             Swedish
           </b-nav-item>
 
-          <b-nav-item>
+          <b-nav-item v-if="$auth.loggedIn" :to="`${$t('link')}/bookmark`">
             <b-icon-heart-fill />
           </b-nav-item>
         </b-navbar-nav>
