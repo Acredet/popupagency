@@ -63,8 +63,10 @@ exports.addPlace = async (req, res, next) => {
       formattedAddress: loc[0].formattedAddress
     }
 
+    console.log('req.user: ', req.user)
     // Create Place
     let place = new Place({
+      userId: req.user.id,
       title: {
         en: JSON.parse(req.body.title).en,
         sv: JSON.parse(req.body.title).sv
@@ -221,4 +223,16 @@ exports.updatePlace = async (req, res) => {
   await Place.updateOne({ _id: req.params.id }, { $set: updata })
     .then(place => res.json({ success: true }))
     .catch(err => res.status(404).json(err.message))
+}
+
+/**
+ * @description Get Places Added By User
+ * @route /api/places/userPlaces
+ * @private
+ */
+exports.getPlacesAddedByUser = async (req, res) => {
+  console.log(req.user)
+  await Place.find({ userId: req.user.id })
+    .then(places => res.status(200).json(places))
+    .catch(err => res.status(400).json(err))
 }

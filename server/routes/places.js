@@ -4,6 +4,7 @@ const { multer } = require('../middleware/upload')
 
 const {
   getPlaces,
+  getPlacesAddedByUser,
   addPlace,
   deletePlace,
   updatePlace,
@@ -16,7 +17,7 @@ const router = express.Router()
 router
   .route('/', auth)
   .get(getPlaces)
-  .post(multer.fields(fields), addPlace)
+  .post(auth, multer.fields(fields), addPlace)
 
 router
   .route('/:id', auth)
@@ -24,6 +25,7 @@ router
   .delete(deletePlace)
   .patch(multer.none(), updatePlace)
 
+router.get('/userPlaces', auth, getPlacesAddedByUser)
 router.post('/address', getAddress)
 
 router.post('/images', multer.fields(fields), (req, res) => {

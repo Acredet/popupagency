@@ -71,7 +71,7 @@ exports.authenticate = async (req, res) => {
       if (!isMatch) { return res.status(400).json({ msg: 'Invalid credentials' }) }
 
       jwt.sign(
-        { id: user.id },
+        { id: user._id },
         process.env.jwtPrivateKey,
         { expiresIn: 36000 },
         (err, token) => {
@@ -79,8 +79,9 @@ exports.authenticate = async (req, res) => {
           res.json({
             token,
             user: {
-              id: user.id,
+              id: user._id,
               admin: user.isAdmin,
+              role: user.role,
               name: user.name,
               email: user.email
             }

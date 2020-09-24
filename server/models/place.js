@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
 const PlaceSchema = new mongoose.Schema({
+  userId: mongoose.ObjectId,
   title: {
     en: {
       type: String,

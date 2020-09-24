@@ -69,6 +69,16 @@ export default {
           subMenu: [
             { url: '/settings/', text: this.$t('adminSidebar.siteSettings.text') }
           ]
+        },
+        {
+          accessableFor: ['owner', 'manager', 'admin'],
+          text: 'User Listings',
+          icon: 'fas fa-cog',
+          subMenu: [
+            { url: '/listings/user-listing', text: 'My places' },
+            { url: '/listings/add', text: this.$t('adminSidebar.listing.addNewListing') }
+
+          ]
         }
       ]
     }
