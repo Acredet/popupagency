@@ -52,7 +52,7 @@
             <b-form-radio-group
               v-model="data.item.role"
               stacked
-              :options="[{text: 'Admin', value: 'admin'}, {text: 'Manager', value: 'manager'}, {text: 'Searcher', value: 'searcher'}]"
+              :options="[{text: 'Owner', value: 'owner'}, {text: 'Admin', value: 'admin'}, {text: 'Manager', value: 'manager'}, {text: 'Searcher', value: 'searcher'}]"
               switches
               :disabled="data.item.role.disabled"
               @change="changeUserRole(data.item)"

@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <b-container>
-      <h2>{{ $t('allUsers.title') }}</h2>
+      <h2>My places: </h2>
 
       <b-table
         :items="items"
@@ -101,9 +101,9 @@ export default {
   },
   methods: {
     async getListings () {
-      await this.$axios.$get('/places/userPlaces')
+      await this.$axios.$get(`/places/user/${this.$auth.user._id}`)
         .then((res) => {
-          this.items = res.data
+          this.items = res
           this.loading = false
           console.log(res)
         })

@@ -231,8 +231,7 @@ exports.updatePlace = async (req, res) => {
  * @private
  */
 exports.getPlacesAddedByUser = async (req, res) => {
-  console.log(req.user)
-  await Place.find({ userId: req.user.id })
+  await Place.find({ userId: req.params.userid })
     .then(places => res.status(200).json(places))
     .catch(err => res.status(400).json(err))
 }

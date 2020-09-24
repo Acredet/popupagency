@@ -51,7 +51,7 @@ export default {
           ]
         },
         {
-          accessableFor: ['manager', 'admin'],
+          accessableFor: ['admin'],
           text: this.$t('adminSidebar.users.text'),
           icon: 'far fa-user',
           subMenu: [
@@ -73,11 +73,10 @@ export default {
         {
           accessableFor: ['owner', 'manager', 'admin'],
           text: 'User Listings',
-          icon: 'fas fa-cog',
+          icon: 'far fa-map',
           subMenu: [
             { url: '/listings/user-listing', text: 'My places' },
             { url: '/listings/add', text: this.$t('adminSidebar.listing.addNewListing') }
-
           ]
         }
       ]

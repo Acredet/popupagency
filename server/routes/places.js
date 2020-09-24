@@ -25,7 +25,7 @@ router
   .delete(deletePlace)
   .patch(multer.none(), updatePlace)
 
-router.get('/userPlaces', auth, getPlacesAddedByUser)
+router.get('/user/:userid', auth, getPlacesAddedByUser)
 router.post('/address', getAddress)
 
 router.post('/images', multer.fields(fields), (req, res) => {
