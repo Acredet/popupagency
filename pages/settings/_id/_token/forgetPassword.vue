@@ -138,7 +138,7 @@ export default {
           password: this.newPassword
         })
         .then((res) => {
-          this.$router.push(this.$t('link') + '/admin/login')
+          this.$router.push(this.$t('link') + '/login')
         })
         .catch((err) => {
           this.alert = true

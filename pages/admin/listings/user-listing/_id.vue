@@ -17,7 +17,7 @@
           cols="12"
           :md="6"
         >
-          <listing-card :card="card" :layout="layout" @showPlace="setCenter($event)" />
+          <listing-card :card="card" />
         </b-col>
         <!-- End Listing -->
       </b-row>

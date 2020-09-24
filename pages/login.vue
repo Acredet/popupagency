@@ -76,9 +76,10 @@
 </template>
 
 <script>
+import { AdminPanelDependancies } from '@/mixins/AdminPanelDependancies'
 export default {
-  layout: 'auth',
   name: 'Login',
+  mixins: [AdminPanelDependancies],
   data () {
     return {
       busy: false,

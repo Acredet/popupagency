@@ -47,7 +47,7 @@
 
     <div class="m-t-40 text-center">
       <p>
-        Remember It ? <nuxt-link to="/admin/login" class="text-primary">
+        Remember It ? <nuxt-link to="/login" class="text-primary">
           Sign In Here
         </nuxt-link>
       </p>

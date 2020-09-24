@@ -95,10 +95,10 @@ module.exports = {
       secure: 'true'
     },
     redirect: {
-      login: '/admin/login',
-      logout: '/admin/login',
-      callback: '/admin',
-      home: '/admin'
+      login: '/login',
+      logout: '/login',
+      callback: '/',
+      home: '/lediga-lokaler'
     },
     strategies: {
       local: {

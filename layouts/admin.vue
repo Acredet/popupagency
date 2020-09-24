@@ -28,7 +28,7 @@ export default {
   mixins: [AdminPanelDependancies],
   created () {
     if (!this.$auth.loggedIn) {
-      this.$router.push('/admin/login')
+      this.$router.push('/login')
     }
   }
 }
