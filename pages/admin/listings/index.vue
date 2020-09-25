@@ -110,6 +110,11 @@ export default {
   mounted () {
     this.getListings()
   },
+  created () {
+    if (!this.$auth.loggedIn || !['manager', 'admin'].includes(this.$auth.user.role)) {
+      this.$router.push('/error')
+    }
+  },
   methods: {
     async getListings () {
       await this.$axios.$get('/places')

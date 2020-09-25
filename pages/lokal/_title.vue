@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="place._id">
     <!-- Start cover -->
     <div class="position-relative cover">
       <div class="position-relative cover--overlay" :style="imgStyles" />
@@ -10,7 +10,7 @@
               {{ place.title ? place.title[$i18n.locale] : '' }}
             </h1>
             <p class="heartIcon h2 mb-2">
-              <BIconHeart v-if="!$auth.loggedIn || ($auth.user.fav.findIndex(x => x === this.place.title.sv) === -1)" @click="AddToFav" />
+              <BIconHeart v-if="!$auth.loggedIn || ($auth.user.fav.findIndex(x => x === place.title.sv) === -1)" @click="AddToFav" />
               <b-icon-heart-fill v-else @click="AddToFav" />
             </p>
           </div>
@@ -134,7 +134,8 @@
             <b-col v-if="place.egenskaper" class="my-3" cols="12" md="6">
               <b class="font-4">{{ $t('singleListing.info.characteristics') }}</b>
               <div v-for="tag in place.egenskaper" :key="tag.name[$i18n.locale]" class="img">
-                <img :src="`https://popup.dk.se/_nuxt/img/${tag.avatar}`" width="50px" :alt="tag.name[$i18n.locale]">
+                -
+                <img v-if="tag.avatar" :src="`https://popup.dk.se/_nuxt/img/${tag.avatar}`" width="50px" :alt="tag.name[$i18n.locale]">
                 <b>{{ tag.name[$i18n.locale] }}</b>
               </div>
             </b-col>

@@ -121,6 +121,25 @@ export default {
       }
     }
   },
+  computed: {
+    role () {
+      return this.$route.query.role
+    }
+  },
+  watch: {
+    role: {
+      immediate: true,
+      deep: true,
+      handler (newValue) {
+        this.getUsers()
+      }
+    }
+  },
+  created () {
+    if (!this.$auth.loggedIn || this.$auth.user.role !== 'admin') {
+      this.$router.push('/error')
+    }
+  },
   mounted () {
     this.getUsers()
   },
@@ -128,11 +147,14 @@ export default {
     async getUsers () {
       await this.$axios.$get('/users/all')
         .then((res) => {
+          this.allUsers = res.data
           if (this.$auth.user === 'admin') {
             const currentUser = res.data.filter(user => user._id === this.$auth.user._id)[0]
             currentUser.role = { text: currentUser.role, disabled: true }
           }
-          this.items = res.data
+          if (this.role) {
+            this.items = this.allUsers.filter(x => x.role === this.role)
+          } else { this.items = res.data }
         })
         .catch((err) => {
           this.toast = {

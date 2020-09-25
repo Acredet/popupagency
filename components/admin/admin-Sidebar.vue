@@ -55,12 +55,12 @@ export default {
           text: this.$t('adminSidebar.users.text'),
           icon: 'far fa-user',
           subMenu: [
-            { url: '/users/', text: this.$t('adminSidebar.users.allUsers') },
+            { url: '/users', text: this.$t('adminSidebar.users.allUsers') },
             { url: '/users/add', text: this.$t('adminSidebar.users.addUser') },
-            { url: '/users/role/admin', text: 'Admins' },
-            { url: '/users/role/manager', text: 'Listing Managers' },
-            { url: '/users/role/owner', text: 'Listing Owners' },
-            { url: '/users/role/searcher', text: 'Searchers' }
+            { url: '/users?role=admin', text: 'Admins' },
+            { url: '/users?role=manager', text: 'Listing Managers' },
+            { url: '/users?role=owner', text: 'Listing Owners' },
+            { url: '/users?role=searcher', text: 'Searchers' }
           ]
         },
         {

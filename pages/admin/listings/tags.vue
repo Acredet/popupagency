@@ -324,6 +324,11 @@ export default {
   mixins: [ListingDepedancies],
   mounted () {
     this.getItems('tag')
+  },
+  created () {
+    if (!this.$auth.loggedIn || !['manager', 'admin'].includes(this.$auth.user.role)) {
+      this.$router.push('/error')
+    }
   }
 }
 </script>

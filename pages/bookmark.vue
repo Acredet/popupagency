@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper-page">
+  <div class="wrapper-page my-5">
     <b-container style="overflow-x: hidden" class="mt-3">
       <h2>BookMark:</h2>
       <!-- start if Listing -->
@@ -29,6 +29,7 @@
 
 <script>
 export default {
+  name: 'BookMarkedPlaces',
   data () {
     return {
       cards: []
@@ -47,7 +48,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

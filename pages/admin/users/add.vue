@@ -90,6 +90,11 @@ export default {
       return this.form.password.length >= 8
     }
   },
+  created () {
+    if (!this.$auth.loggedIn || this.$auth.user.role !== 'admin') {
+      this.$router.push('/error')
+    }
+  },
   methods: {
     onSubmit (evt) {
       const data = Object.assign({}, this.form)

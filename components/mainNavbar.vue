@@ -55,13 +55,11 @@
 
       <b-collapse id="navbar-toggle-collapse" is-nav>
         <b-navbar-nav class="w-100 d-sm-flex justify-content-sm-between align-items-sm-center">
-          <b-nav-item>
-            <nuxt-link v-if="!$auth.loggedIn" to="/login">
-              login
-            </nuxt-link>
-            <p v-else @click="$auth.logout('local')">
-              log out
-            </p>
+          <b-nav-item v-if="!$auth.loggedIn" to="/login">
+            login
+          </b-nav-item>
+          <b-nav-item v-else @click="$auth.logout('local')">
+            log out
           </b-nav-item>
           <b-nav-item>
             {{ $t('mainNavbar.contactUs') }}
@@ -142,7 +140,7 @@
             Swedish
           </b-nav-item>
 
-          <b-nav-item v-if="$auth.loggedIn" :to="`${$t('link')}/bookmark`">
+          <b-nav-item v-if="$auth.loggedIn" :to="`${$t('link')}bookmark`">
             <b-icon-heart-fill />
           </b-nav-item>
         </b-navbar-nav>
