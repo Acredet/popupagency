@@ -122,6 +122,10 @@
               {{ $t('mainNavbar.freePopups') }}
             </b-dropdown-item>
 
+            <b-dropdown-item :to="`${$t('link')}interest-reporting`">
+              Interest Reporting page
+            </b-dropdown-item>
+
             <b-dd-divider />
 
             <b-dropdown-item href="#">
