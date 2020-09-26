@@ -87,7 +87,7 @@ export default {
               let all = 0
               city.subCities.forEach((subCity) => {
                 // console.log('subCity: ', subCity.name)
-                all += this.AllPlaces.filter(place => place.stad[this.lang] === subCity.name).length
+                all += this.AllPlaces.filter(place => place.stad[this.lang] === subCity.name[this.lang]).length
               })
 
               this.filters.plats.tabs[country.name[this.lang]].push({
