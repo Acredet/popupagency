@@ -24,11 +24,15 @@
 
     <div>
       <hooper :settings="hooperSettings">
-        <slide v-for="n in 20" :key="n">
-          <img width="100px" src="https://www.popupagency.se/wp-content/uploads/elementor/thumbs/Netflix-oe1i66otv40fvj5xopvsq7zbuwbyjcke4hbhcge6l8.png" alt="NETFLIX">
+        <slide v-for="n in carouselImages" :key="n">
+          <img width="100px" :src="require(`@/assets/img/home/carousel/${n}.png`)" :alt="n">
         </slide>
       </hooper>
     </div>
+
+    <b-container>
+      <img width="100%" src="@/assets/img/signature.png" alt="signature">
+    </b-container>
   </div>
 </template>
 
@@ -49,6 +53,21 @@ export default {
   },
   data () {
     return {
+      carouselImages: [
+        'Babas',
+        'beyond',
+        'Bunches',
+        'Designgalleriet',
+        'dirtylinen',
+        'Funiturebox',
+        'magnum',
+        'nakd',
+        'Netflix',
+        'Stockholmsstadsmission',
+        'stalhasten',
+        'SouthsideBBQ',
+        'Nelly'
+      ],
       hooperSettings: {
         itemsToShow: 3,
         autoPlay: true,
@@ -141,6 +160,7 @@ export default {
 
 .hooper {
   height: auto;
+  padding: 10px 0
 }
 
 .hooper, .hooper *:focus {
