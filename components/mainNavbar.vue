@@ -36,19 +36,24 @@
       </div>
     </b-sidebar>
 
-    <b-navbar toggleable="lg" fixed="top" type="dark" variant="dark" class="bg-black">
+    <b-navbar
+      toggleable="lg"
+      fixed="top"
+      style="transition: all 0.5s ease"
+      :type="variant ? 'light' : 'dark'"
+      :variant="variant ? 'transparent' : 'dark'"
+    >
       <b-row class="w-100 d-lg-none">
         <b-col cols="6" class="d-flex align-center">
           <b-navbar-toggle target="sidebar-1">
             <!-- Start sidebar -->
-            <BIconList class="border-0 text-white" />
+            <BIconList class="border-0 " />
             <!-- End sidebar -->
           </b-navbar-toggle>
         </b-col>
-
         <b-col cols="6">
           <b-navbar-brand to="/">
-            <b-img src="~/assets/img/logo-white.png" class="logo" />
+            <b-img :src="variant ? require('@/assets/img/logo.png') : require('@/assets/img/logo-white.png')" class="logo" />
           </b-navbar-brand>
         </b-col>
       </b-row>
@@ -65,7 +70,7 @@
             {{ $t('mainNavbar.contactUs') }}
           </b-nav-item>
           <b-nav-item-dropdown
-            toggle-class="text-white font-3"
+            toggle-class=" font-3"
             menu-class="animate__animated animate__fadeInUp animate__faster"
             :text="$t('mainNavbar.services')"
             left
@@ -86,7 +91,7 @@
           </b-nav-item-dropdown>
 
           <b-nav-item-dropdown
-            toggle-class="text-white font-3"
+            toggle-class=" font-3"
             menu-class="animate__animated animate__fadeInUp animate__faster"
             :text="$t('mainNavbar.aboutUs')"
             left
@@ -109,11 +114,11 @@
           </b-nav-item-dropdown>
 
           <b-nav-item>
-            <b-img src="~/assets/img/logo-white.png" class="logo" />
+            <b-img :src="variant ? require('@/assets/img/logo.png') : require('@/assets/img/logo-white.png')" class="logo" />
           </b-nav-item>
 
           <b-nav-item-dropdown
-            toggle-class="text-white font-3"
+            toggle-class=" font-3"
             menu-class="animate__animated animate__fadeInUp animate__faster"
             :text="$t('mainNavbar.blogAndPress')"
             left
@@ -174,6 +179,7 @@ export default {
   },
   data () {
     return {
+      scrollY: 0,
       links: [
         {
           label: {
@@ -260,6 +266,14 @@ export default {
         }
       ]
     }
+  },
+  computed: {
+    variant () {
+      return ['/', '/en'].includes(this.$route.path) && this.scrollY === 0
+    }
+  },
+  mounted () {
+    window.onscroll = () => { this.scrollY = window.scrollY }
   },
   methods: {
     changeLang (lang) {
