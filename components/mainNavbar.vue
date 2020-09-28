@@ -40,7 +40,7 @@
       toggleable="lg"
       fixed="top"
       style="transition: all 0.5s ease"
-      :type="variant ? 'light' : 'dark'"
+      :type="variant ? 'dark' : 'dark'"
       :variant="variant ? 'transparent' : 'dark'"
     >
       <b-row class="w-100 d-lg-none">
