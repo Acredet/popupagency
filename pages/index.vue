@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="banner">
+    <div class="banner py-5 py-md-0">
       <div class="banner-image" />
       <div class="banner-overlay" />
       <div class="banner-text">
@@ -53,6 +53,46 @@
       </b-row>
       <!-- Start Gried -->
     </b-container>
+
+    <b-row class="grid vh-100 align-items-stretch" no-gutters>
+      <b-col cols="12">
+        <nuxt-link style="background-image: url('https://placeimg.com/640/480/nature')" class="h-100 center-image grid-item" to="/">
+          <div class="grid-overlay">
+            <b-container>
+              <h3 class="font-5 font-md-10 text-white">
+                Vi har 189 lokaler på 61 olika platser
+              </h3>
+            </b-container>
+          </div>
+        </nuxt-link>
+      </b-col>
+      <b-col v-for="o in 3" :key="`second-grid-${o}`" cols="4">
+        <nuxt-link style="background-image: url('https://placeimg.com/640/480/nature')" class="h-100 center-image grid-item" to="/">
+          <div class="grid-overlay">
+            <b-container>
+              <h3 class="font-3 font-md-7 text-white">
+                Vi har 189 lokaler på 61 olika platser
+              </h3>
+            </b-container>
+          </div>
+        </nuxt-link>
+      </b-col>
+    </b-row>
+
+    <b-row style="min-height: 200px; background: #f4f4f4" class="align-items-stretch" no-gutters>
+      <b-col cols="6" class="py-5">
+        <b-container class="p-3 d-flex flex-column justify-content-center align-items-start">
+          <h1>Behöver du hjälp?</h1>
+          <p>
+            Vet du inte riktigt vart du vill öppna en popup? Kontakta oss så hjälper vi dig att hitta er perfekta popup-match.
+          </p>
+          <b-btn squared variant="primary" to="/contact-us">
+            Kontakta oss
+          </b-btn>
+        </b-container>
+      </b-col>
+      <b-col cols="6" class="contact-us-img" />
+    </b-row>
   </div>
 </template>
 
@@ -131,7 +171,7 @@ export default {
 <style scoped>
 .banner {
   position: relative;
-  height: 50vh;
+  height: 80vh;
   margin-top: -10vh;
 }
 
@@ -169,6 +209,7 @@ export default {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    width: 80%;
     z-index: 999;
 }
 
@@ -208,9 +249,14 @@ export default {
   border: 0px;
 }
 
+.grid .grid-overlay:hover {
+  background-color: rgba(44, 37, 37, 0.22);
+}
+
 .grid .grid-overlay {
   display: flex;
   justify-content: center;
+  transition: all 0.4s ease;
   align-items: center;
   min-height: 150px;
   height: 100%;
@@ -233,5 +279,13 @@ export default {
 .center-image {
   background-position: center center;
   background-size: cover;
+}
+
+.contact-us-img {
+  min-height: 200px;
+  background-image: url('~assets/img/home/agent.png');
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 </style>
