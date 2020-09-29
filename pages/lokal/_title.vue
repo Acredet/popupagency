@@ -171,6 +171,17 @@
               </div>
             </b-col>
             <!-- End Galleri -->
+
+            <b-col cols="12">
+              <b-row style="min-height: 200px">
+                <b-col cols="6" class="d-flex justify-content-end align-items-center">
+                  <b-btn squared variant="primary" @click="tabOpened = 3">
+                    Kontakta oss
+                  </b-btn>
+                </b-col>
+                <b-col cols="6" class="contact-us-img" />
+              </b-row>
+            </b-col>
           </b-row>
         </b-container>
       </b-tab>
@@ -371,11 +382,11 @@
       </b-tab>
     </b-tabs>
 
-    <section class="my-3">
-      <h2 class="text-center">
-        {{ $t('singleListing.intersedIn') }}
-      </h2>
-      <b-container>
+    <b-container>
+      <section class="my-3">
+        <h2 class="text-center">
+          {{ $t('singleListing.intersedIn') }}
+        </h2>
         <p v-if="similar.length === 0" class="text-secondary text-center">
           {{ $t('singleListing.noSimilar') }}
         </p>
@@ -391,8 +402,8 @@
             <listing-card :card="card" :layout="'list'" />
           </b-col>
         </b-row>
-      </b-container>
-    </section>
+      </section>
+    </b-container>
   </div>
 </template>
 
@@ -634,4 +645,10 @@ p {
   background: var(--indigo);
 }
 
+.contact-us-img {
+  min-height: 200px;
+  background-image: url('~assets/img/contact-us-person.png');
+  background-size: cover;
+  background-position: center center;
+}
 </style>

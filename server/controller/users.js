@@ -72,7 +72,7 @@ exports.authenticate = async (req, res) => {
 
       jwt.sign(
         { id: user._id },
-        process.env.jwtPrivateKey,
+        process.env.jwtSecret,
         { expiresIn: 36000 },
         (err, token) => {
           if (err) { throw err }
