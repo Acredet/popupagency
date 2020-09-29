@@ -113,7 +113,7 @@
             </b-dropdown-item>
           </b-nav-item-dropdown>
 
-          <b-nav-item>
+          <b-nav-item to="/">
             <b-img :src="variant ? require('@/assets/img/logo.png') : require('@/assets/img/logo-white.png')" class="logo" />
           </b-nav-item>
 

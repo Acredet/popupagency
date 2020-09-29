@@ -14,10 +14,10 @@
           Vi har skapat framtidens retail sedan 2013
         </h4>
         <b-input-group>
-          <b-input-group-prepend class="bg-white p-2 text-dark">
+          <b-input-group-prepend class="bg-white p-3 text-dark">
             <b-icon-search />
           </b-input-group-prepend>
-          <b-form-input type="search" aria-label="Hitta din lokal här..." />
+          <b-form-input class="p-4" type="search" aria-label="Hitta din lokal här..." placeholder="Hitta din lokal här..." />
         </b-input-group>
       </div>
     </div>
@@ -32,6 +32,26 @@
 
     <b-container>
       <img width="100%" src="@/assets/img/signature.png" alt="signature">
+
+      <!-- Start Gried -->
+      <b-row class="align-items-stretch">
+        <!-- Strat right column -->
+        <b-col v-for="(row, index) in gridRows" :key="`left-grid-${index}`" cols="12" md="6" :class="{ 'd-none d-md-block': index === 'left' }">
+          <b-row class="grid align-items-stretch h-100">
+            <b-col v-for="(column, i) in row" :key="`left-grid--col${i}`" :cols="column.size" class="my-2">
+              <nuxt-link :style="{ backgroundImage: `url('${column.image}')` }" class="h-100 center-image grid-item" to="/">
+                <div class="grid-overlay">
+                  <h3 class="text-white">
+                    Hey
+                  </h3>
+                </div>
+              </nuxt-link>
+            </b-col>
+          </b-row>
+        </b-col>
+        <!-- End right column -->
+      </b-row>
+      <!-- Start Gried -->
     </b-container>
   </div>
 </template>
@@ -82,6 +102,26 @@ export default {
             itemsToShow: 10
           }
         }
+      },
+      gridRows: {
+        right: [
+          { size: 12, image: 'https://placeimg.com/640/480/nature' },
+          { size: 6, image: 'https://placeimg.com/640/480/nature' },
+          { size: 6, image: 'https://placeimg.com/640/480/nature' },
+          { size: 12, image: 'https://placeimg.com/640/480/nature' }
+        ],
+        left: [
+          { size: 6, image: 'https://placeimg.com/640/480/nature' },
+          { size: 6, image: 'https://placeimg.com/640/480/nature' },
+          { size: 4, image: 'https://placeimg.com/640/480/nature' },
+          { size: 4, image: 'https://placeimg.com/640/480/nature' },
+          { size: 4, image: 'https://placeimg.com/640/480/nature' },
+          { size: 6, image: 'https://placeimg.com/640/480/nature' },
+          { size: 6, image: 'https://placeimg.com/640/480/nature' },
+          { size: 4, image: 'https://placeimg.com/640/480/nature' },
+          { size: 4, image: 'https://placeimg.com/640/480/nature' },
+          { size: 4, image: 'https://placeimg.com/640/480/nature' }
+        ]
       }
     }
   }
@@ -166,5 +206,32 @@ export default {
 .hooper, .hooper *:focus {
   outline: none !important;
   border: 0px;
+}
+
+.grid .grid-overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 150px;
+  height: 100%;
+  background-color: rgba(2, 1, 1, 0.22);
+  text-align: center;
+}
+.grid .grid-overlay h3 {
+  height: auto;
+  font-weight: bolder;
+}
+
+.grid-item {
+  display: block;
+}
+
+.grid-item:hover {
+  text-decoration: none;
+}
+
+.center-image {
+  background-position: center center;
+  background-size: cover;
 }
 </style>
