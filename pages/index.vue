@@ -54,7 +54,7 @@
       <!-- Start Gried -->
     </b-container>
 
-    <b-row class="grid vh-100 align-items-stretch" no-gutters>
+    <b-row class="grid mt-5 vh-100 align-items-stretch" no-gutters>
       <b-col cols="12">
         <nuxt-link style="background-image: url('https://placeimg.com/640/480/nature')" class="h-100 center-image grid-item" to="/">
           <div class="grid-overlay">
@@ -274,11 +274,6 @@ export default {
 
 .grid-item:hover {
   text-decoration: none;
-}
-
-.center-image {
-  background-position: center center;
-  background-size: cover;
 }
 
 .contact-us-img {
