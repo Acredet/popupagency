@@ -23,19 +23,19 @@
     </div>
 
     <b-container class="py-5">
-      <b-row>
+      <b-row v-for="(office, index) in offices" :key="`office-${index}`" class="py-5">
         <!-- Start office detail -->
         <b-col cols="12" md="6" class="d-flex flex-column justify-content-center align-items-start">
-          <h3 class="header p-0 m-0 font-10 font-md-18 font-weight-bolder" v-text="'East Office'" />
-          <small class="font-weight-bolder">STOCKHOLM, SÖDERMALM, SÖDERHALLARNA</small>
+          <h3 class="header p-0 m-0 font-10 font-md-18 font-weight-bolder" v-text="office.name" />
+          <small class="font-weight-bolder">{{ office.address }}</small>
         </b-col>
         <!-- End office detail -->
 
         <!-- Start Map -->
         <b-col cols="12" md="6">
-          <gmap-map style="width: 100%; height: 300px" :center="map.center" :map-type-id="map.mapTypeId" :zoom="12">
+          <gmap-map style="width: 100%; height: 300px" :center="office.map" map-type-id="roadmap" :zoom="12">
             <gmap-cluster>
-              <gmap-marker v-for="(mark, index) in map.markers" :key="index" :icon="require(`@/assets/img/marker.svg`)" :position="mark" />
+              <gmap-marker :icon="require(`@/assets/img/marker.svg`)" :position="office.map" />
             </gmap-cluster>
           </gmap-map>
         </b-col>
@@ -44,30 +44,31 @@
         <!-- Start cards -->
         <b-col cols="12">
           <b-row>
-            <b-col cols="12" md="4">
+            <b-col v-for="(agent, i) in office.agents" :key="`${office.name}-${agent.name}-${i}`" cols="12" md="4">
               <div class="agent">
-                <div class="st-background" style="background-image: url('https://www.popupagency.se/wp-content/uploads/2019/09/Skärmavbild-2019-09-19-kl.-21.59.36.png');" />
+                <!-- eslint-disable-next-line vue/max-attributes-per-line -->
+                <div class="st-background" :style="{ backgroundImage: `url(${ require('@/assets/img/contact-us/' + office.name.replace(' ', '-') + '-' + (i+1) + '.png') })` }" />
                 <div class="img-hover-holder gradient7">
                   <div class="info-hover">
                     <ul class="list-unstyled">
-                      <li><small class="text-white">Rikard Lundberg</small></li>
-                      <li><small class="text-white">CEO &amp; Founder</small></li>
+                      <li><small class="text-white">{{ agent.name }}</small></li>
+                      <li><small class="text-white">{{ agent.title }}</small></li>
                     </ul>
                   </div>
 
                   <ul class="list-unstyled social-nav">
-                    <li class="fb-icon">
-                      <a href="tel:%20+46762514000" target="_blank">
+                    <li v-if="agent.tel" class="fb-icon">
+                      <a :href="`tel:${agent.tel}`" target="_blank">
                         <i class="fas fa-phone" />
                       </a>
                     </li>
                     <li class="fb-icon">
-                      <a href="mailto:rikard@popupagency.se" target="_blank">
+                      <a :href="`mailto:${agent.email}`" target="_blank">
                         <i class="fas fa-envelope" />
                       </a>
                     </li>
                     <li class="fb-icon">
-                      <a href="https://www.linkedin.com/in/triggerinsight/" target="_blank">
+                      <a :href="agent.linkedIn" target="_blank">
                         <i class="fab fa-linkedin-in" />
                       </a>
                     </li>
@@ -75,15 +76,21 @@
                 </div>
               </div>
               <div class="details text-center">
-                <b>CEO & FOUNDER</b>
-                <h3>Rikard Lundberg</h3>
-                <a href="mailto:rikard@popupagency.se">rikard@popupagency.se</a>
-                <p>+46 76 251 40 00</p>
-                <p class="text-center">
-                  <i class="fas fa-phone" />
-                  <i class="fas fa-envelope" />
-                  <i class="fab fa-linkedin-in" />
-                </p>
+                <b>{{ agent.title }}</b>
+                <h3>{{ agent.name }}</h3>
+                <a :href="`mailto:${agent.email}`">{{ agent.email }}</a>
+                <p>{{ agent.tel }}</p>
+                <div class="text-center">
+                  <a :href="`tel:${agent.tel}`" class="mx-1 d-inline-block" style="color: black" target="_blank">
+                    <i class="fas fa-phone" />
+                  </a>
+                  <a :href="`mailto:${agent.email}`" class="mx-1 d-inline-block" style="color: black" target="_blank">
+                    <i class="fas fa-envelope" />
+                  </a>
+                  <a :href="agent.linkedIn" class="mx-1 d-inline-block" style="color: black" target="_blank">
+                    <i class="fab fa-linkedin-in" />
+                  </a>
+                </div>
               </div>
             </b-col>
           </b-row>
@@ -98,11 +105,99 @@
 export default {
   data () {
     return {
-      map: {
-        center: { lat: 59.315092, lng: 18.080587 },
-        mapTypeId: 'roadmap',
-        markers: [{ lat: 59.315092, lng: 18.080587 }]
-      }
+      offices: [
+        {
+          name: 'East Office',
+          address: 'STOCKHOLM, SÖDERMALM, SÖDERHALLARNA',
+          map: { lat: 59.315092, lng: 18.080587 },
+          agents: [
+            {
+              name: 'Rikard Lundberg',
+              title: 'CEO & FOUNDER',
+              email: 'rikard@popupagency.se',
+              tel: '+46 76 251 40 00',
+              linkedIn: 'https://se.linkedin.com/in/triggerinsight'
+            },
+            {
+              name: 'Peter Scherr',
+              title: 'CxO & FOUNDER',
+              email: 'peter@popupagency.se',
+              tel: '+46 70 757 76 00',
+              linkedIn: 'https://www.linkedin.com/in/peter-scherr-39044228/'
+            },
+            {
+              name: 'Ylva Johansson',
+              title: 'HEAD OF SALES & KAM',
+              email: 'ylva@popupagency.se',
+              tel: '+46 76 796 06 00',
+              linkedIn: 'https://www.linkedin.com/in/ylva-johansson-a268669/'
+            },
+            {
+              name: 'Jasmine Jarne',
+              title: 'POPUP MANAGER',
+              email: 'jasmine@popupagency.se',
+              tel: '+46 73 836 65 00',
+              linkedIn: 'https://www.linkedin.com/in/jasmine-jarne-80278759/'
+            },
+            {
+              name: 'Bertil Moskovitz',
+              title: 'POPUP MANAGER',
+              email: 'bertil@popupagency.se',
+              tel: '+46 70 760 29 81',
+              linkedIn: 'https://www.linkedin.com/in/bertil-moskowicz-077778193/'
+            },
+            {
+              name: 'Jonas Bergström',
+              title: 'POPUP PROJECTS',
+              email: 'jonas@popupagency.se',
+              tel: '+46 70 537 09 26',
+              linkedIn: 'https://www.linkedin.com/in/jonas-bergstr%C3%B6m-96742211/'
+            }
+          ]
+        },
+        {
+          name: 'South Office',
+          address: 'SKÅNE & KÖPENHAMN',
+          map: { lat: 55.5767608, lng: 12.978515 },
+          agents: [
+            {
+              name: 'Terese Nilsson Björling',
+              title: 'HEAD OF DIGITAL MEDIA & KAM',
+              email: 'terese@popupagency.se',
+              tel: '+46 73 808 55 00',
+              linkedIn: 'https://www.linkedin.com/in/terese-nilsson-bj%C3%B6rling-54bb5050/'
+            }
+          ]
+        },
+        {
+          name: 'West Office',
+          address: 'FALKENBERG & GÖTEBORG',
+          map: { lat: 56.893449, lng: 12.503674 },
+          agents: [
+            {
+              name: 'Annika Jönsson',
+              title: 'POPUP MANAGER',
+              email: 'annika@popupagency.se',
+              tel: '+46 70 755 27 75',
+              linkedIn: 'https://www.linkedin.com/in/annika-j%C3%B6nsson-59166520/'
+            }
+          ]
+        },
+        {
+          name: 'Island Office',
+          address: 'GOTLAND, VISBY',
+          map: { lat: 57.601523, lng: 18.354991 },
+          agents: [
+            {
+              name: 'Mats Skärlén',
+              title: 'SALES',
+              email: 'mats@popupagency.se',
+              tel: '',
+              linkedIn: 'https://www.linkedin.com/in/mats-skarlen-90b35511'
+            }
+          ]
+        }
+      ]
     }
   }
 }
@@ -145,7 +240,7 @@ export default {
   overflow: hidden;
 }
 
-.agent:hover .img-hover-holder {
+.agent:focus .img-hover-holder, .agent:hover .img-hover-holder {
   opacity: .9;
 }
 
