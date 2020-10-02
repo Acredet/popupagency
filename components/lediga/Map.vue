@@ -67,6 +67,11 @@ export default {
       this.pinMarkers(this.allPlaces)
     }
   },
+  created () {
+    if (this.allPlaces.length > 0) {
+      this.pinMarkers(this.allPlaces)
+    }
+  },
   methods: {
     setCenter (x) {
       this.$emit('setCenter')

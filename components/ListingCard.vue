@@ -132,7 +132,7 @@ export default {
   align-items: center;
 
   position: absolute;
-  z-index: 999;
+  z-index: 3;
   top: 10px;
   right: 10%;
 }

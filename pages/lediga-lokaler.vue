@@ -95,7 +95,7 @@
       <!-- Start Map -->
       <b-col v-if="layout === $t('ledigaLokaler.map')" cols="12" md="6" class="map-wrapper d-md-flex">
         <client-only>
-          <GMap :all-places="cards" @setCenter="layout = $t('ledigaLokaler.map')" />
+          <GMap :key="" :all-places="cards" @setCenter="layout = $t('ledigaLokaler.map')" />
         </client-only>
       </b-col>
       <!-- End Map -->
@@ -143,6 +143,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      renderKey: 'renderKey',
       AllPlaces: 'listings',
       cards: 'cards'
     }),
@@ -169,6 +170,7 @@ export default {
   },
   methods: {
     ...mapActions({
+      refreshMap: 'changeSidebarRenderKey',
       getListings: 'getListings',
       getRegions: 'getRegions',
       sortCards: 'sortCards',
