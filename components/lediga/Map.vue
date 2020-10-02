@@ -40,7 +40,7 @@ export default {
       map: {
         center: { lat: 59.334591, lng: 18.06324 },
         mapTypeId: 'roadmap',
-        zoom: 7,
+        zoom: 5,
         markers: []
       },
       infoWindowPos: null,

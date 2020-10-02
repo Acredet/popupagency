@@ -17,7 +17,7 @@
           cols="12"
           :md="6"
         >
-          <listing-card :card="card" />
+          <listing-card :place="card" />
         </b-col>
         <!-- End Listing -->
       </b-row>

@@ -206,3 +206,26 @@ table.b-table tbody tr[role='row']:nth-child(odd) { background: #FFF !important 
 .link-main:hover {
   text-decoration: none
 }
+
+/* Start Card Like */
+.like{
+  position: absolute;
+  z-index: 3;
+  top: -10px;
+  right: 0;
+
+  width: 70px;
+  height: 70px;
+  background: url("https://abs.twimg.com/a/1446542199/img/t1/web_heart_animation.png") no-repeat;
+  background-position: -20px;
+  cursor: pointer;
+}
+.anim-like{
+  background-position: -2820px -14px;
+  transition: background 1s steps(28);
+}
+.anim{
+  background-position: -3529px 0;
+  transition: background 1s steps(55);
+}
+/* End Card Like */

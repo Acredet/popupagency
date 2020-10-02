@@ -83,7 +83,7 @@
               :lg="layout === $t('ledigaLokaler.map') ? 6 : 4"
               :xl="layout === $t('ledigaLokaler.map') ? 4 : 3"
             >
-              <listing-card :card="card" :layout="layout" @showPlace="setCenter($event)" />
+              <listing-card :place="card" :layout="layout" @showPlace="setCenter($event)" />
             </b-col>
             <!-- End Listing -->
           </b-row>

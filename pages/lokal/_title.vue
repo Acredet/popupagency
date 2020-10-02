@@ -9,10 +9,9 @@
             <h1 class="font-5">
               {{ place.title ? place.title[$i18n.locale] : '' }}
             </h1>
-            <p class="heartIcon h2 mb-2">
-              <BIconHeart v-if="!$auth.loggedIn || ($auth.user.fav.findIndex(x => x === place.title.sv) === -1)" @click="AddToFav" />
-              <b-icon-heart-fill v-else @click="AddToFav" />
-            </p>
+            <div class="position-relative">
+              <section class="like position-static" :class="{ 'anim-like': $auth.loggedIn && ($auth.user.fav.findIndex(x => x === place.title.sv) !== -1) }" @click="AddToFav" />
+            </div>
           </div>
         </b-container>
       </section>
@@ -399,7 +398,7 @@
             md="6"
             lg="4"
           >
-            <listing-card :card="card" :layout="'list'" />
+            <listing-card :place="card" :layout="'list'" />
           </b-col>
         </b-row>
       </section>
@@ -408,22 +407,21 @@
 </template>
 
 <script>
-import { BootstrapVue, BIcon, BIconHeart, BIconHeartFill } from 'bootstrap-vue'
+import { BootstrapVue, BIcon } from 'bootstrap-vue'
 import 'viewerjs/dist/viewer.css'
 import Viewer from 'v-viewer'
 import Vue from 'vue'
+import { addToFav } from '@/mixins/utils/addToFav'
 Vue.use(Viewer)
+
 export default {
   components: {
     // eslint-disable-next-line vue/no-unused-components
     BootstrapVue,
     // eslint-disable-next-line vue/no-unused-components
-    BIcon,
-    // eslint-disable-next-line vue/no-unused-components
-    BIconHeart,
-    // eslint-disable-next-line vue/no-unused-components
-    BIconHeartFill
+    BIcon
   },
+  mixins: [addToFav],
   data () {
     return {
       map: {
@@ -491,28 +489,6 @@ export default {
       .catch(res => console.log(res))
   },
   methods: {
-    async AddToFav () {
-      if (!this.$auth.loggedIn) {
-        this.$store.dispatch('redirectLink', this.$route.path)
-        this.$router.push('login')
-      } else {
-        const update = {}
-        Object.assign(update, this.$auth.user)
-        update.fav = [...this.$auth.user.fav]
-        const index = update.fav.findIndex(x => x === this.place.title.sv)
-        if (index === -1) {
-          update.fav.push(this.place.title.sv)
-        } else {
-          update.fav.splice(index, 1)
-        }
-        await this.$axios.patch(`/users/${this.$auth.user._id}`, update)
-          .then(async (res) => {
-            console.log(res)
-            await this.$auth.fetchUser()
-          })
-          .catch(err => console.log(err))
-      }
-    },
     sendForm () {
       alert('Not working yet 😉')
     },
@@ -537,10 +513,6 @@ export default {
   .row.tabs {
     overflow-x: scroll;
   }
-}
-
-.heartIcon {
-  cursor: pointer;
 }
 
 .anime-tab {
