@@ -1,12 +1,10 @@
 <template>
-  <div id="wrapper">
+  <div v-if="thereIsUser" id="wrapper">
     <admin-header />
     <admin-sidebar @initAppPlease="initApp" />
 
     <div class="my-3 content-page">
-      <transition name="fade">
-        <Nuxt />
-      </transition>
+      <nuxt />
     </div>
     <!-- <admin-footer /> -->
   </div>
@@ -18,7 +16,6 @@ import adminSidebar from '@/components/admin/admin-Sidebar.vue'
 import { AdminPanelDependancies } from '@/mixins/AdminPanelDependancies'
 
 export default {
-  // middleware: 'authenticated',
   name: 'AdminLayout',
   components: {
     adminHeader,
@@ -26,9 +23,16 @@ export default {
     adminSidebar
   },
   mixins: [AdminPanelDependancies],
-  created () {
+  data () {
+    return {
+      thereIsUser: false
+    }
+  },
+  mounted () {
     if (!this.$auth.loggedIn) {
       this.$router.push('/login')
+    } else {
+      this.thereIsUser = true
     }
   }
 }

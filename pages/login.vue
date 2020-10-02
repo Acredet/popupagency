@@ -80,6 +80,14 @@ import { AdminPanelDependancies } from '@/mixins/AdminPanelDependancies'
 export default {
   name: 'Login',
   mixins: [AdminPanelDependancies],
+  asyncData (context) {
+    if (process.client) {
+      const { from } = context
+      console.log(from)
+    }
+    console.log(process.client)
+    // return { project: 'nuxt' }
+  },
   data () {
     return {
       busy: false,
@@ -95,11 +103,12 @@ export default {
       }
     }
   },
-  created () {
-    if (this.$auth.loggedIn) {
-      this.$router.push(`${this.$t('link')}admin`)
-    }
-  },
+  // created () {
+  // console.log(this.$router.history)
+  // if (this.$auth.loggedIn) {
+  //   this.$router.push(`${this.$t('link')}admin`)
+  // }
+  // },
   methods: {
     async login () {
       this.busy = true

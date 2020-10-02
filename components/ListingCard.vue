@@ -1,9 +1,8 @@
 <template>
   <div>
-    <b-btn :disabled="loading" class="heartIcon h4 mb-2">
-      <BIconHeart v-if="!$auth.loggedIn || ($auth.user.fav.findIndex(x => x === card.title.sv) === -1)" class="text-dark" @click="AddToFav" />
-      <b-icon-heart-fill v-else class="text-dark" @click="AddToFav" />
-    </b-btn>
+    <!-- <b-btn :disabled="loading" class="heartIcon h4 mb-2" @click="AddToFav"> -->
+    <section class="like" :class="{ 'anim-like': $auth.loggedIn && ($auth.user.fav.findIndex(x => x === card.title.sv) !== -1) }" @click="AddToFav" />
+    <!-- </b-btn> -->
 
     <nuxt-link :to="`${$t('link')}lokal/${card.title.sv}`" class="listing-card">
       <!-- Start header -->
@@ -52,7 +51,7 @@
 </template>
 
 <script>
-import { BootstrapVue, BIconHeart, BIconHeartFill, BIcon, BIconGeoAlt, BIconWallet } from 'bootstrap-vue'
+import { BootstrapVue, BIcon, BIconGeoAlt, BIconWallet } from 'bootstrap-vue'
 
 export default {
   components: {
@@ -63,11 +62,7 @@ export default {
     // eslint-disable-next-line vue/no-unused-components
     BIconWallet,
     // eslint-disable-next-line vue/no-unused-components
-    BIconGeoAlt,
-    // eslint-disable-next-line vue/no-unused-components
-    BIconHeart,
-    // eslint-disable-next-line vue/no-unused-components
-    BIconHeartFill
+    BIconGeoAlt
   },
   props: {
     card: {
@@ -88,8 +83,9 @@ export default {
     showPlace (loc) {
       this.$emit('showPlace', loc)
     },
-    async AddToFav () {
+    async AddToFav (e) {
       this.loading = true
+      const like = e.target
       if (!this.$auth.loggedIn) {
         this.$store.dispatch('redirectLink', this.$route.path)
         this.$router.push('login')
@@ -100,8 +96,10 @@ export default {
         const index = update.fav.findIndex(x => x === this.card.title.sv)
         if (index === -1) {
           update.fav.push(this.card.title.sv)
+          like.classList.add('anim-like')
         } else {
           update.fav.splice(index, 1)
+          like.classList.remove('anim-like')
         }
         await this.$axios.patch(`/users/${this.$auth.user._id}`, update)
           .then(async (res) => {
@@ -117,25 +115,27 @@ export default {
 </script>
 
 <style scoped>
-.heartIcon {
-  background: white;
-  box-shadow: 0px 0px 9px 2px rgba(0,0,0,0.75);
-  cursor: pointer;
-
-  padding: 5px;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
+.like{
   position: absolute;
   z-index: 3;
-  top: 10px;
-  right: 10%;
+  top: -10px;
+  right: 0;
+
+  width: 70px;
+  height: 70px;
+  background: url("https://abs.twimg.com/a/1446542199/img/t1/web_heart_animation.png") no-repeat;
+  background-position: -20px;
+  cursor: pointer;
 }
+.anim-like{
+  background-position: -2820px -14px;
+  transition: background 1s steps(28);
+}
+.anim{
+  background-position: -3529px 0;
+  transition: background 1s steps(55);
+}
+
 .listing-card {
   display: block;
   text-decoration: none;
