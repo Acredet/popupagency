@@ -81,7 +81,7 @@
               cols="12"
               :md="6"
               :lg="layout === $t('ledigaLokaler.map') ? 6 : 4"
-              :xl="layout === $t('ledigaLokaler.map') ? 4 : 3"
+              :xl="layout === $t('ledigaLokaler.map') ? 6 : 3"
             >
               <listing-card :place="card" :layout="layout" @showPlace="setCenter($event)" />
             </b-col>
@@ -95,7 +95,7 @@
       <!-- Start Map -->
       <b-col v-if="layout === $t('ledigaLokaler.map')" cols="12" md="6" class="map-wrapper d-md-flex">
         <client-only>
-          <GMap :key="" :all-places="cards" @setCenter="layout = $t('ledigaLokaler.map')" />
+          <GMap :key="renderKey" :all-places="cards" @setCenter="layout = $t('ledigaLokaler.map')" />
         </client-only>
       </b-col>
       <!-- End Map -->

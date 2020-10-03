@@ -179,7 +179,7 @@ export default {
   mixins: [sortItems, allFilters],
   data () {
     return {
-      layout: this.$t('ledigaLokaler.list')
+      layout: this.$t('ledigaLokaler.map')
     }
   },
   computed: {

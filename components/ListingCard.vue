@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="place && place._id" :key="`place-card-${place._id}`">
     <!-- <b-btn :disabled="loading" class="heartIcon h4 mb-2" @click="AddToFav"> -->
     <section class="like" :class="{ 'anim-like': $auth.loggedIn && ($auth.user.fav.findIndex(x => x === place.title.sv) !== -1) }" @click="AddToFav" />
     <!-- </b-btn> -->
