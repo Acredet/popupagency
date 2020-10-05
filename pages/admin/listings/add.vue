@@ -9,7 +9,7 @@ export default {
   name: 'AddListing',
   layout: 'admin',
   created () {
-    if (!this.$auth.loggedIn || !['manager', 'admin'].includes(this.$auth.user.role)) {
+    if (!this.$auth.loggedIn || !['manager', 'admin', 'owner'].includes(this.$auth.user.role)) {
       this.$router.push('/error')
     }
   }

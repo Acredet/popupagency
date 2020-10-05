@@ -8,7 +8,7 @@
         <ul id="side-menu" :key="renderKey - 50" class="metismenu">
           <li class="menu-title" v-text="$t('adminSidebar.main')" />
 
-          <li v-for="list in realLinks" v-show="$auth.user && list.accessableFor.includes($auth.user.role)" :key="list.text">
+          <li v-for="list in realLinks" :key="list.text">
             <a href="javascript:void(0);" class="waves-effect">
               <i :class="list.icon" />
               <span> {{ list.text }} <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right" /></span> </span>

@@ -78,7 +78,7 @@
       <!-- Start property Filter -->
       <b-col cols="12" md="auto" class="mr-2 d-none d-lg-flex align-items-center">
         <b-dropdown id="property-dropdown" class="w-100" variant="light" :text="filters.property.text">
-          <b-dropdown-group :header="$t('ledigaLokaler.filters.propertyType')" style="width: 300px !important" class="px-1">
+          <b-dropdown-group :header="$t('ledigaLokaler.filters.propertyType')" class="px-1">
             <property-filter :icons="filters.property.icons" @iconChoosed="addProperty($event)" />
             <b-btn variant="primary" @click="doFilter">
               Ok
@@ -91,7 +91,7 @@
       <!-- Start price Filter -->
       <b-col cols="12" md="auto" class="mr-2 d-none d-md-flex align-items-center">
         <b-dropdown id="price-dropdown" class="w-100" variant="light" right :text="filters.price.text">
-          <b-dropdown-group :header="$t('ledigaLokaler.filters.price')" style="width: 300px !important" class="px-3">
+          <b-dropdown-group :header="$t('ledigaLokaler.filters.price')" class="px-3">
             <client-only>
               <yta-filter :identifier="2" :slider-type="'price'" :min-and-max="filters.price" @ytaChanged="ytaChanged('price', $event)" />
             </client-only>
@@ -106,7 +106,7 @@
       <!-- Start yta Filter -->
       <b-col cols="12" md="auto" class="mr-2 d-none d-lg-flex align-items-center">
         <b-dropdown id="yta-dropdown" class="w-100" variant="light" right :text="filters.yta.text">
-          <b-dropdown-group :header="$t('ledigaLokaler.filters.surface')" style="width: 300px !important" class="px-3">
+          <b-dropdown-group :header="$t('ledigaLokaler.filters.surface')" class="px-3">
             <client-only>
               <yta-filter :identifier="10" :slider-type="'yta'" :min-and-max="filters.yta" @ytaChanged="ytaChanged('yta', $event)" />
             </client-only>
@@ -198,3 +198,12 @@ export default {
   }
 }
 </script>
+
+<style>
+div.dropdown.b-dropdown.show.btn-group > ul {
+  height: 400px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  width: 400px
+}
+</style>

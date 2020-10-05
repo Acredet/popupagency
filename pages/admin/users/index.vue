@@ -47,19 +47,6 @@
         responsive="sm"
         show-empty
       >
-        <template v-slot:cell(role)="data">
-          <b-form-group>
-            <b-form-radio-group
-              v-model="data.item.role"
-              stacked
-              :options="[{text: 'Owner', value: 'owner'}, {text: 'Admin', value: 'admin'}, {text: 'Manager', value: 'manager'}, {text: 'Searcher', value: 'searcher'}]"
-              switches
-              :disabled="data.item.role.disabled"
-              @change="changeUserRole(data.item)"
-            />
-          </b-form-group>
-        </template>
-
         <template v-slot:cell(actions)="data">
           <b-dropdown variant="light">
             <template v-slot:button-content>
@@ -111,7 +98,6 @@ export default {
       fields: [
         { key: 'name', label: this.$t('allUsers.table.header.name'), sortable: true },
         { key: 'email', label: this.$t('allUsers.table.header.email'), sortable: true },
-        { key: 'role', label: 'Role' },
         { key: 'actions', label: this.$t('tables.actions') }
       ],
       items: null,
@@ -148,10 +134,6 @@ export default {
       await this.$axios.$get('/users/all')
         .then((res) => {
           this.allUsers = res.data
-          if (this.$auth.user === 'admin') {
-            const currentUser = res.data.filter(user => user._id === this.$auth.user._id)[0]
-            currentUser.role = { text: currentUser.role, disabled: true }
-          }
           if (this.role) {
             this.items = this.allUsers.filter(x => x.role === this.role)
           } else { this.items = res.data }
@@ -207,16 +189,6 @@ export default {
             text: err.message
           }
           Object.assign(this.user, {})
-        })
-    },
-    async changeUserRole (user) {
-      console.log(user)
-      await this.$axios.patch(`/users/${user._id}`, user)
-        .then(async (res) => {
-          console.log(res)
-          await this.$auth.fetchUser()
-          this.$store.dispatch('changeSidebarRenderKey')
-          this.getUsers()
         })
     }
   }

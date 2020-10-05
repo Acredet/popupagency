@@ -132,9 +132,10 @@
             <!-- Start egenskaper -->
             <b-col v-if="place.egenskaper" class="my-3" cols="12" md="6">
               <b class="font-4">{{ $t('singleListing.info.characteristics') }}</b>
-              <div v-for="tag in place.egenskaper" :key="tag.name[$i18n.locale]" class="img">
+              <div v-for="tag in place.egenskaper" :key="tag.name[$i18n.locale]" class="mt-1 img">
                 -
                 <img v-if="tag.avatar" :src="`https://popup.dk.se/_nuxt/img/${tag.avatar}`" width="50px" :alt="tag.name[$i18n.locale]">
+                <span v-else style="display: inline-block; width: 50px" />
                 <b>{{ tag.name[$i18n.locale] }}</b>
               </div>
             </b-col>
@@ -618,7 +619,7 @@ p {
 }
 
 .contact-us-img {
-  min-height: 200px;
+  min-height: 400px;
   background-image: url('~assets/img/contact-us-person.png');
   background-size: cover;
   background-position: center center;
