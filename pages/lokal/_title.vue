@@ -1,5 +1,22 @@
 <template>
   <div v-if="place._id">
+    <!-- Login modal -->
+    <b-modal id="modal-center" v-model="modalShow" centered title="Login">
+      <p class="my-4">
+        You must login to be able to have bookmarks!
+      </p>
+      <template v-slot:modal-footer>
+        <div>
+          <b-btn variant="primary" to="/login">
+            Login
+          </b-btn>
+          <b-btn variant="error" @click="modalShow = false">
+            cancel
+          </b-btn>
+        </div>
+      </template>
+    </b-modal>
+    <!-- End modal -->
     <!-- Start cover -->
     <div class="position-relative cover">
       <div class="position-relative cover--overlay" :style="imgStyles" />
@@ -10,7 +27,11 @@
               {{ place.title ? place.title[$i18n.locale] : '' }}
             </h1>
             <div class="position-relative">
-              <section class="like position-static" :class="{ 'anim-like': $auth.loggedIn && ($auth.user.fav.findIndex(x => x === place.title.sv) !== -1) }" @click="AddToFav" />
+              <section
+                class="like position-static"
+                :class="{ 'anim-like': $auth.loggedIn && ($auth.user.fav.findIndex(x => x === place.title.sv) !== -1) }"
+                @click="(e) => { if (!this.$auth.loggedIn) { this.modalShow = true } else { this.AddToFav(e) } }"
+              />
             </div>
           </div>
         </b-container>
@@ -387,6 +408,7 @@
         <h2 class="text-center">
           {{ $t('singleListing.intersedIn') }}
         </h2>
+
         <p v-if="similar.length === 0" class="text-secondary text-center">
           {{ $t('singleListing.noSimilar') }}
         </p>
@@ -399,7 +421,7 @@
             md="6"
             lg="4"
           >
-            <listing-card :place="card" :layout="'list'" />
+            <listing-card :place="card" :layout="'list'" @notAuthBookmark="modalShow = true" />
           </b-col>
         </b-row>
       </section>
@@ -425,6 +447,7 @@ export default {
   mixins: [addToFav],
   data () {
     return {
+      modalShow: false,
       map: {
         center: { lat: 59.334591, lng: 18.063240 },
         mapTypeId: 'roadmap',

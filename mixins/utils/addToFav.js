@@ -4,8 +4,7 @@ exports.addToFav = {
       this.loading = true
       const like = e.target
       if (!this.$auth.loggedIn) {
-        this.$store.dispatch('redirectLink', this.$route.path)
-        this.$router.push('login')
+        this.$emit('notAuthBookmark')
       } else {
         const update = {}
         Object.assign(update, this.$auth.user)
