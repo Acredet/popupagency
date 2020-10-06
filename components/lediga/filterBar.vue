@@ -25,7 +25,7 @@
             <!-- Start Tabs -->
             <b-tabs
               v-model="filters.plats.currentCity"
-              nav-wrapper-class="w-25 h-100 overflow-auto border"
+              nav-wrapper-class="w-50 h-100 overflow-auto border"
               nav-class="d-block p-0 m-0"
               pills
               card
@@ -204,6 +204,6 @@ div.dropdown.b-dropdown.show.btn-group > ul {
   height: 400px;
   overflow-x: hidden;
   overflow-y: scroll;
-  width: 400px
+  width: 600px
 }
 </style>

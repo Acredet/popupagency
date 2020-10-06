@@ -17,6 +17,7 @@
       </template>
     </b-modal>
     <!-- End modal -->
+
     <!-- Start cover -->
     <div class="position-relative cover">
       <div class="position-relative cover--overlay" :style="imgStyles" />
@@ -133,7 +134,7 @@
             <b-col v-if="place.planritning" class="my-3" cols="12" md="6">
               <b class="font-4">{{ $t('singleListing.info.floorPlan') }}</b>
               <div v-for="img in place.planritning" :key="img" class="img">
-                <div class="planritning rounder-circle" @click="show">
+                <div class="planritning rounder-circle" @click="showV('planritningImages',index)">
                   <i class="far fa-file-image font-1 text-secondaty mr-2" />
                   <span>{{ img }}</span>
                 </div>
@@ -142,10 +143,15 @@
                   ref="viewer"
                   :images="planritningImages"
                   class="viewer"
-                  @inited="inited"
+                  @inited="initedV('planritningImages', $event)"
                 >
                   <img v-for="src in planritningImages" :key="src" :src="src" class="d-none">
                 </viewer>
+              </div>
+              <div v-if="place.planritning.length === 0">
+                <p class="secondary--text">
+                  Not provided.
+                </p>
               </div>
             </b-col>
             <!-- End Planritning -->
@@ -168,16 +174,15 @@
                 <b class="font-4 mb-2">{{ $t('singleListing.info.gallery') }}</b>
                 <!-- component -->
                 <b-row no-gutters>
-                  <b-col
-                    v-for="(src, index) in images"
-                    :key="src"
-                    cols="12"
-                    md="6"
-                    @click="show2(index)"
-                  >
+                  <b-col v-for="(src, index) in images" :key="src" cols="12" md="6" @click="showV('bildgalleri',index)">
                     <div class="gallery-images" style="height: 320px">
                       <img width="100%" :src="src" style="height: 320px">
                     </div>
+                  </b-col>
+                  <b-col v-if="images.length === 0" cols="12">
+                    <p class="text-center text-secondary">
+                      Not provided.
+                    </p>
                   </b-col>
                 </b-row>
 
@@ -185,7 +190,7 @@
                   ref="viewer2"
                   :images="images"
                   class="viewer"
-                  @inited="inited2"
+                  @inited="initedV('bildgalleri', $event)"
                 >
                   <img v-for="src in images" :key="`${src}-imaged`" :src="src" class="d-none">
                 </viewer>
@@ -209,8 +214,41 @@
 
       <b-tab title-item-class="d-none" class="my-4">
         <b-container>
-          <b>{{ $t('singleListing.info.website') }}</b>
-          <p>{{ place.hemsida }}</p>
+          <!-- component -->
+          <b-row no-gutters>
+            <b-col v-for="(src, index) in centrumgalleri" :key="src" cols="12" md="6" @click="showV('centrumgalleri',index)">
+              <div class="gallery-images" style="height: 320px">
+                <img width="100%" :src="src" style="height: 320px">
+              </div>
+            </b-col>
+          </b-row>
+
+          <viewer ref="viewer3" :images="centrumgalleri" class="viewer" @inited="initedV('centrumgalleri', $event)">
+            <img v-for="src in centrumgalleri" :key="`${src}-imaged`" :src="src" class="d-none">
+          </viewer>
+
+          <b-row class="my-3 py-5">
+            <!-- Start Oppning -->
+            <b-col cols="12" md="6" lg="3" offset-lg="2">
+              <b class="d-block mb-3">Oppning</b>
+              <div v-for="day in place.oppettider" :key="day._id">
+                <b-row>
+                  <b-col cols="6">
+                    <p class="m-0 p-0" v-text="day.day + ':'" />
+                  </b-col>
+                  <b-col cols="6">
+                    <p v-for="time in day.times" :key="time._id" class="m-0 p-0 text-right" v-text="`${time.opening.substr(0,5)} - ${time.closing.substr(0,5)}`" />
+                  </b-col>
+                </b-row>
+                <hr>
+              </div>
+            </b-col>
+            <!-- End Oppning -->
+            <b-col cols="12" md="6" offset-lg="1">
+              <b class="d-block mb-3">{{ $t('singleListing.info.website') }}</b>
+              <a target="_blank" :href="place.hemsida" v-text="place.hemsida" />
+            </b-col>
+          </b-row>
         </b-container>
       </b-tab>
 
@@ -293,7 +331,7 @@
               <b-col cols="12" md="6">
                 <b-form-group
                   class="my-2"
-                  :label="$t('forms.phone.business')"
+                  :label="$t('forms.business.title')"
                   label-class="font-weight-bold"
                   label-for="Business"
                 >
@@ -311,7 +349,7 @@
               <b-col cols="12" md="6">
                 <b-form-group
                   class="my-2"
-                  :label="$t('singleListing.info.website')"
+                  :label="$t('singleListing.info.website') + ':'"
                   label-class="font-weight-bold"
                   label-for="Website"
                 >
@@ -390,7 +428,7 @@
                   :value="true"
                   :unchecked-value="false"
                 >
-                  {{ $t('singleListing.info.GDPR') }}
+                  {{ $t('singleListing.form.GDPR') }}
                 </b-form-checkbox>
               </b-col>
 
@@ -471,6 +509,9 @@ export default {
   },
   computed: {
     images () {
+      return !this.place.bildgalleri ? [] : this.place.bildgalleri.map(x => `https://popup.dk.se/_nuxt/img/${x}`)
+    },
+    centrumgalleri () {
       return !this.place.centrumgalleri ? [] : this.place.centrumgalleri.map(x => `https://popup.dk.se/_nuxt/img/${x}`)
     },
     planritningImages () {
@@ -498,6 +539,7 @@ export default {
     }
   },
   async created () {
+    this.$viewer = {}
     await this.$axios.$get(`/places/${this.$route.params.title}`)
       .then((res) => {
         this.place = res.place
@@ -516,17 +558,13 @@ export default {
     sendForm () {
       alert('Not working yet 😉')
     },
-    inited (viewer) {
-      this.$viewer = viewer
+    initedV (name, viewer) {
+      console.log('HEY YPU')
+      console.log(name, viewer)
+      this.$viewer[name] = viewer
     },
-    show () {
-      this.$viewer.show()
-    },
-    inited2 (viewer2) {
-      this.$viewer2 = viewer2
-    },
-    show2 (number) {
-      this.$viewer2.view(number)
+    showV (name, index) {
+      this.$viewer[name].view(index)
     }
   }
 }

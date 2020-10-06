@@ -46,7 +46,7 @@ export default {
       desc: 'Assign a parent term to create a hierachy. The term Jazz, for example, would be the parent of Bebop and Big Band.'
     },
     decription: {
-      title: 'Description',
+      title: 'Description:',
       holder: 'Enter Your Description',
       desc: 'The description isn\'t prominent by default; howerver, some themes may show it.'
     }
@@ -179,8 +179,8 @@ export default {
       priceList: ['prioteradpris', 'prisperdag', 'prisperhelg', 'prisperlanghelg', 'prispermanad', 'prispervecka']
     },
     form: {
-      from: 'Fr.om',
-      empty: 'Empty',
+      from: 'Fr.om:',
+      empty: 'Empty:',
       details: 'What do you want to do in the room?',
       GDPR: 'I accept that the Popup Agency processes my personal information in accordance with GDPR rules.'
     },
