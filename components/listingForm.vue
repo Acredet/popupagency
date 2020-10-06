@@ -142,20 +142,27 @@
             </template>
           </b-card>
 
-          <b-card v-for="(card, index) in renderInputs" :key="index" :title="card.title">
-            <b-card-body>
-              <b-form-checkbox
-                v-if="!card.noTemp"
-                :id="card.title"
-                v-model="price[card.model].temp"
-                class="mb-2"
-                @change="setPrioteradPrice(card.model)"
-              >
-                {{ $t('addListing.inputs.price.priority') }}
-              </b-form-checkbox>
-              <b-form-input v-model="price[card.model].val" type="number" :placeholder="card.placeholder" />
-            </b-card-body>
-          </b-card>
+          <!-- Start Prices -->
+          <b-row no-gutters>
+            <b-col
+              v-for="(card, index) in renderInputs"
+              :key="index"
+              cols="12"
+              md="2"
+              :offset-md="index === 0 ? 1 : 0"
+              class="p-1"
+            >
+              <b-card :title="card.title">
+                <b-card-body class="p-1">
+                  <b-form-checkbox v-if="!card.noTemp" :id="card.title" v-model="price[card.model].temp" class="mb-2" @change="setPrioteradPrice(card.model)">
+                    {{ $t('addListing.inputs.price.priority') }}
+                  </b-form-checkbox>
+                  <b-form-input v-model="price[card.model].val" type="number" :placeholder="card.placeholder" />
+                </b-card-body>
+              </b-card>
+            </b-col>
+          </b-row>
+          <!-- End Prices -->
 
           <b-card :title="$t('addListing.inputs.egenskaper')">
             <b-card-body>
@@ -201,91 +208,6 @@
                   {{ $t('forms.valid') }}
                 </b-form-valid-feedback>
               </b-form-radio-group>
-            </b-card-body>
-          </b-card>
-
-          <b-card :title="$t('addListing.inputs.plats')">
-            <b-card-body>
-              <div class="w-100">
-                <gmap-map
-                  :center="map.center"
-                  :map-type-id="map.mapTypeId"
-                  style="height: 300px"
-                  :zoom="7"
-                >
-                  <gmap-cluster>
-                    <gmap-marker
-                      v-for="(mark, index) in map.markers"
-                      :key="index"
-                      :position="mark"
-                    />
-                  </gmap-cluster>
-                </gmap-map>
-                <div class="my-2">
-                  <b-form-group
-                    id="address-group"
-                    label="Address:"
-                    label-class="font-weight-bold "
-                    label-for="address"
-                  >
-                    <gmap-autocomplete id="address" class="form-control" @place_changed="setPlace" />
-                    <p v-if="$route.params.id" class="font-weight-bold">
-                      location: {{ formattedAddress }}
-                    </p>
-                  </b-form-group>
-                </div>
-              </div>
-              <b-row>
-                <b-col cols="12" md="6">
-                  <b-form-group
-                    id="location-lang-group"
-                    label="longitude:"
-                    label-class="font-weight-bold "
-                    label-for="location-lang"
-                  >
-                    <b-form-input
-                      id="location-lang"
-                      v-model="location.lng"
-                      required
-                      autocomplete="off"
-                      :state="locationValidLNG"
-                      :placeholder="$t('addListing.inputs.plats')"
-                    />
-                    <b-form-invalid-feedback :state="locationValidLNG">
-                      {{ $t('forms.required') }}
-                    </b-form-invalid-feedback>
-
-                    <b-form-valid-feedback :state="locationValidLNG">
-                      {{ $t('forms.valid') }}
-                    </b-form-valid-feedback>
-                  </b-form-group>
-                </b-col>
-
-                <b-col cols="12" md="6">
-                  <b-form-group
-                    id="location-lat-group"
-                    label="Latitude:"
-                    label-class="font-weight-bold "
-                    label-for="location-lat"
-                  >
-                    <b-form-input
-                      id="location-lat"
-                      v-model="location.lat"
-                      required
-                      autocomplete="off"
-                      :state="locationValidLAT"
-                      :placeholder="$t('addListing.inputs.plats')"
-                    />
-                    <b-form-invalid-feedback :state="locationValidLAT">
-                      {{ $t('forms.required') }}
-                    </b-form-invalid-feedback>
-
-                    <b-form-valid-feedback :state="locationValidLAT">
-                      {{ $t('forms.valid') }}
-                    </b-form-valid-feedback>
-                  </b-form-group>
-                </b-col>
-              </b-row>
             </b-card-body>
           </b-card>
 
@@ -386,106 +308,10 @@
             </b-card-body>
           </b-card>
 
-          <b-card :title="$t('addListing.inputs.hemsida')">
-            <b-card-body>
-              <b-form-input v-model="hamside" placeholder="https://vala.se" />
-            </b-card-body>
-          </b-card>
-
-          <b-card :title="$t('addListing.inputs.textarea')">
-            <b-card-body>
-              <client-only>
-                <VueEditor v-model="article.centrum" />
-              </client-only>
-            </b-card-body>
-          </b-card>
-
-          <b-card :title="$t('addListing.inputs.optidder')">
-            <b-tabs content-class="mt-3" fill>
-              <b-tab v-for="(tab) in times" :key="tab.name" :title="tab.name" :active="tab.active">
-                <b-form-group>
-                  <b-form-radio-group id="optidder" v-model="days[tab.name].openTimes" :name="tab.name">
-                    <b-form-radio value="hours">
-                      {{ $t('addListing.inputs.optidderOpts.hours') }}
-                    </b-form-radio>
-                    <b-form-radio value="openAllDay">
-                      {{ $t('addListing.inputs.optidderOpts.allDayOpen') }}
-                    </b-form-radio>
-                    <b-form-radio value="closeAllDay">
-                      {{ $t('addListing.inputs.optidderOpts.allDayClose') }}
-                    </b-form-radio>
-                    <b-form-radio value="appointment">
-                      {{ $t('addListing.inputs.optidderOpts.appointment') }}
-                    </b-form-radio>
-                  </b-form-radio-group>
-                </b-form-group>
-
-                <div v-if="days[tab.name].openTimes == 'hours'">
-                  <b-row v-for="(hours, index) in days[tab.name].hours" :key="'m' + index" class="my-3">
-                    <b-col cols="12" md="5" class="mb-2 mb-md-0">
-                      <b-form-timepicker v-model="days[tab.name].hours[index].opening" locale="en" />
-                    </b-col>
-                    <b-col cols="12" md="5" class="mb-2 mb-md-0">
-                      <b-form-timepicker v-model="days[tab.name].hours[index].closing" locale="en" />
-                    </b-col>
-                    <b-col cols="12" md="2">
-                      <b-button variant="outline-light" block @click="delteTimeRow(tab.name, index)">
-                        <b-icon-trash variant="dark" class="rounded-circle" />
-                      </b-button>
-                    </b-col>
-                  </b-row>
-
-                  <b-col cols="12">
-                    <b-button block variant="primary" @click="addTimeRow(tab.name)">
-                      Add Time
-                    </b-button>
-                  </b-col>
-                </div>
-              </b-tab>
-            </b-tabs>
-          </b-card>
-
           <b-card :title="$t('addListing.inputs.vag')">
             <b-card-body>
               <b-form-input v-model="vagvisningen" :placeholder="$t('addListing.inputs.vag')" />
             </b-card-body>
-          </b-card>
-
-          <b-card :title="$t('addListing.inputs.centerGallery')">
-            <b-card-body>
-              <client-only>
-                <our-uploader
-                  :name="'centrumgalleri[]'"
-                  :show-btn="false"
-                  :more="true"
-                  :old-images="images.centrumgalleri"
-                  :max-number-of-inputs="999"
-                  :max-file-size="64"
-                >
-                  <template v-slot:old-Image>
-                    <b-row v-if="thereIsListing && images.centrumgalleri.length > 0" class="mb-1">
-                      <b-col
-                        v-for="(img, index) in images.centrumgalleri"
-                        :key="index"
-                        class="d-flex mb-1 "
-                        cols="12"
-                        sm="6"
-                      >
-                        <div class="position-relative">
-                          <b-btn type="button" variant="danger" class="delete-btn" aria-label="Close" @click="deleteImageFromExistingArray(index, 'centrumgalleri')">
-                            <span aria-hidden="true">&times;</span>
-                          </b-btn>
-                          <b-img class="mx-2" style="height: 150px" :src="`https://popup.dk.se/_nuxt/img/${img}`" />
-                        </div>
-                      </b-col>
-                    </b-row>
-                  </template>
-                </our-uploader>
-              </client-only>
-            </b-card-body>
-            <template v-slot:footer>
-              <em>Max File size: 64MB</em>
-            </template>
           </b-card>
 
           <b-card :title="$t('addListing.inputs.fran')">
@@ -536,10 +362,6 @@
             <i class="fas fa-exclamation-triangle" />
             {{ $t('addListing.errors.stad') }}
           </p>
-          <p v-if="!locationValidLNG || !locationValidLAT" class="font-weight-bold">
-            <i class="fas fa-exclamation-triangle" />
-            {{ $t('addListing.errors.location') }}
-          </p>
           <p v-if="!kategoryValid" class="font-weight-bold">
             <i class="fas fa-exclamation-triangle" />
             {{ $t('addListing.errors.category') }}
@@ -566,7 +388,7 @@
 </template>
 
 <script>
-import { BootstrapVue, BIcon, BIconTrash } from 'bootstrap-vue'
+import { BootstrapVue, BIcon } from 'bootstrap-vue'
 import ourUploader from '@/components/ourUploader'
 
 let VueEditor
@@ -582,7 +404,6 @@ export default {
     BootstrapVue,
     // eslint-disable-next-line vue/no-unused-components
     BIcon,
-    BIconTrash,
     ourUploader
   },
   props: {
@@ -594,22 +415,11 @@ export default {
   data () {
     return {
       loadingState: false,
-      map: {
-        center: { lat: 59.334591, lng: 18.063240 },
-        mapTypeId: 'roadmap',
-        markers: []
-      },
-      formattedAddress: null,
-      title: {
-        en: null,
-        sv: null
-      },
       article: {
         beskreving: {
           en: null,
           sv: null
-        },
-        centrum: null
+        }
       },
       price: {
         day: {
@@ -672,10 +482,6 @@ export default {
       cityOptions: [],
       kategori: [],
       kategoriOpts: [],
-      location: {
-        lat: null,
-        lng: null
-      },
 
       minsta: null,
       längsta: null,
@@ -711,92 +517,16 @@ export default {
       sasongInputs: this.$t('addListing.inputs.seasonOts'),
       sasong: null,
 
-      hamside: null,
       lokalOpts: [],
       lokal: null,
       vagvisningen: null,
       fran: null,
       till: null,
-      days: {
-        Mon: {
-          openTimes: 'hours',
-          hours: [
-            { opening: '00:00:00', closing: '00:00:00' }
-          ]
-        },
-        Tue: {
-          openTimes: 'hours',
-          hours: [
-            { opening: '00:00:00', closing: '00:00:00' }
-          ]
-        },
-        Wed: {
-          openTimes: 'hours',
-          hours: [
-            { opening: '00:00:00', closing: '00:00:00' }
-          ]
-        },
-        Thu: {
-          openTimes: 'hours',
-          hours: [
-            { opening: '00:00:00', closing: '00:00:00' }
-          ]
-        },
-        Fri: {
-          openTimes: 'hours',
-          hours: [
-            { opening: '00:00:00', closing: '00:00:00' }
-          ]
-        },
-        Sat: {
-          openTimes: 'hours',
-          hours: [
-            { opening: '00:00:00', closing: '00:00:00' }
-          ]
-        },
-        Sun: {
-          openTimes: 'hours',
-          hours: [
-            { opening: '00:00:00', closing: '00:00:00' }
-          ]
-        }
-      },
-      times: [
-        {
-          name: 'Mon',
-          active: true
-        },
-        {
-          name: 'Tue',
-          active: false
-        },
-        {
-          name: 'Wed',
-          active: false
-        },
-        {
-          name: 'Thu',
-          active: false
-        },
-        {
-          name: 'Fri',
-          active: false
-        },
-        {
-          name: 'Sat',
-          active: false
-        },
-        {
-          name: 'Sun',
-          active: false
-        }
-      ],
       expiry: null,
       images: {
         bildgalleri: null,
         cover: null,
-        planritning: null,
-        centrumgalleri: null
+        planritning: null
       }
     }
   },
@@ -813,12 +543,6 @@ export default {
     stadValid () {
       return !!this.city
     },
-    locationValidLNG () {
-      return !!this.location.lng
-    },
-    locationValidLAT () {
-      return !!this.location.lat
-    },
     kategoryValid () {
       return this.kategori.length > 0
     },
@@ -829,33 +553,12 @@ export default {
       return !!this.titleValidEn &&
               !!this.titleValidSv &&
               !!this.stadValid &&
-              !!this.locationValidLNG &&
-              !!this.locationValidLAT &&
               !!this.kategoryValid &&
               !!this.lokalensValid &&
               !!this.price.prioteradpris.val
     },
     renderKey () {
       return this.$store.state.sidebarRenderKey
-    }
-  },
-  watch: {
-    location: {
-      deep: true,
-      handler (val) {
-        console.log(val)
-        if (val.lat && val.lng) {
-          const co = { lat: Number(val.lat), lng: Number(val.lng) }
-          console.log('location: ', { location: co })
-          this.$axios.post('/places/address', { location: co })
-            .then((res) => {
-              this.formattedAddress = res.data.formattedAddress
-            })
-            .catch(err => alert(err))
-          this.map.center = co
-          this.map.markers = [co]
-        }
-      }
     }
   },
   mounted () {
@@ -865,14 +568,7 @@ export default {
     if (this.thereIsListing) { this.assignListingToEdit() }
   },
   methods: {
-    setPlace (place) {
-      if (!place) { return }
 
-      this.location = {
-        lat: place.geometry.location.lat(),
-        lng: place.geometry.location.lng()
-      }
-    },
     async preparePageData () {
       const promises = [
         this.$axios.$get('/users/all'),
@@ -913,14 +609,12 @@ export default {
         })
     },
     assignListingToEdit () {
-      const { prioteradpris, egenskaper, oppettider, kategori, title, yta, placering, stad, location, vagvisningen, fran, till, kontaktperson, expiry, minstahyresperiod, langstahyresperiod, sasongBoxen, hemsida, beskreving, centrumtextarea, prisperdag, prisperhelg, prisperlanghelg, prispermanad, prispervecka, bildgalleri, cover, planritning, centrumgalleri } = this.listing
+      const { prioteradpris, egenskaper, kategori, title, yta, placering, stad, vagvisningen, fran, till, kontaktperson, expiry, minstahyresperiod, langstahyresperiod, sasongBoxen, beskreving, prisperdag, prisperhelg, prisperlanghelg, prispermanad, prispervecka, bildgalleri, cover, planritning } = this.listing
       this.title.en = title.en
       this.title.sv = title.sv
       this.Yta = yta
       this.markplan = placering
       this.city = stad ? JSON.stringify(stad) : ''
-      this.location = { lng: location.coordinates[0], lat: location.coordinates[1] }
-      this.formattedAddress = location.formattedAddress
       this.vagvisningen = vagvisningen
       this.fran = fran
       this.till = till
@@ -929,20 +623,8 @@ export default {
       this.minsta = minstahyresperiod
       this.längsta = langstahyresperiod
       this.sasong = sasongBoxen
-      this.hamside = hemsida
       this.article.beskreving.en = beskreving.en
       this.article.beskreving.sv = beskreving.sv
-      this.article.centrum = centrumtextarea
-
-      // ASSIGN DAYS
-      for (const key in oppettider) {
-        if (oppettider.hasOwnProperty(key)) {
-          const element = oppettider[key]
-          const day = this.days[element.day]
-          day.hours = element.times
-          day.openTimes = element.oppettider
-        }
-      }
 
       // ASSIGN PRICES
       this.price.day.val = prisperdag
@@ -955,7 +637,6 @@ export default {
       this.images.bildgalleri = bildgalleri
       this.images.cover = cover
       this.images.planritning = planritning
-      this.images.centrumgalleri = centrumgalleri
 
       const prices = [
         { text: 'day', val: prisperdag },
@@ -985,12 +666,6 @@ export default {
         this.yesNoInputsVal[input] = this.listing[input]
       })
       this.loadingState = false
-    },
-    delteTimeRow (name, index) {
-      this.days[name].hours.splice(index, 1)
-    },
-    addTimeRow (name) {
-      this.days[name].hours.push({ opening: '00:00:00', closing: '00:00:00' })
     },
     setPrioteradPrice (card) {
       this.$nextTick(() => {
@@ -1025,7 +700,6 @@ export default {
       listing.append('prioteradpris', this.price.prioteradpris.val)
 
       // ASSIGN TAG
-      listing.append('location', JSON.stringify(this.location))
       this.egenskaper.forEach(feat => listing.append('egenskaper[]', JSON.stringify(feat)))
 
       listing.append('yta', this.Yta)
@@ -1049,21 +723,6 @@ export default {
 
       listing.append('sasongBoxen', this.sasong)
       listing.append('hemsida', this.hamside)
-      listing.append('centrumtextarea', this.article.centrum)
-
-      for (const key in this.days) {
-        // eslint-disable-next-line no-prototype-builtins
-        if (this.days.hasOwnProperty(key)) {
-          const value = this.days[key]
-          const data = JSON.stringify({
-            day: key,
-            oppettider: value.openTimes,
-            times: value.hours
-          })
-
-          listing.append('oppettider[]', data)
-        }
-      }
 
       listing.append('vagvisningen', this.vagvisningen)
       listing.append('fran', this.fran)
@@ -1104,7 +763,6 @@ export default {
       const bildgalleri = this.listing.bildgalleri ? [...this.listing.bildgalleri] : []
       const cover = this.listing.cover ? [...this.listing.cover] : []
       const planritning = this.listing.planritning ? [...this.listing.planritning] : []
-      const centrumgalleri = this.listing.centrumgalleri ? [...this.listing.centrumgalleri] : []
 
       for (const pair of listing.entries()) { // post Images First
         if (pair[0] === 'bildgalleri[]') {
@@ -1134,15 +792,6 @@ export default {
               .then(res => planritning.push(res))
               .catch(err => console.log(err))
           }
-        } else if (pair[0] === 'centrumgalleri[]') {
-          const data = new FormData()
-          if (pair[1].name) {
-            data.append('centrumgalleri[]', pair[1]); data.append('name', 'centrumgalleri[]')
-
-            await this.$axios.$post('/places/images', data)
-              .then(res => centrumgalleri.push(res))
-              .catch(err => console.log(err))
-          }
         }
       }
 
@@ -1150,13 +799,11 @@ export default {
       listing.delete('bildgalleri[]')
       listing.delete('cover[]')
       listing.delete('planritning[]')
-      listing.delete('centrumgalleri[]')
 
       // APPEND THE ARRAY WE CREATED 😉
       listing.append('bildgalleri', JSON.stringify(bildgalleri))
       listing.append('cover', JSON.stringify(cover))
       listing.append('planritning', JSON.stringify(planritning))
-      listing.append('centrumgalleri', JSON.stringify(centrumgalleri))
 
       for (const pair of listing.entries()) {
         console.log(pair[0], ':', pair[1])

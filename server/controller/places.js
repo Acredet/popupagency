@@ -1,5 +1,4 @@
 const Place = require('../models/place')
-const geocoder = require('../utils/geocoder')
 
 // @desc  Get all places
 // @route GET /api/places
@@ -18,31 +17,6 @@ exports.getPlaces = async (req, res, next) => {
   }
 }
 
-/**
- * @description Get Adderss from coordinates
- * @param { Number } lng
- * @param { Number } lat
- * @return { String } Address
-*/
-exports.getAddress = async (req, res, next) => {
-  try {
-    // Geocode Address
-    const location = req.body.location
-    const loc = await geocoder.reverse({ lat: Number(location.lat), lon: Number(location.lng) })
-
-    res.status(201).json({
-      coordinates: [loc[0].longitude, loc[0].latitude],
-      formattedAddress: loc[0].formattedAddress
-    })
-  } catch (error) {
-    console.error(error)
-    if (error.code === 11000) {
-      return res.status(400).json({ error: 'This Place already exists' })
-    }
-    res.status(500).json({ error: 'Server error' })
-  }
-}
-
 // @desc  Create a place
 // @route POST /api/places
 // @access Public
@@ -52,15 +26,6 @@ exports.addPlace = async (req, res, next) => {
     for (const key in req.body) {
       const element = req.body[key]
       req.body[key] = element !== 'null' ? element : null
-    }
-
-    // Geocode Address
-    let location = JSON.parse(req.body.location)
-    const loc = await geocoder.reverse({ lat: Number(location.lat), lon: Number(location.lng) })
-    console.log('After Geo: ', loc)
-    location = {
-      coordinates: [loc[0].longitude, loc[0].latitude],
-      formattedAddress: loc[0].formattedAddress
     }
 
     console.log('req.user: ', req.user)
@@ -92,7 +57,6 @@ exports.addPlace = async (req, res, next) => {
         sv: JSON.parse(req.body.stad).sv
       },
       plats: req.body.plats,
-      location,
       kategori: req.body.kategori,
       planritning: req.files['planritning[]'] ? req.files['planritning[]'].map(x => x.filename) : [],
       minstahyresperiod: req.body.minstahyresperiod,
@@ -102,12 +66,8 @@ exports.addPlace = async (req, res, next) => {
       mat: req.body.mat,
       event: req.body.event,
       sasongBoxen: req.body.sasongBoxen,
-      hemsida: req.body.hemsida,
-      centrumtextarea: req.body.centrumtextarea,
-      oppettider: req.body.oppettider.map(x => JSON.parse(x)),
       timezone: 'timezone',
       vagvisningen: req.body.vagvisningen,
-      centrumgalleri: req.files['centrumgalleri[]'] ? req.files['centrumgalleri[]'].map(x => x.filename) : [],
       fran: req.body.fran,
       till: req.body.till,
       kontaktperson: req.body.kontaktperson,
@@ -191,10 +151,6 @@ exports.updatePlace = async (req, res) => {
     updata.egenskaper = updata.egenskaper.map(x => JSON.parse(x))
   }
 
-  if (updata.oppettider) {
-    updata.oppettider = updata.oppettider.map(x => JSON.parse(x))
-  }
-
   if (updata.bildgalleri) {
     updata.bildgalleri = JSON.parse(updata.bildgalleri)
   }
@@ -204,21 +160,7 @@ exports.updatePlace = async (req, res) => {
   if (updata.planritning) {
     updata.planritning = JSON.parse(updata.planritning)
   }
-  if (updata.centrumgalleri) {
-    updata.centrumgalleri = JSON.parse(updata.centrumgalleri)
-  }
   if (!updata.prioteradpris) { updata.prioteradpris = 0 }
-
-  // Geocode Address
-  if (updata.location) {
-    const location = JSON.parse(updata.location)
-    const loc = await geocoder.reverse({ lat: Number(location.lat), lon: Number(location.lng) })
-    console.log('After Geo: ', loc)
-    updata.location = {
-      coordinates: [loc[0].longitude, loc[0].latitude],
-      formattedAddress: loc[0].formattedAddress
-    }
-  }
 
   await Place.updateOne({ _id: req.params.id }, { $set: updata })
     .then(place => res.json({ success: true }))

@@ -56,13 +56,6 @@ const PlaceSchema = new mongoose.Schema({
     sv: String
   },
   plats: String,
-  location: {
-    coordinates: {
-      type: [Number],
-      index: '2dsphere'
-    },
-    formattedAddress: String
-  },
   kategori: Array,
   planritning: Array,
   minstahyresperiod: String,
@@ -72,20 +65,6 @@ const PlaceSchema = new mongoose.Schema({
   mat: Boolean,
   event: Boolean,
   sasongBoxen: String,
-  hemsida: String,
-  centrumtextarea: String,
-  oppettider: [ // ✔
-    {
-      day: String,
-      oppettider: String,
-      times: [
-        {
-          opening: String,
-          closing: String
-        }
-      ]
-    }
-  ],
   timezone: String,
   vagvisningen: String,
   centrumgalleri: Array,

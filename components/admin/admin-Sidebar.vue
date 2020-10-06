@@ -51,6 +51,15 @@ export default {
           ]
         },
         {
+          accessableFor: ['manager', 'admin'],
+          text: 'Centrums',
+          icon: 'far fa-map',
+          subMenu: [
+            { url: '/admin/listings/centrum/add', text: 'Add Centrum' },
+            { url: '/admin/listings/centrum/', text: 'All Centrums' }
+          ]
+        },
+        {
           accessableFor: ['admin'],
           text: this.$t('adminSidebar.users.text'),
           icon: 'far fa-user',

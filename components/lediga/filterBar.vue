@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid>
+  <b-container class="filter-bar" fluid>
     <b-row no-gutters class="py-2">
       <!-- Start Search Input -->
       <b-col cols="12" sm="9" md="4" class="mr-2 d-flex align-items-center">
@@ -200,7 +200,7 @@ export default {
 </script>
 
 <style>
-div.dropdown.b-dropdown.show.btn-group > ul {
+.filter-bar div.dropdown.b-dropdown.show.btn-group > ul {
   height: 400px;
   overflow-x: hidden;
   overflow-y: scroll;

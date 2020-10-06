@@ -1,0 +1,427 @@
+<template>
+  <div class="content">
+    <!-- <loading :state="loadingState" /> -->
+
+    <b-container class="mt-5">
+      <h2>{{ $t('tag.title') }}</h2>
+      <b-form id="add-centrum">
+        <!-- hemsida -->
+        <b-card class="my-5" :title="$t('addListing.inputs.hemsida')">
+          <b-card-body>
+            <b-form-input v-model="hamside" placeholder="https://vala.se" />
+          </b-card-body>
+        </b-card>
+        <!-- hemsida -->
+
+        <!-- centrumgalleri -->
+        <b-card class="my-5" :title="$t('addListing.inputs.centerGallery')">
+          <b-card-body>
+            <client-only>
+              <our-uploader
+                :name="'centrumgalleri[]'"
+                :show-btn="false"
+                :more="true"
+                :old-images="images.centrumgalleri"
+                :max-number-of-inputs="999"
+                :max-file-size="64"
+              >
+                <template v-slot:old-Image>
+                  <b-row v-if="false && images.centrumgalleri.length > 0" class="mb-1">
+                    <b-col
+                      v-for="(img, index) in images.centrumgalleri"
+                      :key="index"
+                      class="d-flex mb-1 "
+                      cols="12"
+                      sm="6"
+                    >
+                      <div class="position-relative">
+                        <b-btn type="button" variant="danger" class="delete-btn" aria-label="Close" @click="deleteImageFromExistingArray(index, 'centrumgalleri')">
+                          <span aria-hidden="true">&times;</span>
+                        </b-btn>
+                        <b-img class="mx-2" style="height: 150px" :src="`https://popup.dk.se/_nuxt/img/${img}`" />
+                      </div>
+                    </b-col>
+                  </b-row>
+                </template>
+              </our-uploader>
+            </client-only>
+          </b-card-body>
+          <template v-slot:footer>
+            <em>Max File size: 64MB</em>
+          </template>
+        </b-card>
+        <!-- centrumgalleri -->
+
+        <!-- centrumtextarea -->
+        <b-card class="my-5" :title="$t('addListing.inputs.textarea')">
+          <b-card-body>
+            <client-only>
+              <VueEditor v-model="centrum" />
+            </client-only>
+          </b-card-body>
+        </b-card>
+        <!-- centrumtextarea -->
+
+        <!-- oppettider -->
+        <b-card class="my-5" :title="$t('addListing.inputs.optidder')">
+          <b-tabs content-class="mt-3" fill>
+            <b-tab v-for="(tab) in times" :key="tab.name" :title="tab.name" :active="tab.active">
+              <b-form-group>
+                <b-form-radio-group id="optidder" v-model="days[tab.name].openTimes" :name="tab.name">
+                  <b-form-radio value="hours">
+                    {{ $t('addListing.inputs.optidderOpts.hours') }}
+                  </b-form-radio>
+                  <b-form-radio value="openAllDay">
+                    {{ $t('addListing.inputs.optidderOpts.allDayOpen') }}
+                  </b-form-radio>
+                  <b-form-radio value="closeAllDay">
+                    {{ $t('addListing.inputs.optidderOpts.allDayClose') }}
+                  </b-form-radio>
+                  <b-form-radio value="appointment">
+                    {{ $t('addListing.inputs.optidderOpts.appointment') }}
+                  </b-form-radio>
+                </b-form-radio-group>
+              </b-form-group>
+
+              <div v-if="days[tab.name].openTimes == 'hours'">
+                <b-row v-for="(hours, index) in days[tab.name].hours" :key="'m' + index" class="my-3">
+                  <b-col cols="12" md="5" class="mb-2 mb-md-0">
+                    <b-form-timepicker v-model="days[tab.name].hours[index].opening" locale="en" />
+                  </b-col>
+                  <b-col cols="12" md="5" class="mb-2 mb-md-0">
+                    <b-form-timepicker v-model="days[tab.name].hours[index].closing" locale="en" />
+                  </b-col>
+                  <b-col cols="12" md="2">
+                    <b-button variant="outline-light" block @click="delteTimeRow(tab.name, index)">
+                      <b-icon-trash variant="dark" class="rounded-circle" />
+                    </b-button>
+                  </b-col>
+                </b-row>
+
+                <b-col cols="12">
+                  <b-button block variant="primary" @click="addTimeRow(tab.name)">
+                    Add Time
+                  </b-button>
+                </b-col>
+              </div>
+            </b-tab>
+          </b-tabs>
+        </b-card>
+        <!-- oppettider -->
+
+        <!-- routeGuidance -->
+        <b-card :title="$t('addListing.inputs.plats')">
+          <b-card-body>
+            <div class="w-100">
+              <gmap-map
+                :center="map.center"
+                :map-type-id="map.mapTypeId"
+                style="height: 300px"
+                :zoom="7"
+              >
+                <gmap-cluster>
+                  <gmap-marker
+                    v-for="(mark, index) in map.markers"
+                    :key="index"
+                    :position="mark"
+                  />
+                </gmap-cluster>
+              </gmap-map>
+              <div class="my-2">
+                <b-form-group
+                  id="address-group"
+                  label="Address:"
+                  label-class="font-weight-bold "
+                  label-for="address"
+                >
+                  <gmap-autocomplete id="address" class="form-control" @place_changed="setPlace" />
+                  <p v-if="$route.params.id" class="font-weight-bold">
+                    location: {{ formattedAddress }}
+                  </p>
+                </b-form-group>
+              </div>
+            </div>
+            <b-row>
+              <b-col cols="12" md="6">
+                <b-form-group
+                  id="location-lang-group"
+                  label="longitude:"
+                  label-class="font-weight-bold "
+                  label-for="location-lang"
+                >
+                  <b-form-input
+                    id="location-lang"
+                    v-model="location.lng"
+                    required
+                    autocomplete="off"
+                    :state="locationValidLNG"
+                    :placeholder="$t('addListing.inputs.plats')"
+                  />
+                  <b-form-invalid-feedback :state="locationValidLNG">
+                    {{ $t('forms.required') }}
+                  </b-form-invalid-feedback>
+
+                  <b-form-valid-feedback :state="locationValidLNG">
+                    {{ $t('forms.valid') }}
+                  </b-form-valid-feedback>
+                </b-form-group>
+              </b-col>
+
+              <b-col cols="12" md="6">
+                <b-form-group
+                  id="location-lat-group"
+                  label="Latitude:"
+                  label-class="font-weight-bold "
+                  label-for="location-lat"
+                >
+                  <b-form-input
+                    id="location-lat"
+                    v-model="location.lat"
+                    required
+                    autocomplete="off"
+                    :state="locationValidLAT"
+                    :placeholder="$t('addListing.inputs.plats')"
+                  />
+                  <b-form-invalid-feedback :state="locationValidLAT">
+                    {{ $t('forms.required') }}
+                  </b-form-invalid-feedback>
+
+                  <b-form-valid-feedback :state="locationValidLAT">
+                    {{ $t('forms.valid') }}
+                  </b-form-valid-feedback>
+                </b-form-group>
+              </b-col>
+            </b-row>
+          </b-card-body>
+        </b-card>
+        <!-- routeGuidance -->
+        <!-- <b-btn variant="primary" :disabled="!form.name.en || !form.name.sv" @click="addItem('tag')" v-text="$t('tag.addBtn')" /> -->
+        <b-btn variant="primary" @click="post" v-text="$t('tag.addBtn')" />
+      </b-form>
+    </b-container>
+
+    <!-- <toast :toast="toast" /> -->
+  </div>
+</template>
+
+<script>
+import { BootstrapVue, BIcon, BIconTrash, BIconTrashFill } from 'bootstrap-vue'
+
+import ourUploader from '@/components/ourUploader'
+
+let VueEditor
+if (process.browser) {
+  VueEditor = require('vue2-editor').VueEditor
+}
+
+export default {
+  name: 'ListingTags',
+  layout: 'admin',
+  components: {
+    // eslint-disable-next-line vue/no-unused-components, object-property-newline
+    BootstrapVue, BIcon, BIconTrash, BIconTrashFill,
+    ourUploader,
+    VueEditor
+  },
+  data () {
+    return {
+      map: {
+        center: { lat: 59.334591, lng: 18.063240 },
+        mapTypeId: 'roadmap',
+        markers: []
+      },
+      formattedAddress: null,
+      location: {
+        lat: null,
+        lng: null
+      },
+      hamside: null,
+      centrum: null,
+      images: {
+        centrumgalleri: null
+      },
+      days: {
+        Mon: {
+          openTimes: 'hours',
+          hours: [
+            { opening: '00:00:00', closing: '00:00:00' }
+          ]
+        },
+        Tue: {
+          openTimes: 'hours',
+          hours: [
+            { opening: '00:00:00', closing: '00:00:00' }
+          ]
+        },
+        Wed: {
+          openTimes: 'hours',
+          hours: [
+            { opening: '00:00:00', closing: '00:00:00' }
+          ]
+        },
+        Thu: {
+          openTimes: 'hours',
+          hours: [
+            { opening: '00:00:00', closing: '00:00:00' }
+          ]
+        },
+        Fri: {
+          openTimes: 'hours',
+          hours: [
+            { opening: '00:00:00', closing: '00:00:00' }
+          ]
+        },
+        Sat: {
+          openTimes: 'hours',
+          hours: [
+            { opening: '00:00:00', closing: '00:00:00' }
+          ]
+        },
+        Sun: {
+          openTimes: 'hours',
+          hours: [
+            { opening: '00:00:00', closing: '00:00:00' }
+          ]
+        }
+      },
+      times: [
+        {
+          name: 'Mon',
+          active: true
+        },
+        {
+          name: 'Tue',
+          active: false
+        },
+        {
+          name: 'Wed',
+          active: false
+        },
+        {
+          name: 'Thu',
+          active: false
+        },
+        {
+          name: 'Fri',
+          active: false
+        },
+        {
+          name: 'Sat',
+          active: false
+        },
+        {
+          name: 'Sun',
+          active: false
+        }
+      ]
+    }
+  },
+  computed: {
+    locationValidLNG () {
+      return !!this.location.lng
+    },
+    locationValidLAT () {
+      return !!this.location.lat
+    }
+  },
+  watch: {
+    location: {
+      deep: true,
+      handler (val) {
+        console.log(val)
+        if (val.lat && val.lng) {
+          const co = { lat: Number(val.lat), lng: Number(val.lng) }
+          console.log('location: ', { location: co })
+          this.$axios.post('/places/address', { location: co })
+            .then((res) => {
+              this.formattedAddress = res.data.formattedAddress
+            })
+            .catch(err => alert(err))
+          this.map.center = co
+          this.map.markers = [co]
+        }
+      }
+    }
+  },
+  created () {
+    if (!this.$auth.loggedIn || !['manager', 'admin'].includes(this.$auth.user.role)) {
+      this.$router.push('/error')
+    }
+  },
+  methods: {
+    setPlace (place) {
+      if (!place) { return }
+
+      this.location = {
+        lat: place.geometry.location.lat(),
+        lng: place.geometry.location.lng()
+      }
+    },
+    deleteImageFromExistingArray (index, name) {
+      this.images[name].splice(index, 1)
+    },
+    delteTimeRow (name, index) {
+      this.days[name].hours.splice(index, 1)
+    },
+    addTimeRow (name) {
+      this.days[name].hours.push({ opening: '00:00:00', closing: '00:00:00' })
+    },
+    async post () {
+      const centrum = new FormData(document.getElementById('add-centrum'))
+      const centrumgalleri = []
+      for (const key in this.days) {
+        // eslint-disable-next-line no-prototype-builtins
+        if (this.days.hasOwnProperty(key)) {
+          const value = this.days[key]
+          const data = JSON.stringify({
+            day: key,
+            oppettider: value.openTimes,
+            times: value.hours
+          })
+
+          centrum.append('oppettider[]', data)
+        }
+      }
+
+      centrum.append('hemsida', this.hamside)
+
+      for (const pair of centrum.entries()) {
+        if (pair[0] === 'centrumgalleri[]') {
+          const data = new FormData()
+          if (pair[1].name) {
+            data.append('centrumgalleri[]', pair[1]); data.append('name', 'centrumgalleri[]')
+
+            await this.$axios.$post('/places/images', data)
+              .then(res => centrumgalleri.push(res))
+              .catch(err => console.log(err))
+          }
+        }
+      }
+
+      centrum.append('centrumgalleri', JSON.stringify(centrumgalleri))
+      centrum.append('centrumtextarea', this.centrum)
+      centrum.append('routeGuidance', JSON.stringify({ coordinates: this.location, formattedAddress: this.formattedAddress }))
+
+      for (const pair of centrum.entries()) {
+        console.log(`${pair[0]}: ${pair[1]}`)
+      }
+    }
+  }
+
+  // ASSIGN DAYS
+  // for (const key in oppettider) {
+  //   if (oppettider.hasOwnProperty(key)) {
+  //     const element = oppettider[key]
+  //     const day = this.days[element.day]
+  //     day.hours = element.times
+  //     day.openTimes = element.oppettider
+  //   }
+  // }
+
+  // this.formattedAddress = location.formattedAddress
+
+}
+</script>
+
+<style scoped>
+</style>
