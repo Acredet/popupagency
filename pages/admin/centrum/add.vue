@@ -3,8 +3,50 @@
     <!-- <loading :state="loadingState" /> -->
 
     <b-container class="mt-5">
+      <!-- Start title -->
       <h2>{{ $t('tag.title') }}</h2>
       <b-form id="add-centrum">
+        <b-card :title="$t('addListing.inputs.title.label')">
+          <b-card-body>
+            <b-form-group id="title-sv-group" label="Swedish:" label-for="title-sv">
+              <b-form-input
+                id="title-sv"
+                v-model="title.sv"
+                required
+                autocomplete="off"
+                :state="titleValidSv"
+                :placeholder="$t('addListing.inputs.title.holder')"
+              />
+              <b-form-invalid-feedback :state="titleValidSv">
+                {{ $t('forms.required') }}
+              </b-form-invalid-feedback>
+
+              <b-form-valid-feedback :state="titleValidSv">
+                {{ $t('forms.valid') }}
+              </b-form-valid-feedback>
+            </b-form-group>
+
+            <b-form-group id="title-en-group" label="English:" label-for="title-en">
+              <b-form-input
+                id="title-en"
+                v-model="title.en"
+                required
+                autocomplete="off"
+                :state="titleValidEn"
+                :placeholder="$t('addListing.inputs.title.holder')"
+              />
+              <b-form-invalid-feedback :state="titleValidEn">
+                {{ $t('forms.required') }}
+              </b-form-invalid-feedback>
+
+              <b-form-valid-feedback :state="titleValidEn">
+                {{ $t('forms.valid') }}
+              </b-form-valid-feedback>
+            </b-form-group>
+          </b-card-body>
+        </b-card>
+        <!-- End title -->
+
         <!-- hemsida -->
         <b-card class="my-5" :title="$t('addListing.inputs.hemsida')">
           <b-card-body>
@@ -53,10 +95,16 @@
         <!-- centrumgalleri -->
 
         <!-- centrumtextarea -->
-        <b-card class="my-5" :title="$t('addListing.inputs.textarea')">
+        <b-card class="my-5">
           <b-card-body>
+            <h3>centrum textarea en:</h3>
             <client-only>
-              <VueEditor v-model="centrum" />
+              <VueEditor v-model="centrum.en" />
+            </client-only>
+            <hr>
+            <h3>centrum textarea sw:</h3>
+            <client-only>
+              <VueEditor v-model="centrum.sv" />
             </client-only>
           </b-card-body>
         </b-card>
@@ -236,7 +284,14 @@ export default {
         lng: null
       },
       hamside: null,
-      centrum: null,
+      centrum: {
+        en: null,
+        sv: null
+      },
+      title: {
+        en: null,
+        sv: null
+      },
       images: {
         centrumgalleri: null
       },
@@ -317,6 +372,12 @@ export default {
     }
   },
   computed: {
+    titleValidEn () {
+      return !!this.title.en
+    },
+    titleValidSv () {
+      return !!this.title.sv
+    },
     locationValidLNG () {
       return !!this.location.lng
     },
@@ -399,9 +460,10 @@ export default {
         }
       }
 
-      centrum.append('centrumgalleri', JSON.stringify(centrumgalleri))
-      centrum.append('centrumtextarea', this.centrum)
+      centrum.append('title', JSON.stringify(this.title))
+      centrum.append('centrumtextarea', JSON.stringify(this.centrum))
       centrum.append('routeGuidance', JSON.stringify(this.location))
+      centrum.append('centrumgalleri', JSON.stringify(centrumgalleri))
 
       await this.$axios.$post('/centrum', centrum)
         .then((res) => {

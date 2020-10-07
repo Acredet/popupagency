@@ -1,6 +1,16 @@
 const mongoose = require('mongoose')
 
 const CentrumSchema = new mongoose.Schema({
+  title: {
+    en: {
+      type: String,
+      required: true
+    },
+    sv: {
+      type: String,
+      required: true
+    }
+  },
   hemsida: {
     type: String,
     required: true
@@ -10,8 +20,14 @@ const CentrumSchema = new mongoose.Schema({
     requireq: true
   },
   centrumtextarea: {
-    type: String,
-    required: true
+    en: {
+      type: String,
+      required: true
+    },
+    sv: {
+      type: String,
+      required: true
+    }
   },
   oppettider: [
     {

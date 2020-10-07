@@ -70,7 +70,7 @@ exports.getCentrums = async (req, res, next) => {
  * @access Public
  */
 exports.addCentrum = async (req, res, next) => {
-  const { centrumtextarea, oppettider, hemsida } = req.body
+  const { centrumtextarea, oppettider, hemsida, title } = req.body
 
   // Geocode Address
   let routeGuidance = JSON.parse(req.body.routeGuidance)
@@ -85,8 +85,9 @@ exports.addCentrum = async (req, res, next) => {
     const centrum = new Centrum({
       centrumgalleri: req.files['centrumgalleri[]'] ? req.files['centrumgalleri[]'].map(x => x.filename) : [],
       oppettider: oppettider.map(x => JSON.parse(x)),
-      centrumtextarea,
-      hemsida,
+      centrumtextarea: JSON.parse(centrumtextarea),
+      title: JSON.parse(title),
+      hemsida: JSON.parse(hemsida),
       routeGuidance
     })
     await centrum.save()
