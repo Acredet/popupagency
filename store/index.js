@@ -57,11 +57,11 @@ export const actions = {
           const listing = res.data.data[i]
           await this.$axios.get(`/centrum/${listing.centrum}`)
             .then((centrum) => {
-              listing.hemsida = centrum.hemsida
-              listing.centrumgalleri = centrum.centrumgalleri
-              listing.centrumtextarea = centrum.centrumtextarea
-              listing.oppettider = centrum.oppettider
-              listing.location = centrum.routeGuidance
+              listing.hemsida = centrum.data.hemsida
+              listing.centrumgalleri = centrum.data.centrumgalleri
+              listing.centrumtextarea = centrum.data.centrumtextarea
+              listing.oppettider = centrum.data.oppettider
+              listing.location = centrum.data.routeGuidance
             })
         }
         commit('listings', res.data.data)
