@@ -1,9 +1,18 @@
 const mongoose = require('mongoose')
 
 const CentrumSchema = new mongoose.Schema({
-  hemsida: String,
-  centrumgalleri: Array,
-  centrumtextarea: String,
+  hemsida: {
+    type: String,
+    required: true
+  },
+  centrumgalleri: {
+    type: Array,
+    requireq: true
+  },
+  centrumtextarea: {
+    type: String,
+    required: true
+  },
   oppettider: [
     {
       day: String,
@@ -21,7 +30,10 @@ const CentrumSchema = new mongoose.Schema({
       type: [Number],
       index: '2dsphere'
     },
-    formattedAddress: String
+    formattedAddress: {
+      type: String,
+      required: true
+    }
   },
   createdAt: {
     type: Date,

@@ -55,8 +55,8 @@ export default {
           text: 'Centrums',
           icon: 'far fa-map',
           subMenu: [
-            { url: '/admin/listings/centrum/add', text: 'Add Centrum' },
-            { url: '/admin/listings/centrum/', text: 'All Centrums' }
+            { url: '/listings/centrum/add', text: 'Add Centrum' },
+            { url: '/listings/centrum/', text: 'All Centrums' }
           ]
         },
         {

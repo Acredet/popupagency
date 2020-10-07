@@ -10,6 +10,7 @@ const users = require('./routes/users')
 const region = require('./routes/region')
 const tag = require('./routes/tag')
 const category = require('./routes/category')
+const centrum = require('./routes/centrum')
 const mail = require('./routes/mail')
 const app = express()
 
@@ -23,6 +24,7 @@ app.use('/api/users', users)
 app.use('/api/region', region)
 app.use('/api/category', category)
 app.use('/api/tag', tag)
+app.use('/api/centrum', centrum)
 app.use('/api/mail', mail)
 
 // Import and Set Nuxt.js options

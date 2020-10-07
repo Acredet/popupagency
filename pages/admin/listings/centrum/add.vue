@@ -332,7 +332,7 @@ export default {
         if (val.lat && val.lng) {
           const co = { lat: Number(val.lat), lng: Number(val.lng) }
           console.log('location: ', { location: co })
-          this.$axios.post('/places/address', { location: co })
+          this.$axios.post('/centrum/address', { location: co })
             .then((res) => {
               this.formattedAddress = res.data.formattedAddress
             })
@@ -389,7 +389,8 @@ export default {
         if (pair[0] === 'centrumgalleri[]') {
           const data = new FormData()
           if (pair[1].name) {
-            data.append('centrumgalleri[]', pair[1]); data.append('name', 'centrumgalleri[]')
+            data.append('centrumgalleri[]', pair[1])
+            data.append('name', 'centrumgalleri[]')
 
             await this.$axios.$post('/places/images', data)
               .then(res => centrumgalleri.push(res))
@@ -400,11 +401,13 @@ export default {
 
       centrum.append('centrumgalleri', JSON.stringify(centrumgalleri))
       centrum.append('centrumtextarea', this.centrum)
-      centrum.append('routeGuidance', JSON.stringify({ coordinates: this.location, formattedAddress: this.formattedAddress }))
+      centrum.append('routeGuidance', JSON.stringify(this.location))
 
-      for (const pair of centrum.entries()) {
-        console.log(`${pair[0]}: ${pair[1]}`)
-      }
+      await this.$axios.$post('/centrum', centrum)
+        .then((res) => {
+          console.log(res)
+        })
+        .catch(err => console.log(err))
     }
   }
 
