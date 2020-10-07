@@ -45,7 +45,7 @@
               <template v-slot:button-content>
                 <b>{{ $t('actions.actions') }}</b>
               </template>
-              <b-dropdown-item :to="`/admin/listings/edit/${data.item.title}`">
+              <b-dropdown-item :to="`/admin/centrum/edit/${data.item._id}`">
                 {{ $t('actions.edit') }}
               </b-dropdown-item>
               <b-dropdown-item v-b-modal.delete-modal @click="editForm = data.item">

@@ -32,7 +32,7 @@ exports.getAddress = async (req, res, next) => {
  */
 exports.getOneCentrum = async (req, res, next) => {
   try {
-    const centrum = await Centrum.findById(req.body.id)
+    const centrum = await Centrum.findById(req.params.id)
     return res.status(200).json(centrum)
   } catch (err) {
     console.error(err)
@@ -70,7 +70,7 @@ exports.getCentrums = async (req, res, next) => {
  * @access Public
  */
 exports.addCentrum = async (req, res, next) => {
-  const { centrumtextarea, oppettider, hemsida, title } = req.body
+  const { centrumtextarea, centrumgalleri, oppettider, hemsida, title } = req.body
 
   // Geocode Address
   let routeGuidance = JSON.parse(req.body.routeGuidance)
@@ -83,7 +83,7 @@ exports.addCentrum = async (req, res, next) => {
 
   try {
     const centrum = new Centrum({
-      centrumgalleri: req.files['centrumgalleri[]'] ? req.files['centrumgalleri[]'].map(x => x.filename) : [],
+      centrumgalleri: JSON.parse(centrumgalleri),
       oppettider: oppettider.map(x => JSON.parse(x)),
       centrumtextarea: JSON.parse(centrumtextarea),
       title: JSON.parse(title),
@@ -119,18 +119,40 @@ exports.deleteCentrum = (req, res) => {
  * @access Private
  */
 exports.updateCentrum = async (req, res) => {
+  for (const key in req.body) {
+    const element = req.body[key]
+    req.body[key] = element !== 'null' ? element : null
+  }
   const updata = req.body
 
-  // Geocode Address
-  if (updata.location) {
-    const location = JSON.parse(updata.location)
+
+  if (updata.centrumgalleri) {
+    updata.centrumgalleri = JSON.parse(updata.centrumgalleri)
+  }
+
+  if (updata.oppettider) {
+    updata.oppettider = updata.oppettider.map(x => JSON.parse(x))
+  }
+
+  if (updata.centrumtextarea) {
+    updata.centrumtextarea = JSON.parse(updata.centrumtextarea)
+  }
+
+  if (updata.title) {
+    updata.title = JSON.parse(updata.title)
+  }
+
+  if (updata.routeGuidance) {
+    const location = JSON.parse(updata.routeGuidance)
     const loc = await geocoder.reverse({ lat: Number(location.lat), lon: Number(location.lng) })
     console.log('After Geo: ', loc)
-    updata.location = {
+    updata.routeGuidance = {
       coordinates: [loc[0].longitude, loc[0].latitude],
       formattedAddress: loc[0].formattedAddress
     }
   }
+
+  console.log(updata)
 
   await Centrum.updateOne({ _id: req.params.id }, { $set: updata })
     .then(centrum => res.json({ success: true }))
