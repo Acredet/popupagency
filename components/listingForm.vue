@@ -326,6 +326,19 @@
             </b-card-body>
           </b-card>
 
+          <b-card title="Centrum">
+            <b-card-body>
+              <b-form-radio-group v-model="centrum" :stacked="true" :options="centrums" :state="centrumsValid" name="centrums-validation">
+                <b-form-invalid-feedback :state="centrumsValid">
+                  {{ $t('addListing.inputs.selectOne') }}
+                </b-form-invalid-feedback>
+                <b-form-valid-feedback :state="centrumsValid">
+                  {{ $t('addListing.inputs.choosed') }} {{ lokal }}
+                </b-form-valid-feedback>
+              </b-form-radio-group>
+            </b-card-body>
+          </b-card>
+
           <b-card :title="$t('addListing.inputs.Lokalens')">
             <b-card-body>
               <b-form-radio-group v-model="lokal" :stacked="true" :options="lokalOpts" :state="lokalensValid" name="lokal-validation">
@@ -415,6 +428,12 @@ export default {
   data () {
     return {
       loadingState: false,
+      centrums: [],
+      centrum: null,
+      title: {
+        en: null,
+        sv: null
+      },
       article: {
         beskreving: {
           en: null,
@@ -549,6 +568,9 @@ export default {
     lokalensValid () {
       return !!this.lokal
     },
+    centrumsValid () {
+      return !!this.centrum
+    },
     valid () {
       return !!this.titleValidEn &&
               !!this.titleValidSv &&
@@ -574,7 +596,8 @@ export default {
         this.$axios.$get('/users/all'),
         this.$axios.$get('/region'),
         this.$axios.$get('/category'),
-        this.$axios.$get('/tag')
+        this.$axios.$get('/tag'),
+        this.$axios.$get('/centrum')
       ]
       await Promise.all(promises)
         .then((res) => {
@@ -583,6 +606,7 @@ export default {
           const regions = res[1].data
           const categories = res[2].data
           const tags = res[3].data
+          const centrums = res[4].data
           const lang = this.$i18n.getLocaleCookie()
 
           this.lokalOpts = users.map(x => x.name)
@@ -602,6 +626,7 @@ export default {
           this.kategoriOpts = categories.map((x) => {
             return { text: x.name[lang], value: x.name[lang] }
           })
+          this.centrums = centrums.map((x) => { return { text: x.title[lang], value: x._id } })
           this.loadingState = false
         })
         .catch((err) => {
@@ -609,9 +634,10 @@ export default {
         })
     },
     assignListingToEdit () {
-      const { prioteradpris, egenskaper, kategori, title, yta, placering, stad, vagvisningen, fran, till, kontaktperson, expiry, minstahyresperiod, langstahyresperiod, sasongBoxen, beskreving, prisperdag, prisperhelg, prisperlanghelg, prispermanad, prispervecka, bildgalleri, cover, planritning } = this.listing
+      const { prioteradpris, egenskaper, kategori, title, yta, placering, stad, vagvisningen, fran, till, kontaktperson, expiry, minstahyresperiod, langstahyresperiod, sasongBoxen, beskreving, prisperdag, prisperhelg, prisperlanghelg, prispermanad, prispervecka, bildgalleri, cover, planritning, centrum } = this.listing
       this.title.en = title.en
       this.title.sv = title.sv
+      this.centrum = centrum
       this.Yta = yta
       this.markplan = placering
       this.city = stad ? JSON.stringify(stad) : ''
@@ -690,6 +716,7 @@ export default {
 
       listing.append('beskreving', JSON.stringify(this.article.beskreving))
       listing.append('title', JSON.stringify(this.title))
+      listing.append('centrum', this.centrum)
 
       // ASSIGN THE PRICE
       listing.append('prisperdag', this.price.day.val || 0)

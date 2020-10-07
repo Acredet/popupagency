@@ -52,7 +52,18 @@ export const actions = {
   },
   async getListings ({ commit }) {
     await this.$axios.get('/places')
-      .then((res) => {
+      .then(async (res) => {
+        for (let i = 0; i < res.data.data.length; i++) {
+          const listing = res.data.data[i]
+          await this.$axios.get(`/centrum/${listing.centrum}`)
+            .then((centrum) => {
+              listing.hemsida = centrum.hemsida
+              listing.centrumgalleri = centrum.centrumgalleri
+              listing.centrumtextarea = centrum.centrumtextarea
+              listing.oppettider = centrum.oppettider
+              listing.location = centrum.routeGuidance
+            })
+        }
         commit('listings', res.data.data)
         commit('sortCards', 'latest')
       })

@@ -18,6 +18,7 @@ const PlaceSchema = new mongoose.Schema({
     en: String,
     sv: String
   },
+  centrum: mongoose.ObjectId,
   bildgalleri: Array,
   cover: Array,
   epost: String,
