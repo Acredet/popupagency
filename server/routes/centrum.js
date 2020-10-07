@@ -19,6 +19,6 @@ router
 
 router.post('/address', getAddress)
 
-router.post('/images', multer.single('edit-avatar'), uploadImage)
+router.post('/images', multer.single('centrumgalleri'), uploadImage)
 
 module.exports = router

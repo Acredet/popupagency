@@ -4,7 +4,7 @@
 
     <b-container class="mt-5">
       <!-- Start title -->
-      <h2>{{ $t('tag.title') }}</h2>
+      <h2>Add Centrum:</h2>
       <b-form id="add-centrum">
         <b-card :title="$t('addListing.inputs.title.label')">
           <b-card-body>
@@ -244,7 +244,7 @@
         </b-card>
         <!-- routeGuidance -->
         <!-- <b-btn variant="primary" :disabled="!form.name.en || !form.name.sv" @click="addItem('tag')" v-text="$t('tag.addBtn')" /> -->
-        <b-btn variant="primary" @click="post" v-text="$t('tag.addBtn')" />
+        <b-btn variant="primary" @click="post" v-text="'Add centrum'" />
       </b-form>
     </b-container>
 
@@ -450,10 +450,9 @@ export default {
         if (pair[0] === 'centrumgalleri[]') {
           const data = new FormData()
           if (pair[1].name) {
-            data.append('centrumgalleri[]', pair[1])
-            data.append('name', 'centrumgalleri[]')
+            data.append('centrumgalleri', pair[1])
 
-            await this.$axios.$post('/places/images', data)
+            await this.$axios.$post('/centrum/images', data)
               .then(res => centrumgalleri.push(res))
               .catch(err => console.log(err))
           }

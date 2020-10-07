@@ -29,10 +29,15 @@
           show-empty
         >
           <template v-slot:cell(title)="data">
-            <p class="text-center">
-              <!-- {{ data.item.title[$i18n.locale] }} -->
-              {{ data.item.title }}
-            </p>
+            <p>{{ data.item.title[$i18n.locale] }}</p>
+          </template>
+          <template v-slot:cell(hemsida)="data">
+            <a :href="hemsida" target="_blank">
+              {{ data.item.hemsida }}
+            </a>
+          </template>
+          <template v-slot:cell(centrumgalleri)="data">
+            <img :src="`https://popup.dk.se/_nuxt/img/${data.item.centrumgalleri[0]}`" :alt="data.item.title[$i18n.locale]">
           </template>
 
           <template v-slot:cell(actions)="data">
@@ -77,7 +82,9 @@ export default {
       sortDesc: false,
       editForm: {},
       fields: [
-        { key: 'hemsida', label: this.$t('allListing.table.header.title'), sortable: true },
+        { key: 'title', label: 'title', sortable: true },
+        { key: 'hemsida', label: 'hemsida', sortable: true },
+        { key: 'centrumgalleri', label: 'centrumgalleri', sortable: true },
         { key: 'actions', label: this.$t('allListing.table.header.actions') }
       ],
       items: null

@@ -87,7 +87,7 @@ exports.addCentrum = async (req, res, next) => {
       oppettider: oppettider.map(x => JSON.parse(x)),
       centrumtextarea: JSON.parse(centrumtextarea),
       title: JSON.parse(title),
-      hemsida: JSON.parse(hemsida),
+      hemsida,
       routeGuidance
     })
     await centrum.save()
