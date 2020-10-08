@@ -369,6 +369,10 @@ export default {
     },
     editModal: {
       title: 'Redigera användare:',
+      role: {
+        label: 'Role:',
+        holder: 'Välj användarroll'
+      },
       name: {
         label: 'Namn:',
         holder: 'Ange namn'
@@ -382,7 +386,8 @@ export default {
     table: {
       header: {
         name: 'Namn',
-        email: 'E-post'
+        email: 'E-post',
+        role: 'Role'
       }
     },
     toast: {

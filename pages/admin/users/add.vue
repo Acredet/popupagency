@@ -60,9 +60,35 @@
           </b-form-valid-feedback>
         </b-form-group>
 
-        <b-button :disabled="!validation" variant="primary" @click="onSubmit">
-          {{ $t('actions.submit') }}
-        </b-button>
+        <b-form-group id="confirm-password-group" :label="$t('addUser.inputs.confirmPass.label')" label-for="confirm-password">
+          <b-form-select v-model="form.role" :options="options" class="mt-3" />
+
+          <b-form-invalid-feedback :state="!!form.role">
+            {{ $t('forms.required') }}
+          </b-form-invalid-feedback>
+          <b-form-valid-feedback :state="!!form.role">
+            {{ $t('forms.valid') }}
+          </b-form-valid-feedback>
+        </b-form-group>
+        <b-overlay
+          :show="busy"
+          rounded
+          opacity="0.6"
+          spinner-small
+          spinner-variant="primary"
+          class="d-inline-block"
+        >
+          <b-btn
+            ref="post-button"
+            type="button"
+            :disabled="busy || !validation"
+            block
+            style="display: inherit"
+            variant="primary"
+            @click="onSubmit"
+            v-text="$t('actions.submit')"
+          />
+        </b-overlay>
       </b-form>
     </b-container>
   </div>
@@ -74,9 +100,17 @@ export default {
   layout: 'admin',
   data () {
     return {
+      busy: false,
+      options: [
+        { value: 'admin', text: 'Admin' },
+        { value: 'owner', text: 'Owner' },
+        { value: 'manager', text: 'Manager' },
+        { value: 'searcher', text: 'Searcher' }
+      ],
       form: {
         email: '',
         name: '',
+        role: 'searcher',
         password: '',
         confirmPassword: ''
       }
@@ -97,6 +131,7 @@ export default {
   },
   methods: {
     onSubmit (evt) {
+      this.busy = true
       const data = Object.assign({}, this.form)
       delete data.confirmPassword
       this.$axios.$post('/users', data)
@@ -107,14 +142,16 @@ export default {
             appendToast: true,
             variant: 'success'
           })
+          this.busy = false
         })
         .catch((err) => {
           this.$bvToast.toast(err, {
             title: this.$t('category.toast.err'),
             autoHideDelay: 5000,
             appendToast: true,
-            variant: 'success'
+            variant: 'error'
           })
+          this.busy = false
         })
     }
   }

@@ -9,6 +9,10 @@
         <b-form-group id="Email-group" :label="$t('allUsers.editModal.email.label')" label-for="email" :description="$t('allUsers.editModal.email.desc')">
           <b-form-input id="email" v-model="user.email" type="email" required :placeholder="$t('allUsers.editModal.email.holder')" />
         </b-form-group>
+
+        <b-form-group id="Role-group" :label="$t('allUsers.editModal.role.label')" label-for="role">
+          <b-form-select id="role" v-model="user.role" required :placeholder="$t('allUsers.editModal.role.holder')" :options="options" />
+        </b-form-group>
       </b-form>
 
       <template v-slot:modal-footer="{ ok, cancel }">
@@ -87,6 +91,12 @@ export default {
   data () {
     return {
       selected: [],
+      options: [
+        { value: 'admin', text: 'Admin' },
+        { value: 'owner', text: 'Owner' },
+        { value: 'manager', text: 'Manager' },
+        { value: 'searcher', text: 'Searcher' }
+      ],
       toast: {
         title: null,
         variant: null,
@@ -98,6 +108,7 @@ export default {
       fields: [
         { key: 'name', label: this.$t('allUsers.table.header.name'), sortable: true },
         { key: 'email', label: this.$t('allUsers.table.header.email'), sortable: true },
+        { key: 'role', label: this.$t('allUsers.table.header.role'), sortable: true },
         { key: 'actions', label: this.$t('tables.actions') }
       ],
       items: null,

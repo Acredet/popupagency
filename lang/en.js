@@ -369,6 +369,10 @@ export default {
     },
     editModal: {
       title: 'Edit User:',
+      role: {
+        label: 'Role:',
+        holder: 'Choose user role'
+      },
       name: {
         label: 'Name:',
         holder: 'Enter name'
@@ -382,7 +386,8 @@ export default {
     table: {
       header: {
         name: 'Name',
-        email: 'Email'
+        email: 'Email',
+        role: 'Role'
       }
     },
     toast: {

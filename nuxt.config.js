@@ -98,7 +98,7 @@ module.exports = {
       login: '/login',
       logout: '/login',
       callback: '/lediga-lokaler',
-      home: '/lediga-lokaler'
+      home: '/admin'
     },
     strategies: {
       local: {
