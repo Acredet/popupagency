@@ -18,8 +18,15 @@
       <b-col cols="12" md="auto" class="mr-2 d-none d-md-flex align-items-center">
         <b-dropdown id="plats-dropdown" variant="light" :text="filters.plats.text">
           <!-- Start first horizontal tab -->
-          <b-dropdown-group :header="$t('ledigaLokaler.filters.place')" style="width: 500px !important; overflow: hidden" class="px-2 custom-tab plats">
-            <b-btn v-for="(country, key) in filters.plats.tabs" :key="key" variant="primary" class="mb-2 mr-2" @click="filters.plats.currentCountry = key">
+          <b-dropdown-group class="px-2 custom-tab plats">
+            <b-btn
+              v-for="(country, key) in filters.plats.tabs"
+              :key="key"
+              variant="primary"
+              style="width: fit-content;"
+              class="mb-2 mr-2"
+              @click="filters.plats.currentCountry = key"
+            >
               {{ key }}
             </b-btn>
             <!-- Start Tabs -->
@@ -67,7 +74,7 @@
               <!-- End tabs -->
             </b-tabs>
 
-            <b-btn variant="primary" @click="doFilter">
+            <b-btn variant="primary" class="okay" @click="doFilter">
               Ok
             </b-btn>
           </b-dropdown-group>
@@ -78,9 +85,9 @@
       <!-- Start property Filter -->
       <b-col cols="12" md="auto" class="mr-2 d-none d-lg-flex align-items-center">
         <b-dropdown id="property-dropdown" class="w-100" variant="light" :text="filters.property.text">
-          <b-dropdown-group :header="$t('ledigaLokaler.filters.propertyType')" class="px-1">
+          <b-dropdown-group class="px-1">
             <property-filter :icons="filters.property.icons" @iconChoosed="addProperty($event)" />
-            <b-btn variant="primary" @click="doFilter">
+            <b-btn variant="primary" class="okay" @click="doFilter">
               Ok
             </b-btn>
           </b-dropdown-group>
@@ -91,11 +98,12 @@
       <!-- Start price Filter -->
       <b-col cols="12" md="auto" class="mr-2 d-none d-md-flex align-items-center">
         <b-dropdown id="price-dropdown" class="w-100" variant="light" right :text="filters.price.text">
-          <b-dropdown-group :header="$t('ledigaLokaler.filters.price')" class="px-3">
+          <b-dropdown-group class="px-3">
+            <p>{{ $t('ledigaLokaler.filters.price') }}</p>
             <client-only>
               <yta-filter :identifier="2" :slider-type="'price'" :min-and-max="filters.price" @ytaChanged="ytaChanged('price', $event)" />
             </client-only>
-            <b-btn variant="primary" @click="doFilter">
+            <b-btn variant="primary" class="okay" @click="doFilter">
               Ok
             </b-btn>
           </b-dropdown-group>
@@ -106,11 +114,12 @@
       <!-- Start yta Filter -->
       <b-col cols="12" md="auto" class="mr-2 d-none d-lg-flex align-items-center">
         <b-dropdown id="yta-dropdown" class="w-100" variant="light" right :text="filters.yta.text">
-          <b-dropdown-group :header="$t('ledigaLokaler.filters.surface')" class="px-3">
+          <b-dropdown-group class="px-3">
+            <p>{{ $t('ledigaLokaler.filters.surface') }}</p>
             <client-only>
               <yta-filter :identifier="10" :slider-type="'yta'" :min-and-max="filters.yta" @ytaChanged="ytaChanged('yta', $event)" />
             </client-only>
-            <b-btn variant="primary" @click="doFilter">
+            <b-btn variant="primary" class="okay" @click="doFilter">
               Ok
             </b-btn>
           </b-dropdown-group>
@@ -200,10 +209,38 @@ export default {
 </script>
 
 <style>
-.filter-bar div.dropdown.b-dropdown.show.btn-group > ul {
+.filter-bar div.dropdown.b-dropdown.show.btn-group > ul.dropdown-menu {
   height: 400px;
   overflow-x: hidden;
   overflow-y: scroll;
   width: 600px
+}
+
+.filter-bar div.dropdown.b-dropdown.show.btn-group > ul.dropdown-menu > li {
+  width: 100%;
+  height: 100%;
+}
+
+.filter-bar div.dropdown.b-dropdown.show.btn-group > ul.dropdown-menu > li > ul {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  justify-content: space-between;
+}
+.filter-bar div.dropdown.b-dropdown.show.btn-group > ul.dropdown-menu > li > ul button.btn {
+  display: inline-block
+}
+
+.filter-bar div.dropdown.b-dropdown.show.btn-group > ul > li > ul button.btn.okay {
+  display: inline-block;
+  margin-top: auto;
+  margin-left: auto;
+}
+
+#property-dropdown > ul > li > ul > button.okay {
+  position: absolute;
+  bottom: 10px;
+  right: 10px
 }
 </style>
