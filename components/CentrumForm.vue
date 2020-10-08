@@ -244,8 +244,37 @@
         </b-card>
         <!-- routeGuidance -->
         <!-- <b-btn variant="primary" :disabled="!form.name.en || !form.name.sv" @click="addItem('tag')" v-text="$t('tag.addBtn')" /> -->
-        <b-btn v-if="$route.params.id" block variant="warning" @click="editCentrum" v-text="'Edit centrum'" />
-        <b-btn v-else block variant="primary" @click="post" v-text="'Add centrum'" />
+        <b-overlay
+          :show="busy"
+          rounded
+          opacity="0.6"
+          spinner-small
+          spinner-variant="primary"
+          class="d-inline-block"
+        >
+          <b-btn
+            v-if="$route.params.id"
+            ref="post-button"
+            type="button"
+            :disabled="busy"
+            block
+            style="display: inherit"
+            variant="warning"
+            @click="editCentrum"
+            v-text="'Edit centrum'"
+          />
+          <b-btn
+            v-else
+            ref="edit-button"
+            type="button"
+            block
+            style="display: inherit"
+            variant="primary"
+            :disabled="busy"
+            @click="post"
+            v-text="'Add centrum'"
+          />
+        </b-overlay>
       </b-form>
     </b-container>
 
@@ -280,6 +309,7 @@ export default {
   },
   data () {
     return {
+      busy: false,
       map: {
         center: { lat: 59.334591, lng: 18.063240 },
         mapTypeId: 'roadmap',
@@ -446,16 +476,17 @@ export default {
     async post () {
       const centrum = await this.createCentrumForm()
       await this.$axios.$post('/centrum', centrum)
-        .then((res) => { console.log(res) })
+        .then((res) => { this.$router.push(`${this.$t('link')}admin/centrum`) })
         .catch(err => console.log(err))
     },
     async editCentrum () {
       const centrum = await this.createCentrumForm()
       await this.$axios.$patch(`/centrum/${this.$route.params.id}`, centrum)
-        .then((res) => { console.log(res) })
+        .then((res) => { this.$router.push(`${this.$t('link')}admin/centrum`) })
         .catch(err => console.log(err))
     },
     async createCentrumForm () {
+      this.busy = true
       const centrum = new FormData(document.getElementById('add-centrum'))
       const centrumgalleri = (this.centrumEdit && this.centrumEdit._id) ? [...this.centrumEdit.centrumgalleri] : []
       for (const key in this.days) {
