@@ -32,7 +32,6 @@ exports.addPlace = async (req, res, next) => {
     // Create Place
     let place = new Place({
       userId: req.user.id,
-      centrum: req.body.centrum,
       title: {
         en: JSON.parse(req.body.title).en,
         sv: JSON.parse(req.body.title).sv

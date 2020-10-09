@@ -47,7 +47,7 @@
           <div class="shadow w-100 d-flex flex-nowrap">
             <b-container class="d-flex flex-column flex-nowrap">
               <b-row no-gutters class="d-flex flex-nowrap jsutify-content-center w-100 tabs">
-                <b-col v-for="(tab, index) in $t('singleListing.tabs')" :key="tab" class="flex-grow-1" cols="auto">
+                <b-col v-for="(tab, index) in tabs" :key="tab" class="flex-grow-1" cols="auto">
                   <b-btn
                     squared
                     block
@@ -212,7 +212,7 @@
         </b-container>
       </b-tab>
 
-      <b-tab title-item-class="d-none" class="my-4">
+      <b-tab v-if="thereIsCentrum" title-item-class="d-none" class="my-4">
         <b-container>
           <!-- component -->
           <b-row no-gutters>
@@ -246,7 +246,7 @@
             <!-- End Oppning -->
             <b-col cols="12" md="6" offset-lg="1">
               <b class="d-block mb-3">{{ $t('singleListing.info.website') }}</b>
-              <a target="_blank" :href="place.hemsida" v-text="place.hemsida" />
+              <a target="_blank" :href="'/' + place.hemsida" v-text="place.hemsida" />
             </b-col>
           </b-row>
         </b-container>
@@ -486,6 +486,7 @@ export default {
   data () {
     return {
       modalShow: false,
+      thereIsCentrum: false,
       map: {
         center: { lat: 59.334591, lng: 18.063240 },
         mapTypeId: 'roadmap',
@@ -508,6 +509,17 @@ export default {
     }
   },
   computed: {
+    tabs () {
+      const tabs = {
+        en: ['Information', 'Center info', 'Price', 'Booking request'],
+        sv: ['Information', 'Centruminfo', 'Pris', 'Bokningsförfrågan']
+      }
+      if (!this.thereIsCentrum) {
+        tabs.en.splice(1, 1)
+        tabs.sv.splice(1, 1)
+      }
+      return tabs[this.$i18n.locale]
+    },
     images () {
       return !this.place.bildgalleri ? [] : this.place.bildgalleri.map(x => `https://popup.dk.se/_nuxt/img/${x}`)
     },
@@ -556,6 +568,7 @@ export default {
                   place.centrumtextarea = centrum.data.centrumtextarea
                   place.oppettider = centrum.data.oppettider
                   place.location = centrum.data.routeGuidance
+                  this.thereIsCentrum = true
                 })
             }
           })

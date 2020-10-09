@@ -17,7 +17,7 @@ const regionSchema = new mongoose.Schema({
     en: String,
     sv: String
   },
-  centrum: mongoose.Schema.Types.ObjectId
+  centrum: String
 })
 
 module.exports = mongoose.model('Region', regionSchema)

@@ -297,7 +297,7 @@
       </b-form>
     </b-container>
 
-    <!-- <toast :toast="toast" /> -->
+    <toast :toast="toast" />
   </div>
 </template>
 
@@ -330,6 +330,12 @@ export default {
   data () {
     return {
       busy: false,
+      toast: {
+        title: null,
+        variant: null,
+        visible: false,
+        text: null
+      },
       map: {
         center: { lat: 59.334591, lng: 18.063240 },
         mapTypeId: 'roadmap',
@@ -525,12 +531,21 @@ export default {
       const centrum = await this.createCentrumForm()
       const promises = [
         await this.$axios.$patch(`/centrum/${this.$route.params.id}`, centrum),
-        await this.$axios.patch(`/region/${this.oldCity}`, { centrum: null }),
+        // await this.$axios.patch(`/region/${this.oldCity}`, { centrum: null }),
         await this.$axios.patch(`/region/${this.city}`, { centrum: this.$route.params.id })
       ]
+      // if (!this.oldCity)
       await Promise.all(promises)
         .then((_) => { this.$router.push(`${this.$t('link')}admin/centrum`) })
-        .catch(err => console.log(err))
+        .catch((err) => {
+          this.busy = false
+          this.toast = {
+            title: this.$t('allListing.toast.error'),
+            variant: 'danger',
+            visible: true,
+            text: err.message
+          }
+        })
     },
     async createCentrumForm () {
       this.busy = true

@@ -32,12 +32,12 @@
             <p>{{ data.item.title[$i18n.locale] }}</p>
           </template>
           <template v-slot:cell(hemsida)="data">
-            <a :href="data.item.hemsida" target="_blank">
+            <a :href="'/' + data.item.hemsida" target="_blank">
               {{ data.item.hemsida }}
             </a>
           </template>
-          <template v-slot:cell(centrumgalleri)="data">
-            <img :src="`https://popup.dk.se/_nuxt/img/${data.item.centrumgalleri[0]}`" :alt="data.item.title[$i18n.locale]">
+          <template v-slot:cell(centrumgalleri)="data" class="text-center">
+            <img :src="`https://popup.dk.se/_nuxt/img/${data.item.centrumgalleri[0]}`" width="150px" :alt="data.item.title[$i18n.locale]">
           </template>
 
           <template v-slot:cell(actions)="data">
@@ -109,17 +109,31 @@ export default {
         .catch(err => console.log(err))
     },
     async deleteListing () {
+      const regions = await this.$axios.get('/region')
+      const centrumRegion = regions.data.data.filter(x => (!!x.centrum && x.centrum === this.editForm._id))[0]
+      console.log(centrumRegion)
       await this.$axios.$delete(`/centrum/${this.editForm._id}`)
-        .then((res) => {
+        .then(async (res) => {
           console.log(res)
-          this.getListings()
-          this.toast = {
-            title: this.$t('allListing.toast.delete'),
-            variant: 'success',
-            visible: true,
-            text: `${this.$t('allListing.toast.justDeleted')} ${this.editForm.name} from Listings.`
-          }
-          this.editForm = {}
+          await this.$axios.patch(`/region/${centrumRegion._id}`, { centrum: null })
+            .then((_) => {
+              this.getListings()
+              this.toast = {
+                title: this.$t('allListing.toast.delete'),
+                variant: 'success',
+                visible: true,
+                text: `${this.$t('allListing.toast.justDeleted')} ${this.editForm.name} from Listings.`
+              }
+              this.editForm = {}
+            })
+            .catch((err) => {
+              this.toast = {
+                title: this.$t('allListing.toast.error'),
+                variant: 'danger',
+                visible: true,
+                text: err.message
+              }
+            })
         })
         .catch((err) => {
           this.toast = {
