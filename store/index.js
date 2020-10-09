@@ -50,26 +50,30 @@ export const actions = {
   changeSidebarRenderKey ({ commit }) {
     commit('changeSidebarRenderKey')
   },
-  async getListings ({ commit }) {
+  async getListings ({ commit, state }) {
     await this.$axios.get('/places')
       .then(async (res) => {
         for (let i = 0; i < res.data.data.length; i++) {
           const listing = res.data.data[i]
-          await this.$axios.get(`/centrum/${listing.centrum}`)
-            .then((centrum) => {
-              listing.hemsida = centrum.data.hemsida
-              listing.centrumgalleri = centrum.data.centrumgalleri
-              listing.centrumtextarea = centrum.data.centrumtextarea
-              listing.oppettider = centrum.data.oppettider
-              listing.location = centrum.data.routeGuidance
-            })
+          const listingRegion = state.regions.filter(x => JSON.stringify(x.name) === JSON.stringify(listing.stad))[0]
+
+          if (listingRegion.centrum) {
+            await this.$axios.get(`/centrum/${listingRegion.centrum}`)
+              .then((centrum) => {
+                listing.hemsida = centrum.data.hemsida
+                listing.centrumgalleri = centrum.data.centrumgalleri
+                listing.centrumtextarea = centrum.data.centrumtextarea
+                listing.oppettider = centrum.data.oppettider
+                listing.location = centrum.data.routeGuidance
+              })
+          }
         }
         commit('listings', res.data.data)
         commit('sortCards', 'latest')
       })
       .catch(err => console.log(err))
   },
-  async getRegions ({ commit }, regions) {
+  async getRegions ({ commit }) {
     await this.$axios.get('/region')
       .then(res => commit('regions', res.data.data))
       .catch(err => console.log(err))

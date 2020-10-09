@@ -543,26 +543,32 @@ export default {
     await this.$axios.$get(`/places/${this.$route.params.title}`)
       .then(async (res) => {
         const place = res.place
-        await this.$axios.get(`/centrum/${place.centrum}`)
-          .then((centrum) => {
-            // Get Centrum
-            place.hemsida = centrum.data.hemsida
-            place.centrumgalleri = centrum.data.centrumgalleri
-            place.centrumtextarea = centrum.data.centrumtextarea
-            place.oppettider = centrum.data.oppettider
-            place.location = centrum.data.routeGuidance
-
-            // Assign place and map and similar listings
-            this.place = place
-            this.similar = res.similar.filter(x => x._id !== this.place._id)
-            this.map = {
-              center: { lng: res.place.location.coordinates[0], lat: res.place.location.coordinates[1] },
-              mapTypeId: 'roadmap',
-              markers: [
-                { lng: res.place.location.coordinates[0], lat: res.place.location.coordinates[1] }
-              ]
+        await this.$axios.get('/region/')
+          .then(async (regions) => {
+            const region = regions.data.data.filter(x => JSON.stringify(x.name) === JSON.stringify(place.stad))[0]
+            console.log(region)
+            if (region.centrum) {
+              await this.$axios.get(`/centrum/${region.centrum}`)
+                .then((centrum) => {
+                  // Get Centrum
+                  place.hemsida = centrum.data.hemsida
+                  place.centrumgalleri = centrum.data.centrumgalleri
+                  place.centrumtextarea = centrum.data.centrumtextarea
+                  place.oppettider = centrum.data.oppettider
+                  place.location = centrum.data.routeGuidance
+                })
             }
           })
+          // Assign place and map and similar listings
+        this.place = place
+        this.similar = res.similar.filter(x => x._id !== this.place._id)
+        this.map = {
+          center: { lng: res.place.location.coordinates[0], lat: res.place.location.coordinates[1] },
+          mapTypeId: 'roadmap',
+          markers: [
+            { lng: res.place.location.coordinates[0], lat: res.place.location.coordinates[1] }
+          ]
+        }
       })
       .catch(res => console.log(res))
   },

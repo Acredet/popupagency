@@ -32,7 +32,7 @@
             <p>{{ data.item.title[$i18n.locale] }}</p>
           </template>
           <template v-slot:cell(hemsida)="data">
-            <a :href="hemsida" target="_blank">
+            <a :href="data.item.hemsida" target="_blank">
               {{ data.item.hemsida }}
             </a>
           </template>

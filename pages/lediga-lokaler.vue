@@ -87,8 +87,8 @@ export default {
   async created () {
     this.loadingState = true
     await this.getTags()
-    await this.getListings()
     await this.getRegions()
+    await this.getListings()
   },
   methods: {
     ...mapActions({
