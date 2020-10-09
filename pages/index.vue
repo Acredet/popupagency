@@ -79,7 +79,7 @@
       </b-col>
     </b-row>
 
-    <b-row style="min-height: 200px; background: #f4f4f4" class="align-items-stretch" no-gutters>
+    <b-row style="min-height: 400px; background: #f4f4f4" class="align-items-stretch" no-gutters>
       <b-col cols="6" class="py-5">
         <b-container class="p-3 d-flex flex-column justify-content-center align-items-start">
           <h1>Behöver du hjälp?</h1>

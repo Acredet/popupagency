@@ -1,5 +1,8 @@
 /* eslint-disable no-sequences */
 exports.AdminPanelDependancies = {
+  mounted () {
+    this.$nextTick(this.initApp())
+  },
   updated () {
     this.$nextTick(this.initApp())
   },

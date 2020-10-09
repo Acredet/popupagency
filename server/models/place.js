@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const PlaceSchema = new mongoose.Schema({
-  userId: mongoose.ObjectId,
+  userId: mongoose.Schema.Types.ObjectId,
   title: {
     en: {
       type: String,
@@ -18,7 +18,6 @@ const PlaceSchema = new mongoose.Schema({
     en: String,
     sv: String
   },
-  centrum: mongoose.ObjectId,
   bildgalleri: Array,
   cover: Array,
   epost: String,

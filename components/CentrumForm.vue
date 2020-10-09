@@ -243,6 +243,25 @@
           </b-card-body>
         </b-card>
         <!-- routeGuidance -->
+
+        <b-card :title="$t('addListing.inputs.stad')">
+          <b-card-body>
+            <b-form-radio-group
+              v-model="city"
+              :stacked="true"
+              :options="regions"
+              :state="stadValid"
+              name="radio-validation"
+            >
+              <b-form-invalid-feedback :state="stadValid">
+                {{ $t('addListing.inputs.selectOne') }}
+              </b-form-invalid-feedback>
+              <b-form-valid-feedback :state="stadValid">
+                {{ $t('forms.valid') }}
+              </b-form-valid-feedback>
+            </b-form-radio-group>
+          </b-card-body>
+        </b-card>
         <!-- <b-btn variant="primary" :disabled="!form.name.en || !form.name.sv" @click="addItem('tag')" v-text="$t('tag.addBtn')" /> -->
         <b-overlay
           :show="busy"
@@ -286,7 +305,7 @@
 import { BootstrapVue, BIcon, BIconTrash, BIconTrashFill } from 'bootstrap-vue'
 
 import ourUploader from '@/components/ourUploader'
-
+// import { sortItems } from '@/mixins/SortRegions'
 let VueEditor
 if (process.browser) {
   VueEditor = require('vue2-editor').VueEditor
@@ -301,6 +320,7 @@ export default {
     ourUploader,
     VueEditor
   },
+  // mixins: [sortItems],
   props: {
     centrumEdit: {
       type: Object,
@@ -316,6 +336,9 @@ export default {
         markers: []
       },
       formattedAddress: null,
+      regions: [],
+      city: null,
+      oldCity: null,
       location: {
         lat: null,
         lng: null
@@ -409,6 +432,9 @@ export default {
     }
   },
   computed: {
+    stadValid () {
+      return !!this.city
+    },
     titleValidEn () {
       return !!this.title.en
     },
@@ -450,10 +476,22 @@ export default {
       }
     }
   },
-  created () {
+  async created () {
     if (!this.$auth.loggedIn || !['manager', 'admin'].includes(this.$auth.user.role)) {
       this.$router.push('/error')
     }
+    await this.$axios.get('/region')
+      .then((res) => {
+        if (this.centrumEdit) {
+          this.regions = res.data.data.map((x) => { return { text: x.name[this.$i18n.locale], value: x._id, centrum: x.centrum || null } })
+          this.city = res.data.data.filter(x => (x.centrum && (x.centrum === this.centrumEdit._id)))[0]._id
+          this.oldCity = this.city
+          this.$forceUpdate()
+        } else {
+          this.regions = res.data.data.filter(j => !j.centrum).map((x) => { return { text: x.name[this.$i18n.locale], value: x._id, centrum: x.centrum || null } })
+        }
+      })
+      .catch(err => console.log(err))
   },
   methods: {
     setPlace (place) {
@@ -476,13 +514,22 @@ export default {
     async post () {
       const centrum = await this.createCentrumForm()
       await this.$axios.$post('/centrum', centrum)
-        .then((res) => { this.$router.push(`${this.$t('link')}admin/centrum`) })
+        .then(async (res) => {
+          await this.$axios.patch(`/region/${this.city}`, { centrum: res.data._id })
+            .then((_) => { this.$router.push(`${this.$t('link')}admin/centrum`) })
+            .catch(err => console.log(err))
+        })
         .catch(err => console.log(err))
     },
     async editCentrum () {
       const centrum = await this.createCentrumForm()
-      await this.$axios.$patch(`/centrum/${this.$route.params.id}`, centrum)
-        .then((res) => { this.$router.push(`${this.$t('link')}admin/centrum`) })
+      const promises = [
+        await this.$axios.$patch(`/centrum/${this.$route.params.id}`, centrum),
+        await this.$axios.patch(`/region/${this.oldCity}`, { centrum: null }),
+        await this.$axios.patch(`/region/${this.city}`, { centrum: this.$route.params.id })
+      ]
+      await Promise.all(promises)
+        .then((_) => { this.$router.push(`${this.$t('link')}admin/centrum`) })
         .catch(err => console.log(err))
     },
     async createCentrumForm () {
@@ -527,6 +574,7 @@ export default {
     },
     assignCentrumEdit () {
       console.log(this.centrumEdit)
+
       this.location = {
         lng: this.centrumEdit.routeGuidance.coordinates[0] || 0,
         lat: this.centrumEdit.routeGuidance.coordinates[1] || 0

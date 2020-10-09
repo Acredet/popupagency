@@ -85,6 +85,7 @@ export default {
   methods: {
     changeLang (lang) {
       this.$i18n.setLocale(lang)
+      this.$emit('changeLang')
       this.$store.commit('changeSidebarRenderKey')
     },
     logout () {

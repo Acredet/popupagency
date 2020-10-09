@@ -1,6 +1,6 @@
 <template>
   <div v-if="thereIsUser" id="wrapper">
-    <admin-header />
+    <admin-header @changeLang="initApp" />
     <admin-sidebar @initAppPlease="initApp" />
 
     <div class="my-3 content-page">
