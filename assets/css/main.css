@@ -44,9 +44,9 @@
 }
 
 .btn-outline-primary:focus, .btn-primary:focus {
-  background-color: white;
+  background-color: var(--primary);
   border-color: var(--primary);
-  color: black
+  color: white
 }
 
 .btn-outline-primary:hover, .btn-primary:hover {

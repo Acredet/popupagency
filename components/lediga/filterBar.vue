@@ -19,16 +19,19 @@
         <b-dropdown id="plats-dropdown" variant="light" :text="filters.plats.text">
           <!-- Start first horizontal tab -->
           <b-dropdown-group class="px-2 custom-tab plats">
-            <b-btn
-              v-for="(country, key) in filters.plats.tabs"
-              :key="key"
-              variant="primary"
-              style="width: fit-content;"
-              class="mb-2 mr-2"
-              @click="filters.plats.currentCountry = key"
-            >
-              {{ key }}
-            </b-btn>
+            <div class="d-flex">
+              <b-btn
+                v-for="(country, key) in filters.plats.tabs"
+                :key="key"
+                :variant="(filters.plats.currentCountry === key) ? 'primary' : null"
+                style="width: fit-content;"
+                class="mb-2 mr-2"
+                @click="filters.plats.currentCountry = key"
+              >
+                {{ key }}
+              </b-btn>
+            </div>
+
             <!-- Start Tabs -->
             <b-tabs
               v-model="filters.plats.currentCity"
