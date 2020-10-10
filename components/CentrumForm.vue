@@ -165,6 +165,7 @@
                 :center="map.center"
                 :map-type-id="map.mapTypeId"
                 style="height: 300px"
+                :street-view-control="true"
                 :zoom="7"
               >
                 <gmap-cluster>
@@ -246,20 +247,7 @@
 
         <b-card :title="$t('addListing.inputs.stad')">
           <b-card-body>
-            <b-form-radio-group
-              v-model="city"
-              :stacked="true"
-              :options="regions"
-              :state="stadValid"
-              name="radio-validation"
-            >
-              <b-form-invalid-feedback :state="stadValid">
-                {{ $t('addListing.inputs.selectOne') }}
-              </b-form-invalid-feedback>
-              <b-form-valid-feedback :state="stadValid">
-                {{ $t('forms.valid') }}
-              </b-form-valid-feedback>
-            </b-form-radio-group>
+            <b-form-select v-model="city" :options="regions" size="md" />
           </b-card-body>
         </b-card>
         <!-- <b-btn variant="primary" :disabled="!form.name.en || !form.name.sv" @click="addItem('tag')" v-text="$t('tag.addBtn')" /> -->

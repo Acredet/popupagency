@@ -5,6 +5,7 @@
     :key="renderKey"
     :center="map.center"
     :map-type-id="map.mapTypeId"
+    :street-view-control="true"
     :zoom="map.zoom"
     @zoom_changed="mapResized"
   >

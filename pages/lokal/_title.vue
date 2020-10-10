@@ -108,6 +108,8 @@
                     />
                   </gmap-cluster>
                 </gmap-map>
+                <hr>
+                <panorama v-if="place.location" :pos="map.center" />
               </div>
             </b-col>
             <!-- End Karta -->
@@ -472,6 +474,7 @@ import { BootstrapVue, BIcon } from 'bootstrap-vue'
 import 'viewerjs/dist/viewer.css'
 import Viewer from 'v-viewer'
 import Vue from 'vue'
+import panorama from '@/components/panorama'
 import { addToFav } from '@/mixins/utils/addToFav'
 Vue.use(Viewer)
 
@@ -480,7 +483,8 @@ export default {
     // eslint-disable-next-line vue/no-unused-components
     BootstrapVue,
     // eslint-disable-next-line vue/no-unused-components
-    BIcon
+    BIcon,
+    panorama
   },
   mixins: [addToFav],
   data () {
