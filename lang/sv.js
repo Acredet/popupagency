@@ -2,6 +2,8 @@
 export default {
   welcome: 'HEllo',
   link: '/',
+  notProvided: 'Ej tillhandahållen.',
+  contactUs: 'Kontakta oss',
   actions: {
     actions: 'Åtgärder',
     edit: 'Redigera',
@@ -88,13 +90,25 @@ export default {
       tags: 'Taggar',
       categories: 'Kategorier'
     },
+    center: {
+      add: 'Lägg till centrum',
+      all: 'Alla centrum',
+      edit: 'Edit centrum'
+    },
     users: {
       text: 'Användare',
       allUsers: 'Alla användare',
-      addUser: 'Lägg till användare'
+      addUser: 'Lägg till användare',
+      role: {
+        admins: 'Administratörer',
+        manger: 'Listning chefer',
+        owener: 'Noteringsägare',
+        searcher: 'Sökare'
+      }
     },
     siteSettings: {
-      text: 'webbplatsinställningar'
+      text: 'webbplatsinställningar',
+      myPlaces: 'Mina platser'
     }
   },
   mainFooter: {
@@ -423,5 +437,16 @@ export default {
       add: 'Användaren har lagts fram',
       justAdded: 'Du har precis lagt till'
     }
+  },
+  centrum: {
+    textarea: 'centrum textarea',
+    address: 'Adress',
+    location: 'Plats',
+    longitude: 'Longitude',
+    latitude: 'latitud'
+  },
+  loginModal: {
+    title: 'Inloggning',
+    text: 'Du måste logga in för att kunna ha bokmärken!'
   }
 }

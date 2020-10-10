@@ -4,7 +4,8 @@
 
     <b-container class="mt-5">
       <!-- Start title -->
-      <h2>Add Centrum:</h2>
+      <h2 v-if="!editCentrum" v-text="$t('adminSidebar.center.add')" />
+      <h2 v-else v-text="$t('adminSidebar.center.edit')" />
       <b-form id="add-centrum">
         <b-card :title="$t('addListing.inputs.title.label')">
           <b-card-body>
@@ -97,12 +98,12 @@
         <!-- centrumtextarea -->
         <b-card class="my-5">
           <b-card-body>
-            <h3>centrum textarea en:</h3>
+            <h3>{{ $t('centrum.textarea') }} en:</h3>
             <client-only>
               <VueEditor v-model="centrum.en" />
             </client-only>
             <hr>
-            <h3>centrum textarea sw:</h3>
+            <h3>{{ $t('centrum.textarea') }} sw:</h3>
             <client-only>
               <VueEditor v-model="centrum.sv" />
             </client-only>
@@ -179,13 +180,13 @@
               <div class="my-2">
                 <b-form-group
                   id="address-group"
-                  label="Address:"
+                  :label="`${$t('centrum.address')}`"
                   label-class="font-weight-bold "
                   label-for="address"
                 >
                   <gmap-autocomplete id="address" class="form-control" @place_changed="setPlace" />
                   <p v-if="$route.params.id" class="font-weight-bold">
-                    location: {{ formattedAddress }}
+                    {{ $t('centrum.location') }}: {{ formattedAddress }}
                   </p>
                 </b-form-group>
               </div>
@@ -194,7 +195,7 @@
               <b-col cols="12" md="6">
                 <b-form-group
                   id="location-lang-group"
-                  label="longitude:"
+                  :label="`${$t('centrum.longitude')}`"
                   label-class="font-weight-bold "
                   label-for="location-lang"
                 >
@@ -219,7 +220,7 @@
               <b-col cols="12" md="6">
                 <b-form-group
                   id="location-lat-group"
-                  label="Latitude:"
+                  :label="`${$t('centrum.latitude')}`"
                   label-class="font-weight-bold "
                   label-for="location-lat"
                 >

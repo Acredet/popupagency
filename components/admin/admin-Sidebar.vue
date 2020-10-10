@@ -55,8 +55,8 @@ export default {
           text: 'Centrums',
           icon: 'far fa-map',
           subMenu: [
-            { url: '/centrum/add', text: 'Add Centrum' },
-            { url: '/centrum/', text: 'All Centrums' }
+            { url: '/centrum/add', text: this.$t('adminSidebar.center.add') },
+            { url: '/centrum/', text: this.$t('adminSidebar.center.all') }
           ]
         },
         {
@@ -66,10 +66,10 @@ export default {
           subMenu: [
             { url: '/users', text: this.$t('adminSidebar.users.allUsers') },
             { url: '/users/add', text: this.$t('adminSidebar.users.addUser') },
-            { url: '/users?role=admin', text: 'Admins' },
-            { url: '/users?role=manager', text: 'Listing Managers' },
-            { url: '/users?role=owner', text: 'Listing Owners' },
-            { url: '/users?role=searcher', text: 'Searchers' }
+            { url: '/users?role=admin', text: this.$t('adminSidebar.users.role.admins') },
+            { url: '/users?role=manager', text: this.$t('adminSidebar.users.role.manger') },
+            { url: '/users?role=owner', text: this.$t('adminSidebar.users.role.owener') },
+            { url: '/users?role=searcher', text: this.$t('adminSidebar.users.role.searcher') }
           ]
         },
         {
@@ -85,7 +85,7 @@ export default {
           text: 'User Listings',
           icon: 'far fa-map',
           subMenu: [
-            { url: `/listings/user-listing/${this.$auth.loggedIn ? this.$auth.user._id : ''}`, text: 'My places' },
+            { url: `/listings/user-listing/${this.$auth.loggedIn ? this.$auth.user._id : ''}`, text: this.$t('adminSidebar.siteSettings.myPlaces') },
             { url: '/listings/add', text: this.$t('adminSidebar.listing.addNewListing') }
           ]
         }

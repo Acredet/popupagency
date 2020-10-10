@@ -1,17 +1,17 @@
 <template>
   <div v-if="place._id">
     <!-- Login modal -->
-    <b-modal id="modal-center" v-model="modalShow" centered title="Login">
+    <b-modal id="modal-center" v-model="modalShow" centered :title="$t('loginModal.title')">
       <p class="my-4">
-        You must login to be able to have bookmarks!
+        {{ $t('loginModal.text') }}
       </p>
       <template v-slot:modal-footer>
         <div>
           <b-btn variant="primary" to="/login">
-            Login
+            {{ $t('loginModal.title') }}
           </b-btn>
           <b-btn variant="error" @click="modalShow = false">
-            cancel
+            {{ $t('actions.cancle') }}
           </b-btn>
         </div>
       </template>
@@ -126,7 +126,7 @@
                 <hr>
                 <div class="d-flex justify-content-between">
                   <p>{{ $t('singleListing.info.floor') }}</p>
-                  <p>Markplan</p>
+                  <p>{{ $t('singleListing.groundPlan') }}</p>
                 </div>
               </div>
             </b-col>
@@ -152,7 +152,7 @@
               </div>
               <div v-if="place.planritning.length === 0">
                 <p class="secondary--text">
-                  Not provided.
+                  {{ $t('notProvided') }}
                 </p>
               </div>
             </b-col>
@@ -183,7 +183,7 @@
                   </b-col>
                   <b-col v-if="images.length === 0" cols="12">
                     <p class="text-center text-secondary">
-                      Not provided.
+                      {{ $t('notProvided') }}
                     </p>
                   </b-col>
                 </b-row>
@@ -204,7 +204,7 @@
               <b-row style="min-height: 200px">
                 <b-col cols="6" class="d-flex justify-content-end align-items-center">
                   <b-btn squared variant="primary" @click="tabOpened = 3">
-                    Kontakta oss
+                    {{ $t('contactUs') }}
                   </b-btn>
                 </b-col>
                 <b-col cols="6" class="contact-us-img" />

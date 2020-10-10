@@ -2,6 +2,8 @@
 export default {
   welcome: 'HI',
   link: '/en/',
+  notProvided: 'Not Provided.',
+  contactUs: 'Contact Us',
   actions: {
     actions: 'Actions',
     add: 'Add',
@@ -88,13 +90,25 @@ export default {
       tags: 'Tags',
       categories: 'Categories'
     },
+    center: {
+      add: 'Add center',
+      all: 'All Centers',
+      edit: 'Edit center'
+    },
     users: {
       text: 'Users',
       allUsers: 'All Users',
-      addUser: 'Add User'
+      addUser: 'Add User',
+      role: {
+        admins: 'Admins',
+        manger: 'Listing Managers',
+        owener: 'Listing Owners',
+        searcher: 'Searchers'
+      }
     },
     siteSettings: {
-      text: 'site settings'
+      text: 'site settings',
+      myPlaces: 'My places'
     }
   },
   mainFooter: {
@@ -185,7 +199,8 @@ export default {
       GDPR: 'I accept that the Popup Agency processes my personal information in accordance with GDPR rules.'
     },
     intersedIn: 'You May Also Be Interested In',
-    noSimilar: 'There are no similar listings'
+    noSimilar: 'There are no similar listings',
+    groundPlan: 'Ground plan'
   },
   chooseParent: 'Choose parent..',
   region: {
@@ -423,5 +438,16 @@ export default {
       add: 'User Added successfully',
       justAdded: 'You Just added'
     }
+  },
+  centrum: {
+    textarea: 'Center textarea',
+    address: 'Address',
+    location: 'Location',
+    longitude: 'Longitude',
+    latitude: 'Latitude'
+  },
+  loginModal: {
+    title: 'Login',
+    text: 'You must login to be able to have bookmarks!'
   }
 }
