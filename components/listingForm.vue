@@ -143,25 +143,26 @@
           </b-card>
 
           <!-- Start Prices -->
-          <b-row no-gutters>
-            <b-col
-              v-for="(card, index) in renderInputs"
-              :key="index"
-              cols="12"
-              md="2"
-              :offset-md="index === 0 ? 1 : 0"
-              class="p-1"
-            >
-              <b-card :title="card.title">
-                <b-card-body class="p-1">
-                  <b-form-checkbox v-if="!card.noTemp" :id="card.title" v-model="price[card.model].temp" class="mb-2" @change="setPrioteradPrice(card.model)">
-                    {{ $t('addListing.inputs.price.priority') }}
-                  </b-form-checkbox>
-                  <b-form-input v-model="price[card.model].val" type="number" :placeholder="card.placeholder" />
-                </b-card-body>
-              </b-card>
-            </b-col>
-          </b-row>
+          <b-card title="Prices:">
+            <b-card-body class="p-1">
+              <b-row no-gutters>
+                <b-col
+                  v-for="(card, index) in renderInputs"
+                  :key="index"
+                  cols="12"
+                  md="auto"
+                >
+                  <div class="m-1">
+                    <label class="h5" for="card.title">{{ card.title }}</label>
+                    <b-form-checkbox v-if="!card.noTemp" v-model="price[card.model].temp" class="mb-2" @change="setPrioteradPrice(card.model)">
+                      {{ $t('addListing.inputs.price.priority') }}
+                    </b-form-checkbox>
+                    <b-form-input v-model="price[card.model].val" type="number" :placeholder="card.placeholder" />
+                  </div>
+                </b-col>
+              </b-row>
+            </b-card-body>
+          </b-card>
           <!-- End Prices -->
 
           <b-card :title="$t('addListing.inputs.egenskaper')">
@@ -188,26 +189,19 @@
 
           <b-card :title="$t('addListing.inputs.placering.label')">
             <b-card-body>
-              <b-form-input v-model="markplan" type="number" :placeholder="$t('addListing.inputs.placering.holder')" />
+              <b-form-input v-model="markplan" :placeholder="$t('addListing.inputs.placering.holder')" />
             </b-card-body>
           </b-card>
 
           <b-card :title="$t('addListing.inputs.stad')">
             <b-card-body>
-              <b-form-radio-group
-                v-model="city"
-                :stacked="true"
-                :options="cityOptions"
-                :state="stadValid"
-                name="radio-validation"
-              >
-                <b-form-invalid-feedback :state="stadValid">
-                  {{ $t('addListing.inputs.selectOne') }}
-                </b-form-invalid-feedback>
-                <b-form-valid-feedback :state="stadValid">
-                  {{ $t('forms.valid') }}
-                </b-form-valid-feedback>
-              </b-form-radio-group>
+              <b-form-select v-model="city" :options="cityOptions" :state="stadValid" />
+              <b-form-invalid-feedback :state="stadValid">
+                {{ $t('addListing.inputs.selectOne') }}
+              </b-form-invalid-feedback>
+              <b-form-valid-feedback :state="stadValid">
+                {{ $t('forms.valid') }}
+              </b-form-valid-feedback>
             </b-card-body>
           </b-card>
 
@@ -283,28 +277,31 @@
             </b-card-body>
           </b-card>
 
-          <b-card v-for="(input) in yesNoInputs" :key="input.name" :title="input.title">
-            <b-card-body>
-              <b-form-group row>
-                <b-form-radio-group :id="input.name" v-model="yesNoInputsVal[input.model]" :name="input.name">
-                  <b-form-radio :value="true">
-                    {{ $t('addListing.inputs.yes') }}
-                  </b-form-radio>
-                  <b-form-radio :value="false">
-                    {{ $t('addListing.inputs.no') }}
-                  </b-form-radio>
-                </b-form-radio-group>
-              </b-form-group>
+          <!-- Start Prices -->
+          <b-card title="Prices:">
+            <b-card-body class="p-1">
+              <b-row>
+                <b-col
+                  v-for="(input, index) in yesNoInputs"
+                  :key="`radio-${index}`"
+                  cols="12"
+                  md="3"
+                >
+                  <label class="h5" v-text="input.title" />
+                  <b-checkbox
+                    v-model="yesNoInputsVal[input.model]"
+                    switch
+                    :name="input.name"
+                  />
+                </b-col>
+              </b-row>
             </b-card-body>
           </b-card>
+          <!-- End Prices -->
 
           <b-card :title="$t('addListing.inputs.season')">
             <b-card-body>
-              <b-form-group>
-                <b-form-radio v-for="input in sasongInputs" :key="input" v-model="sasong" name="sasong" :value="input.text">
-                  {{ input }}
-                </b-form-radio>
-              </b-form-group>
+              <b-form-select v-model="sasong" :options="sasongInputs" />
             </b-card-body>
           </b-card>
 
@@ -328,14 +325,13 @@
 
           <b-card :title="$t('addListing.inputs.Lokalens')">
             <b-card-body>
-              <b-form-radio-group v-model="lokal" :stacked="true" :options="lokalOpts" :state="lokalensValid" name="lokal-validation">
-                <b-form-invalid-feedback :state="lokalensValid">
-                  {{ $t('addListing.inputs.selectOne') }}
-                </b-form-invalid-feedback>
-                <b-form-valid-feedback :state="lokalensValid">
-                  {{ $t('addListing.inputs.choosed') }} {{ lokal }}
-                </b-form-valid-feedback>
-              </b-form-radio-group>
+              <b-form-select v-model="lokal" :options="lokalOpts" :state="lokalensValid" />
+              <b-form-invalid-feedback :state="lokalensValid">
+                {{ $t('addListing.inputs.selectOne') }}
+              </b-form-invalid-feedback>
+              <b-form-valid-feedback :state="lokalensValid">
+                {{ $t('addListing.inputs.choosed') }} {{ lokal }}
+              </b-form-valid-feedback>
             </b-card-body>
           </b-card>
 
@@ -721,7 +717,7 @@ export default {
         if (this.yesNoInputsVal.hasOwnProperty(key)) {
           const value = this.yesNoInputsVal[key]
           // console.log(key, value)
-          if (value) { listing.append(key, value) }
+          if (value) { listing.append(key, value) } else { listing.append(key, false) }
         }
       }
 
