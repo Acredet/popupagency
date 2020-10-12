@@ -64,7 +64,7 @@
                 :name="'centrumgalleri[]'"
                 :show-btn="false"
                 :more="true"
-                :old-images="images.centrumgalleri"
+                :old-images="centrumEdit ? centrumEdit.centrumgalleri : []"
                 :max-number-of-inputs="999"
                 :max-file-size="64"
               >
@@ -510,6 +510,10 @@ export default {
       const centrum = await this.createCentrumForm()
       await this.$axios.$post('/centrum', centrum)
         .then(async (res) => {
+          if (this.centrumEdit && this.oldCity) {
+            await this.$axios.patch(`/region/${this.oldCity}`, { centrum: null })
+          }
+
           await this.$axios.patch(`/region/${this.city}`, { centrum: res.data._id })
             .then((_) => { this.$router.push(`${this.$t('link')}admin/centrum`) })
             .catch(err => console.log(err))
@@ -539,7 +543,7 @@ export default {
     async createCentrumForm () {
       this.busy = true
       const centrum = new FormData(document.getElementById('add-centrum'))
-      const centrumgalleri = (this.centrumEdit && this.centrumEdit._id) ? [...this.centrumEdit.centrumgalleri] : []
+      const centrumgalleri = (this.centrumEdit && this.centrumEdit._id) ? [...this.images.centrumgalleri] : []
       for (const key in this.days) {
         // eslint-disable-next-line no-prototype-builtins
         if (this.days.hasOwnProperty(key)) {
