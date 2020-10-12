@@ -29,6 +29,7 @@ exports.addPlace = async (req, res, next) => {
     }
 
     console.log('req.user: ', req.user)
+    console.log('prioteradpris: ', req.body.prioteradpris)
     // Create Place
     let place = new Place({
       userId: req.user.id,
@@ -48,7 +49,7 @@ exports.addPlace = async (req, res, next) => {
       prisperlanghelg: req.body.prisperlanghelg,
       prispervecka: req.body.prispervecka,
       prispermanad: req.body.prispermanad,
-      prioteradpris: req.body.prioteradpris,
+      prioteradpris: JSON.parse(req.body.prioteradpris),
       egenskaper: req.body.egenskaper ? req.body.egenskaper.map(x => JSON.parse(x)) : [],
       yta: req.body.yta,
       placering: req.body.placering,
@@ -146,6 +147,9 @@ exports.updatePlace = async (req, res) => {
       sv: JSON.parse(updata.beskreving).sv
     }
   }
+  if (updata.prioteradpris) {
+    updata.prioteradpris = JSON.parse(req.body.prioteradpris)
+  } else { updata.prioteradpris = 0 }
 
   if (updata.egenskaper) {
     updata.egenskaper = updata.egenskaper.map(x => JSON.parse(x))
@@ -160,7 +164,6 @@ exports.updatePlace = async (req, res) => {
   if (updata.planritning) {
     updata.planritning = JSON.parse(updata.planritning)
   }
-  if (!updata.prioteradpris) { updata.prioteradpris = 0 }
 
   await Place.updateOne({ _id: req.params.id }, { $set: updata })
     .then(place => res.json({ success: true }))

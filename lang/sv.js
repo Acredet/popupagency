@@ -4,6 +4,11 @@ export default {
   link: '/',
   notProvided: 'Ej tillhandahållen.',
   contactUs: 'Kontakta oss',
+  day: 'dag',
+  helg: 'vecka',
+  langheig: 'helg',
+  veckopris: 'lång helg',
+  manad: 'mån',
   actions: {
     actions: 'Åtgärder',
     edit: 'Redigera',

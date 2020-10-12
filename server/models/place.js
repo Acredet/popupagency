@@ -42,8 +42,13 @@ const PlaceSchema = new mongoose.Schema({
     min: 0
   },
   prioteradpris: { // ✔
-    type: Number,
-    min: 0
+    period: {
+      type: String
+    },
+    val: {
+      type: Number,
+      min: 0
+    }
   },
   egenskaper: [Object],
   yta: { // ✔

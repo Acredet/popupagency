@@ -39,8 +39,8 @@
           </b-col>
 
           <b-col cols="7" class="border-left border-bottom pl-1 pr-3">
-            <small class="text-muted">
-              <BIconWallet class="text-dark mr-1" />{{ `fr ${place.prioteradpris} kr / månad` }}
+            <small v-if="place && place.prioteradpris" class="text-muted">
+              <BIconWallet class="text-dark mr-1" />{{ `fr ${format(place.prioteradpris.val)} kr / ${$t(place.prioteradpris.period)}` }}
             </small>
           </b-col>
         </b-row>
@@ -83,6 +83,9 @@ export default {
   methods: {
     showPlace (loc) {
       this.$emit('showPlace', loc)
+    },
+    format (num) {
+      return String(num).replace(/(?<!\..*)(\d)(?=(?:\d{3})+(?:\.|$))/g, '$1,')
     }
   }
 }

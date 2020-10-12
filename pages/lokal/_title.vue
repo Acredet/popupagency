@@ -263,7 +263,8 @@
               class="d-flex mb-1 col-12 col-md-6 justify-content-between align-items-center"
             >
               <b>{{ price }}:</b>
-              <span>${{ place[price] }}</span>
+              <span v-if="price !== 'prioteradpris'">${{ place[price] }}</span>
+              <span v-else>${{ place[price].val }} Kr / {{ $t(place[price].period) }}</span>
             </li>
           </ul>
         </b-container>
@@ -567,12 +568,14 @@ export default {
               await this.$axios.get(`/centrum/${region.centrum}`)
                 .then((centrum) => {
                   // Get Centrum
-                  place.hemsida = centrum.data.hemsida
-                  place.centrumgalleri = centrum.data.centrumgalleri
-                  place.centrumtextarea = centrum.data.centrumtextarea
-                  place.oppettider = centrum.data.oppettider
-                  place.location = centrum.data.routeGuidance
-                  this.thereIsCentrum = true
+                  if (centrum.data) {
+                    place.hemsida = centrum.data.hemsida
+                    place.centrumgalleri = centrum.data.centrumgalleri
+                    place.centrumtextarea = centrum.data.centrumtextarea
+                    place.oppettider = centrum.data.oppettider
+                    place.location = centrum.data.routeGuidance
+                    this.thereIsCentrum = true
+                  }
                 })
             }
           })

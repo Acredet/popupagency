@@ -366,7 +366,7 @@
             <i class="fas fa-exclamation-triangle" />
             {{ $t('addListing.errors.lokalens') }}
           </p>
-          <p v-if="!price.prioteradpris.val" class="font-weight-bold">
+          <p v-if="!prioteradpris.val" class="font-weight-bold">
             <i class="fas fa-exclamation-triangle" />
             {{ $t('addListing.errors.propteradpris') }}
           </p>
@@ -527,6 +527,10 @@ export default {
         bildgalleri: null,
         cover: null,
         planritning: null
+      },
+      prioteradpris: {
+        period: '',
+        val: ''
       }
     }
   },
@@ -555,7 +559,7 @@ export default {
               !!this.stadValid &&
               !!this.kategoryValid &&
               !!this.lokalensValid &&
-              !!this.price.prioteradpris.val
+              !!this.prioteradpris.val
     },
     renderKey () {
       return this.$store.state.sidebarRenderKey
@@ -638,21 +642,18 @@ export default {
       this.images.cover = cover
       this.images.planritning = planritning
 
-      const prices = [
-        { text: 'day', val: prisperdag },
-        { text: 'helg', val: prisperhelg },
-        { text: 'langheig', val: prisperlanghelg },
-        { text: 'manad', val: prispermanad },
-        { text: 'veckopris', val: prispervecka }
-      ]
+      // const prices = [
+      //   { text: 'day', val: prisperdag },
+      //   { text: 'helg', val: prisperhelg },
+      //   { text: 'langheig', val: prisperlanghelg },
+      //   { text: 'manad', val: prispermanad },
+      //   { text: 'veckopris', val: prispervecka }
+      // ]
 
       // DETERMINE THE prispervecka
-      prices.forEach((price) => {
-        if (Number(price.val) === Number(prioteradpris)) {
-          this.price[price.text].temp = true
-          this.price.prioteradpris.val = price.val
-        }
-      })
+      this.prioteradpris = prioteradpris
+      this.price[prioteradpris.period].temp = true
+      this.price.prioteradpris.val = prioteradpris.val
 
       // ADD TAGS
       this.egenskaper = egenskaper
@@ -668,6 +669,7 @@ export default {
       this.loadingState = false
     },
     setPrioteradPrice (card) {
+      console.log(this.price[card])
       this.$nextTick(() => {
         for (const key in this.price) {
           const obj = this.price[key]
@@ -675,6 +677,7 @@ export default {
             obj.temp = false
           } else {
             this.price.prioteradpris.val = this.price[card].val
+            this.prioteradpris = { period: key, val: this.price[card].val }
           }
         }
       })
@@ -697,7 +700,7 @@ export default {
       listing.append('prisperlanghelg', this.price.langheig.val || 0)
       listing.append('prispervecka', this.price.veckopris.val || 0)
       listing.append('prispermanad', this.price.manad.val || 0)
-      listing.append('prioteradpris', this.price.prioteradpris.val)
+      listing.append('prioteradpris', JSON.stringify(this.prioteradpris))
 
       // ASSIGN TAG
       this.egenskaper.forEach(feat => listing.append('egenskaper[]', JSON.stringify(feat)))

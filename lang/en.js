@@ -4,6 +4,11 @@ export default {
   link: '/en/',
   notProvided: 'Not Provided.',
   contactUs: 'Contact Us',
+  day: 'day',
+  helg: 'week',
+  langheig: 'weekend',
+  veckopris: 'long weekend',
+  manad: 'month',
   actions: {
     actions: 'Actions',
     add: 'Add',

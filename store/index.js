@@ -58,13 +58,16 @@ export const actions = {
           const listingRegion = state.regions.filter(x => JSON.stringify(x.name) === JSON.stringify(listing.stad))[0]
 
           if (listingRegion.centrum) {
+            console.log(listingRegion.centrum)
             await this.$axios.get(`/centrum/${listingRegion.centrum}`)
               .then((centrum) => {
-                listing.hemsida = centrum.data.hemsida
-                listing.centrumgalleri = centrum.data.centrumgalleri
-                listing.centrumtextarea = centrum.data.centrumtextarea
-                listing.oppettider = centrum.data.oppettider
-                listing.location = centrum.data.routeGuidance
+                if (centrum.data) {
+                  listing.hemsida = centrum.data.hemsida
+                  listing.centrumgalleri = centrum.data.centrumgalleri
+                  listing.centrumtextarea = centrum.data.centrumtextarea
+                  listing.oppettider = centrum.data.oppettider
+                  listing.location = centrum.data.routeGuidance
+                }
               })
           }
         }
