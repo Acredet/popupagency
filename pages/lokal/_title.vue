@@ -273,7 +273,7 @@
       <b-tab title-item-class="d-none" class="my-4">
         <b-container>
           <b-form>
-            <b class="font-3">Send us a booking request:</b>
+            <b class="font-3">{{ $t('singleListing.form.sendUs') }}</b>
             <b-row>
               <!-- Start user name -->
               <b-col cols="12">
@@ -597,8 +597,6 @@ export default {
       alert('Not working yet 😉')
     },
     initedV (name, viewer) {
-      console.log('HEY YPU')
-      console.log(name, viewer)
       this.$viewer[name] = viewer
     },
     showV (name, index) {

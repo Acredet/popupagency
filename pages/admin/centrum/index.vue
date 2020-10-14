@@ -19,7 +19,7 @@
       </b-modal>
 
       <b-container>
-        <h2>All Listings:</h2>
+        <h2>{{ $t('centrum.allCenterums') }}</h2>
         <b-table
           :items="items"
           :fields="fields"
@@ -82,9 +82,9 @@ export default {
       sortDesc: false,
       editForm: {},
       fields: [
-        { key: 'title', label: 'title', sortable: true },
-        { key: 'hemsida', label: 'hemsida', sortable: true },
-        { key: 'centrumgalleri', label: 'centrumgalleri', sortable: true },
+        { key: 'title', label: this.$t('centrum.title'), sortable: true },
+        { key: 'hemsida', label: this.$t('centrum.website'), sortable: true },
+        { key: 'centrumgalleri', label: this.$t('centrum.centerGallery'), sortable: true },
         { key: 'actions', label: this.$t('allListing.table.header.actions') }
       ],
       items: null

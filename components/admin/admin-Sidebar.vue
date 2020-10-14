@@ -35,9 +35,9 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  data () {
-    return {
-      realLinks: [
+  computed: {
+    realLinks () {
+      return [
         {
           accessableFor: ['manager', 'admin'],
           text: this.$t('adminSidebar.listing.text'),
@@ -90,9 +90,7 @@ export default {
           ]
         }
       ]
-    }
-  },
-  computed: {
+    },
     ...mapGetters({
       renderKey: 'renderKey'
     })

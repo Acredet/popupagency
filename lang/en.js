@@ -1,6 +1,7 @@
 
 export default {
   welcome: 'HI',
+  maxFileSize: 'Max File size: 64MB',
   link: '/en/',
   notProvided: 'Not Provided.',
   contactUs: 'Contact Us',
@@ -9,6 +10,12 @@ export default {
   langheig: 'weekend',
   veckopris: 'long weekend',
   manad: 'month',
+  valdations: {
+    min8: 'minimum 8 chars',
+    good: ' Looks Good.',
+    shouldMatch: 'Should match the password.',
+    matched: 'Matched.'
+  },
   actions: {
     actions: 'Actions',
     add: 'Add',
@@ -116,6 +123,64 @@ export default {
       myPlaces: 'My places'
     }
   },
+  userListings: {
+    myPlaces: 'My places:',
+    noListings: 'There are no listings for this user.'
+  },
+  resetPassword: {
+    thereIsNoUser: 'This user does not exit!',
+    weSentThePassword: 'We sent you a link to reset your paswword',
+    resetPassword: 'Reset Password',
+    enterEmail: 'Enter your Email and instructions will be sent to you!',
+    enterOldEmail: 'Enter your email address you entered when creating your account. Then, a loser deposit is sent to the specified e-mail address.',
+    email: {
+      title: 'Email:',
+      placeHolder: 'Enter your Email'
+    },
+    reset: 'Reset',
+    rememberIt: 'Remember It?',
+    signInHere: 'Sign In Here'
+  },
+  forgetPassword: {
+    title: 'Forgot Password:',
+    newPassword: {
+      label: 'New Password:',
+      placeholder: 'New Password'
+    },
+    confirmPassword: {
+      label: 'confirm Password:',
+      placeholder: 'confirm Password'
+    }
+  },
+  bookmark: {
+    title: 'Bookmark',
+    checkListings: 'Check Listings',
+    empty: 'There are no listings in your bookmark'
+  },
+  contactUsPage: {
+    title: 'Contact us',
+    fromIdea: 'From idea to popup',
+    coworker: 'Coworker',
+    weRespond: 'We always have an email or call from you and we respond as soon as possible.',
+    fillForm: 'Fill in the form below and send in Already today or give one of us a signal. We have an unforgettable popup to plan together.',
+    officeOpen: 'Office opening hours:',
+    time: 'Monday - Friday 09:00 - 17:00',
+    specificEmployee: 'Do you want to contact a specific employee? Scroll on and you will find everyone\'s contact information.'
+  },
+  interestReporting: {
+    title: 'Interest Reporting:',
+    places: 'Places:',
+    all: 'Hela',
+    propertyType: 'Property type:',
+    price: 'Price:',
+    year: 'Year'
+  },
+  signUp: {
+    freeRegister: 'Free Register',
+    getFreeAcc: 'Get your free account now.',
+    haveAcc: 'Already have an account ?',
+    login: 'login'
+  },
   mainFooter: {
     aboutUS: {
       label: 'About us',
@@ -198,6 +263,7 @@ export default {
       priceList: ['prioteradpris', 'prisperdag', 'prisperhelg', 'prisperlanghelg', 'prispermanad', 'prispervecka']
     },
     form: {
+      sendUs: 'Send us a booking request:',
       from: 'Fr.om:',
       empty: 'Empty:',
       details: 'What do you want to do in the room?',
@@ -445,11 +511,15 @@ export default {
     }
   },
   centrum: {
+    allCenterums: 'All centers:',
     textarea: 'Center textarea',
     address: 'Address',
     location: 'Location',
     longitude: 'Longitude',
-    latitude: 'Latitude'
+    latitude: 'Latitude',
+    title: 'title',
+    website: 'website',
+    centerGallery: 'center gallery'
   },
   loginModal: {
     title: 'Login',

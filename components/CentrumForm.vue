@@ -4,8 +4,8 @@
 
     <b-container class="mt-5">
       <!-- Start title -->
-      <h2 v-if="!editCentrum" v-text="$t('adminSidebar.center.add')" />
-      <h2 v-else v-text="$t('adminSidebar.center.edit')" />
+      <h2 v-if="!editCentrum" v-text="$t('adminSidebar.center.add') + ':'" />
+      <h2 v-else v-text="$t('adminSidebar.center.edit') + ':'" />
       <b-form id="add-centrum">
         <b-card :title="$t('addListing.inputs.title.label')">
           <b-card-body>
@@ -90,7 +90,7 @@
             </client-only>
           </b-card-body>
           <template v-slot:footer>
-            <em>Max File size: 64MB</em>
+            <em>{{ $t('maxFileSize') }}</em>
           </template>
         </b-card>
         <!-- centrumgalleri -->
@@ -269,7 +269,7 @@
             style="display: inherit"
             variant="warning"
             @click="editCentrum"
-            v-text="'Edit centrum'"
+            v-text="$t('adminSidebar.center.edit')"
           />
           <b-btn
             v-else
@@ -280,7 +280,7 @@
             variant="primary"
             :disabled="busy"
             @click="post"
-            v-text="'Add centrum'"
+            v-text="$t('adminSidebar.center.add')"
           />
         </b-overlay>
       </b-form>

@@ -1,12 +1,12 @@
 <template>
   <div class="content">
     <b-container>
-      <h2>My places: </h2>
+      <h2>{{ $t('myPlaces.noListings') }}</h2>
 
       <!-- start if Listing -->
       <b-row>
         <b-col v-if="!items || items.length === 0">
-          <p>There are no listings for this user</p>
+          <p>{{ $t('userListings.noListings') }}</p>
         </b-col>
         <!-- Start Listing -->
         <b-col

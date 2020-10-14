@@ -2,23 +2,23 @@
   <div class="wrapper">
     <section class="vh-100 d-flex justify-content-center align-items-center banner center-image position-relative">
       <div class="banner-overlay" />
-      <h1 class="text-white banner-text" v-text="'Kontakta oss'" />
+      <h1 class="text-white banner-text" v-text="$t('contactUsPage.title')" />
     </section>
 
     <b-container>
       <section class="text-secondary py-5" aria-label="popup idea">
-        <h2 class="header font-10 font-md-18 text-dark font-weight-bolder" v-text="'Från idé till popup'" />
-        <p>Vi finns alltid ett mail eller samtal ifrån dig och vi svarar så fort som möjligt. </p>
-        <p>Fyll i formuläret nedan och skicka in redan idag eller slå någon utav oss en signal. Vi har en oförglömlig popup att planera tillsammans. </p>
-        <b>Kontorets öppettider:</b>
-        <p>Måndag – fredag 09:00 – 17:00</p>
-        <p>Vill du kontakta någon specifik medarbetare? Scrolla vidare så finner du allas kontaktuppgifter.</p>
+        <h2 class="header font-10 font-md-18 text-dark font-weight-bolder" v-text="$t('contactUsPage.fromIdea')" />
+        <p>{{ $t('contactUsPage.weRespond') }}</p>
+        <p>{{ $t('contactUsPage.fillForm') }}</p>
+        <b>{{ $t('contactUsPage.officeOpen') }}</b>
+        <p>{{ $t('contactUsPage.time') }}</p>
+        <p>{{ $t('contactUsPage.specificEmployee') }}</p>
       </section>
     </b-container>
 
     <div class="bg-dark py-3">
       <b-container>
-        <h2 class="font-10 font-md-18 text-white font-weight-bolder" v-text="'Medarbetare'" />
+        <h2 class="font-10 font-md-18 text-white font-weight-bolder" v-text="$t('contactUsPage.coworker')" />
       </b-container>
     </div>
 

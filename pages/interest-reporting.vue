@@ -1,11 +1,11 @@
 <template>
   <div class="wrapper-page my-5">
     <b-container>
-      <h3>Interest Reporting:</h3>
+      <h3>{{ $t('interestReporting.title') }}</h3>
       <b-row class="mt-5">
         <!-- Start countries -->
         <b-col cols="12">
-          <p>Plats:</p>
+          <p>{{ $t('interestReporting.places') }}</p>
           <b-btn v-for="(country, key) in filters.plats.tabs" :key="key" variant="primary" class="mb-2 mr-2" @click="filters.plats.currentCountry = key">
             {{ key }}
           </b-btn>
@@ -34,7 +34,7 @@
                         size="md"
                         @change="toggleAll(index)"
                       >
-                        <b class="font-2">Hela {{ tab.name }}</b>
+                        <b class="font-2">{{ $t('interestReporting.all') }} {{ tab.name }}</b>
                       </b-form-checkbox>
                     </template>
                     <b-form-checkbox-group
@@ -58,7 +58,7 @@
 
         <!-- Start property type -->
         <b-col cols="12" class="my-5">
-          <p>Property type:</p>
+          <p>{{ $t('interestReporting.propertyType') }}</p>
           <b-button-group v-if="tags.length > 0" vertical class="d-flex flex-wrap align-items-center justify-content-between flex-row w-100">
             <b-row>
               <b-col v-for="(icon, index) in filters.icons" :key="icon.text" cols="6" md="3">
@@ -82,7 +82,7 @@
         <!-- Start Price -->
         <b-col cols="12" md="6">
           <div>
-            <p>Price:</p>
+            <p>{{ $t('interestReporting.propertyType') }}</p>
             <vue-slider key="price-slider" v-model="price" :min="filters.price.min" :max="filters.price.max" />
 
             <small>{{ formatPrices(price[0]) || 0 }} Kr — {{ formatPrices(price[1]) || 0 }} Kr</small>
@@ -93,7 +93,7 @@
         <!-- Start YTA -->
         <b-col cols="12" md="6">
           <div>
-            <p>Yta:</p>
+            <p>{{ $t('interestReporting.year') }}</p>
             <vue-slider key="yta-slider" v-model="yta" :min="filters.yta.min" :max="filters.yta.max" />
             <small>{{ formatPrices(yta[0]) || 0 }} m<sup>3</sup>— {{ formatPrices(yta[1]) || 0 }} m<sup>3</sup></small>
           </div>
@@ -101,7 +101,7 @@
         <!-- End YTA -->
 
         <b-btn variant="primary" class="mt-5">
-          Submit
+          {{ $t('actions.submit') }}
         </b-btn>
       </b-row>
     </b-container>

@@ -10,10 +10,10 @@
 
         <div class="p-3">
           <h4 class="text-muted font-18 m-b-5 text-center">
-            Free Register
+            {{ $t('signUp.freeRegister') }}
           </h4>
           <p class="text-muted text-center">
-            Get your free account now.
+            {{ $t('signUp.getFreeAcc') }}
           </p>
 
           <b-form class="form-horizontal m-t-30">
@@ -62,21 +62,24 @@
               />
             </b-overlay>
 
-            <div class="form-group m-t-10 mb-0 row">
+            <!-- <div class="form-group m-t-10 mb-0 row">
               <div class="col-12 m-t-20">
                 <p class=" text-muted mb-0">
-                  By registering you agree to the Lexa <a href="#" class="text-primary">Terms of Use</a>
+                  By registering you agree to the popI <a href="#" class="text-primary">Terms of Use</a>
                 </p>
               </div>
-            </div>
+            </div> -->
           </b-form>
         </div>
       </div>
     </div>
 
     <div class="m-t-40 text-center">
-      <p>Already have an account ? <a href="pages-login" class=" text-primary"> Login </a> </p>
-      <p>© 2018 Lexa. Crafted with <i class="mdi mdi-heart text-danger" /> by Themesbrand</p>
+      <p>
+        {{ $t('signUp.haveAcc') }} <nuxt-link :to="`${$t('link')}login`" class=" text-primary">
+          {{ $t('signUp.login') }}
+        </nuxt-link>
+      </p>
     </div>
   </div>
 </template>

@@ -103,7 +103,7 @@
               </our-uploader>
             </b-card-body>
             <template v-slot:footer>
-              <em>Max File size: 64MB</em>
+              <em>{{ $t('maxFileSize') }}</em>
             </template>
           </b-card>
 
@@ -138,7 +138,7 @@
               </our-uploader>
             </b-card-body>
             <template v-slot:footer>
-              <em>Max File size: 64MB</em>
+              <em>{{ $t('maxFileSize') }}</em>
             </template>
           </b-card>
 
@@ -261,7 +261,7 @@
               </client-only>
             </b-card-body>
             <template v-slot:footer>
-              <em>Max File size: 64MB</em>
+              <em>{{ $t('maxFileSize') }}</em>
             </template>
           </b-card>
 

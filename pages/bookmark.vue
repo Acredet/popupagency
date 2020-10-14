@@ -1,12 +1,12 @@
 <template>
   <div class="wrapper-page my-5">
     <b-container style="overflow-x: hidden" class="mt-3">
-      <h2>BookMark:</h2>
+      <h2>{{ $t('bookmark.title') }}:</h2>
       <!-- start if Listing -->
       <div v-if="!$auth.user || cards.length === 0">
-        <p>There are no listings in your bookmark</p>
+        <p>{{ $t('bookmark.empty') }}</p>
         <b-button variant="outline-primary" :to="`${$t('link')}lediga-lokaler`">
-          Check Listings
+          {{ $t('bookmark.checkListings') }}
         </b-button>
       </div>
       <b-row v-else>
@@ -41,7 +41,6 @@ export default {
       await this.$axios.get(`/places/${card}`)
         .then((res) => {
           this.cards.push(res.data.place)
-          console.log(res.data)
         })
         .catch(err => console.log(err))
     }

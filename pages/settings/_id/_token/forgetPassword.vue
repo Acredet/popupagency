@@ -6,7 +6,7 @@
     <b-row>
       <b-col cols="12">
         <h2 class="d-inline-block">
-          Forgot Password:
+          {{ $t('forgetPassword.title') }}
         </h2>
       </b-col>
 
@@ -16,7 +16,7 @@
             <b-form ref="form" v-model="valid">
               <div class="new-password">
                 <b-input-group class="mb-5">
-                  <b-input-group-text>New Password</b-input-group-text>
+                  <b-input-group-text>{{ $t('forgetPassword.newPassword.label') }}</b-input-group-text>
                   <template v-slot:append>
                     <b-input-group-text @click="showNewPassword = !showNewPassword">
                       <i v-if="showNewPassword" class="fas fa-eye" />
@@ -26,14 +26,14 @@
                   <b-form-input
                     v-model="newPassword"
                     :state="newPasswordState"
-                    placeholder="New Password"
+                    :placeholder="$t('forgetPassword.newPassword.placeholder')"
                     :type="showNewPassword ? 'text' : 'password'"
                   />
                   <b-form-invalid-feedback tooltip :state="newPasswordState">
-                    minimum 8 chars
+                    {{ $t('valdations.min8') }}
                   </b-form-invalid-feedback>
                   <b-form-valid-feedback tooltip :state="newPasswordState">
-                    Looks Good.
+                    {{ $t('valdations.good') }}
                   </b-form-valid-feedback>
                 </b-input-group>
 
@@ -46,7 +46,7 @@
               </div>
 
               <b-input-group>
-                <b-input-group-text>confirm Password</b-input-group-text>
+                <b-input-group-text>{{ $t('forgetPassword.confirmPassword.label') }}</b-input-group-text>
 
                 <template v-slot:append>
                   <b-input-group-text @click="showConfirmPassword = !showConfirmPassword">
@@ -57,14 +57,14 @@
                 <b-form-input
                   v-model="confirmPassword"
                   :state="confirmPasswordState"
-                  placeholder="Confirm Password"
+                  :placeholder="$t('forgetPassword.confirmPassword.placeholder')"
                   :type="showConfirmPassword ? 'text' : 'password'"
                 />
                 <b-form-invalid-feedback tooltip :state="confirmPasswordState">
-                  Should match the password
+                  {{ $t('valdations.shouldMatch') }}
                 </b-form-invalid-feedback>
                 <b-form-valid-feedback tooltip :state="confirmPasswordState">
-                  Matched.
+                  {{ $t('valdations.matched') }}
                 </b-form-valid-feedback>
               </b-input-group>
 

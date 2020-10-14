@@ -1,6 +1,7 @@
 
 export default {
   welcome: 'HEllo',
+  maxFileSize: 'Max filstorlek: 64 MB',
   link: '/',
   notProvided: 'Ej tillhandahållen.',
   contactUs: 'Kontakta oss',
@@ -9,6 +10,12 @@ export default {
   langheig: 'helg',
   veckopris: 'lång helg',
   manad: 'mån',
+  valdations: {
+    min8: 'minst 8 tecken',
+    good: ' Ser bra ut.',
+    shouldMatch: 'Bör matcha lösenordet.',
+    matched: 'Matchade.'
+  },
   actions: {
     actions: 'Åtgärder',
     edit: 'Redigera',
@@ -116,6 +123,64 @@ export default {
       myPlaces: 'Mina platser'
     }
   },
+  userListings: {
+    myPlaces: 'Mina platser:',
+    noListings: 'Det finns inga annonser för den här användaren.'
+  },
+  resetPassword: {
+    thereIsNoUser: 'Den här användaren avslutar inte!',
+    weSentThePassword: 'Vi skickade en länk för att återställa ditt lösenord',
+    resetPassword: 'Återställ lösenord',
+    enterEmail: 'Ange din e-post och instruktioner skickas till dig!',
+    enterOldEmail: 'Ange din e-postadress som du angav när du skapade ditt konto. Därefter skickas en förlorad insättning till den angivna e-postadressen. ',
+    email: {
+      title: 'E-post:',
+      placeHolder: 'Ange din e-postadress'
+    },
+    reset: 'Reset',
+    rememberIt: 'Kom ihåg det?',
+    signInHere: 'Logga in här'
+  },
+  forgetPassword: {
+    title: 'Glömt lösenord:',
+    newPassword: {
+      label: 'Nytt lösenord:',
+      placeholder: 'Nytt lösenord'
+    },
+    confirmPassword: {
+      label: 'bekräfta lösenord:',
+      placeholder: 'bekräfta lösenord'
+    }
+  },
+  bookmark: {
+    title: 'Bokmärke',
+    checkListings: 'Kontrollera listor',
+    empty: 'Det finns inga listor i ditt bokmärke'
+  },
+  contactUsPage: {
+    title: 'Kontakta oss',
+    fromIdea: 'Från idé till popup',
+    coworker: 'Medarbetare',
+    weRespond: 'Vi finns alltid ett mail eller samtal ifrån dig och vi svarar så fort som möjligt.',
+    fillForm: 'Fyll i formuläret nedan och skicka i Redan idag eller slå någon utav oss en signal. Vi har en oförglömlig popup att planera tillsammans.',
+    officeOpen: 'Kontorets öppettider:',
+    time: 'Måndag – fredag 09:00 – 17:00',
+    specificEmployee: 'Vill du kontakta någon specifik medarbetare? Scrolla vidare så finner du allas kontaktuppgifter.'
+  },
+  interestReporting: {
+    title: 'Intresserapportering:',
+    places: 'Platser:',
+    all: 'Hela',
+    propertyType: 'Property type:',
+    price: 'Pris:',
+    year: 'År'
+  },
+  signUp: {
+    freeRegister: 'Free Register',
+    getFreeAcc: 'Skaffa ditt gratis konto nu.',
+    haveAcc: 'Har du redan ett konto?',
+    login: 'login'
+  },
   mainFooter: {
     aboutUS: {
       label: 'Om oss',
@@ -198,6 +263,7 @@ export default {
       priceList: ['prioteradpris', 'prisperdag', 'prisperhelg', 'prisperlanghelg', 'prispermanad', 'prispervecka']
     },
     form: {
+      sendUs: 'Skicka en bokningsförfrågan till oss:',
       from: 'Fr.om',
       empty: 'Empty',
       details: 'What do you want to do in the room?',
@@ -444,11 +510,15 @@ export default {
     }
   },
   centrum: {
+    allCenterums: 'alla centra:',
     textarea: 'centrum textarea',
     address: 'Adress',
     location: 'Plats',
     longitude: 'Longitude',
-    latitude: 'latitud'
+    latitude: 'latitud',
+    title: 'title',
+    website: 'hemsida',
+    centerGallery: 'centrum galleri'
   },
   loginModal: {
     title: 'Inloggning',

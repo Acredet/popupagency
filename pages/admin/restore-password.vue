@@ -1,12 +1,12 @@
 <template>
   <div class="wrapper-page">
     <b-alert v-model="alert" variant="danger" dismissible>
-      This user does not exit!
+      {{ $t('resetPassword.thereIsNoUser') }}
     </b-alert>
 
     <b-modal id="email-sent" title="Check your inbox" @ok="weOk">
       <p class="my-4">
-        We sent you a link to reset your paswword
+        {{ $t('resetPassword.weSentThePassword') }}
       </p>
     </b-modal>
 
@@ -20,23 +20,23 @@
 
         <div class="p-3">
           <h4 class="text-muted font-18 mb-3 text-center">
-            Reset Password
+            {{ $t('resetPassword.resetPassword') }}
           </h4>
           <div class="alert alert-info" role="alert">
-            Enter your Email and instructions will be sent to you!
+            {{ $t('resetPassword.enterEmail') }}
           </div>
 
           <b-form class="form-horizontal m-t-30" action="index.html">
             <div class="form-group">
-              <p>Enter your email address you entered when creating your account. Then, a loser deposit is sent to the specified e-mail address.</p>
-              <label for="useremail">Email</label>
-              <b-form-input v-model="userEmail" placeholder="Enter your Email" />
+              <p>{{ $t('resetPassword.enterOldEmail') }}</p>
+              <label for="useremail">{{ $t('resetPassword.email.title') }}</label>
+              <b-form-input v-model="userEmail" :placeholder="$t('resetPassword.email.placeHolder')" />
             </div>
 
             <div class="form-group row m-t-20">
               <div class="col-12 text-right">
                 <b-btn class="btn btn-primary w-md waves-effect waves-light" @click="getuserEmail">
-                  Reset
+                  {{ $t('resetPassword.reset') }}
                 </b-btn>
               </div>
             </div>
@@ -47,8 +47,8 @@
 
     <div class="m-t-40 text-center">
       <p>
-        Remember It ? <nuxt-link to="/login" class="text-primary">
-          Sign In Here
+        {{ $t('resetPassword.rememberIt') }} <nuxt-link to="/login" class="text-primary">
+          {{ $t('signInHere') }}
         </nuxt-link>
       </p>
     </div>
