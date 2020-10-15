@@ -40,23 +40,21 @@
       toggleable="lg"
       fixed="top"
       style="transition: all 0.5s ease"
-      :type="variant ? 'dark' : 'dark'"
-      :variant="variant ? 'transparent' : 'dark'"
+      :type="variant ? 'dark' : 'light'"
+      :variant="variant ? 'transparent' : 'light'"
     >
-      <b-row class="w-100 d-lg-none">
-        <b-col cols="6" class="d-flex align-center">
-          <b-navbar-toggle target="sidebar-1">
-            <!-- Start sidebar -->
-            <BIconList class="border-0 " />
-            <!-- End sidebar -->
-          </b-navbar-toggle>
-        </b-col>
-        <b-col cols="6">
-          <b-navbar-brand to="/">
-            <b-img :src="variant ? require('@/assets/img/logo.png') : require('@/assets/img/logo-white.png')" class="logo" />
-          </b-navbar-brand>
-        </b-col>
-      </b-row>
+      <div class="w-100 d-lg-none d-flex justify-content-between">
+        <b-navbar-toggle target="sidebar-1">
+          <!-- Start sidebar -->
+          <BIconList :variant="variant ? 'light' : 'dark'" class="border-0" scale="0.8" />
+          <!-- End sidebar -->
+        </b-navbar-toggle>
+
+        <b-navbar-brand to="/">
+          <b-img :src="variant ? require('@/assets/img/logo-white.png') : require('@/assets/img/logo.png')" class="logo" />
+        </b-navbar-brand>
+        <div />
+      </div>
 
       <b-collapse id="navbar-toggle-collapse" is-nav>
         <b-navbar-nav class="w-100 d-sm-flex justify-content-sm-between align-items-sm-center">
@@ -114,7 +112,7 @@
           </b-nav-item-dropdown>
 
           <b-nav-item to="/">
-            <b-img :src="variant ? require('@/assets/img/logo.png') : require('@/assets/img/logo-white.png')" class="logo" />
+            <b-img :src="variant ? require('@/assets/img/logo-white.png') : require('@/assets/img/logo.png')" class="logo" />
           </b-nav-item>
 
           <b-nav-item-dropdown
@@ -286,7 +284,7 @@ export default {
 
 <style scoped>
 .logo {
-  max-height: 50px;
+  max-height: 35px;
 }
 
 .navbar-toggler {
