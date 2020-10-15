@@ -96,7 +96,6 @@ export default {
     }
   },
   created () {
-    console.log(this.$router.history)
     if (this.$auth.loggedIn) {
       this.$router.push(`${this.$t('link')}admin`)
     }
