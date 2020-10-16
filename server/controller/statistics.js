@@ -21,5 +21,8 @@ exports.getStatics = async (req, res) => {
     spaceOwner: await User.countDocuments({ role: 'spaceOwner' })
   }
 
-  res.status(200).json({ allCentrum, allPlace, users, allCategory, allRegion, allTag })
+  const leatestCentrums = await Centrum.find({}).limit(10).sort({ createdAt: -1 })
+  const leatestListings = await Place.find({}).limit(10).sort({ createdAt: -1 })
+
+  res.status(200).json({ allCentrum, allPlace, users, allCategory, allRegion, allTag, leatestCentrums, leatestListings })
 }

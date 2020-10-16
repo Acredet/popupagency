@@ -31,7 +31,7 @@
         </div>
       </div>
 
-      <div v-for="(row, index) in rows" :key="`row-${index}`">
+      <section v-for="(row, index) in rows" :key="`row-${index}`">
         <h4 class="mt-0 header-title font-wight-bold">
           {{ row.title }}
         </h4>
@@ -55,8 +55,45 @@
             </div>
           </b-col>
         </b-row>
-      </div>
+      </section>
       <!-- end row -->
+
+      <section>
+        <b-row>
+          <b-col v-for="(table, index) in tableRows" :key="`table-${table.title}-${index}`" md="6">
+            <div class="card m-b-20">
+              <div class="card-body">
+                <h4 class="mt-0 m-b-30 header-title">
+                  {{ table.title }}
+                </h4>
+                <div class="table-responsive">
+                  <table class="table table-vertical mb-1">
+                    <tbody>
+                      <tr
+                        v-for="row in table.rows"
+                        :key="`table-${table.title}-${row._id}`"
+                        :style="{ cursor: row.url ? 'pointer' : 'not-allowed' }"
+                        @click="() => { if (row.url) { $router.push(`${$t('link')}${row.url}`) } }"
+                      >
+                        <td>{{ row.title }}</td>
+                        <td>
+                          <b-img v-if="row.img" width="100" :src="row.img" />
+                          <p v-else class="text-center">
+                            -
+                          </p>
+                        </td>
+                        <td>
+                          {{ row.stad }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>  <!-- End table -->
+              </div>  <!-- End Card Body -->
+            </div> <!-- End Card -->
+          </b-col>
+        </b-row>
+      </section>
     </div> <!-- container-fluid -->
   </div> <!-- content -->
 </template>
@@ -79,12 +116,37 @@ export default {
   mixins: [AdminPanelDependancies],
   data () {
     return {
+      tableRows: [],
       rows: []
     }
   },
   async created () {
     await this.$axios.$get('/statistics')
       .then((res) => {
+        this.tableRows = [
+          {
+            title: 'Leatest Listings',
+            rows: res.leatestListings.map((x) => {
+              return {
+                url: `lokal/${x.title.en}`,
+                title: x.title[this.$i18n.locale],
+                stad: x.title[this.$i18n.locale],
+                img: x.cover[0] ? `https://popup.dk.se/_nuxt/img/${x.cover[0]}` : undefined
+              }
+            })
+          },
+          {
+            title: 'Leatest Centrums',
+            rows: res.leatestCentrums.map((x) => {
+              return {
+                // url: `lokal/${x.title.en}`,
+                title: x.title[this.$i18n.locale],
+                stad: x.title[this.$i18n.locale],
+                img: x.centrumgalleri[0] ? `https://popup.dk.se/_nuxt/img/${x.centrumgalleri[0]}` : undefined
+              }
+            })
+          }
+        ]
         this.rows = [
           {
             title: 'Overview:',
