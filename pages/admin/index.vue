@@ -71,7 +71,7 @@
                     <tbody>
                       <tr
                         v-for="row in table.rows"
-                        :key="`table-${table.title}-${row._id}`"
+                        :key="`col-${table.title}-${row.title}`"
                         :style="{ cursor: row.url ? 'pointer' : 'not-allowed' }"
                         @click="() => { if (row.url) { $router.push(`${$t('link')}${row.url}`) } }"
                       >

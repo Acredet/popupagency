@@ -180,3 +180,9 @@ exports.getPlacesAddedByUser = async (req, res) => {
     .then(places => res.status(200).json(places))
     .catch(err => res.status(400).json(err))
 }
+
+exports.addWatch = async (req, res) => {
+  await Place.updateOne({ _id: req.params.id }, { $inc: { views: 1 } })
+    .then(place => res.json({ place }))
+    .catch(err => res.status(404).json(err.message))
+}
