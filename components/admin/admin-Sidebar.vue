@@ -41,13 +41,21 @@ export default {
         {
           accessableFor: ['manager', 'admin'],
           text: this.$t('adminSidebar.listing.text'),
+          icon: 'far fa-home',
+          subMenu: [
+            { url: this.$t('link') + 'admin', text: 'Admin home' }
+          ]
+        },
+        {
+          accessableFor: ['admin'],
+          text: 'Home',
           icon: 'far fa-map',
           subMenu: [
-            { url: '/listings/add', text: this.$t('adminSidebar.listing.addNewListing') },
-            { url: '/listings/', text: this.$t('adminSidebar.listing.allListings') },
-            { url: '/listings/region', text: this.$t('adminSidebar.listing.region') },
-            { url: '/listings/tags', text: this.$t('adminSidebar.listing.tags') },
-            { url: '/listings/categories', text: this.$t('adminSidebar.listing.categories') }
+            { url: this.$t('link') + 'listings/add', text: this.$t('adminSidebar.listing.addNewListing') },
+            { url: this.$t('link') + 'listings/', text: this.$t('adminSidebar.listing.allListings') },
+            { url: this.$t('link') + 'listings/region', text: this.$t('adminSidebar.listing.region') },
+            { url: this.$t('link') + 'listings/tags', text: this.$t('adminSidebar.listing.tags') },
+            { url: this.$t('link') + 'listings/categories', text: this.$t('adminSidebar.listing.categories') }
           ]
         },
         {
@@ -55,8 +63,8 @@ export default {
           text: 'Centrums',
           icon: 'far fa-map',
           subMenu: [
-            { url: '/centrum/add', text: this.$t('adminSidebar.center.add') },
-            { url: '/centrum/', text: this.$t('adminSidebar.center.all') }
+            { url: this.$t('link') + 'centrum/add', text: this.$t('adminSidebar.center.add') },
+            { url: this.$t('link') + 'centrum/', text: this.$t('adminSidebar.center.all') }
           ]
         },
         {
@@ -64,13 +72,13 @@ export default {
           text: this.$t('adminSidebar.users.text'),
           icon: 'far fa-user',
           subMenu: [
-            { url: '/users', text: this.$t('adminSidebar.users.allUsers') },
-            { url: '/users/add', text: this.$t('adminSidebar.users.addUser') },
-            { url: '/users?role=admin', text: this.$t('adminSidebar.users.role.admins') },
-            { url: '/users?role=manager', text: this.$t('adminSidebar.users.role.manger') },
-            { url: '/users?role=listingOwner', text: this.$t('adminSidebar.users.role.owener') },
-            { url: '/users?role=spaceOwner', text: this.$t('adminSidebar.users.role.space') },
-            { url: '/users?role=searcher', text: this.$t('adminSidebar.users.role.searcher') }
+            { url: this.$t('link') + 'users', text: this.$t('adminSidebar.users.allUsers') },
+            { url: this.$t('link') + 'users/add', text: this.$t('adminSidebar.users.addUser') },
+            { url: this.$t('link') + 'users?role=admin', text: this.$t('adminSidebar.users.role.admins') },
+            { url: this.$t('link') + 'users?role=manager', text: this.$t('adminSidebar.users.role.manger') },
+            { url: this.$t('link') + 'users?role=listingOwner', text: this.$t('adminSidebar.users.role.owener') },
+            { url: this.$t('link') + 'users?role=spaceOwner', text: this.$t('adminSidebar.users.role.space') },
+            { url: this.$t('link') + 'users?role=searcher', text: this.$t('adminSidebar.users.role.searcher') }
           ]
         },
         {
@@ -78,7 +86,7 @@ export default {
           text: this.$t('adminSidebar.siteSettings.text'),
           icon: 'fas fa-cog',
           subMenu: [
-            { url: '/settings/', text: this.$t('adminSidebar.siteSettings.text') }
+            { url: this.$t('link') + 'settings/', text: this.$t('adminSidebar.siteSettings.text') }
           ]
         },
         {

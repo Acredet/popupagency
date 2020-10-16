@@ -23,6 +23,7 @@ exports.getStatics = async (req, res) => {
 
   const leatestCentrums = await Centrum.find({}).limit(10).sort({ createdAt: -1 })
   const leatestListings = await Place.find({}).limit(10).sort({ createdAt: -1 })
+  const mostViewsListings = await Place.find({}).sort({ views: -1 }).limit(10)
 
-  res.status(200).json({ allCentrum, allPlace, users, allCategory, allRegion, allTag, leatestCentrums, leatestListings })
+  res.status(200).json({ allCentrum, allPlace, users, allCategory, allRegion, allTag, leatestCentrums, leatestListings, mostViewsListings })
 }

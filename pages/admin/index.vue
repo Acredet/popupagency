@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <loading :state="loadingState" />
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-12">
@@ -67,7 +68,17 @@
                   {{ table.title }}
                 </h4>
                 <div class="table-responsive">
-                  <table class="table table-vertical mb-1">
+                  <table class="table mb-1">
+                    <thead>
+                      <tr>
+                        <th>Title</th>
+                        <th>Cover</th>
+                        <th>Stad</th>
+                        <th v-if="table.views">
+                          Views
+                        </th>
+                      </tr>
+                    </thead>
                     <tbody>
                       <tr
                         v-for="row in table.rows"
@@ -78,13 +89,10 @@
                         <td>{{ row.title }}</td>
                         <td>
                           <b-img v-if="row.img" width="100" :src="row.img" />
-                          <p v-else class="text-center">
-                            -
-                          </p>
+                          <p v-else class="text-center" v-text="'-'" />
                         </td>
-                        <td>
-                          {{ row.stad }}
-                        </td>
+                        <td v-text="row.stad" />
+                        <td v-if="row.views || row.views === 0" v-text="row.views" />
                       </tr>
                     </tbody>
                   </table>
@@ -116,6 +124,7 @@ export default {
   mixins: [AdminPanelDependancies],
   data () {
     return {
+      loadingState: true,
       tableRows: [],
       rows: []
     }
@@ -126,17 +135,33 @@ export default {
         this.tableRows = [
           {
             title: 'Leatest Listings',
+            views: true,
             rows: res.leatestListings.map((x) => {
               return {
                 url: `lokal/${x.title.en}`,
                 title: x.title[this.$i18n.locale],
                 stad: x.title[this.$i18n.locale],
-                img: x.cover[0] ? `https://popup.dk.se/_nuxt/img/${x.cover[0]}` : undefined
+                img: x.cover[0] ? `https://popup.dk.se/_nuxt/img/${x.cover[0]}` : undefined,
+                views: x.views
+              }
+            })
+          },
+          {
+            title: 'Most Viewed Listings',
+            views: true,
+            rows: res.mostViewsListings.map((x) => {
+              return {
+                url: `lokal/${x.title.en}`,
+                title: x.title[this.$i18n.locale],
+                stad: x.title[this.$i18n.locale],
+                img: x.cover[0] ? `https://popup.dk.se/_nuxt/img/${x.cover[0]}` : undefined,
+                views: x.views
               }
             })
           },
           {
             title: 'Leatest Centrums',
+            views: false,
             rows: res.leatestCentrums.map((x) => {
               return {
                 // url: `lokal/${x.title.en}`,
@@ -173,6 +198,8 @@ export default {
             ]
           }
         ]
+
+        this.loadingState = false
       })
       .catch(err => console.log(err))
   },
