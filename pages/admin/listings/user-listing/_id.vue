@@ -55,7 +55,7 @@ export default {
     this.getListings()
   },
   created () {
-    if (!this.$auth.loggedIn || !['manager', 'admin', 'owner'].includes(this.$auth.user.role)) {
+    if (!this.$auth.loggedIn || !['manager', 'admin', 'listingOwner', 'spaceOwner'].includes(this.$auth.user.role)) {
       this.$router.push('/error')
     }
   },

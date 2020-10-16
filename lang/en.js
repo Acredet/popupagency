@@ -116,6 +116,7 @@ export default {
         admins: 'Admins',
         manger: 'Listing Managers',
         owener: 'Listing Owners',
+        space: 'Space Owners',
         searcher: 'Searchers'
       }
     },

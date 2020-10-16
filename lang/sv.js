@@ -116,6 +116,7 @@ export default {
         admins: 'Administratörer',
         manger: 'Listning chefer',
         owener: 'Noteringsägare',
+        space: 'Utrymmeägare',
         searcher: 'Sökare'
       }
     },

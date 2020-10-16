@@ -68,7 +68,8 @@ export default {
             { url: '/users/add', text: this.$t('adminSidebar.users.addUser') },
             { url: '/users?role=admin', text: this.$t('adminSidebar.users.role.admins') },
             { url: '/users?role=manager', text: this.$t('adminSidebar.users.role.manger') },
-            { url: '/users?role=owner', text: this.$t('adminSidebar.users.role.owener') },
+            { url: '/users?role=listingOwner', text: this.$t('adminSidebar.users.role.owener') },
+            { url: '/users?role=spaceOwner', text: this.$t('adminSidebar.users.role.space') },
             { url: '/users?role=searcher', text: this.$t('adminSidebar.users.role.searcher') }
           ]
         },
@@ -81,7 +82,7 @@ export default {
           ]
         },
         {
-          accessableFor: ['owner', 'manager', 'admin'],
+          accessableFor: ['listingOwner', 'spaceOwner', 'manager', 'admin'],
           text: 'User Listings',
           icon: 'far fa-map',
           subMenu: [

@@ -36,7 +36,7 @@
           {{ row.title }}
         </h4>
         <b-row>
-          <b-col v-for="(card, i) in row.cards" :key="`${row.title}-card-${i}`" class="col-xl-3 col-md-6">
+          <b-col v-for="(card, i) in row.cards" :key="`${row.title}-card-${i}`" xl="3" md="6" cols="12">
             <div class="card mini-stat bg-primary">
               <div class="card-body mini-stat-img">
                 <div class="mini-stat-icon">
@@ -90,7 +90,7 @@ export default {
             title: 'Overview:',
             cards: [
               { text: 'All Listings', num: res.allPlace, brefix: 'Listing.', icon: 'map' },
-              { text: 'All Users', num: res.users.admin + res.users.manager + res.users.owner + res.users.searcher, brefix: 'User.', icon: 'people-fill' }
+              { text: 'All Users', num: res.users.admin + res.users.manager + res.users.listingOwner + res.users.spaceOwner + res.users.searcher, brefix: 'User.', icon: 'people-fill' }
             ]
           },
           {
@@ -104,9 +104,10 @@ export default {
             title: 'Users:',
             cards: [
               { text: 'Admins', num: res.users.admin, brefix: 'User.', icon: 'person-fill' },
-              { text: 'Owners', num: res.users.manager, brefix: 'User.', icon: 'person-fill' },
-              { text: 'Searchers', num: res.users.owner, brefix: 'User.', icon: 'person-fill' },
-              { text: 'Manager', num: res.users.searcher, brefix: 'User.', icon: 'person-fill' }
+              { text: 'Listing Owner', num: res.users.listingOwner, brefix: 'User.', icon: 'person-fill' },
+              { text: 'Space Owner', num: res.users.spaceOwner, brefix: 'User.', icon: 'person-fill' },
+              { text: 'Searchers', num: res.users.searcher, brefix: 'User.', icon: 'person-fill' },
+              { text: 'Manager', num: res.users.manager, brefix: 'User.', icon: 'person-fill' }
             ]
           }
         ]

@@ -17,7 +17,8 @@ exports.getStatics = async (req, res) => {
     admin: await User.countDocuments({ role: 'admin' }),
     searcher: await User.countDocuments({ role: 'searcher' }),
     manager: await User.countDocuments({ role: 'manager' }),
-    owner: await User.countDocuments({ role: 'owner' })
+    listingOwner: await User.countDocuments({ role: 'listingOwner' }),
+    spaceOwner: await User.countDocuments({ role: 'spaceOwner' })
   }
 
   res.status(200).json({ allCentrum, allPlace, users, allCategory, allRegion, allTag })

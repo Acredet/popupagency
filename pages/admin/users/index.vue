@@ -93,7 +93,8 @@ export default {
       selected: [],
       options: [
         { value: 'admin', text: 'Admin' },
-        { value: 'owner', text: 'Owner' },
+        { value: 'listingOwner', text: 'Listing Owner' },
+        { value: 'spaceOwner', text: 'Space Owner' },
         { value: 'manager', text: 'Manager' },
         { value: 'searcher', text: 'Searcher' }
       ],
