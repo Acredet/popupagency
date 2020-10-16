@@ -88,6 +88,7 @@ export default {
   },
   adminHeader: {
     login: 'Login',
+    changePassword: 'Change Password',
     profile: 'Profile',
     logout: 'Logout',
     languages: 'Languages'

@@ -120,3 +120,24 @@ exports.getUsersByRole = async (req, res) => {
     .then(users => res.status(200).json(users))
     .catch(err => res.status(400).json(err))
 }
+
+exports.changePassword = async (req, res) => {
+  const { password } = req.body
+
+  await User.findOne({ _id: req.params.id })
+
+    .then((user) => {
+      bcrypt.genSalt(10, function (err, salt) {
+        if (err) { return }
+        bcrypt.hash(password, salt, function (err, hash) {
+          if (err) { return }
+          User.findOneAndUpdate({ _id: req.params.id }, { password: hash })
+            .then(() => res.status(202).json('Password changed accepted'))
+            .catch(err => res.status(500).json(err))
+        })
+      })
+    })
+    .catch(() => {
+      res.status(404).json('Invalid user')
+    })
+}

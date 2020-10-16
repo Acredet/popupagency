@@ -35,6 +35,10 @@
                 <i class="fas fa-user" /> {{ $t('adminHeader.profile') }}
               </nuxt-link>
               <div class="dropdown-divider" />
+              <nuxt-link exact class="dropdown-item" :to="`${$t('link')}settings/change-password`">
+                <i class="fas fa-user-cog" /> {{ $t('adminHeader.changePassword') }}
+              </nuxt-link>
+              <div class="dropdown-divider" />
               <button type="button" class="dropdown-item text-danger" @click="logout">
                 <i class="fas fa-power-off text-danger" /> {{ $t('adminHeader.logout') }}
               </button>
