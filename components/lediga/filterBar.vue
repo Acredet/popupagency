@@ -35,15 +35,15 @@
             <!-- Start Tabs -->
             <b-tabs
               v-model="filters.plats.currentCity"
-              nav-wrapper-class="w-50 h-100 overflow-auto border"
+              nav-wrapper-class="w-50 border h-400"
               nav-class="d-block p-0 m-0"
               pills
               card
-              content-class="overflow-auto"
+              content-class="h-400"
               vertical
             >
               <!-- Start First tab -->
-              <b-tab v-for="(tab, index) in filters.plats.tabs[filters.plats.currentCountry]" :key="tab.name" title-item-class="tabBtn" :title="tab.text">
+              <b-tab v-for="(tab, index) in filters.plats.tabs[filters.plats.currentCountry]" :key="tab.name" class="h-400" title-item-class="tabBtn" :title="tab.text">
                 <b-card-body class="mt-0 pt-0 px-1">
                   <div class="choices">
                     <b-form-group :key="renderKey">
@@ -214,8 +214,7 @@ export default {
 <style>
 .filter-bar div.dropdown.b-dropdown.show.btn-group > ul.dropdown-menu {
   height: 400px;
-  overflow-x: hidden;
-  overflow-y: scroll;
+  overflow: hidden;
   width: 600px
 }
 
@@ -228,9 +227,10 @@ export default {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100%;
+  height: 300;
   justify-content: space-between;
 }
+
 .filter-bar div.dropdown.b-dropdown.show.btn-group > ul.dropdown-menu > li > ul button.btn {
   display: inline-block
 }
@@ -245,5 +245,10 @@ export default {
   position: absolute;
   bottom: 10px;
   right: 10px
+}
+
+.h-400 {
+  height: 300px;
+  overflow-y: scroll;
 }
 </style>
