@@ -47,7 +47,6 @@ export default {
       immediate: true,
       deep: true,
       handler (val) {
-        // console.log(newValue)
         if (
           val.search === '' &&
           val.price[0] === this.filters.price.min &&
@@ -59,20 +58,25 @@ export default {
         }
       }
     },
-    regions: {
+    AllPlaces: {
       immediate: true,
       deep: true,
-      handler (newValue) {
-        const minMaxPrice = this.getMinAndMax('price', 'prioteradpris')
+      handler (val) {
+        const minMaxPrice = this.getMinAndMax('price')
         const minMaxYta = this.getMinAndMax('yta', 'yta')
 
         this.filters.used.price = minMaxPrice
         this.filters.used.yta = minMaxYta
-
+      }
+    },
+    regions: {
+      immediate: true,
+      deep: true,
+      handler (newValue) {
         const sortedRegions = this.sortItems(this.regions, false)
 
         sortedRegions.forEach((country) => {
-          console.log(country)
+          // console.log(country)
           if (!country.parent) {
             this.filters.plats.tabs[country.name[this.lang]] = []
           }
@@ -124,14 +128,31 @@ export default {
     getMinAndMax (obj, prop) {
       let min = 0
       let max = 0
-      this.AllPlaces.forEach((place) => {
-        // Get minimum and maximum price
-        if (place[prop] < min && place[prop] < max) {
-          min = place[prop]
-        } else if (place[prop] > min && place[prop] > max) {
-          max = place[prop]
-        }
-      })
+      console.log('ob:', obj)
+      if (obj === 'price') {
+        this.AllPlaces.forEach((place) => {
+          console.log('place.title:', place.title.sv)
+          console.log('place.prioteradpris.val:', place.prioteradpris.val)
+          // Get minimum and maximum price
+          if (place.prioteradpris.val < min && place.prioteradpris.val < max) {
+            min = place.prioteradpris.val
+          } else if (place.prioteradpris.val > min && place.prioteradpris.val > max) {
+            max = place.prioteradpris.val
+          }
+        })
+      } else {
+        this.AllPlaces.forEach((place) => {
+          console.log('place.title:', place.title.sv)
+          console.log('place[prop]:', place[prop])
+          // Get minimum and maximum price
+          if (place[prop] < min && place[prop] < max) {
+            min = place[prop]
+          } else if (place[prop] > min && place[prop] > max) {
+            max = place[prop]
+          }
+        })
+      }
+
       this.filters[obj].min = min
       this.filters[obj].max = max
 
@@ -151,7 +172,7 @@ export default {
       this.loadingCards = false
     },
     sorting (sort) {
-      console.log(this.cards)
+      // console.log(this.cards)
       this.sortedBy = sort
     },
     clearFilters () {
@@ -174,7 +195,7 @@ export default {
       }
 
       this.filters.plats.tabs[this.filters.plats.currentCountry].forEach((arr) => {
-        console.log('arr: dswa', arr)
+        // console.log('arr: dswa', arr)
         arr.indeterminate = false
         arr.allSelected = false
         this.$store.dispatch('changeSidebarRenderKey')

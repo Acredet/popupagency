@@ -148,8 +148,8 @@ export const actions = {
 
         console.log('=====================START======================')
         console.log('x.stad', x.stad)
-        console.log(`x.prioteradpris(${x.prioteradpris}) >= used.price[0](${used.price[0]}) : `, x.prioteradpris >= used.price[0])
-        console.log('x.prioteradpris <= used.price[1]: ', x.prioteradpris <= used.price[1])
+        console.log(`x.prioteradpris(${x.prioteradpris.val}) >= used.price[0](${used.price[0]}) : `, x.prioteradpris.val >= used.price[0])
+        console.log('x.prioteradpris <= used.price[1]: ', x.prioteradpris.val <= used.price[1])
         console.log(`x.yta(${x.yta}) >= used.yta[0]: `, x.yta >= used.yta[0])
         console.log(' x.yta <= used.yta[1]: ', x.yta <= used.yta[1])
         console.log('thereIsChoosePlace: ', thereIsChoosePlace)
@@ -157,7 +157,7 @@ export const actions = {
         console.log('existedTag ? existedTag ', existedTag)
 
         const result =
-            (x.prioteradpris >= used.price[0] && x.prioteradpris <= used.price[1]) &&
+            (x.prioteradpris.val >= used.price[0] && x.prioteradpris.val <= used.price[1]) &&
             (x.yta >= used.yta[0] && x.yta <= used.yta[1]) &&
             thereIsChoosePlace &&
             thereIsSearch &&

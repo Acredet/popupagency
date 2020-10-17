@@ -3,7 +3,6 @@
     <client-only>
       <vue-slider v-model="value" :min="minAndMax.min" :max="minAndMax.max" @change="valueChanged" />
     </client-only>
-
     <small v-if="sliderType === 'yta'">{{ value[0] || 0 }} m<sup>3</sup>— {{ value[1] || 0 }} m<sup>3</sup></small>
     <small v-else>{{ value[0] || 0 }} Kr — {{ value[1] || 0 }} Kr</small>
   </div>
@@ -44,15 +43,15 @@ export default {
   },
   watch: {
     minAndMax: {
-      immmediate: true,
+      immediate: true,
       deep: true,
       handler (newValue) {
-        console.log('LOOOOL: ', newValue)
         if (this.once === 0) {
           // console.log('LOOOOL', newValue.min, newValue.max)
           this.value = [newValue.min, newValue.max]
           this.once++
         }
+        this.$forceUpdate()
       }
     }
   },
