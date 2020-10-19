@@ -34,14 +34,18 @@ export default {
     allPlaces: {
       type: Array,
       default: () => []
+    },
+    center: {
+      type: Object,
+      default: () => { return { lat: 59.334591, lng: 18.06324 } }
     }
   },
   data () {
     return {
       map: {
-        center: { lat: 59.334591, lng: 18.06324 },
         mapTypeId: 'roadmap',
-        zoom: 5,
+        center: { lat: 59.334591, lng: 18.06324 },
+        zoom: 2,
         markers: []
       },
       infoWindowPos: null,
@@ -66,6 +70,14 @@ export default {
   watch: {
     allPlaces (newValue) {
       this.pinMarkers(this.allPlaces)
+    },
+    center: {
+      immediate: true,
+      deep: true,
+      handler (newValue) {
+        this.map.center = newValue
+        this.map.zoom = 5
+      }
     }
   },
   created () {

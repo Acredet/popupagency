@@ -173,21 +173,18 @@ export default {
     },
     // http://maps.google.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA
     async changeCountry (country) {
-      await this.$axios.$get(`http://maps.google.com/maps/api/geocode/json?country=${country},+CA&key=${process.env.VUE_APP_GOOGLE_MAPS_API_KEY}`, {
-        headers: {
-          'x-auth-token': null,
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'DELETE, POST, GET, OPTIONS',
-          'Access-Control-Allow-Headers': 'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With'
-        }
-      })
+      // console.log(this.google.maps.Geocoder(country))
+      await this.$axios.$post('/centrum/address-by-country-name', { country })
         .then((res) => {
           console.log(res)
+          this.$emit('changeMapCenter', {
+            lat: res[0].latitude,
+            lng: res[0].longitude
+          })
         })
         .catch((err) => {
           console.log(err)
         })
-      console.log('HEY I"M country', country)
     },
     ytaChanged (type, w) {
       console.log(w)

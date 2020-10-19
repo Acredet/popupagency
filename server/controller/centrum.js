@@ -3,6 +3,24 @@ const geocoder = require('../utils/geocoder')
 
 /**
  * @description Get Adderss from coordinates
+ * @param { String } country Name
+*/
+exports.getAddressByCountryName = async (req, res, next) => {
+  try {
+    // Geocode Address
+    const loc = await geocoder.geocode(req.body.country)
+    res.status(201).json(loc)
+  } catch (error) {
+    console.error(error)
+    if (error.code === 11000) {
+      return res.status(400).json({ error: 'This Place already exists' })
+    }
+    res.status(500).json({ error: 'Server error' })
+  }
+}
+
+/**
+ * @description Get Adderss from coordinates
  * @param { Number } lng
  * @param { Number } lat
  * @return { String } Address
@@ -124,7 +142,6 @@ exports.updateCentrum = async (req, res) => {
     req.body[key] = element !== 'null' ? element : null
   }
   const updata = req.body
-
 
   if (updata.centrumgalleri) {
     updata.centrumgalleri = JSON.parse(updata.centrumgalleri)

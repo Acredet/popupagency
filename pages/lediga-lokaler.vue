@@ -7,7 +7,7 @@
     <b-row class="mt-2">
       <!-- Start filters Bar -->
       <b-col cols="12">
-        <filter-bar @changeLayout="layout = $event" />
+        <filter-bar @changeMapCenter="center = $event" @changeLayout="layout = $event" />
       </b-col>
       <!-- End filters Bar -->
 
@@ -22,7 +22,7 @@
       <!-- Start Map -->
       <b-col v-if="layout === $t('ledigaLokaler.map')" cols="12" md="6" class="map-wrapper d-md-flex">
         <client-only>
-          <GMap :key="renderKey" :all-places="cards" @setCenter="layout = $t('ledigaLokaler.map')" />
+          <GMap :key="renderKey" :all-places="cards" :center="center" @setCenter="layout = $t('ledigaLokaler.map')" />
         </client-only>
       </b-col>
       <!-- End Map -->
@@ -62,6 +62,7 @@ export default {
   },
   data () {
     return {
+      center: { lat: 59.334591, lng: 18.06324 },
       loadingState: false,
       loadingCards: false,
       layout: this.$t('ledigaLokaler.list')

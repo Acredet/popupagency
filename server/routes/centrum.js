@@ -1,6 +1,6 @@
 const express = require('express')
 const auth = require('../middleware/auth')
-const { getCentrums, getOneCentrum, addCentrum, deleteCentrum, getAddress, updateCentrum } = require('../controller/centrum')
+const { getCentrums, getOneCentrum, addCentrum, deleteCentrum, getAddress, updateCentrum, getAddressByCountryName } = require('../controller/centrum')
 const router = express.Router()
 const { multer, uploadImage } = require('../middleware/upload')
 
@@ -18,6 +18,7 @@ router
   .patch(multer.fields(fields), updateCentrum)
 
 router.post('/address', getAddress)
+router.post('/address-by-country-name', getAddressByCountryName)
 
 router.post('/images', multer.single('centrumgalleri'), uploadImage)
 
