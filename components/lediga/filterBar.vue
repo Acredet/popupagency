@@ -26,7 +26,7 @@
                 :variant="(filters.plats.currentCountry === key) ? 'primary' : null"
                 style="width: fit-content;"
                 class="mb-2 mr-2"
-                @click="filters.plats.currentCountry = key"
+                @click="filters.plats.currentCountry = key; changeCountry(key)"
               >
                 {{ key }}
               </b-btn>

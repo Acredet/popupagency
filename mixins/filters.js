@@ -64,7 +64,7 @@ export default {
       handler (val) {
         const minMaxPrice = this.getMinAndMax('price')
         const minMaxYta = this.getMinAndMax('yta', 'yta')
-
+        this.setRegions()
         this.filters.used.price = minMaxPrice
         this.filters.used.yta = minMaxYta
       }
@@ -73,50 +73,7 @@ export default {
       immediate: true,
       deep: true,
       handler (newValue) {
-        const sortedRegions = this.sortItems(this.regions, false)
-
-        sortedRegions.forEach((country) => {
-          // console.log(country)
-          if (!country.parent) {
-            this.filters.plats.tabs[country.name[this.lang]] = []
-          }
-
-          if (country.cities) {
-            country.cities.forEach((city) => {
-              // eslint-disable-next-line no-return-assign
-              const array1 = city.subCities
-                ? city.subCities.map(x => ((x.name && x.name[this.lang]) ? x.name[this.lang] : x.name))
-                : []
-
-              let all = 0
-              city.subCities.forEach((subCity) => {
-                // console.log('subCity: ', subCity.name)
-                all += this.AllPlaces.filter(place => place.stad[this.lang] === subCity.name[this.lang]).length
-              })
-
-              this.filters.plats.tabs[country.name[this.lang]].push({
-                name: city.name[this.lang],
-                text: `${city.name[this.lang]} (${all})`,
-                allSelected: false, // Shape of the check
-                indeterminate: false, // Shape of the check
-                selected: [],
-                subcity: array1
-              })
-            })
-          }
-        })
-
-        this.filters.property.icons = [...this.tags].map((x) => {
-          if (x._id) {
-            return {
-              text: x.name[this.lang],
-              avatar: x.avatar,
-              state: false
-            }
-          }
-        })
-
-        this.filters.plats.currentCountry = Object.keys(this.filters.plats.tabs)[0]
+        this.setRegions()
       }
     }
   },
@@ -142,8 +99,6 @@ export default {
         })
       } else {
         this.AllPlaces.forEach((place) => {
-          console.log('place.title:', place.title.sv)
-          console.log('place[prop]:', place[prop])
           // Get minimum and maximum price
           if (place[prop] < min && place[prop] < max) {
             min = place[prop]
@@ -216,7 +171,24 @@ export default {
         }
       }
     },
-
+    // http://maps.google.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA
+    async changeCountry (country) {
+      await this.$axios.$get(`http://maps.google.com/maps/api/geocode/json?country=${country},+CA&key=${process.env.VUE_APP_GOOGLE_MAPS_API_KEY}`, {
+        headers: {
+          'x-auth-token': null,
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'DELETE, POST, GET, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With'
+        }
+      })
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      console.log('HEY I"M country', country)
+    },
     ytaChanged (type, w) {
       console.log(w)
       if (type === 'yta') {
@@ -238,7 +210,6 @@ export default {
     },
     toggleAll (index) {
       const arr = this.filters.plats.tabs[this.filters.plats.currentCountry][index]
-      // console.log(arr)
 
       // Upadte the selected states in this country
       const subcities = arr.selected.length !== arr.subcity.length ? arr.subcity.slice() : []
@@ -297,6 +268,58 @@ export default {
       const icons = this.filters.property.icons
       this.$store.commit('filters/changeStateOfPropertInput', { button, icons })
       // this.doFilter()
+    },
+    setRegions () {
+      const sortedRegions = this.sortItems(this.regions, false)
+      let all = 0
+
+      sortedRegions.forEach((country) => {
+        // Get Countries
+        if (!country.parent) {
+          this.filters.plats.tabs[country.name[this.lang]] = []
+        }
+
+        all += this.AllPlaces.filter((place) => { console.log(`Stad ${place.stad.en} country ${country.name.en}`); return (place.stad.en === country.name.en) }).length
+
+        // Get Number Of Listings in each city
+        if (country.cities) {
+          country.cities.forEach((city) => {
+            const array1 = city.subCities
+              ? [...city.subCities].map(x => ((x.name && x.name[this.lang]) ? x.name[this.lang] : x.name))
+              : []
+            all += this.AllPlaces.filter(place => (place.stad.en === city.name.en)).length
+
+            city.subCities.forEach((subCity) => {
+              all += this.AllPlaces.filter(place => (place.stad.en === subCity.name.en)).length
+            })
+
+            this.filters.plats.tabs[country.name[this.lang]].push({
+              name: city.name[this.lang],
+              text: `${city.name[this.lang]} (${all})`,
+              allSelected: false, // Shape of the check
+              indeterminate: false, // Shape of the check
+              selected: [],
+              subcity: array1
+            })
+          })
+        }
+
+        all -= all
+
+        console.log('reset')
+      })
+
+      this.filters.property.icons = [...this.tags].map((x) => {
+        if (x._id) {
+          return {
+            text: x.name[this.lang],
+            avatar: x.avatar,
+            state: false
+          }
+        }
+      })
+
+      // this.filters.plats.currentCountry = Object.keys(this.filters.plats.tabs)[0]
     }
   }
 }

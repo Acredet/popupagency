@@ -77,6 +77,9 @@
                         <th v-if="table.views">
                           Views
                         </th>
+                        <th v-if="table.date">
+                          Date
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -93,6 +96,7 @@
                         </td>
                         <td v-text="row.stad" />
                         <td v-if="row.views || row.views === 0" v-text="row.views" />
+                        <td v-if="row.date" v-text="row.date.substr(0, 10)" />
                       </tr>
                     </tbody>
                   </table>
@@ -135,14 +139,15 @@ export default {
         this.tableRows = [
           {
             title: 'Leatest Listings',
-            views: true,
+            views: false,
+            date: true,
             rows: res.leatestListings.map((x) => {
               return {
                 url: `lokal/${x.title.en}`,
                 title: x.title[this.$i18n.locale],
                 stad: x.title[this.$i18n.locale],
                 img: x.cover[0] ? `https://popup.dk.se/_nuxt/img/${x.cover[0]}` : undefined,
-                views: x.views
+                date: x.createdAt
               }
             })
           },
