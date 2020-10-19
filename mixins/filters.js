@@ -171,20 +171,10 @@ export default {
         }
       }
     },
-    // http://maps.google.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA
     async changeCountry (country) {
-      // console.log(this.google.maps.Geocoder(country))
       await this.$axios.$post('/centrum/address-by-country-name', { country })
-        .then((res) => {
-          console.log(res)
-          this.$emit('changeMapCenter', {
-            lat: res[0].latitude,
-            lng: res[0].longitude
-          })
-        })
-        .catch((err) => {
-          console.log(err)
-        })
+        .then(res => this.$emit('changeMapCenter', { lat: res[0].latitude, lng: res[0].longitude }))
+        .catch(err => console.log(err))
     },
     ytaChanged (type, w) {
       console.log(w)
@@ -268,15 +258,19 @@ export default {
     },
     setRegions () {
       const sortedRegions = this.sortItems(this.regions, false)
-      let all = 0
-
       sortedRegions.forEach((country) => {
+        let all = 0
         // Get Countries
         if (!country.parent) {
           this.filters.plats.tabs[country.name[this.lang]] = []
         }
 
-        all += this.AllPlaces.filter((place) => { console.log(`Stad ${place.stad.en} country ${country.name.en}`); return (place.stad.en === country.name.en) }).length
+        all += this.AllPlaces.filter((place) => {
+          if (country.name.en === place.stad.en) {
+            console.log(country.name.en + '->' + place.stad.en)
+          }
+          return place.stad.en === country.name.en
+        }).length
 
         // Get Number Of Listings in each city
         if (country.cities) {
@@ -284,10 +278,21 @@ export default {
             const array1 = city.subCities
               ? [...city.subCities].map(x => ((x.name && x.name[this.lang]) ? x.name[this.lang] : x.name))
               : []
-            all += this.AllPlaces.filter(place => (place.stad.en === city.name.en)).length
+
+            all += this.AllPlaces.filter((place) => {
+              if (city.name.en === place.stad.en) {
+                console.log(city.name.en + '->' + place.stad.en)
+              }
+              return place.stad.en === city.name.en
+            }).length
 
             city.subCities.forEach((subCity) => {
-              all += this.AllPlaces.filter(place => (place.stad.en === subCity.name.en)).length
+              all += this.AllPlaces.filter((place) => {
+                if (subCity.name.en === place.stad.en) {
+                  console.log(subCity.name.en + '->' + place.stad.en)
+                }
+                return place.stad.en === subCity.name.en
+              }).length
             })
 
             this.filters.plats.tabs[country.name[this.lang]].push({
@@ -298,12 +303,10 @@ export default {
               selected: [],
               subcity: array1
             })
+            all = 0
+            console.log('reset')
           })
         }
-
-        all -= all
-
-        console.log('reset')
       })
 
       this.filters.property.icons = [...this.tags].map((x) => {
@@ -316,6 +319,7 @@ export default {
         }
       })
 
+      console.log('=-======================================= END +===============================================')
       // this.filters.plats.currentCountry = Object.keys(this.filters.plats.tabs)[0]
     }
   }
