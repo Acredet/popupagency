@@ -75,21 +75,23 @@ export default {
     })
   },
   mounted () {
-    this.loadingCards = true
+    // this.loadingCards = true
     this.loadingState = true
 
     if (window.innerWidth >= '768') {
       this.layout = this.$t('ledigaLokaler.map')
     }
 
-    this.loadingCards = false
+    // this.loadingCards = false
     this.loadingState = false
   },
   async created () {
     this.loadingState = true
+    this.loadingCards = true
     await this.getTags()
     await this.getRegions()
     await this.getListings()
+    this.loadingCards = false
   },
   methods: {
     ...mapActions({

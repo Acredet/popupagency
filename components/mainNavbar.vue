@@ -11,7 +11,7 @@
             :class="{ 'd-flex justify-content-between align-items-center': link.subList }"
             class="font-3"
           >
-            <nuxt-link v-if="link.label.url" exact :to="link.label.url">
+            <nuxt-link v-if="link.label.url" exact :to="`${$t('link')}${link.label.url}`">
               {{ link.label.text }}
             </nuxt-link>
             <span v-else>{{ link.label.text }}</span>
@@ -26,7 +26,7 @@
           >
             <ul>
               <li v-for="(one, index1) in link.subList" :key="String(index1)" class="font-3">
-                <nuxt-link exact :to="one.url">
+                <nuxt-link exact :to="`${$t('link')}${one.url}`">
                   {{ one.text }}
                 </nuxt-link>
               </li>
@@ -188,7 +188,7 @@ export default {
         {
           label: {
             text: this.$t('mainNavbar.contactUs'),
-            url: ''
+            url: '/contact-us'
           }
         },
         {
@@ -242,7 +242,7 @@ export default {
           subList: [
             {
               text: this.$t('mainNavbar.freePopups'),
-              url: ''
+              url: '/lediga-lokaler'
             },
             {
               text: this.$t('mainNavbar.seeAllCities'),

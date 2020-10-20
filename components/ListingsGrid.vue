@@ -18,16 +18,9 @@
     </b-modal>
     <!-- End modal -->
 
-    <!-- Start if empty -->
-    <b-row v-if="cards.length === 0" align-h="center" align-content="center" class="h-100">
-      <p class="text-center text-secondary">
-        There are no listings.
-      </p>
-    </b-row>
-    <!-- End if empty -->
-
     <!-- start lodaing -->
-    <b-row v-else-if="loadingCards && cards.length <= 0">
+
+    <b-row v-if="loadingCards">
       <b-col
         v-for="(card, index) in 5"
         :key="String(index)"
@@ -36,10 +29,18 @@
         :md="layout === $t('ledigaLokaler.map') ? 12 : 6"
         :lg="layout === $t('ledigaLokaler.map') ? 6 : 4"
       >
-        <div class="skeleton" />
+        <b-skeleton-img />
       </b-col>
     </b-row>
     <!-- End lodaing -->
+
+    <!-- Start if empty -->
+    <b-row v-else-if="cards.length === 0 && !loadingCards" align-h="center" align-content="center" class="h-100">
+      <p class="text-center text-secondary">
+        There are no listings.
+      </p>
+    </b-row>
+    <!-- End if empty -->
 
     <!-- start if Listing -->
     <b-row v-else>
@@ -97,7 +98,6 @@
 
 <script>
 import { mapActions } from 'vuex'
-
 export default {
   props: {
     cards: {
