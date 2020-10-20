@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <b-container>
-      <h2>{{ $t('myPlaces.noListings') }}</h2>
+      <h2>{{ $t('userListings.myPlaces') }}</h2>
 
       <!-- start if Listing -->
       <b-row>

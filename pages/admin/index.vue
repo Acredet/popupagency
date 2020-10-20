@@ -36,7 +36,7 @@
         <h4 class="mt-0 header-title font-wight-bold">
           {{ row.title }}
         </h4>
-        <b-row>
+        <b-row v-if="row.title !== 'Users:'">
           <b-col v-for="(card, i) in row.cards" :key="`${row.title}-card-${i}`" xl="3" md="6" cols="12">
             <div class="card mini-stat bg-primary">
               <div class="card-body mini-stat-img">
