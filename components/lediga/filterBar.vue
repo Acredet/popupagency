@@ -120,7 +120,7 @@
           <b-dropdown-group class="px-3">
             <p>{{ $t('ledigaLokaler.filters.surface') }}</p>
             <client-only>
-              <yta-filter :identifier="10" :slider-type="'yta'" :min-and-max="filters.yta" @ytaChanged="ytaChanged('yta', $event)" />
+              <yta-filter :identifier="10" :slider-type="'yta'" :step="1" :min-and-max="filters.yta" @ytaChanged="ytaChanged('yta', $event)" />
             </client-only>
             <b-btn variant="primary" class="okay" @click="doFilter">
               Ok

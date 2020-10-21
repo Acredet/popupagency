@@ -28,6 +28,9 @@
             <div class="text-center h-100 d-flex flex-column flex-lg-row align-items-lg-center justify-content-lg-between">
               <h1 class="font-5">
                 {{ place.title ? place.title[$i18n.locale] : '' }}
+                <b-btn v-if="['admin', 'manager'].includes($auth.user.role)" variant="icon" :to="`${$t('link')}admin/listings/edit/${place.title.sv.replaceAll(' ', '.')}`">
+                  <b-icon icon="pencil-square" class="text-white" />
+                </b-btn>
               </h1>
               <div class="position-relative">
                 <section
@@ -474,7 +477,7 @@
 </template>
 
 <script>
-import { BootstrapVue, BIcon } from 'bootstrap-vue'
+import { BootstrapVue, BIcon, BIconPencilSquare } from 'bootstrap-vue'
 import 'viewerjs/dist/viewer.css'
 import Viewer from 'v-viewer'
 import Vue from 'vue'
@@ -486,6 +489,8 @@ export default {
   components: {
     // eslint-disable-next-line vue/no-unused-components
     BootstrapVue,
+    // eslint-disable-next-line vue/no-unused-components
+    BIconPencilSquare,
     // eslint-disable-next-line vue/no-unused-components
     BIcon,
     panorama

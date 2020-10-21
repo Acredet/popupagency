@@ -1,10 +1,22 @@
 <template>
-  <div :key="`${sliderType}-${identifier}`">
+  <div :key="`${sliderType}-${identifier}`" class="d-flex flex-column justify-content-center align-items-center">
+    <p v-if="sliderType === 'yta'">
+      <small>{{ value[0] || 0 }} m<sup>2</sup>— {{ value[1] || 0 }} m<sup>2</sup></small>
+    </p>
+    <p v-else>
+      <small>{{ value[0] || 0 }} Kr — {{ value[1] || 0 }} Kr</small>
+    </p>
     <client-only>
-      <vue-slider ref="slider" v-model="value" :min="minAndMax.min" :max="minAndMax.max" @change="valueChanged" />
+      <vue-slider
+        ref="slider"
+        v-model="value"
+        class="w-100"
+        :interval="step"
+        :min="minAndMax.min"
+        :max="minAndMax.max"
+        @change="valueChanged"
+      />
     </client-only>
-    <small v-if="sliderType === 'yta'">{{ value[0] || 0 }} m<sup>3</sup>— {{ value[1] || 0 }} m<sup>3</sup></small>
-    <small v-else>{{ value[0] || 0 }} Kr — {{ value[1] || 0 }} Kr</small>
   </div>
 </template>
 
@@ -20,6 +32,10 @@ export default {
     VueSlider
   },
   props: {
+    step: {
+      type: Number,
+      default: () => 1000
+    },
     identifier: {
       type: Number,
       default: () => 0

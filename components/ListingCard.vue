@@ -4,7 +4,7 @@
     <section class="like" :class="{ 'anim-like': $auth.loggedIn && ($auth.user.fav.findIndex(x => x === place.title.sv) !== -1) }" @click="AddToFav" />
     <!-- </b-btn> -->
 
-    <nuxt-link :to="`${$t('link')}lokal/${place.title.sv}`" class="listing-card">
+    <nuxt-link :to="`${$t('link')}lokal/${place.title.sv.replaceAll(' ', '.')}`" class="listing-card">
       <!-- Start header -->
       <div class="listing-card--header">
         <b-carousel :id="`${place.title[$i18n.locale]}-cover`" :interval="3500">

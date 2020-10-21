@@ -26,7 +26,7 @@ router
   .patch(multer.none(), updatePlace)
 
 router.get('/user/:userid', auth, getPlacesAddedByUser)
-router.patch('/view/:id', auth, addWatch)
+router.patch('/view/:id', addWatch)
 
 router.post('/images', multer.fields(fields), (req, res) => {
   console.log(req.files[req.body.name], req.body.name)

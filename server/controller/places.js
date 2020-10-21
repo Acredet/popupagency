@@ -105,7 +105,7 @@ exports.deletePlace = (req, res) => {
  * @access Private
  */
 exports.getOnePlace = async (req, res) => {
-  await Place.findOne({ 'title.sv': req.params.id })
+  await Place.findOne({ 'title.sv': req.params.id.replace(/[.]/g, ' ') })
     .then(async (place) => {
       await Place.find({ 'stad.sv': place.stad.sv })
         .then((places) => {
