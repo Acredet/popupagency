@@ -4,6 +4,7 @@ export const state = () => ({
     price: [],
     plats: [],
     property: [],
+    category: [],
     yta: []
   }
 })
@@ -21,6 +22,7 @@ export const mutations = {
       price: [],
       plats: [],
       property: [],
+      category: [],
       yta: []
     }
   },
@@ -30,8 +32,15 @@ export const mutations = {
       return x.state
     })
   },
+  changeStateOfCategoryInput (state, obj) {
+    state.used.category = obj.icons.filter((x) => {
+      if (x.text === obj.button.text) { x.state = !x.state }
+      return x.state
+    })
+  },
   clearFilter (state, icons) {
-    state.used.property = icons.forEach((x) => { x.state = false })
+    state.used.property = icons.property.forEach((x) => { x.state = false })
+    state.used.category = icons.category.forEach((x) => { x.state = false })
   }
 }
 

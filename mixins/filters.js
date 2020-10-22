@@ -28,6 +28,11 @@ export default {
           choose: [],
           icons: []
         },
+        categories: {
+          text: this.$t('ledigaLokaler.filters.propertyType'),
+          choose: [],
+          icons: []
+        },
         yta: {
           text: this.$t('ledigaLokaler.filters.surface'),
           min: 0,
@@ -138,7 +143,10 @@ export default {
       this.filters.price.text = this.$t('ledigaLokaler.filters.price')
       this.filters.yta.text = this.$t('ledigaLokaler.filters.surface')
       // Reset Properties
-      this.$store.dispatch('filters/clearFilters', this.filters.property.icons)
+      this.$store.dispatch('filters/clearFilters', {
+        property: this.filters.property.icons,
+        category: this.filters.categories.icons
+      })
       this.$store.dispatch('resetCards')
 
       this.filters.used = {
@@ -146,15 +154,18 @@ export default {
         yta: [yta.min, yta.max],
         search: null,
         plats: [this.filters.plats.currentCountry],
-        property: []
+        property: [],
+        category: []
       }
 
-      this.filters.plats.tabs[this.filters.plats.currentCountry].forEach((arr) => {
-        // console.log('arr: dswa', arr)
-        arr.indeterminate = false
-        arr.allSelected = false
-        this.$store.dispatch('changeSidebarRenderKey')
-      })
+      if (this.filters.plats.tabs[this.filters.plats.currentCountry]) {
+        this.filters.plats.tabs[this.filters.plats.currentCountry].forEach((arr) => {
+          // console.log('arr: dswa', arr)
+          arr.indeterminate = false
+          arr.allSelected = false
+          this.$store.dispatch('changeSidebarRenderKey')
+        })
+      }
 
       // Reset places
       const tabs = this.filters.plats.tabs
@@ -256,6 +267,11 @@ export default {
       this.$store.commit('filters/changeStateOfPropertInput', { button, icons })
       // this.doFilter()
     },
+    addCategory (button) {
+      const icons = this.filters.categories.icons
+      this.$store.commit('filters/changeStateOfCategoryInput', { button, icons })
+      // this.doFilter()
+    },
     setRegions () {
       const sortedRegions = this.sortItems(this.regions, false)
       sortedRegions.forEach((country) => {
@@ -310,6 +326,16 @@ export default {
       })
 
       this.filters.property.icons = [...this.tags].map((x) => {
+        if (x._id) {
+          return {
+            text: x.name[this.lang],
+            avatar: x.avatar,
+            state: false
+          }
+        }
+      })
+
+      this.filters.categories.icons = [...this.categories].map((x) => {
         if (x._id) {
           return {
             text: x.name[this.lang],

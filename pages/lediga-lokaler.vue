@@ -90,6 +90,7 @@ export default {
     this.loadingCards = true
     await this.getTags()
     await this.getRegions()
+    await this.getCategories()
     await this.getListings()
     this.loadingCards = false
   },
@@ -98,6 +99,7 @@ export default {
       refreshMap: 'changeSidebarRenderKey',
       getListings: 'getListings',
       getRegions: 'getRegions',
+      getCategories: 'getCategories',
       sortCards: 'sortCards',
       getTags: 'getTags'
     })

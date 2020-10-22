@@ -5,6 +5,7 @@ export const state = () => ({
   cards: [],
   regions: [],
   tags: [],
+  categories: [],
   loginRedirectLink: ''
 })
 
@@ -20,6 +21,9 @@ export const mutations = {
   },
   tags (state, tags) {
     state.tags = tags
+  },
+  categories (state, categories) {
+    state.categories = categories
   },
   sortCards (state, sortType) {
     if (state.cards.length === 0) { state.cards = state.listings }
@@ -86,6 +90,11 @@ export const actions = {
       .then(res => commit('tags', res.data.data))
       .catch(err => console.log(err))
   },
+  async getCategories ({ commit }) {
+    await this.$axios.get('/category')
+      .then(res => commit('categories', res.data.data))
+      .catch(err => console.log(err))
+  },
   sortCards ({ commit }, sortType) {
     if (sortType === this.$i18n.t('ledigaLokaler.sorting.latest')) {
       commit('sortCards', 'latest')
@@ -111,17 +120,20 @@ export const actions = {
       const realUsed = [...used.plats]
       const listings = rootGetters.listings
       const chooesdTags = [...used.property]
+      const chooesdCategories = [...used.category]
 
       // const selectedCity = [plats.currentCountry]
 
       for (const key in plats.tabs) {
         if (plats.tabs.hasOwnProperty(key)) {
           const country = [...plats.tabs[key]]
-          country.forEach((city) => {
-            [...city.selected].forEach(x => console.log(`Unicode of ${x}: `, String.fromCharCode(x)))
-            realUsed.push(...city.selected)
-            console.log(realUsed)
-          })
+          if (country) {
+            country.forEach((city) => {
+              [...city.selected].forEach(x => console.log(`Unicode of ${x}: `, String.fromCharCode(x)))
+              realUsed.push(...city.selected)
+              console.log(realUsed)
+            })
+          }
         }
       }
 
@@ -143,28 +155,45 @@ export const actions = {
           }
         }
 
+        // Find Category
+        let existedCategory
+        if (x.kategori.length === 0) {
+          existedCategory = true
+        } else {
+          for (const i of x.kategori) {
+            if (chooesdCategories.length === 0) { // If There is no property filter
+              existedCategory = true
+              break
+            } else if (!existedCategory) { // If There is a property filter and we didn't get the existed tag yet
+              existedCategory = chooesdCategories.map(tags => tags.text).includes(i)
+            }
+          }
+        }
+
         const thereIsChoosePlace = (realUsed.length <= 1) ? true : realUsed.includes(x.stad[this.$i18n.locale])
         const thereIsSearch = (!used.search) ? true : x.title.en.match(re)
 
-        console.log('=====================START======================')
-        console.log('x.stad', x.stad)
-        console.log(`x.prioteradpris(${x.prioteradpris.val}) >= used.price[0](${used.price[0]}) : `, x.prioteradpris.val >= used.price[0])
-        console.log('x.prioteradpris <= used.price[1]: ', x.prioteradpris.val <= used.price[1])
-        console.log(`x.yta(${x.yta}) >= used.yta[0]: `, x.yta >= used.yta[0])
-        console.log(' x.yta <= used.yta[1]: ', x.yta <= used.yta[1])
-        console.log('thereIsChoosePlace: ', thereIsChoosePlace)
-        console.log('thereIsSearch ', thereIsSearch)
-        console.log('existedTag ? existedTag ', existedTag)
+        // console.log('=====================START======================')
+        // console.log('x.stad', x.stad)
+        // console.log(`x.prioteradpris(${x.prioteradpris.val}) >= used.price[0](${used.price[0]}) : `, x.prioteradpris.val >= used.price[0])
+        // console.log('x.prioteradpris <= used.price[1]: ', x.prioteradpris.val <= used.price[1])
+        // console.log(`x.yta(${x.yta}) >= used.yta[0]: `, x.yta >= used.yta[0])
+        // console.log(' x.yta <= used.yta[1]: ', x.yta <= used.yta[1])
+        // console.log('thereIsChoosePlace: ', thereIsChoosePlace)
+        // console.log('thereIsSearch ', thereIsSearch)
+        // console.log('existedTag ? existedTag ', existedTag)
+        // console.log('existedCategory ? existedCategory ', existedCategory)
 
         const result =
             (x.prioteradpris.val >= used.price[0] && x.prioteradpris.val <= used.price[1]) &&
             (x.yta >= used.yta[0] && x.yta <= used.yta[1]) &&
             thereIsChoosePlace &&
             thereIsSearch &&
-            existedTag
+            existedTag &&
+            existedCategory
 
-        console.log('result: ', result)
-        console.log('=====================END======================')
+        // console.log('result: ', result)
+        // console.log('=====================END======================')
 
         return result
       })
@@ -192,6 +221,9 @@ export const getters = {
   },
   tags (state) {
     return state.tags
+  },
+  categories (state) {
+    return state.categories
   },
   loginRedirectLink (state) {
     return state.loginRedirectLink

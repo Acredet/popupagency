@@ -150,6 +150,7 @@ export default {
       AllPlaces: 'listings',
       regions: 'regions',
       tags: 'tags',
+      categories: 'categories',
       used: 'filters/used'
     })
   }

@@ -28,7 +28,7 @@
             <div class="text-center h-100 d-flex flex-column flex-lg-row align-items-lg-center justify-content-lg-between">
               <h1 class="font-5">
                 {{ place.title ? place.title[$i18n.locale] : '' }}
-                <b-btn v-if="['admin', 'manager'].includes($auth.user.role)" variant="icon" :to="`${$t('link')}admin/listings/edit/${place.title.sv.replaceAll(' ', '.')}`">
+                <b-btn v-if="$auth.loggedIn && ['admin', 'manager'].includes($auth.user.role)" variant="icon" :to="`${$t('link')}admin/listings/edit/${place.title.sv.replaceAll(' ', '.')}`">
                   <b-icon icon="pencil-square" class="text-white" />
                 </b-btn>
               </h1>

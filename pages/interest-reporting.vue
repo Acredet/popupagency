@@ -150,6 +150,7 @@ export default {
       renderKey: 'renderKey',
       listings: 'listings',
       tags: 'tags',
+      categories: 'categories',
       regions: 'regions'
     })
   },

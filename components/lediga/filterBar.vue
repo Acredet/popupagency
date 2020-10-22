@@ -98,6 +98,19 @@
       </b-col>
       <!-- End property Filter -->
 
+      <!-- Start property Filter -->
+      <b-col cols="12" md="auto" class="mr-2 d-none d-lg-flex align-items-center">
+        <b-dropdown id="property-dropdown" class="w-100" variant="light" :text="`categories`">
+          <b-dropdown-group class="px-1">
+            <property-filter :icons="filters.categories.icons" @iconChoosed="addCategory($event)" />
+            <b-btn variant="primary" class="okay" @click="doFilter">
+              Ok
+            </b-btn>
+          </b-dropdown-group>
+        </b-dropdown>
+      </b-col>
+      <!-- End property Filter -->
+
       <!-- Start price Filter -->
       <b-col cols="12" md="auto" class="mr-2 d-none d-md-flex align-items-center">
         <b-dropdown id="price-dropdown" class="w-100" variant="light" right :text="filters.price.text">
@@ -200,7 +213,8 @@ export default {
       AllPlaces: 'listings',
       regions: 'regions',
       renderKey: 'renderKey',
-      tags: 'tags'
+      tags: 'tags',
+      categories: 'categories'
     })
   },
   watch: {
