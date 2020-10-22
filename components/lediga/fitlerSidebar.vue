@@ -35,7 +35,7 @@
         </b-collapse>
         <!-- End yta Tab -->
 
-        <!-- Start yta Tab -->
+        <!-- Start property Tab -->
         <li v-b-toggle="'property'" class="p-2 border d-flex justify-content-between align-items-center font-3 mb-1">
           <span>{{ filters.property.text }}</span>
           <i class="fas fa-caret-down" />
@@ -49,7 +49,23 @@
             </b-btn>
           </div>
         </b-collapse>
-        <!-- End yta Tab -->
+        <!-- End property Tab -->
+
+        <!-- Start category Tab -->
+        <li v-b-toggle="'category'" class="p-2 border d-flex justify-content-between align-items-center font-3 mb-1">
+          <span>Categories</span>
+          <i class="fas fa-caret-down" />
+        </li>
+
+        <b-collapse id="category" accordion="filters" role="tabpanel">
+          <div class="px-2">
+            <property-filter :side-bar="true" :icons="filters.categories.icons" @iconChoosed="addCategory($event)" />
+            <b-btn variant="primary" @click="doFilter">
+              Ok
+            </b-btn>
+          </div>
+        </b-collapse>
+        <!-- End category Tab -->
 
         <!-- Start yta Tab -->
         <li v-b-toggle="'plats'" class="p-2 border d-flex justify-content-between align-items-center font-3 mb-1">
