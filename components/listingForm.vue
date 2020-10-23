@@ -152,7 +152,7 @@
                   cols="12"
                   md="auto"
                 >
-                  <div class="m-1">
+                  <div class="m-1 responsiveCol">
                     <label class="h5" for="card.title">{{ card.title }}</label>
                     <b-form-checkbox v-if="!card.noTemp" v-model="price[card.model].temp" class="mb-2" @change="setPrioteradPrice(card.model)">
                       {{ $t('addListing.inputs.price.priority') }}
@@ -167,31 +167,31 @@
 
           <b-card :title="$t('addListing.inputs.egenskaper')">
             <b-card-body>
-              <b-form-checkbox-group
-                v-if="renderEgensKaper.length > 0"
-                id="egenskaper"
-                v-model="egenskaper"
-                :options="renderEgensKaper"
-                name="tags"
+              <toggleAllCheckBoxGroup
+                :name="'egenskaper'"
+                :items="renderEgensKaper"
+                :link="`${$t('link')}admin/listings/tags`"
+                @valueChanged="egenskaper = $event"
               />
-              <p v-else class="text-secondary">
-                There is options to choose from you can add more in
-                <nuxt-link :to="`${$t('link')}admin/listings/tags`" v-text="'Tags'" />
-              </p>
             </b-card-body>
           </b-card>
 
-          <b-card :title="$t('addListing.inputs.yta.label')">
-            <b-card-body>
-              <b-form-input v-model="Yta" type="number" :placeholder="$t('addListing.inputs.yta.holder')" />
-            </b-card-body>
-          </b-card>
-
-          <b-card :title="$t('addListing.inputs.placering.label')">
-            <b-card-body>
-              <b-form-input v-model="markplan" :placeholder="$t('addListing.inputs.placering.holder')" />
-            </b-card-body>
-          </b-card>
+          <b-row>
+            <b-col col="12" md="6">
+              <b-card :title="$t('addListing.inputs.yta.label')">
+                <b-card-body>
+                  <b-form-input v-model="Yta" type="number" :placeholder="$t('addListing.inputs.yta.holder')" />
+                </b-card-body>
+              </b-card>
+            </b-col>
+            <b-col col="12" md="6">
+              <b-card :title="$t('addListing.inputs.placering.label')">
+                <b-card-body>
+                  <b-form-input v-model="markplan" :placeholder="$t('addListing.inputs.placering.holder')" />
+                </b-card-body>
+              </b-card>
+            </b-col>
+          </b-row>
 
           <b-card :title="$t('addListing.inputs.stad')">
             <b-card-body>
@@ -207,24 +207,13 @@
 
           <b-card :title="$t('addListing.inputs.kategori')">
             <b-card-body>
-              <b-form-checkbox-group
-                v-if="kategoriOpts.length > 0"
-                v-model="kategori"
-                :options="kategoriOpts"
+              <toggleAllCheckBoxGroup
+                :name="'kategori'"
+                :items="kategoriOpts"
                 :state="kategoryValid"
-                name="catigory-validation"
-              >
-                <b-form-invalid-feedback :state="kategoryValid">
-                  {{ $t('addListing.inputs.selectOne') }}
-                </b-form-invalid-feedback>
-                <b-form-valid-feedback :state="kategoryValid">
-                  {{ $t('forms.valid') }}
-                </b-form-valid-feedback>
-              </b-form-checkbox-group>
-              <p v-else class="text-secondary">
-                There is options to choose from you can add more in
-                <nuxt-link :to="`${$t('link')}admin/listings/categories`" v-text="$t('addListing.inputs.kategori')" />
-              </p>
+                :link="`${$t('link')}admin/listings/categories`"
+                @valueChanged="kategori = $event"
+              />
             </b-card-body>
           </b-card>
 
@@ -265,17 +254,22 @@
             </template>
           </b-card>
 
-          <b-card :title="$t('addListing.inputs.minsta.label')">
-            <b-card-body>
-              <b-form-input v-model="minsta" :placeholder="$t('addListing.inputs.minsta.holder')" />
-            </b-card-body>
-          </b-card>
-
-          <b-card :title="$t('addListing.inputs.langsta.label')">
-            <b-card-body>
-              <b-form-input v-model="längsta" :placeholder="$t('addListing.inputs.langsta.holder')" />
-            </b-card-body>
-          </b-card>
+          <b-row>
+            <b-col cols="12" md="6">
+              <b-card :title="$t('addListing.inputs.minsta.label')">
+                <b-card-body>
+                  <b-form-input v-model="minsta" :placeholder="$t('addListing.inputs.minsta.holder')" />
+                </b-card-body>
+              </b-card>
+            </b-col>
+            <b-col cols="12" md="6">
+              <b-card :title="$t('addListing.inputs.langsta.label')">
+                <b-card-body>
+                  <b-form-input v-model="längsta" :placeholder="$t('addListing.inputs.langsta.holder')" />
+                </b-card-body>
+              </b-card>
+            </b-col>
+          </b-row>
 
           <!-- Start Prices -->
           <b-card title="Prices:">
@@ -299,47 +293,63 @@
           </b-card>
           <!-- End Prices -->
 
-          <b-card :title="$t('addListing.inputs.season')">
-            <b-card-body>
-              <b-form-select v-model="sasong" :options="sasongInputs" />
-            </b-card-body>
-          </b-card>
+          <b-row>
+            <b-col cols="12" md="6">
+              <b-card :title="$t('addListing.inputs.season')">
+                <b-card-body>
+                  <b-form-select v-model="sasong" :options="sasongInputs" />
+                </b-card-body>
+              </b-card>
+            </b-col>
 
-          <b-card :title="$t('addListing.inputs.vag')">
-            <b-card-body>
-              <b-form-input v-model="vagvisningen" :placeholder="$t('addListing.inputs.vag')" />
-            </b-card-body>
-          </b-card>
+            <b-col cols="12" md="6">
+              <b-card :title="$t('addListing.inputs.vag')">
+                <b-card-body>
+                  <b-form-input v-model="vagvisningen" :placeholder="$t('addListing.inputs.vag')" />
+                </b-card-body>
+              </b-card>
+            </b-col>
+          </b-row>
 
-          <b-card :title="$t('addListing.inputs.fran')">
-            <b-card-body>
-              <b-form-datepicker id="Upptaget-från" v-model="fran" today-button reset-button class="mb-2" />
-            </b-card-body>
-          </b-card>
+          <b-row>
+            <b-col cols="12" md="6">
+              <b-card :title="$t('addListing.inputs.fran')">
+                <b-card-body>
+                  <b-form-datepicker id="Upptaget-från" v-model="fran" today-button reset-button class="mb-2" />
+                </b-card-body>
+              </b-card>
+            </b-col>
+            <b-col cols="12" md="6">
+              <b-card :title="$t('addListing.inputs.till')">
+                <b-card-body>
+                  <b-form-datepicker id="Upptaget-till" v-model="till" today-button reset-button class="mb-2" />
+                </b-card-body>
+              </b-card>
+            </b-col>
+          </b-row>
 
-          <b-card :title="$t('addListing.inputs.till')">
-            <b-card-body>
-              <b-form-datepicker id="Upptaget-till" v-model="till" today-button reset-button class="mb-2" />
-            </b-card-body>
-          </b-card>
-
-          <b-card :title="$t('addListing.inputs.Lokalens')">
-            <b-card-body>
-              <b-form-select v-model="lokal" :options="lokalOpts" :state="lokalensValid" />
-              <b-form-invalid-feedback :state="lokalensValid">
-                {{ $t('addListing.inputs.selectOne') }}
-              </b-form-invalid-feedback>
-              <b-form-valid-feedback :state="lokalensValid">
-                {{ $t('addListing.inputs.choosed') }} {{ lokal }}
-              </b-form-valid-feedback>
-            </b-card-body>
-          </b-card>
-
-          <b-card :title="$t('addListing.inputs.expiry')">
-            <b-card-body>
-              <b-form-datepicker id="example-datepicker" v-model="expiry" today-button reset-button class="mb-2" />
-            </b-card-body>
-          </b-card>
+          <b-row>
+            <b-col cols="12" md="6">
+              <b-card :title="$t('addListing.inputs.Lokalens')">
+                <b-card-body>
+                  <b-form-select v-model="lokal" :options="lokalOpts" :state="lokalensValid" />
+                  <b-form-invalid-feedback :state="lokalensValid">
+                    {{ $t('addListing.inputs.selectOne') }}
+                  </b-form-invalid-feedback>
+                  <b-form-valid-feedback :state="lokalensValid">
+                    {{ $t('addListing.inputs.choosed') }} {{ lokal }}
+                  </b-form-valid-feedback>
+                </b-card-body>
+              </b-card>
+            </b-col>
+            <b-col cols="12" md="6">
+              <b-card :title="$t('addListing.inputs.expiry')">
+                <b-card-body>
+                  <b-form-datepicker id="example-datepicker" v-model="expiry" today-button reset-button class="mb-2" />
+                </b-card-body>
+              </b-card>
+            </b-col>
+          </b-row>
         </div>
       </form>
 
@@ -386,6 +396,7 @@
 <script>
 import { BootstrapVue, BIcon } from 'bootstrap-vue'
 import ourUploader from '@/components/ourUploader'
+import toggleAllCheckBoxGroup from '@/components/admin/checkBoxGroup'
 
 let VueEditor
 if (process.browser) {
@@ -400,6 +411,7 @@ export default {
     BootstrapVue,
     // eslint-disable-next-line vue/no-unused-components
     BIcon,
+    toggleAllCheckBoxGroup,
     ourUploader
   },
   props: {
@@ -839,5 +851,8 @@ button.delete-btn{
   z-index: 4;
   /* color: white; */
   /* background-color: red; */
+}
+.responsiveCol {
+  margin: 26px !important;
 }
 </style>

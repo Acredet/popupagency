@@ -1,11 +1,13 @@
 /* eslint-disable no-sequences */
 exports.AdminPanelDependancies = {
   mounted () {
-    this.$nextTick(this.initApp())
+    if (this.$nuxt.layoutName === 'admin') {
+      this.$nextTick(this.initApp())
+    }
   },
-  updated () {
-    this.$nextTick(this.initApp())
-  },
+  // updated () {
+  //   this.$nextTick(this.initApp())
+  // },
   methods: {
     initApp () {
       // eslint-disable-next-line no-unused-expressions

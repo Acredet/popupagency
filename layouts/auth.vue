@@ -5,11 +5,15 @@
 </template>
 
 <script>
-import { AdminPanelDependancies } from '@/mixins/AdminPanelDependancies'
-
 export default {
   name: 'AuthLayout',
-  mixins: [AdminPanelDependancies]
+  head () {
+    return {
+      link: [
+        { href: '/css/admin-styles.css', rel: 'stylesheet', type: 'text/css', body: true }
+      ]
+    }
+  }
 }
 </script>
 

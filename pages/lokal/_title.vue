@@ -268,8 +268,8 @@
                 class="d-flex mb-1 col-12 col-md-6 justify-content-between align-items-center"
               >
                 <b>{{ price }}:</b>
-                <span v-if="price !== 'prioteradpris'">${{ format(place[price]) }} Kr</span>
-                <span v-else>${{ format(place[price].val) }} Kr / {{ $t(place[price].period) }}</span>
+                <span v-if="price !== 'prioteradpris'">{{ format(place[price]) }} Kr</span>
+                <span v-else>{{ format(place[price].val) }} Kr / {{ $t(place[price].period) }}</span>
               </li>
             </ul>
           </b-container>

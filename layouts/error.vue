@@ -21,22 +21,7 @@
 
 <script>
 export default {
-  layout: 'auth',
-  head () {
-    return {
-      link: [
-        { rel: 'shortcut icon', href: '/images/favicon.ico' },
-        { rel: 'stylesheet', href: '/plugins/morris/morris.css' },
-        { href: '/css/bootstrap.min.css', rel: 'stylesheet', type: 'text/css' },
-        { href: '/css/metismenu.min.css', rel: 'stylesheet', type: 'text/css' },
-        { href: '/css/icons.css', rel: 'stylesheet', type: 'text/css' },
-        { href: '/css/style.css', rel: 'stylesheet', type: 'text/css' }
-      ]
-    }
-  }
+  name: 'ErrorPage',
+  layout: 'auth'
 }
 </script>
-
-<style scoped>
-
-</style>
