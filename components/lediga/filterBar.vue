@@ -4,7 +4,7 @@
       <!-- Start Search Input -->
       <b-col cols="12" sm="9" md="4" class="mr-2 d-flex align-items-center">
         <b-input-group>
-          <b-form-input v-model="filters.used.search" placeholder="Listing Name" />
+          <b-form-input v-model="filters.used.search" placeholder="Listing Name" @keyup="doFilter" />
           <b-input-group-append>
             <b-button variant="outline-primary" @click="doFilter">
               <i class="fas fa-search" />
