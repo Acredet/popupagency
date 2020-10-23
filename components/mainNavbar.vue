@@ -61,8 +61,8 @@
           <b-nav-item v-if="!$auth.loggedIn" to="/login">
             login
           </b-nav-item>
-          <b-nav-item v-else @click="$auth.logout('local')">
-            log out
+          <b-nav-item v-else :to="`${$t('link')}admin`">
+            Admin
           </b-nav-item>
           <b-nav-item>
             {{ $t('mainNavbar.contactUs') }}

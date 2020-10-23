@@ -36,8 +36,34 @@
         <h4 class="mt-0 header-title font-wight-bold">
           {{ row.title }}
         </h4>
-        <b-row v-if="row.title !== 'Users:' && $auth.user.role !== 'listing manager'">
+        <b-row>
           <b-col v-for="(card, i) in row.cards" :key="`${row.title}-card-${i}`" xl="3" md="6" cols="12">
+            <div class="card mini-stat bg-primary">
+              <div class="card-body mini-stat-img">
+                <div class="mini-stat-icon">
+                  <b-icon class="float-right" aria-hidden="true" :icon="card.icon" />
+                </div>
+                <div class="text-white">
+                  <h6 class="text-uppercase mb-3">
+                    {{ card.text }}
+                  </h6>
+                  <h4 class="mb-4">
+                    {{ card.num }} {{ card.brefix }}
+                  </h4>
+                  <!-- <span class="badge badge-info"> +11% </span> <span class="ml-2">From previous period</span> -->
+                </div>
+              </div>
+            </div>
+          </b-col>
+        </b-row>
+      </section>
+
+      <section v-if="$auth.user.role !== 'listing manager'" :key="`row-users`">
+        <h4 class="mt-0 header-title font-wight-bold">
+          Users:
+        </h4>
+        <b-row v-if="rows[rows.length - 1]">
+          <b-col v-for="(card, i) in rows[rows.length - 1].cards" :key="`users-card-${i}`" xl="3" md="6" cols="12">
             <div class="card mini-stat bg-primary">
               <div class="card-body mini-stat-img">
                 <div class="mini-stat-icon">

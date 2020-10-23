@@ -19,7 +19,10 @@
       </b-modal>
 
       <b-container>
-        <h2>All Listings:</h2>
+        <div class="d-flex align-items-center justify-content-between">
+          <h2>{{ $t('adminSidebar.listing.allListings') }}:</h2>
+          <b-btn variant="primary" :to="`${$t('link')}admin/listings/add`" v-text="$t('adminSidebar.listing.addNewListing')" />
+        </div>
         <b-table
           :items="items"
           :fields="fields"
