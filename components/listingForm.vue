@@ -170,6 +170,7 @@
               <toggleAllCheckBoxGroup
                 :name="'egenskaper'"
                 :items="renderEgensKaper"
+                :edit="egenskaper"
                 :link="`${$t('link')}admin/listings/tags`"
                 @valueChanged="egenskaper = $event"
               />
@@ -177,14 +178,14 @@
           </b-card>
 
           <b-row>
-            <b-col col="12" md="6">
+            <b-col cols="12" md="6">
               <b-card :title="$t('addListing.inputs.yta.label')">
                 <b-card-body>
                   <b-form-input v-model="Yta" type="number" :placeholder="$t('addListing.inputs.yta.holder')" />
                 </b-card-body>
               </b-card>
             </b-col>
-            <b-col col="12" md="6">
+            <b-col cols="12" md="6">
               <b-card :title="$t('addListing.inputs.placering.label')">
                 <b-card-body>
                   <b-form-input v-model="markplan" :placeholder="$t('addListing.inputs.placering.holder')" />
@@ -210,6 +211,7 @@
               <toggleAllCheckBoxGroup
                 :name="'kategori'"
                 :items="kategoriOpts"
+                :edit="kategori"
                 :state="kategoryValid"
                 :link="`${$t('link')}admin/listings/categories`"
                 @valueChanged="kategori = $event"
@@ -388,6 +390,9 @@
       </b-btn>
       <b-btn v-else :disabled="!valid" variant="primary" block @click="editListing">
         {{ $t('addListing.btns.edit') }}
+      </b-btn>
+      <b-btn variant="success" block @click="addListing('draft')">
+        {{ $t('addListing.btns.add') }}
       </b-btn>
     </b-container>
   </div>
@@ -577,10 +582,10 @@ export default {
       return this.$store.state.sidebarRenderKey
     }
   },
-  mounted () {
+  async created () {
     this.loadingState = true
 
-    this.preparePageData()
+    await this.preparePageData()
     if (this.thereIsListing) { this.assignListingToEdit() }
   },
   methods: {
@@ -694,14 +699,14 @@ export default {
         }
       })
     },
-    createFormDate () {
+    createFormDate (draft) {
       const listing = new FormData(document.getElementById('listing'))
-      listing.delete('Fasta-öppettider')
-      listing.delete('Butik-%22Boxen%22')
-      listing.delete('Mat&Dryck')
-      listing.delete('Event')
-      listing.delete('säsong')
-      listing.delete('user')
+      const keysNotWanted = ['Butik-%22Boxen%22', 'Fasta-öppettider', 'Mat&Dryck', 'Event', 'säsong', 'user', 'egenskaper']
+
+      for (const key in listing) {
+        console.log(key, listing[key])
+        if (keysNotWanted.includes(key)) { listing.delete(key) }
+      }
 
       listing.append('beskreving', JSON.stringify(this.article.beskreving))
       listing.append('title', JSON.stringify(this.title))
@@ -714,6 +719,8 @@ export default {
       listing.append('prispermanad', this.price.manad.val || 0)
       listing.append('prioteradpris', JSON.stringify(this.prioteradpris))
 
+      if (draft) { listing.append('draft', true) }
+
       // ASSIGN TAG
       this.egenskaper.forEach(feat => listing.append('egenskaper[]', JSON.stringify(feat)))
 
@@ -722,7 +729,7 @@ export default {
       listing.append('stad', this.city)
 
       // ASSIGN CATEGORY
-      this.kategori.forEach(cate => listing.append('kategori[]', cate))
+      this.kategori.forEach(cate => listing.append('kategori[]', JSON.stringify(cate)))
 
       listing.append('minstahyresperiod', this.minsta)
       listing.append('langstahyresperiod', this.längsta)
@@ -748,10 +755,10 @@ export default {
 
       return listing
     },
-    async addListing () {
+    async addListing (draft) {
       this.loadingState = true
 
-      const listing = this.createFormDate()
+      const listing = this.createFormDate(draft)
       await this.$axios.$post('/places', listing)
         .then((res) => {
           this.$nextTick(() => {

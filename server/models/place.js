@@ -77,6 +77,10 @@ const PlaceSchema = new mongoose.Schema({
   till: Date,
   kontaktperson: String,
   expiry: Date,
+  draft: {
+    type: Boolean,
+    default: false
+  },
   views: {
     type: Number,
     default: 0

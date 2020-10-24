@@ -115,8 +115,8 @@ module.exports = {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {
-    // baseURL: '/api'
-    baseURL: 'https://popup.dk.se/api'
+    baseURL: '/api'
+    // baseURL: 'https://popup.dk.se/api'
   },
   router: {
     linkActiveClass: 'active'

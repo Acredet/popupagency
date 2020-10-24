@@ -5,9 +5,7 @@
         <b-form-checkbox
           v-model="allSelected"
           :indeterminate="indeterminate"
-          :aria-describedby="name"
           :state="(typeof state === 'boolean') ? state : null"
-          :aria-controls="name"
           @input="toggleAll"
         >
           {{ allSelected ? 'Un-select All' : 'Select All' }}
@@ -15,14 +13,12 @@
       </template>
 
       <b-form-checkbox-group
-        :id="name"
         v-model="selected"
         :options="allItems"
         :state="(typeof state === 'boolean') ? state : null"
         :checked="selected"
         value-field="value"
         :aria-label="`Individual ${name}`"
-        :name="name"
       />
     </b-form-group>
     <p v-else class="text-secondary">
@@ -35,6 +31,10 @@
 <script>
 export default {
   props: {
+    edit: {
+      type: Array,
+      default: () => []
+    },
     name: {
       type: String,
       default: () => ''
@@ -54,6 +54,7 @@ export default {
   },
   data () {
     return {
+      once: true,
       allItems: [],
       selected: [],
       selectedObj: [],
@@ -62,6 +63,17 @@ export default {
     }
   },
   watch: {
+    edit: {
+      immediate: true,
+      deep: true,
+      handler (newValue) {
+        if (this.once && newValue && newValue.length > 0) {
+          console.log('newValue: ', newValue, this.once && newValue && newValue.length > 0)
+          this.selected = newValue.map(x => x.text)
+          this.once = false
+        }
+      }
+    },
     items: {
       immediate: true,
       deep: true,
@@ -72,10 +84,10 @@ export default {
     selected (newVal, oldVal) {
       const objItems = []
       newVal.forEach((element) => {
-        const item = this.items.filter((x, i) => {
-          return x.text === element
-        })
-        objItems.push(item[0])
+        const item = this.items.filter((x, i) => x.text === element)
+        if (item[0]) {
+          objItems.push(item[0])
+        }
       })
       this.selectedObj = objItems
       // Handle changes in individual flavour checkboxes

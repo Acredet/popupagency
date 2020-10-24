@@ -28,58 +28,25 @@ exports.addPlace = async (req, res, next) => {
       req.body[key] = element !== 'null' ? element : null
     }
 
-    console.log('req.user: ', req.user)
-    console.log('prioteradpris: ', req.body.prioteradpris)
-    // Create Place
-    let place = new Place({
-      userId: req.user.id,
-      title: {
-        en: JSON.parse(req.body.title).en,
-        sv: JSON.parse(req.body.title).sv
-      },
-      beskreving: {
-        en: JSON.parse(req.body.beskreving).en,
-        sv: JSON.parse(req.body.beskreving).sv
-      },
-      bildgalleri: req.files['bildgalleri[]'] ? req.files['bildgalleri[]'].map(x => x.filename) : [],
-      cover: req.files['cover[]'] ? req.files['cover[]'].map(x => x.filename) : [],
-      epost: req.body.epost,
-      prisperdag: req.body.prisperdag,
-      prisperhelg: req.body.prisperhelg,
-      prisperlanghelg: req.body.prisperlanghelg,
-      prispervecka: req.body.prispervecka,
-      prispermanad: req.body.prispermanad,
-      prioteradpris: JSON.parse(req.body.prioteradpris),
-      egenskaper: req.body.egenskaper ? req.body.egenskaper.map(x => JSON.parse(x)) : [],
-      yta: req.body.yta,
-      placering: req.body.placering,
-      stad: {
-        en: JSON.parse(req.body.stad).en,
-        sv: JSON.parse(req.body.stad).sv
-      },
-      plats: req.body.plats,
-      kategori: req.body.kategori,
-      planritning: req.files['planritning[]'] ? req.files['planritning[]'].map(x => x.filename) : [],
-      minstahyresperiod: req.body.minstahyresperiod,
-      langstahyresperiod: req.body.langstahyresperiod,
-      fasta: req.body.fasta,
-      butik: req.body.butik,
-      mat: req.body.mat,
-      event: req.body.event,
-      sasongBoxen: req.body.sasongBoxen,
-      timezone: 'timezone',
-      vagvisningen: req.body.vagvisningen,
-      fran: req.body.fran,
-      till: req.body.till,
-      kontaktperson: req.body.kontaktperson,
-      expiry: req.body.expiry
-    })
+    const newPlace = req.body
 
-    place = await place.save()
-    res.status(201).json({
-      success: true,
-      data: place
-    })
+    newPlace.userId = req.user.id
+    newPlace.title = JSON.parse(newPlace.title)
+    newPlace.beskreving = JSON.parse(newPlace.beskreving)
+    newPlace.prioteradpris = JSON.parse(newPlace.prioteradpris)
+    newPlace.stad = JSON.parse(newPlace.stad)
+    newPlace.bildgalleri = req.files['bildgalleri[]'] ? req.files['bildgalleri[]'].map(x => x.filename) : []
+    newPlace.cover = req.files['cover[]'] ? req.files['cover[]'].map(x => x.filename) : []
+    newPlace.planritning = req.files['planritning[]'] ? req.files['planritning[]'].map(x => x.filename) : []
+
+    console.log(newPlace)
+
+    newPlace.egenskaper = req.body.egenskaper ? req.body.egenskaper.map(x => JSON.parse(x)) : []
+    newPlace.kategori = req.body.kategori ? req.body.kategori.map(x => JSON.parse(x)) : []
+
+    // Create Place
+    const place = await new Place(newPlace).save()
+    res.status(201).json({ success: true, data: place })
   } catch (err) {
     console.error(err)
     if (err.code === 11000) {
@@ -127,25 +94,16 @@ exports.updatePlace = async (req, res) => {
   const updata = req.body
 
   if (updata.title) {
-    updata.title = {
-      en: JSON.parse(updata.title).en,
-      sv: JSON.parse(updata.title).sv
-    }
+    updata.title = JSON.parse(updata.title)
   }
 
   if (updata.stad) {
-    updata.stad = {
-      en: JSON.parse(updata.stad).en,
-      sv: JSON.parse(updata.stad).sv
-    }
+    updata.stad = JSON.parse(updata.stad)
   }
 
   console.log(updata.stad)
   if (updata.beskreving) {
-    updata.beskreving = {
-      en: JSON.parse(updata.beskreving).en,
-      sv: JSON.parse(updata.beskreving).sv
-    }
+    updata.beskreving = JSON.parse(updata.beskreving)
   }
   if (updata.prioteradpris) {
     updata.prioteradpris = JSON.parse(req.body.prioteradpris)
