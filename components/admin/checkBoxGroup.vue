@@ -6,7 +6,7 @@
           v-model="allSelected"
           :indeterminate="indeterminate"
           :state="(typeof state === 'boolean') ? state : null"
-          @input="toggleAll"
+          @change="toggleAll"
         >
           {{ allSelected ? 'Un-select All' : 'Select All' }}
         </b-form-checkbox>
@@ -64,12 +64,13 @@ export default {
   },
   watch: {
     edit: {
-      immediate: true,
       deep: true,
       handler (newValue) {
         if (this.once && newValue && newValue.length > 0) {
-          console.log('newValue: ', newValue, this.once && newValue && newValue.length > 0)
-          this.selected = newValue.map(x => x.text)
+          console.log(this.name, 'newValue: ', newValue, this.once && newValue && newValue.length > 0)
+          if (typeof newValue[0] === 'string') {
+            this.selected = newValue.map(x => JSON.parse(x).name[this.$i18n.locale])
+          } else { this.selected = newValue.map(x => x.name[this.$i18n.locale]) }
           this.once = false
         }
       }
@@ -82,22 +83,29 @@ export default {
       }
     },
     selected (newVal, oldVal) {
-      const objItems = []
-      newVal.forEach((element) => {
-        const item = this.items.filter((x, i) => x.text === element)
-        if (item[0]) {
-          objItems.push(item[0])
-        }
-      })
-      this.selectedObj = objItems
+      console.log(newVal, newVal.length, this.items.length)
       // Handle changes in individual flavour checkboxes
-      if (newVal.length === 0) {
+      if (newVal.length === 0) { // unselect
+        this.selectedObj = []
         this.indeterminate = false
         this.allSelected = false
-      } else if (newVal.length === this.items.length) {
+      } else if (newVal.length === this.items.length) { // select All
         this.indeterminate = false
         this.allSelected = true
+        this.selectedObj = this.items.map(item => item.value)
       } else {
+        const objItems = []
+        for (let i = 0; i < this.items.length; i++) {
+          const element = this.items[i]
+          if (newVal.includes(element.value.name[this.$i18n.locale])) {
+            objItems.push(element.value)
+          }
+        }
+        // newVal.forEach((element) => { // select Some
+        //   const item = this.items.filter((x, i) => x.value.name[this.$i18n.locale] === element)
+        //   if (item[0] && item[0].value) { objItems.push(item[0].value) }
+        // })
+        this.selectedObj = objItems
         this.indeterminate = true
         this.allSelected = false
       }

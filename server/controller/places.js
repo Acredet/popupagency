@@ -1,11 +1,14 @@
 const Place = require('../models/place')
 
-// @desc  Get all places
-// @route GET /api/places
-// @access Public
-exports.getPlaces = async (req, res, next) => {
+/**
+ * @description Get all published places
+ * @method get
+ * @route /api/places
+ * @access Public
+ */
+exports.getPublishedPlaces = async (req, res, next) => {
   try {
-    const places = await Place.find({})
+    const places = await Place.find({ draft: false })
     return res.status(200).json({
       success: true,
       ResultsNumber: places.length,
@@ -17,9 +20,50 @@ exports.getPlaces = async (req, res, next) => {
   }
 }
 
-// @desc  Create a place
-// @route POST /api/places
-// @access Public
+/**
+ * @description Get user Draft places
+ * @method get
+ * @route /api/places/draft
+ * @access Private
+ */
+exports.getDraftPlaces = async (req, res, next) => {
+  try {
+    const places = await Place.find({ userId: req.user.id, draft: true })
+    return res.status(200).json({
+      success: true,
+      ResultsNumber: places.length,
+      data: places
+    })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: 'Server error' })
+  }
+}
+
+/**
+ * @description Get one place
+ * @method GET
+ * @route /api/places/:id
+ * @access Private
+ */
+exports.getOnePlace = async (req, res) => {
+  await Place.findOne({ 'title.sv': req.params.id.replace(/[-]/g, ' ') })
+    .then(async (place) => {
+      await Place.find({ 'stad.sv': place.stad.sv })
+        .then((places) => {
+          res.json({ success: true, place, similar: places })
+        })
+        .catch(err => res.status(404).json(err.message))
+    })
+    .catch(err => res.status(404).json(err.message))
+}
+
+/**
+ * @description Create a place
+ * @method POST
+ * @route /api/places/
+ * @access Private
+ */
 exports.addPlace = async (req, res, next) => {
   try {
     // Delete null values
@@ -52,12 +96,12 @@ exports.addPlace = async (req, res, next) => {
     if (err.code === 11000) {
       return res.status(400).json({ error: 'This Place already exists' })
     }
-    res.status(500).json({ error: 'Server error' })
+    res.status(500).json({ error: err })
   }
 }
 
 // @desc  Delete a Place
-// @route Delete /api/Place/id
+// @route Delete /api/places/id
 // @access Private
 exports.deletePlace = (req, res) => {
   Place.findById(req.params.id)
@@ -65,27 +109,18 @@ exports.deletePlace = (req, res) => {
     .catch(err => res.status(404).json(err.message))
 }
 
-/**
- * @description Get one place
- * @method GET
- * @route /api/place/:id
- * @access Private
- */
-exports.getOnePlace = async (req, res) => {
-  await Place.findOne({ 'title.sv': req.params.id.replace(/[-]/g, ' ') })
-    .then(async (place) => {
-      await Place.find({ 'stad.sv': place.stad.sv })
-        .then((places) => {
-          res.json({ success: true, place, similar: places })
-        })
-        .catch(err => res.status(404).json(err.message))
-    })
+exports.deleteAllPlace = (req, res) => {
+  Place.deleteMany({})
+    .then(place => res.json({ success: true }))
     .catch(err => res.status(404).json(err.message))
 }
 
-// @desc  update a Place
-// @route update /api/Place/id
-// @access Private
+/**
+ * @description Update a Place
+ * @method PATCH
+ * @route /api/places/:placeid
+ * @access Private
+ */
 exports.updatePlace = async (req, res) => {
   for (const key in req.body) {
     const element = req.body[key]
@@ -134,11 +169,17 @@ exports.updatePlace = async (req, res) => {
  * @private
  */
 exports.getPlacesAddedByUser = async (req, res) => {
-  await Place.find({ userId: req.params.userid })
+  await Place.find({ userId: req.params.userid, draft: false })
     .then(places => res.status(200).json(places))
     .catch(err => res.status(400).json(err))
 }
 
+/**
+ * @description Increase place views
+ * @route /api/places/view/:id
+ * @method POST
+ * @public
+ */
 exports.addWatch = async (req, res) => {
   await Place.updateOne({ _id: req.params.id }, { $inc: { views: 1 } })
     .then(place => res.json({ place }))

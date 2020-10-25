@@ -95,7 +95,8 @@ export default {
           icon: 'far fa-map',
           subMenu: [
             { url: `/listings/user-listing/${this.$auth.loggedIn ? this.$auth.user._id : ''}`, text: this.$t('adminSidebar.siteSettings.myPlaces') },
-            { url: '/listings/add', text: this.$t('adminSidebar.listing.addNewListing') }
+            { url: '/listings/add', text: this.$t('adminSidebar.listing.addNewListing') },
+            { url: '/listings/drafts', text: 'drafts' }
           ]
         }
       ]

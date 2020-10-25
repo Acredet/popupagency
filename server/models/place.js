@@ -15,8 +15,14 @@ const PlaceSchema = new mongoose.Schema({
     }
   },
   beskreving: {
-    en: String,
-    sv: String
+    en: {
+      type: String,
+      default: ''
+    },
+    sv: {
+      type: String,
+      default: ''
+    }
   },
   bildgalleri: Array,
   cover: Array,
@@ -57,8 +63,14 @@ const PlaceSchema = new mongoose.Schema({
   },
   placering: String,
   stad: {
-    en: String,
-    sv: String
+    en: {
+      type: String,
+      default: ''
+    },
+    sv: {
+      type: String,
+      default: ''
+    }
   },
   plats: String,
   kategori: Array,

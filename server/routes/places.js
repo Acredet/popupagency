@@ -3,12 +3,14 @@ const auth = require('../middleware/auth')
 const { multer } = require('../middleware/upload')
 
 const {
-  getPlaces,
+  getPublishedPlaces,
+  getDraftPlaces,
   getPlacesAddedByUser,
   addPlace,
   deletePlace,
   updatePlace,
   getOnePlace,
+  deleteAllPlace,
   addWatch
 } = require('../controller/places')
 const fields = [{ name: 'bildgalleri[]' }, { name: 'cover[]' }, { name: 'planritning[]' }]
@@ -16,8 +18,9 @@ const router = express.Router()
 
 router
   .route('/', auth)
-  .get(getPlaces)
+  .get(getPublishedPlaces)
   .post(auth, multer.fields(fields), addPlace)
+  .delete(deleteAllPlace)
 
 router
   .route('/:id', auth)
@@ -26,6 +29,7 @@ router
   .patch(multer.none(), updatePlace)
 
 router.get('/user/:userid', auth, getPlacesAddedByUser)
+router.get('/listings/drafts', auth, getDraftPlaces)
 router.patch('/view/:id', addWatch)
 
 router.post('/images', multer.fields(fields), (req, res) => {

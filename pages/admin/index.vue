@@ -32,7 +32,7 @@
         </div>
       </div>
 
-      <section v-for="(row, index) in rows" :key="`row-${index}`">
+      <section v-for="(row, index) in rows.slice(0, rows.length - 1)" :key="`row-${index}`">
         <h4 class="mt-0 header-title font-wight-bold">
           {{ row.title }}
         </h4>

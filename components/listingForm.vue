@@ -170,7 +170,7 @@
               <toggleAllCheckBoxGroup
                 :name="'egenskaper'"
                 :items="renderEgensKaper"
-                :edit="egenskaper"
+                :edit="egenskaperForToggle"
                 :link="`${$t('link')}admin/listings/tags`"
                 @valueChanged="egenskaper = $event"
               />
@@ -211,7 +211,7 @@
               <toggleAllCheckBoxGroup
                 :name="'kategori'"
                 :items="kategoriOpts"
-                :edit="kategori"
+                :edit="kategoriForToggle"
                 :state="kategoryValid"
                 :link="`${$t('link')}admin/listings/categories`"
                 @valueChanged="kategori = $event"
@@ -385,14 +385,14 @@
         </div>
       </b-alert>
       <!-- End Alert -->
-      <b-btn v-if="!thereIsListing" :disabled="!valid" variant="primary" block @click="addListing">
+      <b-btn v-if="!thereIsListing" :disabled="!valid" variant="primary" @click="addListing(false)">
         {{ $t('addListing.btns.add') }}
       </b-btn>
-      <b-btn v-else :disabled="!valid" variant="primary" block @click="editListing">
+      <b-btn v-else :disabled="!valid" variant="warning" @click="editListing(false)">
         {{ $t('addListing.btns.edit') }}
       </b-btn>
-      <b-btn variant="success" block @click="addListing('draft')">
-        {{ $t('addListing.btns.add') }}
+      <b-btn variant="success" @click="saveDraft">
+        Draft
       </b-btn>
     </b-container>
   </div>
@@ -427,6 +427,8 @@ export default {
   },
   data () {
     return {
+      egenskaperForToggle: null,
+      kategoriForToggle: null,
       loadingState: false,
       title: {
         en: null,
@@ -556,10 +558,10 @@ export default {
       return !!this.$route.params.id
     },
     titleValidEn () {
-      return !!this.title.en
+      return !!this.title.en && !this.title.en.includes('-')
     },
     titleValidSv () {
-      return !!this.title.sv
+      return !!this.title.sv && !this.title.sv.includes('-')
     },
     stadValid () {
       return !!this.city
@@ -601,7 +603,7 @@ export default {
         .then((res) => {
           console.log(res)
           const users = res[0].data
-          const regions = res[1].data
+          const regions = res[1].data.filter(x => !!x.centrum)
           const categories = res[2].data
           const tags = res[3].data
           const lang = this.$i18n.getLocaleCookie()
@@ -621,7 +623,7 @@ export default {
             }
           })
           this.kategoriOpts = categories.map((x) => {
-            return { text: x.name[lang], value: x.name[lang] }
+            return { text: x.name[lang], value: { name: x.name, avatar: x.avatar } }
           })
           this.loadingState = false
         })
@@ -669,14 +671,18 @@ export default {
 
       // DETERMINE THE prispervecka
       this.prioteradpris = prioteradpris
-      this.price[prioteradpris.period].temp = true
+      if (this.price[prioteradpris.period]) {
+        this.price[prioteradpris.period].temp = true
+      }
       this.price.prioteradpris.val = prioteradpris.val
 
       // ADD TAGS
       this.egenskaper = egenskaper
+      this.egenskaperForToggle = egenskaper
 
       // ADD CATEGORY
       this.kategori = kategori
+      this.kategoriForToggle = kategori
 
       // ASSIGN YES AND NO INPUTS
       const yesNoFromListing = ['fasta', 'butik', 'mat', 'event']
@@ -719,7 +725,7 @@ export default {
       listing.append('prispermanad', this.price.manad.val || 0)
       listing.append('prioteradpris', JSON.stringify(this.prioteradpris))
 
-      if (draft) { listing.append('draft', true) }
+      listing.append('draft', draft)
 
       // ASSIGN TAG
       this.egenskaper.forEach(feat => listing.append('egenskaper[]', JSON.stringify(feat)))
@@ -755,6 +761,13 @@ export default {
 
       return listing
     },
+    async saveDraft () {
+      if (this.listing) {
+        await this.editListing(true)
+      } else {
+        this.addListing(false)
+      }
+    },
     async addListing (draft) {
       this.loadingState = true
 
@@ -777,10 +790,10 @@ export default {
     deleteImageFromExistingArray (index, name) {
       this.images[name].splice(index, 1)
     },
-    async editListing () {
+    async editListing (draft) {
       this.loadingState = true
 
-      const listing = this.createFormDate()
+      const listing = this.createFormDate(draft)
 
       const bildgalleri = this.listing.bildgalleri ? [...this.listing.bildgalleri] : []
       const cover = this.listing.cover ? [...this.listing.cover] : []
