@@ -33,14 +33,15 @@ export const mutations = {
     } else if (sortType === 'oldest') {
       state.cards = state.cards.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
     } else if (sortType === 'priceLowToHigh') {
-      state.cards = state.cards.sort((a, b) => a.prioteradpris - b.prioteradpris)
+      state.cards = state.cards.sort((a, b) => a.prioteradpris.val - b.prioteradpris.val)
     } else if (sortType === 'priceHighToLow') {
-      state.cards = state.cards.sort((a, b) => b.prioteradpris - a.prioteradpris)
+      state.cards = state.cards.sort((a, b) => b.prioteradpris.val - a.prioteradpris.val)
     } else if (sortType === 'sizeLowToHigh') {
       state.cards = state.cards.sort((a, b) => a.yta - b.yta)
     } else if (sortType === 'sizeHighToLow') {
       state.cards = state.cards.sort((a, b) => b.yta - a.yta)
     }
+    console.log(state.cards[0].price)
   },
   cards (state, cards) {
     state.cards = cards
