@@ -51,8 +51,8 @@ export default {
           text: this.$t('adminSidebar.listing.text'),
           icon: 'far fa-map',
           subMenu: [
-            { url: '/listings/add', text: this.$t('adminSidebar.listing.addNewListing') },
             { url: '/listings/', text: this.$t('adminSidebar.listing.allListings') },
+            { url: '/listings/add', text: this.$t('adminSidebar.listing.addNewListing') },
             { url: '/listings/region', text: this.$t('adminSidebar.listing.region') },
             { url: '/listings/tags', text: this.$t('adminSidebar.listing.tags') },
             { url: '/listings/categories', text: this.$t('adminSidebar.listing.categories') }
@@ -63,8 +63,8 @@ export default {
           text: 'Centrums',
           icon: 'fas fa-store-alt',
           subMenu: [
-            { url: '/centrum/add', text: this.$t('adminSidebar.center.add') },
             { url: '/centrum/', text: this.$t('adminSidebar.center.all') }
+            { url: '/centrum/add', text: this.$t('adminSidebar.center.add') },
           ]
         },
         {
