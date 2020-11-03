@@ -763,9 +763,10 @@ export default {
     },
     async saveDraft () {
       if (this.listing) {
+        // The Boolean value here is the value of the draft property in the place object.
         await this.editListing(true)
       } else {
-        this.addListing(false)
+        await this.addListing(false)
       }
     },
     async addListing (draft) {
@@ -775,7 +776,11 @@ export default {
       await this.$axios.$post('/places', listing)
         .then((res) => {
           this.$nextTick(() => {
-            this.$router.push('/admin/listings/')
+            if (draft) {
+              this.$router.push(`${this.$t('link')}/admin/listings/`)
+            } else {
+              this.$router.push(`${this.$t('link')}/admin/listings/drafts`)
+            }
           })
         })
         .catch((err) => {
@@ -844,7 +849,13 @@ export default {
         console.log(pair[0], ':', pair[1])
       }
       await this.$axios.$patch(`/places/${this.listing._id}`, listing)
-        .then(res => this.$router.push('/admin/listings/'))
+        .then((res) => {
+          if (draft) {
+            this.$router.push(`${this.$t('link')}/admin/listings/`)
+          } else {
+            this.$router.push(`${this.$t('link')}/admin/listings/drafts`)
+          }
+        })
         .catch((err) => {
           this.toast = {
             title: this.$t('region.toast.error'),
