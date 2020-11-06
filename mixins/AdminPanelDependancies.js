@@ -13,7 +13,7 @@ exports.AdminPanelDependancies = {
       // eslint-disable-next-line no-unused-expressions
       !(function ($) {
         'use strict'
-
+        console.log($)
         const MainApp = function () {}
 
         // eslint-disable-next-line no-unused-expressions
@@ -127,7 +127,7 @@ exports.AdminPanelDependancies = {
         { href: '/css/admin-styles.css', rel: 'stylesheet', type: 'text/css', body: true }
       ],
       script: [
-        { src: '/js/adminfiles.js' }
+        { async: true, defer: true, src: '/js/adminfiles.js' }
       ]
     }
   }

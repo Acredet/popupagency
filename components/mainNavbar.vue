@@ -61,7 +61,7 @@
           <b-nav-item v-if="!$auth.loggedIn" to="/login">
             login
           </b-nav-item>
-          <b-nav-item v-else :to="`${$t('link')}admin`">
+          <b-nav-item v-else :href="`${$t('link')}admin`">
             Admin
           </b-nav-item>
           <b-nav-item>

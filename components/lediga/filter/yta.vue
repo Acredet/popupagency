@@ -11,6 +11,7 @@
         ref="slider"
         v-model="value"
         class="w-100"
+        :min-range="1"
         :interval="step"
         :min="minAndMax.min"
         :max="minAndMax.max"
@@ -75,8 +76,10 @@ export default {
       this.$emit('ytaChanged', this.value)
     },
     updateValue (newValue) {
-      this.$refs.slider.setValue([newValue.min, newValue.max])
-      this.$nextTick(() => this.$forceUpdate())
+      if (this.$refs && this.$refs.slider) {
+        this.$refs.slider.setValue([newValue.min, newValue.max])
+        this.$nextTick(() => this.$forceUpdate())
+      }
     }
   }
 }

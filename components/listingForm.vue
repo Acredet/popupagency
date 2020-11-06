@@ -766,7 +766,7 @@ export default {
         // The Boolean value here is the value of the draft property in the place object.
         await this.editListing(true)
       } else {
-        await this.addListing(false)
+        await this.addListing(true)
       }
     },
     async addListing (draft) {
@@ -777,9 +777,9 @@ export default {
         .then((res) => {
           this.$nextTick(() => {
             if (draft) {
-              this.$router.push(`${this.$t('link')}/admin/listings/`)
+              window.location.href = `https://popup.dk.se/${this.$i18n.locale === 'en' ? 'en/' : ''}admin/listings/drafts`
             } else {
-              this.$router.push(`${this.$t('link')}/admin/listings/drafts`)
+              window.location.href = `https://popup.dk.se/${this.$i18n.locale === 'en' ? 'en/' : ''}admin/listings/`
             }
           })
         })
@@ -851,9 +851,9 @@ export default {
       await this.$axios.$patch(`/places/${this.listing._id}`, listing)
         .then((res) => {
           if (draft) {
-            this.$router.push(`${this.$t('link')}/admin/listings/`)
+            window.location.href = `https://popup.dk.se/${this.$i18n.locale === 'en' ? 'en/' : ''}admin/listings/drafts`
           } else {
-            this.$router.push(`${this.$t('link')}/admin/listings/drafts`)
+            window.location.href = `https://popup.dk.se/${this.$i18n.locale === 'en' ? 'en/' : ''}admin/listings/`
           }
         })
         .catch((err) => {
