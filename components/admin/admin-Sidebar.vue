@@ -64,7 +64,7 @@ export default {
           icon: 'fas fa-store-alt',
           subMenu: [
             { url: '/centrum/', text: this.$t('adminSidebar.center.all') },
-            { url: '/centrum/add', text: this.$t('adminSidebar.center.add') },
+            { url: '/centrum/add', text: this.$t('adminSidebar.center.add') }
           ]
         },
         {

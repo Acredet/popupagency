@@ -1,3 +1,13 @@
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+.page-content {
+  flex-grow: 1;
+}
+
+
 * {
   font-family: 'Abel', sans-serif;
   scrollbar-width: thin;

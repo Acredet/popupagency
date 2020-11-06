@@ -1,7 +1,7 @@
 <template>
   <div>
     <main-navbar />
-    <div class="pt-5 mt-2">
+    <div class="page-content pt-5 mt-2">
       <Nuxt />
     </div>
     <main-footer />

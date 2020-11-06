@@ -5,9 +5,9 @@ exports.AdminPanelDependancies = {
       this.$nextTick(this.initApp())
     }
   },
-  // updated () {
-  //   this.$nextTick(this.initApp())
-  // },
+  updated () {
+    this.$nextTick(this.initApp())
+  },
   methods: {
     initApp () {
       // eslint-disable-next-line no-unused-expressions

@@ -26,9 +26,9 @@
           >
             <ul>
               <li v-for="(one, index1) in link.subList" :key="String(index1)" class="font-3">
-                <nuxt-link exact :to="`${$t('link')}${one.url}`">
+                <a :href="`https://popup.dk.se${$i18n.locale === 'en' ? 'en/' : ''}${one.url}`">
                   {{ one.text }}
-                </nuxt-link>
+                </a>
               </li>
             </ul>
           </b-collapse>

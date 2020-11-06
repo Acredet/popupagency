@@ -48,7 +48,7 @@ export default {
     minAndMax: {
       type: Object,
       default: () => {
-        return { min: 0, max: 100 }
+        return { min: 0, max: 1 }
       }
     }
   },
@@ -66,7 +66,7 @@ export default {
         if (this.once === 0 && newValue.min !== newValue.max) {
           console.log('LOOOOL', newValue.min, newValue.max)
           this.updateValue(newValue)
-          this.once++
+          this.once += 1
         }
       }
     }
