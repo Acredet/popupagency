@@ -96,11 +96,11 @@ export default {
   adminSidebar: {
     main: 'Main',
     listing: {
-      text: 'Listning',
-      addNewListing: 'Lägg till ny lista',
-      allListings: 'Alla listor',
+      text: 'Lokaler',
+      addNewListing: 'Lägg till ny lokal',
+      allListings: 'Alla lokaler',
       region: 'Region',
-      tags: 'Taggar',
+      tags: 'Faciliteter',
       categories: 'Kategorier'
     },
     center: {
@@ -114,14 +114,14 @@ export default {
       addUser: 'Lägg till användare',
       role: {
         admins: 'Administratörer',
-        manger: 'Listning chefer',
-        owener: 'Noteringsägare',
-        space: 'Utrymmeägare',
-        searcher: 'Sökare'
+        manger: 'Popup Manager',
+        owener: 'Fastighetsägare',
+        space: 'Plats uthyrare',
+        searcher: 'Intresserare'
       }
     },
     siteSettings: {
-      text: 'webbplatsinställningar',
+      text: 'Inställningar',
       myPlaces: 'Mina platser'
     }
   },
