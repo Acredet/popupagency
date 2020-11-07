@@ -611,7 +611,7 @@ export default {
       this.$viewer[name].view(index)
     },
     format (num) {
-      return String(num).replace(/(?<!\..*)(\d)(?=(?:\d{3})+(?:\.|$))/g, '$1,')
+      return 0
     }
   }
 }
