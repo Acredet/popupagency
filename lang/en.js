@@ -443,7 +443,8 @@ export default {
       location: 'You should add location',
       category: 'You should choose kategory',
       lokalens: 'You should choose lokalens',
-      propteradpris: 'You should choose prioteradpris'
+      propteradpris: 'You should choose prioteradpris',
+      cover: 'You should add at least cover image'
     },
     btns: {
       add: 'Add Listing',

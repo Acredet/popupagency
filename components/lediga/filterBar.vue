@@ -117,7 +117,7 @@
           <b-dropdown-group class="px-3">
             <p>{{ $t('ledigaLokaler.filters.price') }}</p>
             <client-only>
-              <yta-filter :identifier="2" :slider-type="'price'" :min-and-max="filters.price" @ytaChanged="ytaChanged('price', $event)" />
+              <yta-filter :identifier="2" :slider-type="'price'" :step="1000" :min-and-max="filters.price" @ytaChanged="ytaChanged('price', $event)" />
             </client-only>
             <b-btn variant="primary" class="okay" @click="doFilter">
               Ok

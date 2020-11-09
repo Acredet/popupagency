@@ -442,7 +442,8 @@ export default {
       location: 'Du bör lägga till plats',
       category: 'Du bör välja kategori',
       lokalens: 'Du bör välja lokalens',
-      propteradpris: 'Du bör välja prioteradpris'
+      propteradpris: 'Du bör välja prioteradpris',
+      cover: 'Du bör lägga till åtminstone omslagsbild'
     },
     btns: {
       add: 'Lägg till lista',

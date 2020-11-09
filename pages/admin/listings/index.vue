@@ -64,7 +64,7 @@
               <template v-slot:button-content>
                 <b>{{ $t('actions.actions') }}</b>
               </template>
-              <b-dropdown-item :to="`/admin/listings/edit/${data.item.title.sv.replaceAll(' ', '-')}`">
+              <b-dropdown-item :to="`/admin/listings/edit/${data.item.title.sv.split(' ').join('-')}`">
                 {{ $t('actions.edit') }}
               </b-dropdown-item>
               <b-dropdown-item v-b-modal.delete-modal @click="editForm = data.item">

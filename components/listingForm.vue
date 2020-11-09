@@ -5,7 +5,7 @@
       <h2 class="my-3">
         {{ $t('addListing.title') }}
       </h2>
-      <form id="listing" enctype="multipart/form-data">
+      <form id="listing" ref="listing-form" enctype="multipart/form-data">
         <div>
           <b-card :title="$t('addListing.inputs.title.label')">
             <b-card-body>
@@ -550,7 +550,8 @@ export default {
       prioteradpris: {
         period: '',
         val: ''
-      }
+      },
+      coverImageValid: false
     }
   },
   computed: {
@@ -577,8 +578,7 @@ export default {
               !!this.titleValidSv &&
               !!this.stadValid &&
               !!this.kategoryValid &&
-              !!this.lokalensValid &&
-              !!this.prioteradpris.val
+              !!this.lokalensValid
     },
     renderKey () {
       return this.$store.state.sidebarRenderKey
@@ -692,74 +692,82 @@ export default {
       this.loadingState = false
     },
     setPrioteradPrice (card) {
-      console.log(this.price[card])
-      this.$nextTick(() => {
-        for (const key in this.price) {
-          const obj = this.price[key]
-          if (key !== card) {
-            obj.temp = false
-          } else {
-            this.price.prioteradpris.val = this.price[card].val
-            this.prioteradpris = { period: key, val: this.price[card].val }
-          }
-        }
-      })
+      for (const key in this.price) {
+        const obj = this.price[key]
+        if (key !== card) { obj.temp = false } else { obj.temp = true }
+      }
     },
     createFormDate (draft) {
       const listing = new FormData(document.getElementById('listing'))
-      const keysNotWanted = ['Butik-%22Boxen%22', 'Fasta-öppettider', 'Mat&Dryck', 'Event', 'säsong', 'user', 'egenskaper']
+      const cover = listing.get('cover[]')
+      console.log(cover.name, cover.name !== '')
+      if (cover.name !== '' || (this.images.cover && this.images.cover.length > 0)) {
+        const keysNotWanted = ['Butik-%22Boxen%22', 'Fasta-öppettider', 'Mat&Dryck', 'Event', 'säsong', 'user', 'egenskaper']
 
-      for (const key in listing) {
-        console.log(key, listing[key])
-        if (keysNotWanted.includes(key)) { listing.delete(key) }
-      }
-
-      listing.append('beskreving', JSON.stringify(this.article.beskreving))
-      listing.append('title', JSON.stringify(this.title))
-
-      // ASSIGN THE PRICE
-      listing.append('prisperdag', this.price.day.val || 0)
-      listing.append('prisperhelg', this.price.helg.val || 0)
-      listing.append('prisperlanghelg', this.price.langheig.val || 0)
-      listing.append('prispervecka', this.price.veckopris.val || 0)
-      listing.append('prispermanad', this.price.manad.val || 0)
-      listing.append('prioteradpris', JSON.stringify(this.prioteradpris))
-
-      listing.append('draft', draft)
-
-      // ASSIGN TAG
-      this.egenskaper.forEach(feat => listing.append('egenskaper[]', JSON.stringify(feat)))
-
-      listing.append('yta', this.Yta)
-      listing.append('placering', this.markplan)
-      listing.append('stad', this.city)
-
-      // ASSIGN CATEGORY
-      this.kategori.forEach(cate => listing.append('kategori[]', JSON.stringify(cate)))
-
-      listing.append('minstahyresperiod', this.minsta)
-      listing.append('langstahyresperiod', this.längsta)
-
-      for (const key in this.yesNoInputsVal) {
-        // eslint-disable-next-line no-prototype-builtins
-        if (this.yesNoInputsVal.hasOwnProperty(key)) {
-          const value = this.yesNoInputsVal[key]
-          // console.log(key, value)
-          if (value) { listing.append(key, value) } else { listing.append(key, false) }
+        for (const key in listing) {
+          console.log(key, listing[key])
+          if (keysNotWanted.includes(key)) { listing.delete(key) }
         }
+
+        listing.append('beskreving', JSON.stringify(this.article.beskreving))
+        listing.append('title', JSON.stringify(this.title))
+
+        // ASSIGN THE PRICE
+        listing.append('prisperdag', this.price.day.val || 0)
+        listing.append('prisperhelg', this.price.helg.val || 0)
+        listing.append('prisperlanghelg', this.price.langheig.val || 0)
+        listing.append('prispervecka', this.price.veckopris.val || 0)
+        listing.append('prispermanad', this.price.manad.val || 0)
+        for (const key in this.price) {
+          this.price.prioteradpris.val = this.price[key].val
+          this.prioteradpris = { period: key, val: this.price[key].val }
+        }
+        listing.append('prioteradpris', JSON.stringify(this.prioteradpris))
+
+        listing.append('draft', draft)
+
+        // ASSIGN TAG
+        this.egenskaper.forEach(feat => listing.append('egenskaper[]', JSON.stringify(feat)))
+
+        listing.append('yta', this.Yta)
+        listing.append('placering', this.markplan)
+        listing.append('stad', this.city)
+
+        // ASSIGN CATEGORY
+        this.kategori.forEach(cate => listing.append('kategori[]', JSON.stringify(cate)))
+
+        listing.append('minstahyresperiod', this.minsta)
+        listing.append('langstahyresperiod', this.längsta)
+
+        for (const key in this.yesNoInputsVal) {
+        // eslint-disable-next-line no-prototype-builtins
+          if (this.yesNoInputsVal.hasOwnProperty(key)) {
+            const value = this.yesNoInputsVal[key]
+            // console.log(key, value)
+            if (value) { listing.append(key, value) } else { listing.append(key, false) }
+          }
+        }
+
+        listing.append('sasongBoxen', this.sasong)
+        listing.append('hemsida', this.hamside)
+
+        listing.append('vagvisningen', this.vagvisningen)
+        listing.append('fran', this.fran)
+        listing.append('till', this.till)
+
+        listing.append('kontaktperson', this.lokal)
+        listing.append('expiry', this.expiry)
+
+        return listing
+      } else {
+        this.$bvToast.toast(this.$t('addListing.errors.cover'), {
+          title: this.$t('region.toast.error'),
+          autoHideDelay: 5000,
+          appendToast: true,
+          variant: 'danger'
+        })
+        return false
       }
-
-      listing.append('sasongBoxen', this.sasong)
-      listing.append('hemsida', this.hamside)
-
-      listing.append('vagvisningen', this.vagvisningen)
-      listing.append('fran', this.fran)
-      listing.append('till', this.till)
-
-      listing.append('kontaktperson', this.lokal)
-      listing.append('expiry', this.expiry)
-
-      return listing
     },
     async saveDraft () {
       if (this.listing) {
@@ -773,24 +781,28 @@ export default {
       this.loadingState = true
 
       const listing = this.createFormDate(draft)
-      await this.$axios.$post('/places', listing)
-        .then((res) => {
-          this.$nextTick(() => {
-            if (draft) {
-              window.location.href = `https://popup.dk.se/${this.$i18n.locale === 'en' ? 'en/' : ''}admin/listings/drafts`
-            } else {
-              window.location.href = `https://popup.dk.se/${this.$i18n.locale === 'en' ? 'en/' : ''}admin/listings/`
-            }
+      if (listing) {
+        await this.$axios.$post('/places', listing)
+          .then((res) => {
+            this.$nextTick(() => {
+              if (draft) {
+                window.location.href = `https://popup.dk.se/${this.$i18n.locale === 'en' ? 'en/' : ''}admin/listings/drafts`
+              } else {
+                window.location.href = `https://popup.dk.se/${this.$i18n.locale === 'en' ? 'en/' : ''}admin/listings/`
+              }
+            })
           })
-        })
-        .catch((err) => {
-          this.$bvToast.toast(err.response.data.msg, {
-            title: this.$t('region.toast.error'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'danger'
+          .catch((err) => {
+            this.$bvToast.toast(err.response.data.msg, {
+              title: this.$t('region.toast.error'),
+              autoHideDelay: 5000,
+              appendToast: true,
+              variant: 'danger'
+            })
           })
-        })
+      } else {
+        this.loadingState = false
+      }
     },
     deleteImageFromExistingArray (index, name) {
       this.images[name].splice(index, 1)
@@ -799,71 +811,74 @@ export default {
       this.loadingState = true
 
       const listing = this.createFormDate(draft)
+      if (listing) {
+        const bildgalleri = this.listing.bildgalleri ? [...this.listing.bildgalleri] : []
+        const cover = this.listing.cover ? [...this.listing.cover] : []
+        const planritning = this.listing.planritning ? [...this.listing.planritning] : []
 
-      const bildgalleri = this.listing.bildgalleri ? [...this.listing.bildgalleri] : []
-      const cover = this.listing.cover ? [...this.listing.cover] : []
-      const planritning = this.listing.planritning ? [...this.listing.planritning] : []
+        for (const pair of listing.entries()) { // post Images First
+          if (pair[0] === 'bildgalleri[]') {
+            const data = new FormData()
+            if (pair[1].name) {
+              data.append('bildgalleri[]', pair[1]); data.append('name', 'bildgalleri[]')
 
-      for (const pair of listing.entries()) { // post Images First
-        if (pair[0] === 'bildgalleri[]') {
-          const data = new FormData()
-          if (pair[1].name) {
-            data.append('bildgalleri[]', pair[1]); data.append('name', 'bildgalleri[]')
+              await this.$axios.$post('/places/images', data)
+                .then(res => bildgalleri.push(res))
+                .catch(err => console.log(err))
+            }
+          } else if (pair[0] === 'cover[]') {
+            const data = new FormData()
+            if (pair[1].name) {
+              data.append('cover[]', pair[1]); data.append('name', 'cover[]')
 
-            await this.$axios.$post('/places/images', data)
-              .then(res => bildgalleri.push(res))
-              .catch(err => console.log(err))
-          }
-        } else if (pair[0] === 'cover[]') {
-          const data = new FormData()
-          if (pair[1].name) {
-            data.append('cover[]', pair[1]); data.append('name', 'cover[]')
+              await this.$axios.$post('/places/images', data)
+                .then(res => cover.push(res))
+                .catch(err => console.log(err))
+            }
+          } else if (pair[0] === 'planritning[]') {
+            const data = new FormData()
+            if (pair[1].name) {
+              data.append('planritning[]', pair[1]); data.append('name', 'planritning[]')
 
-            await this.$axios.$post('/places/images', data)
-              .then(res => cover.push(res))
-              .catch(err => console.log(err))
-          }
-        } else if (pair[0] === 'planritning[]') {
-          const data = new FormData()
-          if (pair[1].name) {
-            data.append('planritning[]', pair[1]); data.append('name', 'planritning[]')
-
-            await this.$axios.$post('/places/images', data)
-              .then(res => planritning.push(res))
-              .catch(err => console.log(err))
+              await this.$axios.$post('/places/images', data)
+                .then(res => planritning.push(res))
+                .catch(err => console.log(err))
+            }
           }
         }
+
+        // DELETE THE INPUTS
+        listing.delete('bildgalleri[]')
+        listing.delete('cover[]')
+        listing.delete('planritning[]')
+
+        // APPEND THE ARRAY WE CREATED 😉
+        listing.append('bildgalleri', JSON.stringify(bildgalleri))
+        listing.append('cover', JSON.stringify(cover))
+        listing.append('planritning', JSON.stringify(planritning))
+
+        for (const pair of listing.entries()) {
+          console.log(pair[0], ':', pair[1])
+        }
+        await this.$axios.$patch(`/places/${this.listing._id}`, listing)
+          .then((res) => {
+            if (draft) {
+              window.location.href = `https://popup.dk.se/${this.$i18n.locale === 'en' ? 'en/' : ''}admin/listings/drafts`
+            } else {
+              window.location.href = `https://popup.dk.se/${this.$i18n.locale === 'en' ? 'en/' : ''}admin/listings/`
+            }
+          })
+          .catch((err) => {
+            this.toast = {
+              title: this.$t('region.toast.error'),
+              variant: 'danger',
+              visible: true,
+              text: err.message
+            }
+          })
+      } else {
+        this.loadingState = false
       }
-
-      // DELETE THE INPUTS
-      listing.delete('bildgalleri[]')
-      listing.delete('cover[]')
-      listing.delete('planritning[]')
-
-      // APPEND THE ARRAY WE CREATED 😉
-      listing.append('bildgalleri', JSON.stringify(bildgalleri))
-      listing.append('cover', JSON.stringify(cover))
-      listing.append('planritning', JSON.stringify(planritning))
-
-      for (const pair of listing.entries()) {
-        console.log(pair[0], ':', pair[1])
-      }
-      await this.$axios.$patch(`/places/${this.listing._id}`, listing)
-        .then((res) => {
-          if (draft) {
-            window.location.href = `https://popup.dk.se/${this.$i18n.locale === 'en' ? 'en/' : ''}admin/listings/drafts`
-          } else {
-            window.location.href = `https://popup.dk.se/${this.$i18n.locale === 'en' ? 'en/' : ''}admin/listings/`
-          }
-        })
-        .catch((err) => {
-          this.toast = {
-            title: this.$t('region.toast.error'),
-            variant: 'danger',
-            visible: true,
-            text: err.message
-          }
-        })
     }
   }
 }
