@@ -31,7 +31,7 @@
             type="password"
             :state="passwordValid"
             required
-            :placeholder="$t('addUser.inputs.email.holder')"
+            :placeholder="$t('addUser.inputs.password.holder')"
           />
 
           <b-form-invalid-feedback :state="passwordValid">
@@ -146,7 +146,7 @@ export default {
           this.busy = false
         })
         .catch((err) => {
-          this.$bvToast.toast(err, {
+          this.$bvToast.toast(err.response.data, {
             title: this.$t('category.toast.err'),
             autoHideDelay: 5000,
             appendToast: true,
