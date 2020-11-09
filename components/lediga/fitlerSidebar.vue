@@ -11,7 +11,7 @@
 
         <b-collapse id="price" accordion="filters" role="tabpanel">
           <div class="px-2">
-            <yta-filter :identifier="0" :slider-type="'price'" :min-and-max="filters.price" @ytaChanged="ytaChanged('price', $event)" />
+            <yta-filter :identifier="0" :slider-type="'price'" :step="1000" :min-and-max="filters.price" @ytaChanged="ytaChanged('price', $event)" />
             <b-btn variant="primary" @click="doFilter">
               Ok
             </b-btn>
@@ -27,7 +27,7 @@
 
         <b-collapse id="yta" accordion="filters" role="tabpanel">
           <div class="px-2">
-            <yta-filter :identifier="1" :slider-type="'yta'" :min-and-max="filters.yta" @ytaChanged="ytaChanged('yta', $event)" />
+            <yta-filter :identifier="1" :slider-type="'yta'" :step="1" :min-and-max="filters.yta" @ytaChanged="ytaChanged('yta', $event)" />
             <b-btn variant="primary" @click="doFilter">
               Ok
             </b-btn>
