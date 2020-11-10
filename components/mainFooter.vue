@@ -17,7 +17,7 @@
             <b-col v-for="link in links" :key="link.text" cols="12" md="6">
               <nuxt-link class="footer-link" :to="`${$t('link')}${link.url}`">
                 <i v-if="link.check" class="fas fa-check text-info mr-1" />
-                {{ link.text }}
+                {{$t(`mainFooter.links.${link.text}`)}}
               </nuxt-link>
             </b-col>
           </b-row>
@@ -64,15 +64,15 @@ export default {
   data () {
     return {
       links: [
-        { text: this.$t('mainFooter.links.home'), url: 'lediga-lokaler' },
-        { text: this.$t('mainFooter.links.coworker'), url: 'lediga-lokaler' },
-        { text: this.$t('mainFooter.links.aboutUs'), url: 'lediga-lokaler' },
-        { text: this.$t('mainFooter.links.freeJobs'), url: 'lediga-lokaler' },
-        { text: this.$t('mainFooter.links.rentAPopup'), url: 'lediga-lokaler' },
-        { text: this.$t('mainFooter.links.popupNews'), url: 'lediga-lokaler' },
-        { text: this.$t('mainFooter.links.rentOutYourPremises'), url: 'lediga-lokaler' },
-        { text: this.$t('mainFooter.links.handlingOfPersonalData'), check: true, url: 'lediga-lokaler' },
-        { text: this.$t('mainFooter.links.availableFacilities'), check: true, url: 'lediga-lokaler' }
+        { text: 'home', url: 'lediga-lokaler' },
+        { text: 'coworker', url: 'lediga-lokaler' },
+        { text: 'aboutUs', url: 'lediga-lokaler' },
+        { text: 'freeJobs', url: 'lediga-lokaler' },
+        { text: 'rentAPopup', url: 'lediga-lokaler' },
+        { text: 'popupNews', url: 'lediga-lokaler' },
+        { text: 'rentOutYourPremises', url: 'lediga-lokaler' },
+        { text: 'handlingOfPersonalData', check: true, url: 'lediga-lokaler' },
+        { text: 'availableFacilities', check: true, url: 'lediga-lokaler' }
       ],
       socialLinks: [
         { icon: 'fab fa-facebook-f', href: 'https://sv-se.facebook.com/popupagency', color: '#3b5998' },

@@ -13,11 +13,6 @@ export default {
       listing: null
     }
   },
-  created () {
-    if (!this.$auth.loggedIn || !['manager', 'admin'].includes(this.$auth.user.role)) {
-      this.$router.push('/error')
-    }
-  },
   async mounted () {
     await this.$axios.$get(`/places/${this.$route.params.id}`)
       .then((res) => {

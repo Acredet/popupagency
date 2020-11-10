@@ -17,6 +17,7 @@ import { AdminPanelDependancies } from '@/mixins/AdminPanelDependancies'
 
 export default {
   name: 'AdminLayout',
+  middleware:["authAdmin"],
   components: {
     adminHeader,
     // adminFooter,

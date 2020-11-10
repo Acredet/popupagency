@@ -18,15 +18,11 @@ export default {
     }
   },
   async created () {
-    if (!this.$auth.loggedIn || !['manager', 'admin'].includes(this.$auth.user.role)) {
-      this.$router.push('/error')
-    } else {
       await this.$axios.get(`/centrum/${this.$route.params.id}`)
         .then((res) => {
           this.centrum = res.data
         })
         .catch(err => console.log(err))
     }
-  }
 }
 </script>

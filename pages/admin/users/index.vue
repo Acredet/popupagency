@@ -133,11 +133,6 @@ export default {
       }
     }
   },
-  created () {
-    if (!this.$auth.loggedIn || this.$auth.user.role !== 'admin') {
-      this.$router.push('/error')
-    }
-  },
   mounted () {
     this.getUsers()
   },
