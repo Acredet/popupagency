@@ -59,7 +59,7 @@
           <!-- End sidebar -->
         </b-navbar-toggle>
 
-        <b-navbar-brand to="/">
+        <b-navbar-brand :to="localePath('/')">
           <b-img :src="variant ? require('@/assets/img/logo-white.png') : require('@/assets/img/logo.png')" class="logo" />
         </b-navbar-brand>
         <div />
@@ -67,11 +67,11 @@
 
       <b-collapse id="navbar-toggle-collapse" is-nav>
         <b-navbar-nav class="w-100 d-sm-flex justify-content-sm-between align-items-sm-center">
-          <b-nav-item v-if="!$auth.loggedIn" to="/login">
+          <b-nav-item v-if="!$auth.loggedIn" :to="localePath('/login')">
             login
           </b-nav-item>
 <!--          display only this navbar if the current user is the admin -->
-          <b-nav-item v-if="isAdmin" :href="`${$t('link')}admin`">
+          <b-nav-item v-if="isAdmin" :href="localePath('/admin')">
             Admin
           </b-nav-item>
           <b-nav-item>
@@ -121,7 +121,7 @@
             </b-dropdown-item>
           </b-nav-item-dropdown>
 
-          <b-nav-item to="/">
+          <b-nav-item :to="localePath('/')">
             <b-img :src="variant ? require('@/assets/img/logo-white.png') : require('@/assets/img/logo.png')" class="logo" />
           </b-nav-item>
 
@@ -131,11 +131,11 @@
             :text="$t('mainNavbar.blogAndPress')"
             left
           >
-            <b-dropdown-item :to="`${$t('link')}lediga-lokaler`">
+            <b-dropdown-item :to="localePath('/lediga-lokaler')">
               {{ $t('mainNavbar.freePopups') }}
             </b-dropdown-item>
 
-            <b-dropdown-item :to="`${$t('link')}interest-reporting`">
+            <b-dropdown-item :to="localePath('/interest-reporting')">
               Interest Reporting page
             </b-dropdown-item>
 
@@ -157,7 +157,7 @@
             Swedish
           </b-nav-item>
 
-          <b-nav-item v-if="$auth.loggedIn" :to="`${$t('link')}bookmark`">
+          <b-nav-item v-if="$auth.loggedIn" :to="localePath('/bookmark')">
             <b-icon-heart-fill />
           </b-nav-item>
         </b-navbar-nav>
