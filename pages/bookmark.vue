@@ -30,6 +30,7 @@
 <script>
 export default {
   name: 'BookMarkedPlaces',
+  middleware:['isAuthenticated'],
   data () {
     return {
       cards: []
