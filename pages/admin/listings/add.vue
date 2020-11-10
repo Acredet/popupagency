@@ -7,6 +7,6 @@
 <script>
 export default {
   name: 'AddListing',
-  layout: 'admin',
+  layout: 'admin'
 }
 </script>

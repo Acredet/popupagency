@@ -11,7 +11,6 @@ export default {
   layout: 'admin',
   components: {
     CentrumForm
-  },
-
+  }
 }
 </script>

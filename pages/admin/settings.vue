@@ -7,7 +7,7 @@
 <script>
 export default {
   name: 'AddUser',
-  layout: 'admin',
+  layout: 'admin'
 }
 </script>
 

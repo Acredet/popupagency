@@ -18,11 +18,11 @@ export default {
     }
   },
   async created () {
-      await this.$axios.get(`/centrum/${this.$route.params.id}`)
-        .then((res) => {
-          this.centrum = res.data
-        })
-        .catch(err => console.log(err))
-    }
+    await this.$axios.get(`/centrum/${this.$route.params.id}`)
+      .then((res) => {
+        this.centrum = res.data
+      })
+      .catch(err => console.log(err))
+  }
 }
 </script>

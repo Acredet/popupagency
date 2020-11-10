@@ -191,16 +191,16 @@ export default {
       boldText: 'Vi är matchmakern som hjälper dig från idé till popup.'
     },
     links: {
-      text: 'Quick links',
+      text: 'Snabblänkar',
       home: 'Hem',
-      coworker: 'Medarbetare',
+      coworker: 'Coworker',
       aboutUs: 'Om oss',
-      freeJobs: 'Lediga jobb',
+      freeJobs: 'Gratis jobb',
       rentAPopup: 'Hyr en popup',
       popupNews: 'Popup News',
-      rentOutYourPremises: 'Hyr ut din lokal',
+      rentOutYourPremises: 'Hyr ut dina lokaler',
       handlingOfPersonalData: 'Hantering av personuppgifter',
-      availableFacilities: 'Lediga lokaler'
+      availableFacilities: 'Tillgängliga faciliteter'
     },
     contactInfo: 'Kontaktinfo'
   },

@@ -324,7 +324,7 @@ export default {
   mixins: [ListingDepedancies],
   mounted () {
     this.getItems('tag')
-  },
+  }
 }
 </script>
 

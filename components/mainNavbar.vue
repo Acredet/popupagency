@@ -70,7 +70,7 @@
           <b-nav-item v-if="!$auth.loggedIn" :to="localePath('/login')">
             login
           </b-nav-item>
-<!--          display only this navbar if the current user is the admin -->
+          <!--          display only this navbar if the current user is the admin -->
           <b-nav-item v-if="isAdmin" :href="localePath('/admin')">
             Admin
           </b-nav-item>
@@ -273,7 +273,7 @@ export default {
     variant () {
       return ['/', '/en'].includes(this.$route.path) && this.scrollY === 0
     },
-    isAdmin(){
+    isAdmin () {
       return this.$auth.user && this.$auth.user.role === 'admin'
     }
   },
