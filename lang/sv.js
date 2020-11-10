@@ -443,7 +443,7 @@ export default {
       location: 'Du bör lägga till plats',
       category: 'Du bör välja kategori',
       lokalens: 'Du bör välja lokalens',
-      propteradpris: 'Du bör välja prioteradpris',
+      propteradpris: 'Prioriterat pris bör vara minst 1000.',
       cover: 'Du bör lägga till åtminstone omslagsbild'
     },
     btns: {

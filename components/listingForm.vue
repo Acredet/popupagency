@@ -378,10 +378,6 @@
             <i class="fas fa-exclamation-triangle" />
             {{ $t('addListing.errors.lokalens') }}
           </p>
-          <p v-if="!prioteradpris.val" class="font-weight-bold">
-            <i class="fas fa-exclamation-triangle" />
-            {{ $t('addListing.errors.propteradpris') }}
-          </p>
         </div>
       </b-alert>
       <!-- End Alert -->
@@ -704,6 +700,30 @@ export default {
       if (cover.name !== '' || (this.images.cover && this.images.cover.length > 0)) {
         const keysNotWanted = ['Butik-%22Boxen%22', 'Fasta-öppettider', 'Mat&Dryck', 'Event', 'säsong', 'user', 'egenskaper']
 
+        // ASSIGN THE PRICE
+        listing.append('prisperdag', this.price.day.val || 0)
+        listing.append('prisperhelg', this.price.helg.val || 0)
+        listing.append('prisperlanghelg', this.price.langheig.val || 0)
+        listing.append('prispervecka', this.price.veckopris.val || 0)
+        listing.append('prispermanad', this.price.manad.val || 0)
+
+        for (const key in this.price) {
+          const obj = this.price[key]
+          if (obj.temp && obj.val >= 1000) {
+            this.price.prioteradpris.val = obj.val
+            this.prioteradpris = { period: key, val: obj.val }
+          } else {
+            this.$bvToast.toast(this.$t('addListing.errors.propteradpris'), {
+              title: this.$t('region.toast.error'),
+              autoHideDelay: 5000,
+              appendToast: true,
+              variant: 'danger'
+            })
+            return false
+          }
+        }
+        listing.append('prioteradpris', JSON.stringify(this.prioteradpris))
+
         for (const key in listing) {
           console.log(key, listing[key])
           if (keysNotWanted.includes(key)) { listing.delete(key) }
@@ -711,18 +731,6 @@ export default {
 
         listing.append('beskreving', JSON.stringify(this.article.beskreving))
         listing.append('title', JSON.stringify(this.title))
-
-        // ASSIGN THE PRICE
-        listing.append('prisperdag', this.price.day.val || 0)
-        listing.append('prisperhelg', this.price.helg.val || 0)
-        listing.append('prisperlanghelg', this.price.langheig.val || 0)
-        listing.append('prispervecka', this.price.veckopris.val || 0)
-        listing.append('prispermanad', this.price.manad.val || 0)
-        for (const key in this.price) {
-          this.price.prioteradpris.val = this.price[key].val
-          this.prioteradpris = { period: key, val: this.price[key].val }
-        }
-        listing.append('prioteradpris', JSON.stringify(this.prioteradpris))
 
         listing.append('draft', draft)
 

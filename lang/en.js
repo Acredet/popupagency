@@ -444,7 +444,7 @@ export default {
       location: 'You should add location',
       category: 'You should choose kategory',
       lokalens: 'You should choose lokalens',
-      propteradpris: 'You should choose prioteradpris',
+      propteradpris: 'Priority price should be at least 1000.',
       cover: 'You should add at least cover image'
     },
     btns: {
