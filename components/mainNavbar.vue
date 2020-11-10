@@ -5,6 +5,15 @@
         <i v-b-toggle.sidebar-1 class="ml-auto fas fa-times font-4 text-dark" />
       </div>
       <div class="py-2 bg-white ">
+        <!-- Start login link -->
+        <ul>
+          <li class="font-3">
+            <a exact :href="`${$t('link')}login`">
+              login
+            </a>
+          </li>
+        </ul>
+        <!-- End Login link -->
         <ul v-for="(link, index) in links" :key="String(index)">
           <li
             v-b-toggle="'accordion' + index"
@@ -179,12 +188,6 @@ export default {
     return {
       scrollY: 0,
       links: [
-        {
-          label: {
-            text: 'login',
-            url: '/login'
-          }
-        },
         {
           label: {
             text: this.$t('mainNavbar.contactUs'),
