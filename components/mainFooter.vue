@@ -17,7 +17,7 @@
             <b-col v-for="link in links" :key="link.text" cols="12" md="6">
               <nuxt-link class="footer-link" :to="`${$t('link')}${link.url}`">
                 <i v-if="link.check" class="fas fa-check text-info mr-1" />
-                {{$t(`mainFooter.links.${link.text}`)}}
+                {{ link.text }}
               </nuxt-link>
             </b-col>
           </b-row>
@@ -63,21 +63,25 @@
 export default {
   data () {
     return {
-      links: [
-        { text: 'home', url: 'lediga-lokaler' },
-        { text: 'coworker', url: 'lediga-lokaler' },
-        { text: 'aboutUs', url: 'lediga-lokaler' },
-        { text: 'freeJobs', url: 'lediga-lokaler' },
-        { text: 'rentAPopup', url: 'lediga-lokaler' },
-        { text: 'popupNews', url: 'lediga-lokaler' },
-        { text: 'rentOutYourPremises', url: 'lediga-lokaler' },
-        { text: 'handlingOfPersonalData', check: true, url: 'lediga-lokaler' },
-        { text: 'availableFacilities', check: true, url: 'lediga-lokaler' }
-      ],
       socialLinks: [
         { icon: 'fab fa-facebook-f', href: 'https://sv-se.facebook.com/popupagency', color: '#3b5998' },
         { icon: 'fab fa-instagram', href: 'https://www.instagram.com/popupagency/?hl=sv', color: '#262626' },
         { icon: 'fab fa-linkedin-in', href: 'https://se.linkedin.com/company/pop-up-agency', color: '#0077b5' }
+      ]
+    }
+  },
+  computed: {
+    links () {
+      return [
+        { text: this.$t('mainFooter.links.home'), url: 'lediga-lokaler' },
+        { text: this.$t('mainFooter.links.coworker'), url: 'lediga-lokaler' },
+        { text: this.$t('mainFooter.links.aboutUs'), url: 'lediga-lokaler' },
+        { text: this.$t('mainFooter.links.freeJobs'), url: 'lediga-lokaler' },
+        { text: this.$t('mainFooter.links.rentAPopup'), url: 'lediga-lokaler' },
+        { text: this.$t('mainFooter.links.popupNews'), url: 'lediga-lokaler' },
+        { text: this.$t('mainFooter.links.rentOutYourPremises'), url: 'lediga-lokaler' },
+        { text: this.$t('mainFooter.links.handlingOfPersonalData'), check: true, url: 'lediga-lokaler' },
+        { text: this.$t('mainFooter.links.availableFacilities'), check: true, url: 'lediga-lokaler' }
       ]
     }
   }
