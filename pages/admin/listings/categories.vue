@@ -328,11 +328,6 @@ export default {
     ourUploader
   },
   mixins: [ListingDepedancies],
-  created () {
-    if (!this.$auth.loggedIn || !['manager', 'admin'].includes(this.$auth.user.role)) {
-      this.$router.push('/error')
-    }
-  },
   mounted () {
     this.getItems('category')
   }

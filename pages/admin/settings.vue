@@ -8,11 +8,6 @@
 export default {
   name: 'AddUser',
   layout: 'admin',
-  created () {
-    if (!this.$auth.loggedIn || !['admin'].includes(this.$auth.user.role)) {
-      this.$router.push('/error')
-    }
-  }
 }
 </script>
 

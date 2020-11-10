@@ -8,10 +8,5 @@
 export default {
   name: 'AddListing',
   layout: 'admin',
-  created () {
-    if (!this.$auth.loggedIn || !['manager', 'admin', 'listingOwner', 'spaceOwner'].includes(this.$auth.user.role)) {
-      this.$router.push('/error')
-    }
-  }
 }
 </script>

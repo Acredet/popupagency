@@ -113,11 +113,6 @@ export default {
   mounted () {
     this.getListings()
   },
-  created () {
-    if (!this.$auth.loggedIn || ['searcher'].includes(this.$auth.user.role)) {
-      this.$router.push('/error')
-    }
-  },
   methods: {
     async getListings () {
       await this.$axios.$get('/places/listings/drafts')

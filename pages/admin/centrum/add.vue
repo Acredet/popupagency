@@ -12,10 +12,6 @@ export default {
   components: {
     CentrumForm
   },
-  created () {
-    if (!this.$auth.loggedIn || !['manager', 'admin'].includes(this.$auth.user.role)) {
-      this.$router.push('/error')
-    }
-  }
+
 }
 </script>
