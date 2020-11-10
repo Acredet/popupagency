@@ -61,7 +61,8 @@
           <b-nav-item v-if="!$auth.loggedIn" to="/login">
             login
           </b-nav-item>
-          <b-nav-item v-else :href="`${$t('link')}admin`">
+<!--          display only this navbar if the current user is the admin -->
+          <b-nav-item v-if="isAdmin" :href="`${$t('link')}admin`">
             Admin
           </b-nav-item>
           <b-nav-item>
@@ -268,6 +269,9 @@ export default {
   computed: {
     variant () {
       return ['/', '/en'].includes(this.$route.path) && this.scrollY === 0
+    },
+    isAdmin(){
+      return this.$auth.user && this.$auth.user.role === 'admin'
     }
   },
   mounted () {
