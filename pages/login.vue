@@ -62,16 +62,27 @@
             </b-overlay>
 
             <div class="form-group m-t-10 mb-0 row">
+              <!-- Start sign up -->
               <div class="col-12 m-t-20">
-                <nuxt-link to="/admin/restore-password" class="text-muted">
+                <nuxt-link :to="`${$t('link')}admin/restore-password`" class="text-muted">
                   <i class="mdi mdi-lock" /> {{ $t('forms.forgotPassword') }}
                 </nuxt-link>
               </div>
+              <!-- End resotre password -->
             </div>
           </b-form>
         </div>
       </div>
     </div>
+    <!-- start sign up -->
+    <div class="m-t-40 text-center">
+      <p>
+        {{ $t('signUp.getFreeAcc') }} <nuxt-link :to="`${$t('link')}sign-up`" class="text-muted">
+          <i class="mdi mdi-lock" /> {{ $t('signUp.signUp') }}
+        </nuxt-link>
+      </p>
+    </div>
+    <!-- End sign up -->
   </div>
 </template>
 

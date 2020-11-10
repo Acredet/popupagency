@@ -179,6 +179,7 @@ export default {
   },
   signUp: {
     freeRegister: 'Free Register',
+    signUp: 'Sign up',
     getFreeAcc: 'Get your free account now.',
     haveAcc: 'Already have an account ?',
     login: 'login'

@@ -178,6 +178,7 @@ export default {
     year: 'År'
   },
   signUp: {
+    signUp: 'Bli Medlem',
     freeRegister: 'Free Register',
     getFreeAcc: 'Skaffa ditt gratis konto nu.',
     haveAcc: 'Har du redan ett konto?',
