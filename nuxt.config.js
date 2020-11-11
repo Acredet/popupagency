@@ -95,7 +95,7 @@ module.exports = {
 		},
 		redirect: {
 			login: "/login",
-			logout: "/login",
+			logout: "/",
 			callback: "/lediga-lokaler",
 			home: "/admin",
 		},
@@ -118,6 +118,7 @@ module.exports = {
 				tokenType: "",
 			},
 		},
+		plugins: ["~/plugins/redirectLocale"],
 	},
 	env: {
 		VUE_APP_GOOGLE_MAPS_API_KEY: process.env.VUE_APP_GOOGLE_MAPS_API_KEY,
