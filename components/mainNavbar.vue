@@ -109,7 +109,7 @@
 						login
 					</b-nav-item>
 					<!--          display only this navbar if the current user is the admin -->
-					<b-nav-item v-if="isAdmin" :href="localePath('/admin')">
+					<b-nav-item v-if="isAdmin" :to="localePath('/admin')">
 						Admin
 					</b-nav-item>
 					<b-nav-item>
