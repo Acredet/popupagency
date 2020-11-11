@@ -99,8 +99,10 @@
 export default {
 	props: {
 		routeGuidance: {
-			type: Array,
-			default: () => [],
+			type: Object,
+			default: () => {
+				return { lng: 0, lat: 0 };
+			},
 		},
 	},
 	data() {
