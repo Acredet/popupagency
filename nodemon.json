@@ -1,0 +1,4 @@
+{
+	"ext": "js,vue",
+	"ignore": [".nuxt", ".git", "node_modules/**/node_modules"]
+}
