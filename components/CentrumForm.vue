@@ -524,7 +524,7 @@ export default {
       const centrum = await this.createCentrumForm()
       const promises = [
         await this.$axios.$patch(`/centrum/${this.$route.params.id}`, centrum),
-        // await this.$axios.patch(`/region/${this.oldCity}`, { centrum: null }),
+        await this.$axios.patch(`/region/${this.oldCity}`, { centrum: null }),
         await this.$axios.patch(`/region/${this.city}`, { centrum: this.$route.params.id })
       ]
       // if (!this.oldCity)

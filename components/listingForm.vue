@@ -709,17 +709,19 @@ export default {
 
         for (const key in this.price) {
           const obj = this.price[key]
-          if (obj.temp && obj.val >= 1000) {
-            this.price.prioteradpris.val = obj.val
-            this.prioteradpris = { period: key, val: obj.val }
-          } else {
-            this.$bvToast.toast(this.$t('addListing.errors.propteradpris'), {
-              title: this.$t('region.toast.error'),
-              autoHideDelay: 5000,
-              appendToast: true,
-              variant: 'danger'
-            })
-            return false
+          if (obj.temp) {
+            if (Number(obj.val) >= 1000) {
+              this.price.prioteradpris.val = obj.val
+              this.prioteradpris = { period: key, val: obj.val }
+            } else {
+              this.$bvToast.toast(this.$t('addListing.errors.propteradpris'), {
+                title: this.$t('region.toast.error'),
+                autoHideDelay: 5000,
+                appendToast: true,
+                variant: 'danger'
+              })
+              return false
+            }
           }
         }
         listing.append('prioteradpris', JSON.stringify(this.prioteradpris))
