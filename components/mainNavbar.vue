@@ -1,369 +1,431 @@
 <template>
-  <div>
-    <b-sidebar id="sidebar-1" backdrop-variant="dark" backdrop shadow no-header>
-      <div class="d-flex justify-content-end bg-white pt-2 px-2">
-        <i v-b-toggle.sidebar-1 class="ml-auto fas fa-times font-4 text-dark" />
-      </div>
-      <div class="py-2 bg-white ">
-        <!-- Start login link -->
-        <ul>
-          <li class="font-3">
-            <a exact :href="`${$t('link')}login`">
-              login
-            </a>
-          </li>
-        </ul>
-        <!-- End Login link -->
-        <ul v-for="(link, index) in links" :key="String(index)">
-          <li
-            v-b-toggle="'accordion' + index"
-            :class="{ 'd-flex justify-content-between align-items-center': link.subList }"
-            class="font-3"
-          >
-            <nuxt-link v-if="link.label.url" exact :to="`${$t('link')}${link.label.url}`">
-              {{ link.label.text }}
-            </nuxt-link>
-            <span v-else>{{ link.label.text }}</span>
-            <BIconCaretDownFill v-if="link.subList" />
-          </li>
+	<div>
+		<b-sidebar
+			id="sidebar-1"
+			backdrop-variant="dark"
+			backdrop
+			shadow
+			no-header
+		>
+			<div class="d-flex justify-content-end bg-white pt-2 px-2">
+				<i
+					v-b-toggle.sidebar-1
+					class="ml-auto fas fa-times font-4 text-dark"
+				/>
+			</div>
+			<div class="py-2 bg-white">
+				<!-- Start login link -->
+				<ul>
+					<li class="font-3">
+						<a exact :href="`${$t('link')}login`"> login </a>
+					</li>
+				</ul>
+				<!-- End Login link -->
+				<ul v-for="(link, index) in links" :key="String(index)">
+					<li
+						v-b-toggle="'accordion' + index"
+						:class="{
+							'd-flex justify-content-between align-items-center':
+								link.subList,
+						}"
+						class="font-3"
+					>
+						<nuxt-link
+							v-if="link.label.url"
+							exact
+							:to="`${$t('link')}${link.label.url}`"
+						>
+							{{ link.label.text }}
+						</nuxt-link>
+						<span v-else>{{ link.label.text }}</span>
+						<BIconCaretDownFill v-if="link.subList" />
+					</li>
 
-          <b-collapse
-            v-if="link.subList"
-            :id="'accordion'+ index"
-            accordion="my-accordion"
-            role="tabpanel"
-          >
-            <ul>
-              <li v-for="(one, index1) in link.subList" :key="String(index1)" class="font-3">
-                <nuxt-link :to="`${$i18n.locale === 'en' ? 'en' : ''}${one.url}`">
-                  {{ one.text }}
-                </nuxt-link>
-              </li>
-            </ul>
-          </b-collapse>
-        </ul>
-      </div>
-    </b-sidebar>
+					<b-collapse
+						v-if="link.subList"
+						:id="'accordion' + index"
+						accordion="my-accordion"
+						role="tabpanel"
+					>
+						<ul>
+							<li
+								v-for="(one, index1) in link.subList"
+								:key="String(index1)"
+								class="font-3"
+							>
+								<nuxt-link
+									:to="`${$i18n.locale === 'en' ? 'en' : ''}${
+										one.url
+									}`"
+								>
+									{{ one.text }}
+								</nuxt-link>
+							</li>
+						</ul>
+					</b-collapse>
+				</ul>
+			</div>
+		</b-sidebar>
 
-    <b-navbar
-      toggleable="lg"
-      fixed="top"
-      style="transition: all 0.5s ease"
-      :type="variant ? 'dark' : 'light'"
-      :variant="variant ? 'transparent' : 'light'"
-    >
-      <div class="w-100 d-lg-none d-flex justify-content-between">
-        <b-navbar-toggle target="sidebar-1">
-          <!-- Start sidebar -->
-          <BIconList :variant="variant ? 'light' : 'dark'" class="border-0" scale="0.8" />
-          <!-- End sidebar -->
-        </b-navbar-toggle>
+		<b-navbar
+			toggleable="lg"
+			fixed="top"
+			style="transition: all 0.5s ease"
+			:type="variant ? 'dark' : 'light'"
+			:variant="variant ? 'transparent' : 'light'"
+		>
+			<div class="w-100 d-lg-none d-flex justify-content-between">
+				<b-navbar-toggle target="sidebar-1">
+					<!-- Start sidebar -->
+					<BIconList
+						:variant="variant ? 'light' : 'dark'"
+						class="border-0"
+						scale="0.8"
+					/>
+					<!-- End sidebar -->
+				</b-navbar-toggle>
 
-        <b-navbar-brand :to="localePath('/')">
-          <b-img :src="variant ? require('@/assets/img/logo-white.png') : require('@/assets/img/logo.png')" class="logo" />
-        </b-navbar-brand>
-        <div />
-      </div>
+				<b-navbar-brand :to="localePath('/')">
+					<b-img
+						:src="
+							variant
+								? require('@/assets/img/logo-white.png')
+								: require('@/assets/img/logo.png')
+						"
+						class="logo"
+					/>
+				</b-navbar-brand>
+				<div />
+			</div>
 
-      <b-collapse id="navbar-toggle-collapse" is-nav>
-        <b-navbar-nav class="w-100 d-sm-flex justify-content-sm-between align-items-sm-center">
-          <b-nav-item v-if="!$auth.loggedIn" :to="localePath('/login')">
-            login
-          </b-nav-item>
-          <!--          display only this navbar if the current user is the admin -->
-          <b-nav-item v-if="isAdmin" :href="localePath('/admin')">
-            Admin
-          </b-nav-item>
-          <b-nav-item>
-            {{ $t('mainNavbar.contactUs') }}
-          </b-nav-item>
-          <b-nav-item-dropdown
-            toggle-class=" font-3"
-            menu-class="animate__animated animate__fadeInUp animate__faster"
-            :text="$t('mainNavbar.services')"
-            left
-          >
-            <b-dropdown-item href="#">
-              {{ $t('mainNavbar.allServices') }}
-            </b-dropdown-item>
+			<b-collapse id="navbar-toggle-collapse" is-nav>
+				<b-navbar-nav
+					class="w-100 d-sm-flex justify-content-sm-between align-items-sm-center"
+				>
+					<b-nav-item
+						v-if="!$auth.loggedIn"
+						:to="localePath('/login')"
+					>
+						login
+					</b-nav-item>
+					<!--          display only this navbar if the current user is the admin -->
+					<b-nav-item v-if="isAdmin" :href="localePath('/admin')">
+						Admin
+					</b-nav-item>
+					<b-nav-item>
+						{{ $t("mainNavbar.contactUs") }}
+					</b-nav-item>
+					<b-nav-item-dropdown
+						toggle-class=" font-3"
+						menu-class="animate__animated animate__fadeInUp animate__faster"
+						:text="$t('mainNavbar.services')"
+						left
+					>
+						<b-dropdown-item href="#">
+							{{ $t("mainNavbar.allServices") }}
+						</b-dropdown-item>
 
-            <b-dd-divider />
+						<b-dd-divider />
 
-            <b-dropdown-item href="#">
-              {{ $t('mainNavbar.rentAPopupLocally') }}
-            </b-dropdown-item>
-            <b-dd-divider />
-            <b-dropdown-item href="#">
-              {{ $t('mainNavbar.rentOutYourPremises') }}
-            </b-dropdown-item>
-          </b-nav-item-dropdown>
+						<b-dropdown-item href="#">
+							{{ $t("mainNavbar.rentAPopupLocally") }}
+						</b-dropdown-item>
+						<b-dd-divider />
+						<b-dropdown-item href="#">
+							{{ $t("mainNavbar.rentOutYourPremises") }}
+						</b-dropdown-item>
+					</b-nav-item-dropdown>
 
-          <b-nav-item-dropdown
-            toggle-class=" font-3"
-            menu-class="animate__animated animate__fadeInUp animate__faster"
-            :text="$t('mainNavbar.aboutUs')"
-            left
-          >
-            <b-dropdown-item href="#">
-              {{ $t('mainNavbar.whoAreThePopupAgency') }}
-            </b-dropdown-item>
+					<b-nav-item-dropdown
+						toggle-class=" font-3"
+						menu-class="animate__animated animate__fadeInUp animate__faster"
+						:text="$t('mainNavbar.aboutUs')"
+						left
+					>
+						<b-dropdown-item href="#">
+							{{ $t("mainNavbar.whoAreThePopupAgency") }}
+						</b-dropdown-item>
 
-            <b-dd-divider />
+						<b-dd-divider />
 
-            <b-dropdown-item href="#">
-              {{ $t('mainNavbar.whatIsAPopup') }}
-            </b-dropdown-item>
+						<b-dropdown-item href="#">
+							{{ $t("mainNavbar.whatIsAPopup") }}
+						</b-dropdown-item>
 
-            <b-dd-divider />
+						<b-dd-divider />
 
-            <b-dropdown-item href="#">
-              {{ $t('mainNavbar.contact') }}
-            </b-dropdown-item>
-          </b-nav-item-dropdown>
+						<b-dropdown-item href="#">
+							{{ $t("mainNavbar.contact") }}
+						</b-dropdown-item>
+					</b-nav-item-dropdown>
 
-          <b-nav-item :to="localePath('/')">
-            <b-img :src="variant ? require('@/assets/img/logo-white.png') : require('@/assets/img/logo.png')" class="logo" />
-          </b-nav-item>
+					<b-nav-item :to="localePath('/')">
+						<b-img
+							:src="
+								variant
+									? require('@/assets/img/logo-white.png')
+									: require('@/assets/img/logo.png')
+							"
+							class="logo"
+						/>
+					</b-nav-item>
 
-          <b-nav-item-dropdown
-            toggle-class=" font-3"
-            menu-class="animate__animated animate__fadeInUp animate__faster"
-            :text="$t('mainNavbar.blogAndPress')"
-            left
-          >
-            <b-dropdown-item :to="localePath('/lediga-lokaler')">
-              {{ $t('mainNavbar.freePopups') }}
-            </b-dropdown-item>
+					<b-nav-item-dropdown
+						toggle-class=" font-3"
+						menu-class="animate__animated animate__fadeInUp animate__faster"
+						:text="$t('mainNavbar.blogAndPress')"
+						left
+					>
+						<b-dropdown-item :to="localePath('/lediga-lokaler')">
+							{{ $t("mainNavbar.freePopups") }}
+						</b-dropdown-item>
 
-            <b-dropdown-item :to="localePath('/interest-reporting')">
-              Interest Reporting page
-            </b-dropdown-item>
+						<b-dropdown-item
+							:to="localePath('/interest-reporting')"
+						>
+							Interest Reporting page
+						</b-dropdown-item>
 
-            <b-dd-divider />
+						<b-dd-divider />
 
-            <b-dropdown-item href="#">
-              {{ $t('mainNavbar.seeAllCities') }}
-            </b-dropdown-item>
-          </b-nav-item-dropdown>
+						<b-dropdown-item href="#">
+							{{ $t("mainNavbar.seeAllCities") }}
+						</b-dropdown-item>
+					</b-nav-item-dropdown>
 
-          <b-nav-item>
-            {{ $t('mainNavbar.howDoesPopupWork') }}
-          </b-nav-item>
+					<b-nav-item>
+						{{ $t("mainNavbar.howDoesPopupWork") }}
+					</b-nav-item>
 
-          <b-nav-item v-if="$i18n.locale == 'sv'" @click="changeLang('en')">
-            English
-          </b-nav-item>
-          <b-nav-item v-else @click="changeLang('sv')">
-            Swedish
-          </b-nav-item>
-
-          <b-nav-item v-if="$auth.loggedIn" :to="localePath('/bookmark')">
-            <b-icon-heart-fill />
-          </b-nav-item>
-        </b-navbar-nav>
-      </b-collapse>
-    </b-navbar>
-  </div>
+					<b-nav-item
+						v-if="$i18n.locale == 'sv'"
+						@click="changeLang('en')"
+					>
+						English
+					</b-nav-item>
+					<b-nav-item v-else @click="changeLang('sv')">
+						Swedish
+					</b-nav-item>
+					<b-nav-item v-if="$auth.loggedIn" @click="logout()">
+						{{ $t("adminHeader.logout") }}
+					</b-nav-item>
+					<b-nav-item
+						v-if="$auth.loggedIn"
+						:to="localePath('/bookmark')"
+					>
+						<b-icon-heart-fill />
+					</b-nav-item>
+				</b-navbar-nav>
+			</b-collapse>
+		</b-navbar>
+	</div>
 </template>
 
 <script>
 import {
-  BootstrapVue,
-  BIcon,
-  BIconHeartFill,
-  BIconList,
-  BIconCaretDownFill
-} from 'bootstrap-vue'
+	BootstrapVue,
+	BIcon,
+	BIconHeartFill,
+	BIconList,
+	BIconCaretDownFill,
+} from "bootstrap-vue";
 
 export default {
-  components: {
-    // eslint-disable-next-line vue/no-unused-components
-    BootstrapVue,
-    // eslint-disable-next-line vue/no-unused-components
-    BIcon,
-    BIconHeartFill,
-    BIconList,
-    BIconCaretDownFill
-  },
-  data () {
-    return {
-      scrollY: 0,
-      links: [
-        {
-          label: {
-            text: this.$t('mainNavbar.contactUs'),
-            url: '/contact-us'
-          }
-        },
-        {
-          label: {
-            text: this.$t('mainNavbar.services')
-          },
-          subList: [
-            {
-              text: this.$t('mainNavbar.allServices'),
-              url: ''
-            },
-            {
-              text: this.$t('mainNavbar.rentAPopupLocally'),
-              url: ''
-            },
-            {
-              text: this.$t('mainNavbar.rentOutYourPremises'),
-              url: ''
-            }
-          ]
-        },
-        {
-          label: {
-            text: this.$t('mainNavbar.aboutUs')
-          },
-          subList: [
-            {
-              text: this.$t('mainNavbar.whoAreThePopupAgency'),
-              url: ''
-            },
-            {
-              text: this.$t('mainNavbar.whatIsAPopup'),
-              url: ''
-            },
-            {
-              text: this.$t('mainNavbar.contact'),
-              url: ''
-            }
-          ]
-        },
-        {
-          label: {
-            text: this.$t('mainNavbar.blogAndPress'),
-            url: ''
-          }
-        },
-        {
-          label: {
-            text: this.$t('mainNavbar.freePopups')
-          },
-          subList: [
-            {
-              text: this.$t('mainNavbar.freePopups'),
-              url: '/lediga-lokaler'
-            },
-            {
-              text: this.$t('mainNavbar.seeAllCities'),
-              url: ''
-            }
-          ]
-        },
-        {
-          label: {
-            text: this.$t('mainNavbar.howDoesPopupWork'),
-            url: ''
-          }
-        },
-        {
-          label: {
-            text: 'English',
-            url: ''
-          }
-        }
-      ]
-    }
-  },
-  computed: {
-    variant () {
-      return ['/', '/en'].includes(this.$route.path) && this.scrollY === 0
-    },
-    isAdmin () {
-      return this.$auth.user && this.$auth.user.role === 'admin'
-    }
-  },
-  mounted () {
-    window.onscroll = () => { this.scrollY = window.scrollY }
-  },
-  methods: {
-    changeLang (lang) {
-      this.$i18n.setLocale(lang)
-      this.$store.commit('changeSidebarRenderKey')
-    }
-  }
-}
+	components: {
+		// eslint-disable-next-line vue/no-unused-components
+		BootstrapVue,
+		// eslint-disable-next-line vue/no-unused-components
+		BIcon,
+		BIconHeartFill,
+		BIconList,
+		BIconCaretDownFill,
+	},
+	data() {
+		return {
+			scrollY: 0,
+			links: [
+				{
+					label: {
+						text: this.$t("mainNavbar.contactUs"),
+						url: "/contact-us",
+					},
+				},
+				{
+					label: {
+						text: this.$t("mainNavbar.services"),
+					},
+					subList: [
+						{
+							text: this.$t("mainNavbar.allServices"),
+							url: "",
+						},
+						{
+							text: this.$t("mainNavbar.rentAPopupLocally"),
+							url: "",
+						},
+						{
+							text: this.$t("mainNavbar.rentOutYourPremises"),
+							url: "",
+						},
+					],
+				},
+				{
+					label: {
+						text: this.$t("mainNavbar.aboutUs"),
+					},
+					subList: [
+						{
+							text: this.$t("mainNavbar.whoAreThePopupAgency"),
+							url: "",
+						},
+						{
+							text: this.$t("mainNavbar.whatIsAPopup"),
+							url: "",
+						},
+						{
+							text: this.$t("mainNavbar.contact"),
+							url: "",
+						},
+					],
+				},
+				{
+					label: {
+						text: this.$t("mainNavbar.blogAndPress"),
+						url: "",
+					},
+				},
+				{
+					label: {
+						text: this.$t("mainNavbar.freePopups"),
+					},
+					subList: [
+						{
+							text: this.$t("mainNavbar.freePopups"),
+							url: "/lediga-lokaler",
+						},
+						{
+							text: this.$t("mainNavbar.seeAllCities"),
+							url: "",
+						},
+					],
+				},
+				{
+					label: {
+						text: this.$t("mainNavbar.howDoesPopupWork"),
+						url: "",
+					},
+				},
+				{
+					label: {
+						text: "English",
+						url: "",
+					},
+				},
+			],
+		};
+	},
+	computed: {
+		variant() {
+			return (
+				["/", "/en"].includes(this.$route.path) && this.scrollY === 0
+			);
+		},
+		isAdmin() {
+			return this.$auth.user && this.$auth.user.role === "admin";
+		},
+	},
+	mounted() {
+		window.onscroll = () => {
+			this.scrollY = window.scrollY;
+		};
+	},
+	methods: {
+		changeLang(lang) {
+			this.$i18n.setLocale(lang);
+			this.$store.commit("changeSidebarRenderKey");
+		},
+		logout() {
+			this.$store.commit("changeSidebarRenderKey");
+			this.$auth.logout("local");
+		},
+	},
+};
 </script>
 
 <style scoped>
 .logo {
-  max-height: 35px;
+	max-height: 35px;
 }
 
 .navbar-toggler {
-  border: 0;
-  font-size: 40px;
+	border: 0;
+	font-size: 40px;
 }
 header.b-sidebar-header {
-  background: white !important;
+	background: white !important;
 }
 .navbar-dark .navbar-nav .nav-link {
-  color: white !important;
+	color: white !important;
 }
 
 .animate__animated.animate__zoomIn {
-  --animate-duration: 0.4s;
+	--animate-duration: 0.4s;
 }
 @media (max-width: 770px) {
-  ul.navbar-nav li a:hover {
-    padding-left: 0;
-  }
+	ul.navbar-nav li a:hover {
+		padding-left: 0;
+	}
 
-  ul.dropdown-menu li[role="presentation"]:hover a {
-    padding-left: 30px;
-  }
-
+	ul.dropdown-menu li[role="presentation"]:hover a {
+		padding-left: 30px;
+	}
 }
 
 .b-sidebar-body a {
-  color: #000;
-  text-decoration: none;
+	color: #000;
+	text-decoration: none;
 }
 
 .b-sidebar-body a:hover {
-  text-decoration: none;
+	text-decoration: none;
 }
 
 .b-sidebar-body ul {
-  padding: 0;
-  margin: 0;
-  list-style: none;
+	padding: 0;
+	margin: 0;
+	list-style: none;
 }
 
 .b-sidebar-body ul li {
-  padding: 15px;
-  background: white;
-  transition: all 0.4s ease-out;
+	padding: 15px;
+	background: white;
+	transition: all 0.4s ease-out;
 }
 
 .b-sidebar-body ul li svg {
-  transition: all 0.4s ease-out;
-  opacity: 0.6;
+	transition: all 0.4s ease-out;
+	opacity: 0.6;
 }
 .b-sidebar-body ul li:hover {
-  padding-left: 20px;
+	padding-left: 20px;
 }
 .b-sidebar-body ul li:hover svg {
-  opacity: 1;
+	opacity: 1;
 }
 
 .b-sidebar-body .collapse ul {
-  margin: 0;
-  padding: 0;
-  background: #eee !important;
+	margin: 0;
+	padding: 0;
+	background: #eee !important;
 }
 
 .b-sidebar-body .collapse ul li {
-  background: #eee !important;
-  padding-left: 10px;
-  transition: all 0.4s ease-out;
+	background: #eee !important;
+	padding-left: 10px;
+	transition: all 0.4s ease-out;
 }
 
 .b-sidebar-body .collapse ul li:hover {
-    padding-left: 20px;
-  }
+	padding-left: 20px;
+}
 </style>

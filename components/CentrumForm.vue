@@ -33,21 +33,14 @@
 					:oldImages="centrumEdit ? centrumEdit.centrumgalleri : []"
 				/>
 
-				<!-- centrumtextarea -->
-				<b-card class="my-5">
-					<b-card-body>
-						<h3>{{ $t("centrum.textarea") }} en:</h3>
-						<client-only>
-							<VueEditor v-model="centrum.en" />
-						</client-only>
-						<hr />
-						<h3>{{ $t("centrum.textarea") }} sw:</h3>
-						<client-only>
-							<VueEditor v-model="centrum.sv" />
-						</client-only>
-					</b-card-body>
-				</b-card>
-				<!-- centrumtextarea -->
+				<textareasCard
+					:editCentrum="
+						centrumEdit
+							? centrumEdit.centrumtextarea
+							: { en: '', sv: '' }
+					"
+					@centrumChanged="centrum = $event"
+				/>
 
 				<openTimesCard
 					:oppettider="centrumEdit ? centrumEdit.oppettider : []"
@@ -114,21 +107,17 @@ import titleInputsCard from "@/components/centrumForm/title";
 import centrumGalleriCard from "@/components/centrumForm/centrumGalleri";
 import openTimesCard from "@/components/centrumForm/openTimes";
 import routeGuidanceCard from "@/components/centrumForm/routeGuidance";
-
-let VueEditor;
-if (process.browser) {
-	VueEditor = require("vue2-editor").VueEditor;
-}
+import textareasCard from "@/components/centrumForm/textarea";
 
 export default {
-	name: "ListingTags",
+	name: "CentrumForm",
 	layout: "admin",
 	components: {
 		routeGuidanceCard,
-		VueEditor,
 		titleInputsCard,
 		centrumGalleriCard,
 		openTimesCard,
+		textareasCard,
 	},
 	// mixins: [sortItems],
 	props: {
@@ -223,9 +212,11 @@ export default {
 				.$post("/centrum", centrum)
 				.then(async (res) => {
 					if (this.centrumEdit && this.oldCity) {
-						await this.$axios.patch(`/region/${this.oldCity}`, {
-							centrum: null,
-						});
+						await this.$axios
+							.patch(`/region/${this.oldCity}`, {
+								centrum: null,
+							})
+							.catch((err) => (this.busy = false));
 					}
 
 					await this.$axios
