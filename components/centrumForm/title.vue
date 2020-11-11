@@ -71,6 +71,7 @@ export default {
 	},
 	watch: {
 		title: {
+			deep: true,
 			handler(newValue) {
 				this.$emit("titleChanged", newValue);
 			},

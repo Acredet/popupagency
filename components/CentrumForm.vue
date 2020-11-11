@@ -49,223 +49,17 @@
 				</b-card>
 				<!-- centrumtextarea -->
 
-				<!-- oppettider -->
-				<b-card class="my-5" :title="$t('addListing.inputs.optidder')">
-					<b-tabs content-class="mt-3" fill>
-						<b-tab
-							v-for="tab in times"
-							:key="tab.name"
-							:title="tab.name"
-							:active="tab.active"
-						>
-							<b-form-group>
-								<b-form-radio-group
-									id="optidder"
-									v-model="days[tab.name].openTimes"
-									:name="tab.name"
-								>
-									<b-form-radio value="hours">
-										{{
-											$t(
-												"addListing.inputs.optidderOpts.hours"
-											)
-										}}
-									</b-form-radio>
-									<b-form-radio value="openAllDay">
-										{{
-											$t(
-												"addListing.inputs.optidderOpts.allDayOpen"
-											)
-										}}
-									</b-form-radio>
-									<b-form-radio value="closeAllDay">
-										{{
-											$t(
-												"addListing.inputs.optidderOpts.allDayClose"
-											)
-										}}
-									</b-form-radio>
-									<b-form-radio value="appointment">
-										{{
-											$t(
-												"addListing.inputs.optidderOpts.appointment"
-											)
-										}}
-									</b-form-radio>
-								</b-form-radio-group>
-							</b-form-group>
+				<openTimesCard
+					:oppettider="centrumEdit ? centrumEdit.oppettider : []"
+					@daysChanged="days = $event"
+				/>
 
-							<div v-if="days[tab.name].openTimes == 'hours'">
-								<b-row
-									v-for="(hours, index) in days[tab.name]
-										.hours"
-									:key="'m' + index"
-									class="my-3"
-								>
-									<b-col
-										cols="12"
-										md="5"
-										class="mb-2 mb-md-0"
-									>
-										<b-form-timepicker
-											v-model="
-												days[tab.name].hours[index]
-													.opening
-											"
-											locale="en"
-										/>
-									</b-col>
-									<b-col
-										cols="12"
-										md="5"
-										class="mb-2 mb-md-0"
-									>
-										<b-form-timepicker
-											v-model="
-												days[tab.name].hours[index]
-													.closing
-											"
-											locale="en"
-										/>
-									</b-col>
-									<b-col cols="12" md="2">
-										<b-button
-											variant="outline-light"
-											block
-											@click="
-												delteTimeRow(tab.name, index)
-											"
-										>
-											<b-icon-trash
-												variant="dark"
-												class="rounded-circle"
-											/>
-										</b-button>
-									</b-col>
-								</b-row>
-
-								<b-col cols="12">
-									<b-button
-										block
-										variant="primary"
-										@click="addTimeRow(tab.name)"
-									>
-										Add Time
-									</b-button>
-								</b-col>
-							</div>
-						</b-tab>
-					</b-tabs>
-				</b-card>
-				<!-- oppettider -->
-
-				<!-- routeGuidance -->
-				<b-card :title="$t('addListing.inputs.plats')">
-					<b-card-body>
-						<div class="w-100">
-							<gmap-map
-								:center="map.center"
-								:map-type-id="map.mapTypeId"
-								style="height: 300px"
-								:street-view-control="true"
-								:zoom="7"
-							>
-								<gmap-cluster>
-									<gmap-marker
-										v-for="(mark, index) in map.markers"
-										:key="index"
-										:position="mark"
-									/>
-								</gmap-cluster>
-							</gmap-map>
-							<div class="my-2">
-								<b-form-group
-									id="address-group"
-									:label="`${$t('centrum.address')}`"
-									label-class="font-weight-bold "
-									label-for="address"
-								>
-									<gmap-autocomplete
-										id="address"
-										class="form-control"
-										@place_changed="setPlace"
-									/>
-									<p
-										v-if="$route.params.id"
-										class="font-weight-bold"
-									>
-										{{ $t("centrum.location") }}:
-										{{ formattedAddress }}
-									</p>
-								</b-form-group>
-							</div>
-						</div>
-						<b-row>
-							<b-col cols="12" md="6">
-								<b-form-group
-									id="location-lang-group"
-									:label="`${$t('centrum.longitude')}`"
-									label-class="font-weight-bold "
-									label-for="location-lang"
-								>
-									<b-form-input
-										id="location-lang"
-										v-model="location.lng"
-										required
-										autocomplete="off"
-										:state="locationValidLNG"
-										:placeholder="
-											$t('addListing.inputs.plats')
-										"
-									/>
-									<b-form-invalid-feedback
-										:state="locationValidLNG"
-									>
-										{{ $t("forms.required") }}
-									</b-form-invalid-feedback>
-
-									<b-form-valid-feedback
-										:state="locationValidLNG"
-									>
-										{{ $t("forms.valid") }}
-									</b-form-valid-feedback>
-								</b-form-group>
-							</b-col>
-
-							<b-col cols="12" md="6">
-								<b-form-group
-									id="location-lat-group"
-									:label="`${$t('centrum.latitude')}`"
-									label-class="font-weight-bold "
-									label-for="location-lat"
-								>
-									<b-form-input
-										id="location-lat"
-										v-model="location.lat"
-										required
-										autocomplete="off"
-										:state="locationValidLAT"
-										:placeholder="
-											$t('addListing.inputs.plats')
-										"
-									/>
-									<b-form-invalid-feedback
-										:state="locationValidLAT"
-									>
-										{{ $t("forms.required") }}
-									</b-form-invalid-feedback>
-
-									<b-form-valid-feedback
-										:state="locationValidLAT"
-									>
-										{{ $t("forms.valid") }}
-									</b-form-valid-feedback>
-								</b-form-group>
-							</b-col>
-						</b-row>
-					</b-card-body>
-				</b-card>
-				<!-- routeGuidance -->
+				<routeGuidanceCard
+					:routeGuidance="
+						centrumEdit ? centrumEdit.routeGuidance : []
+					"
+					@locationChanged="location = $event"
+				/>
 
 				<b-card :title="$t('addListing.inputs.stad')">
 					<b-card-body>
@@ -276,7 +70,7 @@
 						/>
 					</b-card-body>
 				</b-card>
-				<!-- <b-btn variant="primary" :disabled="!form.name.en || !form.name.sv" @click="addItem('tag')" v-text="$t('tag.addBtn')" /> -->
+
 				<b-overlay
 					:show="busy"
 					rounded
@@ -316,11 +110,11 @@
 </template>
 
 <script>
-import { BootstrapVue, BIcon, BIconTrash, BIconTrashFill } from "bootstrap-vue";
 import titleInputsCard from "@/components/centrumForm/title";
 import centrumGalleriCard from "@/components/centrumForm/centrumGalleri";
-import ourUploader from "@/components/ourUploader";
-// import { sortItems } from '@/mixins/SortRegions'
+import openTimesCard from "@/components/centrumForm/openTimes";
+import routeGuidanceCard from "@/components/centrumForm/routeGuidance";
+
 let VueEditor;
 if (process.browser) {
 	VueEditor = require("vue2-editor").VueEditor;
@@ -330,14 +124,11 @@ export default {
 	name: "ListingTags",
 	layout: "admin",
 	components: {
-		BootstrapVue,
-		BIcon,
-		BIconTrash,
-		BIconTrashFill,
-		ourUploader,
+		routeGuidanceCard,
 		VueEditor,
 		titleInputsCard,
 		centrumGalleriCard,
+		openTimesCard,
 	},
 	// mixins: [sortItems],
 	props: {
@@ -349,6 +140,8 @@ export default {
 	data() {
 		return {
 			busy: false,
+			days: null,
+			location: null,
 			toast: {
 				title: null,
 				variant: null,
@@ -356,84 +149,15 @@ export default {
 				text: null,
 			},
 			title: null,
-			map: {
-				center: { lat: 59.334591, lng: 18.06324 },
-				mapTypeId: "roadmap",
-				markers: [],
-			},
-			formattedAddress: null,
+
 			regions: [],
 			city: null,
 			oldCity: null,
-			location: {
-				lat: null,
-				lng: null,
-			},
 			hemsida: null,
 			centrum: {
 				en: null,
 				sv: null,
 			},
-			days: {
-				Mon: {
-					openTimes: "hours",
-					hours: [{ opening: "00:00:00", closing: "00:00:00" }],
-				},
-				Tue: {
-					openTimes: "hours",
-					hours: [{ opening: "00:00:00", closing: "00:00:00" }],
-				},
-				Wed: {
-					openTimes: "hours",
-					hours: [{ opening: "00:00:00", closing: "00:00:00" }],
-				},
-				Thu: {
-					openTimes: "hours",
-					hours: [{ opening: "00:00:00", closing: "00:00:00" }],
-				},
-				Fri: {
-					openTimes: "hours",
-					hours: [{ opening: "00:00:00", closing: "00:00:00" }],
-				},
-				Sat: {
-					openTimes: "hours",
-					hours: [{ opening: "00:00:00", closing: "00:00:00" }],
-				},
-				Sun: {
-					openTimes: "hours",
-					hours: [{ opening: "00:00:00", closing: "00:00:00" }],
-				},
-			},
-			times: [
-				{
-					name: "Mon",
-					active: true,
-				},
-				{
-					name: "Tue",
-					active: false,
-				},
-				{
-					name: "Wed",
-					active: false,
-				},
-				{
-					name: "Thu",
-					active: false,
-				},
-				{
-					name: "Fri",
-					active: false,
-				},
-				{
-					name: "Sat",
-					active: false,
-				},
-				{
-					name: "Sun",
-					active: false,
-				},
-			],
 			images: {
 				centrumgalleri: null,
 			},
@@ -443,32 +167,8 @@ export default {
 		stadValid() {
 			return !!this.city;
 		},
-		locationValidLNG() {
-			return !!this.location.lng;
-		},
-		locationValidLAT() {
-			return !!this.location.lat;
-		},
 	},
 	watch: {
-		location: {
-			deep: true,
-			handler(val) {
-				console.log(val);
-				if (val.lat && val.lng) {
-					const co = { lat: Number(val.lat), lng: Number(val.lng) };
-					console.log("location: ", { location: co });
-					this.$axios
-						.post("/centrum/address", { location: co })
-						.then((res) => {
-							this.formattedAddress = res.data.formattedAddress;
-						})
-						.catch((err) => alert(err));
-					this.map.center = co;
-					this.map.markers = [co];
-				}
-			},
-		},
 		centrumEdit: {
 			immediate: true,
 			deep: true,
@@ -517,26 +217,6 @@ export default {
 			.catch((err) => console.log(err));
 	},
 	methods: {
-		setPlace(place) {
-			if (!place) {
-				return;
-			}
-
-			this.location = {
-				lat: place.geometry.location.lat(),
-				lng: place.geometry.location.lng(),
-			};
-		},
-
-		delteTimeRow(name, index) {
-			this.days[name].hours.splice(index, 1);
-		},
-		addTimeRow(name) {
-			this.days[name].hours.push({
-				opening: "00:00:00",
-				closing: "00:00:00",
-			});
-		},
 		async post() {
 			const centrum = await this.createCentrumForm();
 			await this.$axios
@@ -557,7 +237,9 @@ export default {
 								`${this.$t("link")}admin/centrum`
 							);
 						})
-						.catch((err) => console.log(err));
+						.catch((err) => {
+							this.busy = false;
+						});
 				})
 				.catch((err) => console.log(err));
 		},
@@ -568,16 +250,18 @@ export default {
 					`/centrum/${this.$route.params.id}`,
 					centrum
 				),
-				await this.$axios.patch(`/region/${this.oldCity}`, {
-					centrum: null,
-				}),
 				await this.$axios.patch(`/region/${this.city}`, {
 					centrum: this.$route.params.id,
 				}),
 			];
-			// if (!this.oldCity)
+
 			await Promise.all(promises)
-				.then((_) => {
+				.then(async (_) => {
+					if (this.oldCity) {
+						await this.$axios.patch(`/region/${this.oldCity}`, {
+							centrum: null,
+						});
+					}
 					this.$router.push(`${this.$t("link")}admin/centrum`);
 				})
 				.catch((err) => {
@@ -638,39 +322,19 @@ export default {
 		},
 		assignCentrumEdit() {
 			console.log(this.centrumEdit);
-
 			this.location = {
 				lng: this.centrumEdit.routeGuidance.coordinates[0] || 0,
 				lat: this.centrumEdit.routeGuidance.coordinates[1] || 0,
 			};
-
-			this.map.markers.push(this.location);
-			this.formattedAddress = this.centrumEdit.routeGuidance.formattedAddress;
-
+			this.images = {
+				centrumgalleri: this.centrumEdit.centrumgalleri,
+			};
 			this.hemsida = this.centrumEdit.hemsida;
 
 			this.centrum = {
 				en: this.centrumEdit.centrumtextarea.en,
 				sv: this.centrumEdit.centrumtextarea.sv,
 			};
-
-			this.title = {
-				en: this.centrumEdit.title.en,
-				sv: this.centrumEdit.title.sv,
-			};
-
-			this.images = {
-				centrumgalleri: this.centrumEdit.centrumgalleri,
-			};
-
-			for (const key in this.centrumEdit.oppettider) {
-				if (this.centrumEdit.oppettider.hasOwnProperty(key)) {
-					const element = this.centrumEdit.oppettider[key];
-					const day = this.days[element.day];
-					day.hours = element.times;
-					day.openTimes = element.oppettider;
-				}
-			}
 		},
 	},
 };
