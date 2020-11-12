@@ -92,7 +92,9 @@
 							{{ $t("mainNavbar.contact") }}
 						</b-dropdown-item>
 					</b-nav-item-dropdown>
-
+					<b-nav-item>
+						{{ $t("mainNavbar.blogAndPress") }}
+					</b-nav-item>
 					<b-nav-item :to="localePath('/')">
 						<b-img
 							:src="
@@ -107,7 +109,7 @@
 					<b-nav-item-dropdown
 						toggle-class=" font-3"
 						menu-class="animate__animated animate__fadeInUp animate__faster"
-						:text="$t('mainNavbar.blogAndPress')"
+						:text="$t('mainNavbar.freePopups')"
 						left
 					>
 						<b-dropdown-item :to="localePath('/lediga-lokaler')">
