@@ -46,7 +46,7 @@
 					<b-nav-item v-if="isAdmin" :to="localePath('/admin')">
 						Admin
 					</b-nav-item>
-					<b-nav-item>
+					<b-nav-item :to="localePath('/contact-us')">
 						{{ $t("mainNavbar.contactUs") }}
 					</b-nav-item>
 					<b-nav-item-dropdown
@@ -88,7 +88,7 @@
 
 						<b-dd-divider />
 
-						<b-dropdown-item href="#">
+						<b-dropdown-item :to="localePath('/contact-us')">
 							{{ $t("mainNavbar.contact") }}
 						</b-dropdown-item>
 					</b-nav-item-dropdown>
@@ -177,85 +177,6 @@ export default {
 	data() {
 		return {
 			scrollY: 0,
-			links: [
-				{
-					label: {
-						text: this.$t("mainNavbar.contactUs"),
-						url: "/contact-us",
-					},
-				},
-				{
-					label: {
-						text: this.$t("mainNavbar.services"),
-					},
-					subList: [
-						{
-							text: this.$t("mainNavbar.allServices"),
-							url: "",
-						},
-						{
-							text: this.$t("mainNavbar.rentAPopupLocally"),
-							url: "",
-						},
-						{
-							text: this.$t("mainNavbar.rentOutYourPremises"),
-							url: "",
-						},
-					],
-				},
-				{
-					label: {
-						text: this.$t("mainNavbar.aboutUs"),
-					},
-					subList: [
-						{
-							text: this.$t("mainNavbar.whoAreThePopupAgency"),
-							url: "",
-						},
-						{
-							text: this.$t("mainNavbar.whatIsAPopup"),
-							url: "",
-						},
-						{
-							text: this.$t("mainNavbar.contact"),
-							url: "",
-						},
-					],
-				},
-				{
-					label: {
-						text: this.$t("mainNavbar.blogAndPress"),
-						url: "",
-					},
-				},
-				{
-					label: {
-						text: this.$t("mainNavbar.freePopups"),
-					},
-					subList: [
-						{
-							text: this.$t("mainNavbar.freePopups"),
-							url: "/lediga-lokaler",
-						},
-						{
-							text: this.$t("mainNavbar.seeAllCities"),
-							url: "",
-						},
-					],
-				},
-				{
-					label: {
-						text: this.$t("mainNavbar.howDoesPopupWork"),
-						url: "",
-					},
-				},
-				{
-					label: {
-						text: "English",
-						url: "",
-					},
-				},
-			],
 		};
 	},
 	computed: {
