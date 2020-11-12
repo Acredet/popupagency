@@ -1,72 +1,6 @@
 <template>
 	<div>
-		<b-sidebar
-			id="sidebar-1"
-			backdrop-variant="dark"
-			backdrop
-			shadow
-			no-header
-		>
-			<div class="d-flex justify-content-end bg-white pt-2 px-2">
-				<i
-					v-b-toggle.sidebar-1
-					class="ml-auto fas fa-times font-4 text-dark"
-				/>
-			</div>
-			<div class="py-2 bg-white">
-				<!-- Start login link -->
-				<ul>
-					<li class="font-3">
-						<a exact :href="`${$t('link')}login`"> login </a>
-					</li>
-				</ul>
-				<!-- End Login link -->
-				<ul v-for="(link, index) in links" :key="String(index)">
-					<li
-						v-b-toggle="'accordion' + index"
-						:class="{
-							'd-flex justify-content-between align-items-center':
-								link.subList,
-						}"
-						class="font-3"
-					>
-						<nuxt-link
-							v-if="link.label.url"
-							exact
-							:to="`${$t('link')}${link.label.url}`"
-						>
-							{{ link.label.text }}
-						</nuxt-link>
-						<span v-else>{{ link.label.text }}</span>
-						<BIconCaretDownFill v-if="link.subList" />
-					</li>
-
-					<b-collapse
-						v-if="link.subList"
-						:id="'accordion' + index"
-						accordion="my-accordion"
-						role="tabpanel"
-					>
-						<ul>
-							<li
-								v-for="(one, index1) in link.subList"
-								:key="String(index1)"
-								class="font-3"
-							>
-								<nuxt-link
-									:to="`${$i18n.locale === 'en' ? 'en' : ''}${
-										one.url
-									}`"
-								>
-									{{ one.text }}
-								</nuxt-link>
-							</li>
-						</ul>
-					</b-collapse>
-				</ul>
-			</div>
-		</b-sidebar>
-
+		<main-sidebar />
 		<b-navbar
 			toggleable="lg"
 			fixed="top"
@@ -223,18 +157,16 @@
 
 <script>
 import {
-	BootstrapVue,
 	BIcon,
 	BIconHeartFill,
 	BIconList,
 	BIconCaretDownFill,
 } from "bootstrap-vue";
+import MainSidebar from "@/components/appNav/MainSidebar";
 
 export default {
 	components: {
-		// eslint-disable-next-line vue/no-unused-components
-		BootstrapVue,
-		// eslint-disable-next-line vue/no-unused-components
+		MainSidebar,
 		BIcon,
 		BIconHeartFill,
 		BIconList,
