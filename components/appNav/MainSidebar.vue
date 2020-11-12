@@ -66,13 +66,21 @@
 				</li>
 			</ul>
 			<ul>
-				<b-btn
-					variant="default"
-					v-if="$auth.loggedIn"
-					@click="$emit('logout')"
-				>
-					{{ $t("adminHeader.logout") }}
-				</b-btn>
+				<li>
+					<b-btn variant="default" href="#" @click="changeLanguage">
+						{{ languageText }}
+					</b-btn>
+				</li>
+				<li>
+					<b-btn
+						variant="default"
+						v-if="$auth.loggedIn"
+						@click="$emit('logout')"
+						:to="localePath('/')"
+					>
+						{{ $t("adminHeader.logout") }}
+					</b-btn>
+				</li>
 			</ul>
 		</div>
 	</b-sidebar>
@@ -171,13 +179,19 @@ export default {
 						url: "#",
 					},
 				},
-				{
-					label: {
-						text: "English",
-						url: "#",
-					},
-				},
 			];
+		},
+		languageText() {
+			return this.$i18n.locale === "sv" ? "English" : "Swedish";
+		},
+	},
+	methods: {
+		changeLanguage() {
+			if (this.languageText === "English") {
+				this.$i18n.setLocale("en");
+				return;
+			}
+			this.$i18n.setLocale("sv");
 		},
 	},
 };
