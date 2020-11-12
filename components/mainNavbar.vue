@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<main-sidebar />
+		<main-sidebar @logout="logout" />
 		<b-navbar
 			toggleable="lg"
 			fixed="top"

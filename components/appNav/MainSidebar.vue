@@ -65,6 +65,15 @@
 					</nuxt-link>
 				</li>
 			</ul>
+			<ul>
+				<b-btn
+					variant="default"
+					v-if="$auth.loggedIn"
+					@click="$emit('logout')"
+				>
+					{{ $t("adminHeader.logout") }}
+				</b-btn>
+			</ul>
 		</div>
 	</b-sidebar>
 </template>
