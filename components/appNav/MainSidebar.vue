@@ -55,6 +55,16 @@
 					</ul>
 				</b-collapse>
 			</ul>
+			<ul>
+				<li>
+					<nuxt-link
+						v-if="$auth.loggedIn"
+						:to="localePath('/bookmark')"
+					>
+						<b-icon-heart-fill />
+					</nuxt-link>
+				</li>
+			</ul>
 		</div>
 	</b-sidebar>
 </template>
