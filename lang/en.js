@@ -84,6 +84,12 @@ export default {
 		parent: "Parent",
 	},
 	homePage: {
+		banner: {
+			fromIdea: "FROM IDEA",
+			toPopup: "TO POPUP",
+			text: "We have been creating the retail of the future since 2013",
+			textSearchPlaceholder: "Find your venue here ...",
+		},
 		contactUsSection: {
 			needHelp: "Need help?",
 			text:

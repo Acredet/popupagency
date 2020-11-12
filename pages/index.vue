@@ -5,13 +5,13 @@
 			<div class="banner-overlay" />
 			<div class="banner-text">
 				<h2 class="font-xl-12 font-18">
-					från idé
+					{{ $t("homePage.banner.fromIdea") }}
 					<br />
-					till popup
+					{{ $t("homePage.banner.toPopup") }}
 				</h2>
 				<span class="divider" />
 				<h4 class="text-center text-white">
-					Vi har skapat framtidens retail sedan 2013
+					{{ $t("homePage.banner.text") }}
 				</h4>
 				<b-input-group>
 					<b-input-group-prepend class="bg-white p-3 text-dark">
@@ -20,8 +20,12 @@
 					<b-form-input
 						class="p-4"
 						type="search"
-						aria-label="Hitta din lokal här..."
-						placeholder="Hitta din lokal här..."
+						:aria-label="
+							$t('homePage.banner.textSearchPlaceholder')
+						"
+						:placeholder="
+							$t('homePage.banner.textSearchPlaceholder')
+						"
 					/>
 				</b-input-group>
 			</div>

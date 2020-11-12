@@ -84,6 +84,12 @@ export default {
 		parent: "Förälder",
 	},
 	homePage: {
+		banner: {
+			fromIdea: "FRÅN IDÉ",
+			toPopup: "TILL POPUP",
+			text: "Vi har skapat framtidens retail sedan 2013",
+			textSearchPlaceholder: "Hitta din lokal här...",
+		},
 		contactUsSection: {
 			needHelp: "Behöver du hjälp?",
 			text:
