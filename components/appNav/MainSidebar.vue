@@ -65,13 +65,18 @@
 						v-if="$auth.loggedIn"
 						:to="localePath('/bookmark')"
 					>
-						<b-icon-heart-fill />
+						<b-icon-heart-fill /> Bookmarks
 					</nuxt-link>
 				</li>
 			</ul>
 			<ul>
 				<li>
-					<b-btn variant="default" href="#" @click="changeLanguage">
+					<b-btn
+						class="font-3"
+						variant="default"
+						href="#"
+						@click="changeLanguage"
+					>
 						{{ languageText }}
 					</b-btn>
 				</li>
