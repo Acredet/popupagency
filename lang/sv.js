@@ -83,6 +83,14 @@ export default {
 		description: "Beskrivning",
 		parent: "Förälder",
 	},
+	homePage: {
+		contactUsSection: {
+			needHelp: "Behöver du hjälp?",
+			text:
+				"Vet du inte riktigt vart du vill öppna en popup? Kontakta oss så hjälper vi dig att hitta er perfekta popup-match.",
+			contactUs: "Kontakta OSS",
+		},
+	},
 	login: {
 		welcome: "Välkommen tillbaka!",
 		signIn: "Logga in för att fortsätta till adminpanelen.",

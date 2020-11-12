@@ -83,6 +83,14 @@ export default {
 		description: "Description",
 		parent: "Parent",
 	},
+	homePage: {
+		contactUsSection: {
+			needHelp: "Need help?",
+			text:
+				"Not sure where to open a popup? Contact us and we will help you find your perfect pop-up match.",
+			contactUs: "CONTACT US",
+		},
+	},
 	login: {
 		welcome: "Welcome Back !",
 		signIn: "Sign in to continue to Admin panel.",
