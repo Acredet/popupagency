@@ -86,7 +86,7 @@
           <p>
             Vet du inte riktigt vart du vill öppna en popup? Kontakta oss så hjälper vi dig att hitta er perfekta popup-match.
           </p>
-          <b-btn squared variant="primary" to="/contact-us">
+          <b-btn squared variant="primary" :to="localePath('/contact-us')">
             Kontakta oss
           </b-btn>
         </b-container>
