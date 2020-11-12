@@ -117,7 +117,7 @@
 						<b-dropdown-item
 							:to="localePath('/interest-reporting')"
 						>
-							Interest Reporting page
+							{{ $t("mainNavbar.interestReporting") }}
 						</b-dropdown-item>
 
 						<b-dd-divider />
