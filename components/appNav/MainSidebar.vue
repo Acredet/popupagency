@@ -10,7 +10,9 @@
 			<!-- Start login link -->
 			<ul>
 				<li class="font-3">
-					<a exact :href="`${$t('link')}login`"> login </a>
+					<nuxt-link exact :to="localePath('/login')">
+						login
+					</nuxt-link>
 				</li>
 			</ul>
 			<!-- End Login link -->
@@ -26,7 +28,7 @@
 					<nuxt-link
 						v-if="link.label.url"
 						exact
-						:to="`${$t('link')}${link.label.url}`"
+						:to="localePath(link.label.url)"
 					>
 						{{ link.label.text }}
 					</nuxt-link>
@@ -46,11 +48,7 @@
 							:key="String(index1)"
 							class="font-3"
 						>
-							<nuxt-link
-								:to="`${$i18n.locale === 'en' ? 'en' : ''}${
-									one.url
-								}`"
-							>
+							<nuxt-link :to="localePath(one.url)">
 								{{ one.text }}
 							</nuxt-link>
 						</li>
@@ -92,15 +90,15 @@ export default {
 					subList: [
 						{
 							text: this.$t("mainNavbar.allServices"),
-							url: "",
+							url: "#",
 						},
 						{
 							text: this.$t("mainNavbar.rentAPopupLocally"),
-							url: "",
+							url: "#",
 						},
 						{
 							text: this.$t("mainNavbar.rentOutYourPremises"),
-							url: "",
+							url: "#",
 						},
 					],
 				},
@@ -111,22 +109,22 @@ export default {
 					subList: [
 						{
 							text: this.$t("mainNavbar.whoAreThePopupAgency"),
-							url: "",
+							url: "#",
 						},
 						{
 							text: this.$t("mainNavbar.whatIsAPopup"),
-							url: "",
+							url: "#",
 						},
 						{
 							text: this.$t("mainNavbar.contact"),
-							url: "",
+							url: "#",
 						},
 					],
 				},
 				{
 					label: {
 						text: this.$t("mainNavbar.blogAndPress"),
-						url: "",
+						url: "#",
 					},
 				},
 				{
@@ -139,21 +137,25 @@ export default {
 							url: "/lediga-lokaler",
 						},
 						{
+							text: this.$t("mainNavbar.interestReporting"),
+							url: "/interest-reporting",
+						},
+						{
 							text: this.$t("mainNavbar.seeAllCities"),
-							url: "",
+							url: "#",
 						},
 					],
 				},
 				{
 					label: {
 						text: this.$t("mainNavbar.howDoesPopupWork"),
-						url: "",
+						url: "#",
 					},
 				},
 				{
 					label: {
 						text: "English",
-						url: "",
+						url: "#",
 					},
 				},
 			];
