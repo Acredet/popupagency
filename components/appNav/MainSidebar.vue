@@ -9,10 +9,14 @@
 		<div class="py-2 bg-white">
 			<!-- Start login link -->
 			<ul>
-				<li class="font-3">
+				<!--          only show this link if the user is not logged in-->
+				<li class="font-3" v-if="!$auth.loggedIn">
 					<nuxt-link exact :to="localePath('/login')">
 						login
 					</nuxt-link>
+				</li>
+				<li class="font-3" v-if="isAdmin">
+					<nuxt-link :to="localePath('/admin')"> Admin </nuxt-link>
 				</li>
 			</ul>
 			<!-- End Login link -->
@@ -193,6 +197,9 @@ export default {
 			}
 			this.$i18n.setLocale("sv");
 		},
+	},
+	props: {
+		isAdmin: Boolean,
 	},
 };
 </script>

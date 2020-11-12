@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<main-sidebar @logout="logout" />
+		<main-sidebar @logout="logout" :is-admin="isAdmin" />
 		<b-navbar
 			toggleable="lg"
 			fixed="top"
