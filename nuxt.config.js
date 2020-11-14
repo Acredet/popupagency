@@ -129,7 +129,10 @@ module.exports = {
 	 */
 	axios: {
 		// baseURL: '/api'
-		baseURL: "https://popup.dk.se/api",
+		baseURL:
+			process.env.NODE_ENV !== "production"
+				? "http://localhost:3000/api"
+				: "https://popup.dk.se/api",
 	},
 	router: {
 		linkActiveClass: "active",
