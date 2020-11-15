@@ -1,7 +1,11 @@
 exports.sortItems = {
 	methods: {
 		sortItems(regions, withNameSpace) {
-			const countries = regions.filter((x) => !x.parent); // Get countries
+			const countries = JSON.parse(
+				JSON.stringify(regions.filter((x) => !x.parent))
+			); // Get countries
+			console.log("countries is");
+			console.log(countries);
 			const cities = regions.filter((x) =>
 				countries.map((x) => x._id).includes(x.parent)
 			); // get cities
