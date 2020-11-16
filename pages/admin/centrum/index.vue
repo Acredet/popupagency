@@ -100,17 +100,14 @@ export default {
         .then((res) => {
           this.items = res.data
           this.loading = false
-          console.log(res)
         })
         .catch(err => console.log(err))
     },
     async deleteListing () {
       const regions = await this.$axios.get('/region')
       const centrumRegion = regions.data.data.filter(x => (!!x.centrum && x.centrum === this.editForm._id))[0]
-      console.log(centrumRegion)
       await this.$axios.$delete(`/centrum/${this.editForm._id}`)
         .then(async (res) => {
-          console.log(res)
           await this.$axios.patch(`/region/${centrumRegion._id}`, { centrum: null })
             .then((_) => {
               this.getListings()

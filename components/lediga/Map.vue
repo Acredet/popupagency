@@ -134,8 +134,7 @@ export default {
       }
     },
     singleClick (e) {
-      this.setCenter([e.center_.lng(), e.center_.lat()])
-      console.log(this.map.zoom)
+      this.setCenter([e.center_.lng(), e.center_.lat()]);
       this.map.zoom = (this.map.zoom < 7) ? 7 : (this.map.zoom + 1)
     },
     mapResized (e) {
@@ -150,7 +149,6 @@ export default {
       url += '&sensor=true'
       url += '&key=AIzaSyCwwawqFjvbUv_ke0pviP0rHqACQB-MoaE'
 
-      console.log(url)
       this.$axios.$get(url, { headers: { 'Access-Control-Allow-Origin': '*' } })
         .then((res) => {
           console.log(res.results)

@@ -30,12 +30,11 @@ const usePasswordHashToMakeToken = ({
 router.post('/', (req, res) => {
   const { email } = req.body
 
-  console.log(email)
 
   User.findOne({ email })
 
     .then((user) => {
-      console.log(user)
+      
 
       const token = usePasswordHashToMakeToken(user)
       const url = getPasswordResetURL(user, token)

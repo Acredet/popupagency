@@ -13,7 +13,6 @@ exports.AdminPanelDependancies = {
       // eslint-disable-next-line no-unused-expressions
       !(function ($) {
         'use strict'
-        console.log($)
         const MainApp = function () {}
 
         // eslint-disable-next-line no-unused-expressions
@@ -116,7 +115,6 @@ exports.AdminPanelDependancies = {
       // initializing
       (function ($) {
         'use strict'
-        console.log($.MainApp.init)
         $.MainApp.init()
       }(window.jQuery))
     }

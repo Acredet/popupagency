@@ -82,9 +82,6 @@ exports.addPlace = async (req, res, next) => {
     newPlace.bildgalleri = req.files['bildgalleri[]'] ? req.files['bildgalleri[]'].map(x => x.filename) : []
     newPlace.cover = req.files['cover[]'] ? req.files['cover[]'].map(x => x.filename) : []
     newPlace.planritning = req.files['planritning[]'] ? req.files['planritning[]'].map(x => x.filename) : []
-
-    console.log(newPlace)
-
     newPlace.egenskaper = req.body.egenskaper ? req.body.egenskaper.map(x => JSON.parse(x)) : []
     newPlace.kategori = req.body.kategori ? req.body.kategori.map(x => JSON.parse(x)) : []
 
@@ -136,7 +133,6 @@ exports.updatePlace = async (req, res) => {
     updata.stad = JSON.parse(updata.stad)
   }
 
-  console.log(updata.stad)
   if (updata.beskreving) {
     updata.beskreving = JSON.parse(updata.beskreving)
   }

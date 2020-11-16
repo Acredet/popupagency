@@ -64,7 +64,6 @@ export default {
       deep: true,
       handler (newValue) {
         if (this.once === 0 && newValue.min !== newValue.max) {
-          console.log('LOOOOL', newValue.min, newValue.max)
           this.updateValue(newValue)
           this.once += 1
         }

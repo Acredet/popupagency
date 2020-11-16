@@ -33,7 +33,6 @@ router.get('/listings/drafts', auth, getDraftPlaces)
 router.patch('/view/:id', addWatch)
 
 router.post('/images', multer.fields(fields), (req, res) => {
-  console.log(req.files[req.body.name], req.body.name)
   const names = req.files[req.body.name].map(file => file.filename)
   return res.status(200).json(...names)
 })

@@ -77,10 +77,6 @@ exports.ListingDepedancies = {
       item.append('description', JSON.stringify(this.form.description))
       item.append('parent', this.form.parent)
 
-      for (const pair of item.entries()) { // Show data in console.
-        console.log(pair[0] + ', ' + pair[1])
-      }
-
       await this.$axios.$post(`/${link}`, item)
         .then((res) => {
           this.getItems(link)
@@ -90,7 +86,6 @@ exports.ListingDepedancies = {
           inputs.forEach((e) => {
             e.value = ''
             const img = images.find((x) => {
-              console.log(x)
               return x.getAttribute('data-id') === e.getAttribute('data-id')
             })
             img.style.display = 'none'
@@ -164,7 +159,6 @@ exports.ListingDepedancies = {
       const item = new FormData(document.getElementById(`edit-${link}`))
 
       for (const pair of item.entries()) { // upload images
-        console.log(pair[0] + ', ' + pair[1])
         const data = new FormData()
         if (pair[0] === 'edit-avatar') {
           if (pair[1].name !== '') {
@@ -172,7 +166,6 @@ exports.ListingDepedancies = {
             await this.$axios.$post(`/${link}/images`, data)
               .then((res) => {
                 this.editForm.avatar = res
-                console.log(res)
               })
               .catch((err) => {
                 this.$bvToast.toast(err.response.data.msg, {

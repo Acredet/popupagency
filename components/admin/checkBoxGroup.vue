@@ -67,7 +67,6 @@ export default {
       deep: true,
       handler (newValue) {
         if (this.once && newValue && newValue.length > 0) {
-          console.log(this.name, 'newValue: ', newValue, this.once && newValue && newValue.length > 0)
           if (typeof newValue[0] === 'string') {
             this.selected = newValue.map(x => JSON.parse(x).name[this.$i18n.locale])
           } else { this.selected = newValue.map(x => x.name[this.$i18n.locale]) }
@@ -83,7 +82,6 @@ export default {
       }
     },
     selected (newVal, oldVal) {
-      console.log(newVal, newVal.length, this.items.length)
       // Handle changes in individual flavour checkboxes
       if (newVal.length === 0) { // unselect
         this.selectedObj = []

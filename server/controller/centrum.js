@@ -93,7 +93,6 @@ exports.addCentrum = async (req, res, next) => {
   // Geocode Address
   let routeGuidance = JSON.parse(req.body.routeGuidance)
   const loc = await geocoder.reverse({ lat: Number(routeGuidance.lat), lon: Number(routeGuidance.lng) })
-  console.log('After Geo: ', loc)
   routeGuidance = {
     coordinates: [loc[0].longitude, loc[0].latitude],
     formattedAddress: loc[0].formattedAddress
@@ -162,15 +161,12 @@ exports.updateCentrum = async (req, res) => {
   if (updata.routeGuidance) {
     const location = JSON.parse(updata.routeGuidance)
     const loc = await geocoder.reverse({ lat: Number(location.lat), lon: Number(location.lng) })
-    console.log('After Geo: ', loc)
+    
     updata.routeGuidance = {
       coordinates: [loc[0].longitude, loc[0].latitude],
       formattedAddress: loc[0].formattedAddress
     }
   }
-
-  console.log(updata)
-
   await Centrum.updateOne({ _id: req.params.id }, { $set: updata })
     .then(centrum => res.json({ success: true }))
     .catch(err => res.status(404).json(err.message))

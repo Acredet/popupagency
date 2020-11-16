@@ -63,7 +63,6 @@ exports.deleteCategory = (req, res) => {
 // @route update /api/category/id
 // @access Private
 exports.updateCategory = async (req, res) => {
-  console.log(req.body)
   await Category.updateOne({ _id: req.params.id }, { $set: req.body })
     .then(category => res.json({ success: true }))
     .catch(err => res.status(404).json(err.message))

@@ -90,11 +90,8 @@ export default {
     getMinAndMax (obj, prop) {
       let min = 0
       let max = 0
-      console.log('ob:', obj)
       if (obj === 'price') {
         this.AllPlaces.forEach((place) => {
-          console.log('place.title:', place.title.sv)
-          console.log('place.prioteradpris.val:', place.prioteradpris.val)
           // Get minimum and maximum price
           if (place.prioteradpris.val < min && place.prioteradpris.val < max) {
             min = place.prioteradpris.val
@@ -147,7 +144,7 @@ export default {
       this.loadingCards = false
     },
     sorting (sort) {
-      // console.log(this.cards)
+
       this.sortedBy = sort
     },
     clearFilters () {
@@ -203,7 +200,6 @@ export default {
         .catch(err => console.log(err))
     },
     ytaChanged (type, w) {
-      console.log(w)
       if (type === 'yta') {
         this.filters.used.yta = w
         if (w[0] === this.filters.yta.min && w[1] === this.filters.yta.max) {
@@ -297,9 +293,6 @@ export default {
         }
 
         all += this.AllPlaces.filter((place) => {
-          if (country.name.en === place.stad.en) {
-            console.log(country.name.en + '->' + place.stad.en)
-          }
           return place.stad.en === country.name.en
         }).length
 
@@ -311,17 +304,11 @@ export default {
               : []
 
             all += this.AllPlaces.filter((place) => {
-              if (city.name.en === place.stad.en) {
-                console.log(city.name.en + '->' + place.stad.en)
-              }
               return place.stad.en === city.name.en
             }).length
 
             city.subCities.forEach((subCity) => {
               all += this.AllPlaces.filter((place) => {
-                if (subCity.name.en === place.stad.en) {
-                  console.log(subCity.name.en + '->' + place.stad.en)
-                }
                 return place.stad.en === subCity.name.en
               }).length
             })
@@ -335,7 +322,6 @@ export default {
               subcity: array1
             })
             all = 0
-            console.log('reset')
           })
         }
       })
@@ -360,8 +346,7 @@ export default {
         }
       })
 
-      console.log('=-======================================= END +===============================================')
-      // this.filters.plats.currentCountry = Object.keys(this.filters.plats.tabs)[0]
+    
     }
   }
 }

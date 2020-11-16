@@ -597,7 +597,6 @@ export default {
       ]
       await Promise.all(promises)
         .then((res) => {
-          console.log(res)
           const users = res[0].data
           const regions = res[1].data.filter(x => !!x.centrum)
           const categories = res[2].data
@@ -696,7 +695,6 @@ export default {
     createFormDate (draft) {
       const listing = new FormData(document.getElementById('listing'))
       const cover = listing.get('cover[]')
-      console.log(cover.name, cover.name !== '')
       if (cover.name !== '' || (this.images.cover && this.images.cover.length > 0)) {
         const keysNotWanted = ['Butik-%22Boxen%22', 'Fasta-öppettider', 'Mat&Dryck', 'Event', 'säsong', 'user', 'egenskaper']
 
@@ -866,10 +864,6 @@ export default {
         listing.append('bildgalleri', JSON.stringify(bildgalleri))
         listing.append('cover', JSON.stringify(cover))
         listing.append('planritning', JSON.stringify(planritning))
-
-        for (const pair of listing.entries()) {
-          console.log(pair[0], ':', pair[1])
-        }
         await this.$axios.$patch(`/places/${this.listing._id}`, listing)
           .then((res) => {
             if (draft) {

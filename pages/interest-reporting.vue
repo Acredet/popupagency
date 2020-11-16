@@ -239,7 +239,7 @@ export default {
 										subCity.name[this.$i18n.locale]
 								).length;
 							});
-							console.log(all);
+							
 							this.filters.plats.tabs[
 								country.name[this.$i18n.locale]
 							].push({

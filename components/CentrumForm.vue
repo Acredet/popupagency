@@ -312,7 +312,6 @@ export default {
 			return centrum;
 		},
 		assignCentrumEdit() {
-			console.log(this.centrumEdit);
 			this.location = {
 				lng: this.centrumEdit.routeGuidance.coordinates[0] || 0,
 				lat: this.centrumEdit.routeGuidance.coordinates[1] || 0,

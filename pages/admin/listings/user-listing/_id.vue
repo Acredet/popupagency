@@ -60,14 +60,12 @@ export default {
         .then((res) => {
           this.items = res
           this.loading = false
-          console.log(res)
         })
         .catch(err => console.log(err))
     },
     async deleteListing () {
       await this.$axios.$delete(`/places/${this.editForm._id}`)
         .then((res) => {
-          console.log(res)
           this.getListings()
           this.toast = {
             title: this.$t('allListing.toast.delete'),

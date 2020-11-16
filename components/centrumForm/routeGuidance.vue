@@ -136,10 +136,8 @@ export default {
 		location: {
 			deep: true,
 			handler(val) {
-				console.log(val);
 				if (val.lat && val.lng) {
 					const co = { lat: Number(val.lat), lng: Number(val.lng) };
-					console.log("location: ", { location: co });
 					this.$axios
 						.post("/centrum/address", { location: co })
 						.then((res) => {
@@ -166,11 +164,9 @@ export default {
 	},
 	methods: {
 		setPlace(place) {
-			console.log(place);
 			if (!place) {
 				return;
 			}
-
 			this.location = {
 				lat: place.geometry.location.lat(),
 				lng: place.geometry.location.lng(),

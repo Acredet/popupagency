@@ -23,7 +23,6 @@ const connectDB = require("./config/db");
 connectDB();
 // a simple logger
 app.use((req, res, next) => {
-	console.log(JSON.stringify({ url: req.url, method: req.method }));
 	next();
 });
 app.use("/api/places", places);

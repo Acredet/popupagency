@@ -5,7 +5,6 @@ const storage = multer.diskStorage({
     cb(null, `${__dirname}/../../.nuxt/dist/client/img/`)
   },
   filename (req, file, cb) {
-    console.log(file)
     cb(null, `${Date.now()}-${file.fieldname}-${file.originalname}`)
   }
 })
@@ -13,7 +12,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage })
 
 function uploadImage (req, res) {
-  console.log(req.file)
+  
   return res.status(200).json(req.file.filename)
 }
 

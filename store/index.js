@@ -55,7 +55,7 @@ export const mutations = {
 		} else if (sortType === "sizeHighToLow") {
 			state.cards = state.cards.sort((a, b) => b.yta - a.yta);
 		}
-		console.log(state.cards[0].price);
+		
 	},
 	cards(state, cards) {
 		state.cards = cards;
@@ -96,7 +96,7 @@ export const actions = {
 					)[0];
 
 					if (listingRegion.centrum) {
-						console.log(listingRegion.centrum);
+						
 						await this.$axios
 							.get(`/centrum/${listingRegion.centrum}`)
 							.then((centrum) => {
@@ -186,7 +186,7 @@ export const actions = {
 								)
 							);
 							realUsed.push(...city.selected);
-							console.log(realUsed);
+							
 						});
 					}
 				}

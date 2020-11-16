@@ -19,7 +19,6 @@ exports.addToFav = {
         }
         await this.$axios.patch(`/users/${this.$auth.user._id}`, update)
           .then(async (res) => {
-            console.log(res)
             await this.$auth.fetchUser()
           })
           .catch(err => console.log(err))
