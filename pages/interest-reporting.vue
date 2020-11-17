@@ -280,13 +280,36 @@ export default {
 			immediate: true,
 			deep: true,
 			handler() {
-				this.price = this.getMinAndMax("price", "prioteradpris");
+				this.price = this.getMinAndMaxPrice("price", "prioteradpris");
 				this.yta = this.getMinAndMax("yta", "yta");
 			},
 		},
 	},
 	async created() {},
 	methods: {
+		/**
+		 *
+		 * @param priceFilterName {string} the price property name in the component data filters object
+		 * @param pricePropertyName the price property name in the places
+		 * @returns {Array} the min and the max values for prices
+		 */
+		getMinAndMaxPrice(priceFilterName, pricePropertyName) {
+			console.log("running");
+			const arr = [
+				...this.listings.map((place) => place[pricePropertyName].val),
+			];
+			console.log(arr);
+			const min = Math.min(
+				...this.listings.map((place) => place[pricePropertyName].val)
+			);
+			const max = Math.max(
+				...this.listings.map((place) => place[pricePropertyName].val)
+			);
+			console.log([min, max]);
+			this.filters[priceFilterName].min = min;
+			this.filters[priceFilterName].max = max;
+			return [min, max];
+		},
 		getMinAndMax(obj, prop) {
 			let min = 0;
 			let max = 0;
