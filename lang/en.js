@@ -195,6 +195,7 @@ export default {
 		propertyType: "Property type:",
 		price: "Price:",
 		year: "Year",
+		yta: "Surface:",
 	},
 	signUp: {
 		freeRegister: "Free Register",

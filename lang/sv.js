@@ -196,6 +196,7 @@ export default {
 		propertyType: "Property type:",
 		price: "Pris:",
 		year: "År",
+		yta: "Yta: ",
 	},
 	signUp: {
 		signUp: "Bli Medlem",

@@ -136,7 +136,7 @@
 				<!-- Start YTA -->
 				<b-col cols="12" md="6">
 					<div>
-						<p>{{ $t("interestReporting.year") }}</p>
+						<p>{{ $t("interestReporting.yta") }}</p>
 						<vue-slider
 							key="yta-slider"
 							v-model="yta"
@@ -239,7 +239,7 @@ export default {
 										subCity.name[this.$i18n.locale]
 								).length;
 							});
-							
+
 							this.filters.plats.tabs[
 								country.name[this.$i18n.locale]
 							].push({
