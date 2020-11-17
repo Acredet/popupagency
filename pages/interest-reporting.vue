@@ -160,13 +160,8 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters } from "vuex";
 import { sortItems } from "@/mixins/SortRegions";
-/*import "vue-slider-component/theme/material.css";
-let VueSlider;
-if (process.browser) {
-	VueSlider = require("vue-slider-component");
-}*/
 
 export default {
 	components: {},
@@ -230,7 +225,6 @@ export default {
 
 							let all = 0;
 							city.subCities.forEach((subCity) => {
-								// console.log('subCity: ', subCity.name)
 								all += this.listings.filter(
 									(place) =>
 										place.stad[this.$i18n.locale] ===
@@ -292,18 +286,15 @@ export default {
 		 * @returns {Array} the min and the max values for prices
 		 */
 		getMinAndMaxPrice(priceFilterName, pricePropertyName) {
-			console.log("running");
 			const arr = [
 				...this.listings.map((place) => place[pricePropertyName].val),
 			];
-			console.log(arr);
 			const min = Math.min(
 				...this.listings.map((place) => place[pricePropertyName].val)
 			);
 			const max = Math.max(
 				...this.listings.map((place) => place[pricePropertyName].val)
 			);
-			console.log([min, max]);
 			this.filters[priceFilterName].min = min;
 			this.filters[priceFilterName].max = max;
 			return [min, max];
@@ -312,7 +303,6 @@ export default {
 			let min = 0;
 			let max = 0;
 			this.listings.forEach((place) => {
-				// console.log(place[prop])
 				// Get minimum and maximum price
 				if (place[prop] < min && place[prop] < max) {
 					min = place[prop];
