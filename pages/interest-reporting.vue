@@ -162,16 +162,14 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import { sortItems } from "@/mixins/SortRegions";
-import "vue-slider-component/theme/material.css";
+/*import "vue-slider-component/theme/material.css";
 let VueSlider;
 if (process.browser) {
 	VueSlider = require("vue-slider-component");
-}
+}*/
 
 export default {
-	components: {
-		VueSlider,
-	},
+	components: {},
 	mixins: [sortItems],
 	data() {
 		return {
