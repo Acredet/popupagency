@@ -93,13 +93,12 @@
 								cols="6"
 								md="3"
 							>
-								<b-button
-									block
-									:pressed="icon.state"
-									variant="outline-primary"
-									squared
-									class="text-left m-1"
-									@click="addProperty(index)"
+								<b-form-checkbox
+									button
+									button-variant="outline-primary btn-block"
+									class="m-1 btn-block"
+									:value="icon.text"
+									v-model="selectedProperties"
 								>
 									<b-img
 										v-if="icon.avatar"
@@ -107,7 +106,7 @@
 										:src="`https://popup.dk.se/_nuxt/img/${icon.avatar}`"
 									/>
 									{{ icon.text }}
-								</b-button>
+								</b-form-checkbox>
 							</b-col>
 						</b-row>
 					</b-button-group>
@@ -187,6 +186,7 @@ export default {
 			yta: [0, 100],
 			icons: [],
 			plats: [],
+			selectedProperties: [],
 		};
 	},
 	computed: {
@@ -336,10 +336,6 @@ export default {
 			}
 			copy.join("");
 			return copy.join("");
-		},
-		addProperty(index) {
-			this.filters.icons[index].state = !this.filters.icons[index].state;
-			this.icons = this.filters.icons;
 		},
 		toggleAll(index) {
 			const arr = this.filters.plats.tabs[
