@@ -117,7 +117,7 @@
 				<!-- Start Price -->
 				<b-col cols="12" md="6">
 					<div>
-						<p>{{ $t("interestReporting.propertyType") }}</p>
+						<p>{{ $t("interestReporting.price") }}</p>
 						<vue-slider
 							key="price-slider"
 							v-model="price"
