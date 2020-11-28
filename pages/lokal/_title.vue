@@ -95,657 +95,434 @@
 			</div>
 			<!-- End cover -->
 
-			<b-tabs no-nav-style :value="tabOpened" fill content-class="mt-3">
-				<template v-slot:tabs-start>
-					<div class="w-100">
-						<!-- Start Tabs buttons -->
-						<div class="shadow w-100 d-flex flex-nowrap">
-							<b-container class="d-flex flex-column flex-nowrap">
-								<b-row
-									no-gutters
-									class="d-flex flex-nowrap jsutify-content-center w-100 tabs"
-								>
-									<b-col
-										v-for="(tab, index) in tabs"
-										:key="tab"
-										class="flex-grow-1"
-										cols="auto"
-									>
-										<b-btn
-											squared
-											block
-											variant="light"
-											class="anime-tab anime-tab-fromLeft border-0 bg-transparent"
-											:class="{
-												active: index === tabOpened,
-											}"
-											@click="tabOpened = index"
-										>
-											{{ tab }}
-										</b-btn>
-									</b-col>
-								</b-row>
-							</b-container>
-						</div>
-						<!-- End Tabs buttons -->
-
-						<!-- Start fEATS SECTION -->
-						<b-container
-							class="d-flex flex-column flex-nowrap my-5"
-						>
-							<b-row
-								no-gutters
-								class="d-flex flex-nowrap jsutify-content-center w-100 py-3 tabs"
-							>
-								<b-col
-									v-for="feat in feats"
-									:key="feat.name"
-									cols="auto"
-									class="d-flex flex-grow-1 flex-column justify-content-center mx-2 align-items-center"
-								>
-									<img
-										width="30px"
-										:src="
-											require(`~/assets/img/feats/${feat.name}.png`)
-										"
-										:alt="feat.name"
-									/>
-									<b v-if="feat.name === 'yta-1'" class="pt-1"
-										>{{ feat.text }} m<sup>3</sup>
-									</b>
-									<b v-else class="pt-1">{{ feat.text }}</b>
-								</b-col>
-							</b-row>
-						</b-container>
-						<!-- End fEATS SECTION -->
-					</div>
-				</template>
-
-				<b-tab title-item-class="d-none" class="my-4" active>
-					<b-container>
-						<b-row>
-							<b-col class="my-3" cols="12" md="6">
-								<b class="font-4">{{
-									$t("singleListing.info.description")
-								}}</b>
-								<!-- eslint-disable-next-line vue/no-v-html -->
+			<main>
+				<b-container>
+					<b-row>
+						<!-- Start Info col -->
+						<b-col cols="12" md="8">
+							<!-- Start Description -->
+							<section>
+								<h2 class="font-weight-bold">Description</h2>
 								<div
-									class="my-2"
 									v-html="
 										place.beskreving
 											? place.beskreving[$i18n.locale]
 											: ''
 									"
 								/>
-							</b-col>
-							<!-- Start Karta -->
-							<b-col class="my-3" cols="12" md="6">
-								<div class="d-flex justify-content-between">
-									<b class="font-4">{{
-										$t("singleListing.info.map")
-									}}</b>
-									<a
-										v-if="place.location"
-										class="link-main"
-										target="_blank"
-										:href="`https://www.google.com/maps/dir//${place.location.coordinates[1]},${place.location.coordinates[0]}/@${place.location.coordinates[1]},${place.location.coordinates[0]},12z`"
-										>{{
-											$t("singleListing.info.directions")
-										}}</a
-									>
-								</div>
-								<div class="content my-2">
-									<gmap-map
-										style="width: 100%; height: 300px"
-										:center="map.center"
-										:map-type-id="map.mapTypeId"
-										:zoom="7"
-									>
-										<gmap-cluster>
-											<gmap-marker
-												v-for="(mark,
-												index) in map.markers"
-												:key="index"
-												:icon="
-													require(`@/assets/img/marker.svg`)
-												"
-												:position="mark"
-											/>
-										</gmap-cluster>
-									</gmap-map>
-								</div>
-							</b-col>
-							<!-- End Karta -->
+							</section>
+							<!-- End Description -->
 
-							<!-- Start Detaljer -->
-							<b-col class="my-3" cols="12" md="6">
-								<b class="font-4">{{
-									$t("singleListing.info.details")
-								}}</b>
-								<!-- eslint-disable-next-line vue/no-v-html -->
-								<div class="my-2">
-									<div class="d-flex justify-content-between">
-										<p>
-											{{ $t("singleListing.info.area") }}
-										</p>
-										<p>
-											{{ place.yta ? place.yta : "190" }}
-											m²
-										</p>
-									</div>
-									<hr />
-									<div class="d-flex justify-content-between">
-										<p>
-											{{ $t("singleListing.info.floor") }}
-										</p>
-										<p>
-											{{ $t("singleListing.groundPlan") }}
-										</p>
-									</div>
-								</div>
-							</b-col>
-							<!-- End Detaljer -->
-
-							<!-- Start Planritning -->
-							<b-col
-								v-if="place.planritning"
-								class="my-3"
-								cols="12"
-								md="6"
-							>
-								<b class="font-4">{{
-									$t("singleListing.info.floorPlan")
-								}}</b>
-								<div
-									v-for="img in place.planritning"
-									:key="img"
-									class="img"
-								>
-									<div
-										class="planritning rounder-circle"
-										@click="
-											showV('planritningImages', index)
-										"
-									>
-										<i
-											class="far fa-file-image font-1 text-secondaty mr-2"
-										/>
-										<span>{{ img }}</span>
-									</div>
-
-									<viewer
-										ref="viewer"
-										:images="planritningImages"
-										class="viewer"
-										@inited="
-											initedV('planritningImages', $event)
-										"
-									>
-										<img
-											v-for="src in planritningImages"
-											:key="src"
-											:src="src"
-											class="d-none"
-										/>
-									</viewer>
-								</div>
-								<div v-if="place.planritning.length === 0">
-									<p class="secondary--text">
-										{{ $t("notProvided") }}
-									</p>
-								</div>
-							</b-col>
-							<!-- End Planritning -->
-
-							<!-- Start egenskaper -->
-							<b-col
-								v-if="place.egenskaper"
-								class="my-3"
-								cols="12"
-								md="6"
-							>
-								<b class="font-4">{{
-									$t("singleListing.info.characteristics")
-								}}</b>
-								<div
-									v-for="tag in place.egenskaper"
-									:key="tag.name[$i18n.locale]"
-									class="mt-1 img"
-								>
-									-
-									<img
-										v-if="tag.avatar"
-										:src="`https://popup.dk.se/_nuxt/img/${tag.avatar}`"
-										width="50px"
-										:alt="tag.name[$i18n.locale]"
-									/>
-									<span
-										v-else
-										style="
-											display: inline-block;
-											width: 50px;
-										"
-									/>
-									<b>{{ tag.name[$i18n.locale] }}</b>
-								</div>
-							</b-col>
-							<!-- End Planritning -->
-
-							<!-- Start Galleri -->
-							<b-col class="my-3" cols="12">
-								<div
-									class="my-gallery"
-									itemscope
-									itemtype="http://schema.org/ImageGallery"
-								>
-									<b class="font-4 mb-2">{{
-										$t("singleListing.info.gallery")
-									}}</b>
-									<!-- component -->
-									<b-row no-gutters>
-										<b-col
-											v-for="(src, index) in images"
-											:key="src"
-											cols="12"
-											md="6"
-											@click="showV('bildgalleri', index)"
+							<!-- Start Local Information -->
+							<section>
+								<h2>Local Information</h2>
+								<hooper :settings="hooperSettings">
+									<!-- Start MapView card -->
+									<slide>
+										<div
+											@click="mapViewModalState = true"
+											class="custom-card"
 										>
 											<div
-												class="gallery-images"
-												style="height: 320px"
+												class="custom-card--imgWrapper"
 											>
 												<img
-													width="100%"
-													:src="src"
-													style="height: 320px"
+													src="@/assets/img/mapthumbnail.png"
+													alt="Map View"
 												/>
 											</div>
-										</b-col>
-										<b-col
-											v-if="images.length === 0"
-											cols="12"
-										>
-											<p
-												class="text-center text-secondary"
-											>
-												{{ $t("notProvided") }}
+											<p class="text-secondary">
+												Explore the area around
+												{{
+													place.title
+														? place.title[
+																$i18n.locale
+														  ]
+														: ""
+												}}
 											</p>
-										</b-col>
-									</b-row>
+										</div>
+									</slide>
+									<!-- End MapView card -->
 
-									<viewer
-										ref="viewer2"
-										:images="images"
-										class="viewer"
-										@inited="initedV('bildgalleri', $event)"
+									<!-- Start StreatView card -->
+									<slide>
+										<div
+											@click="streatViewModalState = true"
+											class="custom-card"
+										>
+											<div
+												class="custom-card--imgWrapper"
+											>
+												<img
+													src="@/assets/img/streatview-thumbnai.svg"
+													height="130px"
+													alt="Streat View"
+												/>
+											</div>
+											<p class="text-secondary">
+												Take a virtual walk around the
+												neighborhood.
+											</p>
+										</div>
+									</slide>
+									<!-- End MapView card -->
+
+									<hooper-navigation
+										slot="hooper-addons"
+									></hooper-navigation>
+									<hooper-progress
+										slot="hooper-addons"
+									></hooper-progress>
+									<hooper-pagination
+										slot="hooper-addons"
+									></hooper-pagination>
+								</hooper>
+							</section>
+							<!-- End Local Information -->
+
+							<!-- Start Home Details -->
+							<section>
+								<h2 class="font-weight-bold">
+									Home Details for
+									{{
+										place.title
+											? place.title[$i18n.locale]
+											: ""
+									}}
+								</h2>
+								<ul class="row">
+									<li
+										v-for="tag in place.egenskaper"
+										:key="tag.name[$i18n.locale]"
+										class="col-12 col-md-6 col-lg-4"
 									>
 										<img
-											v-for="src in images"
-											:key="`${src}-imaged`"
-											:src="src"
-											class="d-none"
+											v-if="tag.avatar"
+											:src="`https://popup.dk.se/_nuxt/img/${tag.avatar}`"
+											width="50px"
+											:alt="tag.name[$i18n.locale]"
 										/>
-									</viewer>
-								</div>
-							</b-col>
-							<!-- End Galleri -->
+										<span
+											v-else
+											style="
+												display: inline-block;
+												height: 50px;
+												vertical-align: middle;
+												width: 50px;
+											"
+										/>
+										<b>{{ tag.name[$i18n.locale] }}</b>
+									</li>
+								</ul>
+							</section>
+							<!-- End Home Details -->
 
-							<b-col cols="12">
-								<b-row style="min-height: 200px">
-									<b-col
-										cols="6"
-										class="d-flex justify-content-end align-items-center"
+							<!-- Start Prices -->
+							<div>
+								<h2 class="font-weight-bold">
+									listing's priceing list
+								</h2>
+								<ul class="row list-unstyled">
+									<li
+										v-for="price in $t(
+											'singleListing.info.priceList'
+										)"
+										:key="price"
+										class="d-flex mb-1 col-12 col-md-6 justify-content-between align-items-center"
 									>
-										<b-btn
-											squared
-											variant="primary"
-											@click="tabOpened = 3"
+										<b>{{ price }}:</b>
+										<span v-if="price !== 'prioteradpris'"
+											>{{ format(place[price]) }} Kr</span
 										>
-											{{ $t("contactUs") }}
-										</b-btn>
+										<span v-else
+											>{{ format(place[price].val) }} Kr /
+											{{ $t(place[price].period) }}</span
+										>
+									</li>
+								</ul>
+							</div>
+							<!-- End Prices -->
+
+							<!-- Start similar listings -->
+							<section class="my-3">
+								<h4 class="font-font-weight-bold">
+									{{ $t("singleListing.intersedIn") }}
+								</h4>
+
+								<p
+									v-if="similar.length === 0"
+									class="text-secondary text-center"
+								>
+									{{ $t("singleListing.noSimilar") }}
+								</p>
+								<b-row v-else>
+									<b-col
+										v-for="(card, index) in similar"
+										:key="String(index)"
+										class="my-2"
+										cols="12"
+										md="6"
+										lg="4"
+									>
+										<listing-card
+											:place="card"
+											:layout="'list'"
+											@notAuthBookmark="modalShow = true"
+										/>
 									</b-col>
-									<b-col cols="6" class="contact-us-img" />
 								</b-row>
-							</b-col>
-						</b-row>
-					</b-container>
-				</b-tab>
-
-				<b-tab
-					v-if="thereIsCentrum"
-					title-item-class="d-none"
-					class="my-4"
-				>
-					<b-container>
-						<!-- component -->
-						<b-row no-gutters>
-							<b-col
-								v-for="(src, index) in centrumgalleri"
-								:key="src"
-								cols="12"
-								md="6"
-								@click="showV('centrumgalleri', index)"
-							>
-								<div
-									class="gallery-images"
-									style="height: 320px"
-								>
-									<img
-										width="100%"
-										:src="src"
-										style="height: 320px"
-									/>
-								</div>
-							</b-col>
-						</b-row>
-
-						<viewer
-							ref="viewer3"
-							:images="centrumgalleri"
-							class="viewer"
-							@inited="initedV('centrumgalleri', $event)"
-						>
-							<img
-								v-for="src in centrumgalleri"
-								:key="`${src}-imaged`"
-								:src="src"
-								class="d-none"
-							/>
-						</viewer>
-
-						<b-row class="my-3 py-5">
-							<!-- Start Oppning -->
-							<b-col cols="12" md="6" lg="3" offset-lg="2">
-								<b class="d-block mb-3">Oppning</b>
-								<div
-									v-for="day in place.oppettider"
-									:key="day._id"
-								>
-									<b-row>
-										<b-col cols="6">
-											<p
-												class="m-0 p-0"
-												v-text="day.day + ':'"
-											/>
-										</b-col>
-										<b-col cols="6">
-											<p
-												v-for="time in day.times"
-												:key="time._id"
-												class="m-0 p-0 text-right"
-												v-text="
-													`${time.opening.substr(
-														0,
-														5
-													)} - ${time.closing.substr(
-														0,
-														5
-													)}`
-												"
-											/>
-										</b-col>
-									</b-row>
-									<hr />
-								</div>
-							</b-col>
-							<!-- End Oppning -->
-							<b-col cols="12" md="6" offset-lg="1">
-								<b class="d-block mb-3">{{
-									$t("singleListing.info.website")
-								}}</b>
-								<a
-									target="_blank"
-									:href="'/' + place.hemsida"
-									v-text="place.hemsida"
-								/>
-							</b-col>
-						</b-row>
-						<hr />
-						<panorama v-if="place.location" :pos="map.center" />
-					</b-container>
-				</b-tab>
-
-				<b-tab title-item-class="d-none" class="my-4">
-					<b-container>
-						<ul class="row">
-							<li
-								v-for="price in $t(
-									'singleListing.info.priceList'
-								)"
-								:key="price"
-								class="d-flex mb-1 col-12 col-md-6 justify-content-between align-items-center"
-							>
-								<b>{{ price }}:</b>
-								<span v-if="price !== 'prioteradpris'"
-									>{{ format(place[price]) }} Kr</span
-								>
-								<span v-else
-									>{{ format(place[price].val) }} Kr /
-									{{ $t(place[price].period) }}</span
-								>
-							</li>
-						</ul>
-					</b-container>
-				</b-tab>
-
-				<b-tab title-item-class="d-none" class="my-4">
-					<b-container>
-						<b-form>
-							<b class="font-3">{{
-								$t("singleListing.form.sendUs")
-							}}</b>
-							<b-row>
-								<!-- Start user name -->
-								<b-col cols="12">
-									<b-form-group
-										class="my-2"
-										:label="$t('forms.name.title')"
-										label-class="font-weight-bold"
-										label-for="username"
-									>
-										<b-form-input
-											id="username"
-											v-model="form.name"
-											autocomplete="off"
-											size="sm"
-										/>
-									</b-form-group>
-								</b-col>
-								<!-- End user name -->
-
-								<!-- Start email -->
-								<b-col cols="12" md="6">
-									<b-form-group
-										class="my-2"
-										:label="$t('forms.email.title')"
-										label-class="font-weight-bold"
-										label-for="email"
-									>
-										<b-form-input
-											id="email"
-											v-model="form.email"
-											type="email"
-											autocomplete="off"
-											size="sm"
-										/>
-									</b-form-group>
-								</b-col>
-								<!-- End email -->
-
-								<!-- Start Phone -->
-								<b-col cols="12" md="6">
-									<b-form-group
-										class="my-2"
-										:label="$t('forms.phone.title')"
-										label-class="font-weight-bold"
-										label-for="Phone"
-									>
-										<b-form-input
-											id="Phone"
-											v-model="form.phone"
-											autocomplete="off"
-											size="sm"
-										/>
-									</b-form-group>
-								</b-col>
-								<!-- End Phone -->
-
-								<!-- Start Business -->
-								<b-col cols="12" md="6">
-									<b-form-group
-										class="my-2"
-										:label="$t('forms.business.title')"
-										label-class="font-weight-bold"
-										label-for="Business"
-									>
-										<b-form-input
-											id="Business"
-											v-model="form.business"
-											autocomplete="off"
-											size="sm"
-										/>
-									</b-form-group>
-								</b-col>
-								<!-- End Business -->
-
-								<!-- Start Website -->
-								<b-col cols="12" md="6">
-									<b-form-group
-										class="my-2"
-										:label="
-											$t('singleListing.info.website') +
-											':'
-										"
-										label-class="font-weight-bold"
-										label-for="Website"
-									>
-										<b-form-input
-											id="Website"
-											v-model="form.website"
-											autocomplete="off"
-											size="sm"
-										/>
-									</b-form-group>
-								</b-col>
-								<!-- End Website -->
-
-								<!-- Start From -->
-								<b-col cols="12" md="6">
-									<b-form-group
-										class="my-2"
-										:label="$t('singleListing.form.from')"
-										label-class="font-weight-bold"
-										label-for="from"
-									>
-										<b-form-datepicker
-											id="from"
-											v-model="form.from"
-											today-button
-											reset-button
-											close-button
-											size="sm"
-											class="mb-2"
-										/>
-									</b-form-group>
-								</b-col>
-								<!-- End From -->
-
-								<!-- Start empty -->
-								<b-col cols="12" md="6">
-									<b-form-group
-										class="my-2"
-										:label="$t('singleListing.form.empty')"
-										label-class="font-weight-bold"
-										label-for="Empty"
-									>
-										<b-form-datepicker
-											id="Empty"
-											v-model="form.empty"
-											today-button
-											reset-button
-											close-button
-											size="sm"
-											class="mb-2"
-										/>
-									</b-form-group>
-								</b-col>
-								<!-- End empty -->
-
-								<!-- Start details -->
-								<b-col cols="12">
-									<b-form-group
-										class="my-2"
-										:label="
-											$t('singleListing.form.details')
-										"
-										label-class="font-weight-bold"
-										label-for="details"
-									>
-										<b-form-textarea
-											id="details"
-											size="sm"
-										/>
-									</b-form-group>
-								</b-col>
-								<!-- End details -->
-								<b-col cols="12">
-									<b-form-checkbox
-										id="GDPR"
-										v-model="form.GDPR"
-										name="GDPR"
-										:value="true"
-										:unchecked-value="false"
-									>
-										{{ $t("singleListing.form.GDPR") }}
-									</b-form-checkbox>
-								</b-col>
-
-								<b-btn
-									class="m-2"
-									size="lg"
-									type="button"
-									variant="primary"
-									@click="sendForm"
-								>
-									{{ $t("actions.submit") }}
-								</b-btn>
-							</b-row>
-						</b-form>
-					</b-container>
-				</b-tab>
-			</b-tabs>
-
-			<b-container>
-				<section class="my-3">
-					<h2 class="text-center">
-						{{ $t("singleListing.intersedIn") }}
-					</h2>
-
-					<p
-						v-if="similar.length === 0"
-						class="text-secondary text-center"
-					>
-						{{ $t("singleListing.noSimilar") }}
-					</p>
-					<b-row v-else>
-						<b-col
-							v-for="(card, index) in similar"
-							:key="String(index)"
-							class="my-2"
-							cols="12"
-							md="6"
-							lg="4"
-						>
-							<listing-card
-								:place="card"
-								:layout="'list'"
-								@notAuthBookmark="modalShow = true"
-							/>
+							</section>
+							<!-- End similar listings -->
 						</b-col>
+						<!-- End Info col -->
+
+						<!-- Start Form -->
+						<b-col
+							style="
+								position: sticky;
+								top: 70px;
+								width: 100px;
+								height: 100%;
+								justify-self: flex-start;
+							"
+							class="d-none d-md-flex"
+							md="4"
+						>
+							<b-form class="py-5">
+								<h4
+									class="font-weight-bold"
+									v-text="$t('singleListing.form.sendUs')"
+								/>
+								<b-row>
+									<!-- Start user name -->
+									<b-col cols="12">
+										<b-form-group
+											class="my-2"
+											:label="$t('forms.name.title')"
+											label-class="font-weight-bold"
+											label-for="username"
+										>
+											<b-form-input
+												id="username"
+												v-model="form.name"
+												autocomplete="off"
+												size="sm"
+											/>
+										</b-form-group>
+									</b-col>
+									<!-- End user name -->
+
+									<!-- Start email -->
+									<b-col cols="12" md="6">
+										<b-form-group
+											class="my-2"
+											:label="$t('forms.email.title')"
+											label-class="font-weight-bold"
+											label-for="email"
+										>
+											<b-form-input
+												id="email"
+												v-model="form.email"
+												type="email"
+												autocomplete="off"
+												size="sm"
+											/>
+										</b-form-group>
+									</b-col>
+									<!-- End email -->
+
+									<!-- Start Phone -->
+									<b-col cols="12" md="6">
+										<b-form-group
+											class="my-2"
+											:label="$t('forms.phone.title')"
+											label-class="font-weight-bold"
+											label-for="Phone"
+										>
+											<b-form-input
+												id="Phone"
+												v-model="form.phone"
+												autocomplete="off"
+												size="sm"
+											/>
+										</b-form-group>
+									</b-col>
+									<!-- End Phone -->
+
+									<!-- Start Business -->
+									<b-col cols="12" md="6">
+										<b-form-group
+											class="my-2"
+											:label="$t('forms.business.title')"
+											label-class="font-weight-bold"
+											label-for="Business"
+										>
+											<b-form-input
+												id="Business"
+												v-model="form.business"
+												autocomplete="off"
+												size="sm"
+											/>
+										</b-form-group>
+									</b-col>
+									<!-- End Business -->
+
+									<!-- Start Website -->
+									<b-col cols="12" md="6">
+										<b-form-group
+											class="my-2"
+											:label="
+												$t(
+													'singleListing.info.website'
+												) + ':'
+											"
+											label-class="font-weight-bold"
+											label-for="Website"
+										>
+											<b-form-input
+												id="Website"
+												v-model="form.website"
+												autocomplete="off"
+												size="sm"
+											/>
+										</b-form-group>
+									</b-col>
+									<!-- End Website -->
+
+									<!-- Start From -->
+									<b-col cols="12" md="6">
+										<b-form-group
+											class="my-2"
+											:label="
+												$t('singleListing.form.from')
+											"
+											label-class="font-weight-bold"
+											label-for="from"
+										>
+											<b-form-datepicker
+												id="from"
+												v-model="form.from"
+												today-button
+												reset-button
+												close-button
+												size="sm"
+												class="mb-2"
+											/>
+										</b-form-group>
+									</b-col>
+									<!-- End From -->
+
+									<!-- Start empty -->
+									<b-col cols="12" md="6">
+										<b-form-group
+											class="my-2"
+											:label="
+												$t('singleListing.form.empty')
+											"
+											label-class="font-weight-bold"
+											label-for="Empty"
+										>
+											<b-form-datepicker
+												id="Empty"
+												v-model="form.empty"
+												today-button
+												reset-button
+												close-button
+												size="sm"
+												class="mb-2"
+											/>
+										</b-form-group>
+									</b-col>
+									<!-- End empty -->
+
+									<!-- Start details -->
+									<b-col cols="12">
+										<b-form-group
+											class="my-2"
+											:label="
+												$t('singleListing.form.details')
+											"
+											label-class="font-weight-bold"
+											label-for="details"
+										>
+											<b-form-textarea
+												id="details"
+												size="sm"
+											/>
+										</b-form-group>
+									</b-col>
+									<!-- End details -->
+									<b-col cols="12">
+										<b-form-checkbox
+											id="GDPR"
+											v-model="form.GDPR"
+											name="GDPR"
+											:value="true"
+											:unchecked-value="false"
+										>
+											{{ $t("singleListing.form.GDPR") }}
+										</b-form-checkbox>
+									</b-col>
+
+									<b-btn
+										class="m-2"
+										size="lg"
+										type="button"
+										variant="primary"
+										@click="sendForm"
+									>
+										{{ $t("actions.submit") }}
+									</b-btn>
+								</b-row>
+							</b-form>
+						</b-col>
+						<!-- End Form -->
 					</b-row>
-				</section>
-			</b-container>
+				</b-container>
+			</main>
 		</div>
+
+		<!-- Modals -->
+		<b-modal
+			v-model="mapViewModalState"
+			size="xl"
+			centered
+			title="Map View"
+		>
+			<gmap-map
+				style="width: 100%; height: 300px"
+				:center="map.center"
+				:map-type-id="map.mapTypeId"
+				:zoom="7"
+			>
+				<gmap-cluster>
+					<gmap-marker
+						v-for="(mark, index) in map.markers"
+						:key="index"
+						:icon="require(`@/assets/img/marker.svg`)"
+						:position="mark"
+					/>
+				</gmap-cluster>
+			</gmap-map>
+		</b-modal>
+
+		<b-modal
+			v-model="streatViewModalState"
+			size="xl"
+			centered
+			title="Map View"
+		>
+			<gmap-street-view-panorama
+				class="pano"
+				:position="map.markers[0]"
+				:pov="pov"
+				:zoom="1"
+				@pano_changed="updatePano"
+				@pov_changed="updatePov"
+			/>
+		</b-modal>
+		<!-- End modals -->
 	</div>
 </template>
 
@@ -763,24 +540,44 @@ import Vue from "vue";
 import panorama from "@/components/panorama";
 import { addToFav } from "@/mixins/utils/addToFav";
 import { mapGetters } from "vuex";
+import { Hooper, Slide, Pagination as HooperPagination } from "hooper";
 
 Vue.use(Viewer);
 
 export default {
 	components: {
-		// eslint-disable-next-line vue/no-unused-components
 		BootstrapVue,
-		// eslint-disable-next-line vue/no-unused-components
 		BIconPencilSquare,
-		// eslint-disable-next-line vue/no-unused-components
 		BIcon,
 		panorama,
 		BIconHeart,
 		BIconHeartFill,
+		Hooper,
+		Slide,
+		HooperPagination,
 	},
 	mixins: [addToFav],
 	data() {
 		return {
+			pov: null,
+			pano: null,
+			mapViewModalState: false,
+			streatViewModalState: false,
+			hooperSettings: {
+				itemsToShow: 2,
+				autoPlay: false,
+				wheelControl: false,
+				centerMode: false,
+				infiniteScroll: false,
+				breakpoints: {
+					700: {
+						itemsToShow: 3,
+					},
+					1000: {
+						itemsToShow: 5,
+					},
+				},
+			},
 			loadingState: true,
 			modalShow: false,
 			thereIsCentrum: false,
@@ -911,6 +708,12 @@ export default {
 		this.loadingState = false;
 	},
 	methods: {
+		updatePov(pov) {
+			this.pov = pov;
+		},
+		updatePano(pano) {
+			this.pano = pano;
+		},
 		sendForm() {
 			alert("Not working yet 😉");
 		},
@@ -1086,5 +889,27 @@ p {
 	background-image: url("~assets/img/contact-us-person.png");
 	background-size: cover;
 	background-position: center center;
+}
+
+main .container section {
+	padding: 30px 0;
+}
+
+.hooper {
+	height: 250px;
+}
+
+.custom-card {
+	cursor: pointer;
+	padding: 15px;
+}
+
+.custom-card .custom-card--imgWrapper {
+	border-radius: 10px;
+	overflow: hidden;
+}
+.custom-card .custom-card--imgWrapper img {
+	width: 100%;
+	height: 130px;
 }
 </style>
