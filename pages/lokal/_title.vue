@@ -32,7 +32,7 @@
 					:style="imgStyles"
 				/>
 				<section class="cover--details">
-					<b-container class="h-100">
+					<b-container class="h-100 position-relative">
 						<div
 							class="text-center h-100 d-flex flex-column flex-lg-row align-items-lg-center justify-content-lg-between"
 						>
@@ -60,27 +60,35 @@
 									/>
 								</b-btn>
 							</h1>
-							<div class="position-relative">
-								<section
-									class="like position-static"
-									:class="{
-										'anim-like':
-											$auth.loggedIn &&
-											$auth.user.fav.findIndex(
-												(x) => x === place.title.sv
-											) !== -1,
-									}"
-									@click="
-										(e) => {
-											if (!this.$auth.loggedIn) {
-												this.modalShow = true;
-											} else {
-												this.AddToFav(e);
-											}
+						</div>
+
+						<div class="bookmark-wrapper position-absolute">
+							<b-btn
+								class="bookmark-btn"
+								@click="
+									(e) => {
+										if (!this.$auth.loggedIn) {
+											this.modalShow = true;
+										} else {
+											this.AddToFav(e);
 										}
+									}
+								"
+								variant="icon"
+							>
+								<b-icon
+									scale="1.5"
+									:icon="
+										$auth.loggedIn &&
+										$auth.user.fav.findIndex(
+											(x) => x === place.title.sv
+										) !== -1
+											? 'heart-fill'
+											: 'heart'
 									"
+									style="color: red"
 								/>
-							</div>
+							</b-btn>
 						</div>
 					</b-container>
 				</section>
@@ -742,7 +750,13 @@
 </template>
 
 <script>
-import { BootstrapVue, BIcon, BIconPencilSquare } from "bootstrap-vue";
+import {
+	BootstrapVue,
+	BIcon,
+	BIconPencilSquare,
+	BIconHeart,
+	BIconHeartFill,
+} from "bootstrap-vue";
 import "viewerjs/dist/viewer.css";
 import Viewer from "v-viewer";
 import Vue from "vue";
@@ -761,6 +775,8 @@ export default {
 		// eslint-disable-next-line vue/no-unused-components
 		BIcon,
 		panorama,
+		BIconHeart,
+		BIconHeartFill,
 	},
 	mixins: [addToFav],
 	data() {
@@ -995,6 +1011,23 @@ export default {
 	width: 100%;
 	padding: 5px;
 	color: white;
+}
+
+.cover .cover--details .bookmark-wrapper {
+	bottom: -22%;
+	right: 0;
+}
+
+.cover .cover--details .bookmark-btn,
+.cover .cover--details .bookmark-btn:hover,
+.cover .cover--details .bookmark-btn:focus {
+	outline: none !important;
+	box-shadow: 0 !important;
+	background: white;
+	width: 60px;
+	height: 60px;
+	border-radius: 50%;
+	box-shadow: 0px 0px 14px 0px rgba(50, 50, 50, 0.75);
 }
 
 p {
