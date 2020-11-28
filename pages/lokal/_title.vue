@@ -221,9 +221,7 @@
 											{{ $t("singleListing.info.area") }}
 										</p>
 										<p>
-											{{
-												place.yta ? place.yta : "190"
-											}}
+											{{ place.yta ? place.yta : "190" }}
 											m²
 										</p>
 									</div>
@@ -973,7 +971,12 @@ export default {
 .cover .cover--details::before {
 	z-index: -1;
 	content: "";
-	background-color: var(--dark);
+	background: rgb(0, 0, 0);
+	background: linear-gradient(
+		180deg,
+		rgba(0, 0, 0, 0) 0%,
+		rgba(0, 0, 0, 0.710504270067402) 71%
+	);
 	position: absolute;
 	opacity: 0.5;
 	bottom: 0;
