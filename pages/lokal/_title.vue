@@ -27,37 +27,25 @@
 
 			<!-- Start cover -->
 			<div class="position-relative cover">
-				<div
-					class="position-relative cover--overlay"
-					:style="imgStyles"
-				/>
+				<div class="position-relative cover--overlay" :style="imgStyles" />
 				<section class="cover--details">
 					<b-container class="h-100 position-relative">
 						<div
 							class="text-center h-100 d-flex flex-column flex-lg-row align-items-lg-center justify-content-lg-between"
 						>
 							<h1 class="font-5">
-								{{
-									place.title ? place.title[$i18n.locale] : ""
-								}}
+								{{ place.title ? place.title[$i18n.locale] : "" }}
 								<b-btn
 									v-if="
 										$auth.loggedIn &&
-										['admin', 'manager'].includes(
-											$auth.user.role
-										)
+										['admin', 'manager'].includes($auth.user.role)
 									"
 									variant="icon"
-									:to="`${$t(
-										'link'
-									)}admin/listings/edit/${place.title.sv
+									:to="`${$t('link')}admin/listings/edit/${place.title.sv
 										.split(' ')
 										.join('-')}`"
 								>
-									<b-icon
-										icon="pencil-square"
-										class="text-white"
-									/>
+									<b-icon icon="pencil-square" class="text-white" />
 								</b-btn>
 							</h1>
 						</div>
@@ -80,9 +68,7 @@
 									scale="1.5"
 									:icon="
 										$auth.loggedIn &&
-										$auth.user.fav.findIndex(
-											(x) => x === place.title.sv
-										) !== -1
+										$auth.user.fav.findIndex((x) => x === place.title.sv) !== -1
 											? 'heart-fill'
 											: 'heart'
 									"
@@ -105,9 +91,7 @@
 								<h2 class="font-weight-bold">Description</h2>
 								<div
 									v-html="
-										place.beskreving
-											? place.beskreving[$i18n.locale]
-											: ''
+										place.beskreving ? place.beskreving[$i18n.locale] : ''
 									"
 								/>
 							</section>
@@ -119,13 +103,8 @@
 								<hooper :settings="hooperSettings">
 									<!-- Start MapView card -->
 									<slide>
-										<div
-											@click="mapViewModalState = true"
-											class="custom-card"
-										>
-											<div
-												class="custom-card--imgWrapper"
-											>
+										<div @click="mapViewModalState = true" class="custom-card">
+											<div class="custom-card--imgWrapper">
 												<img
 													src="@/assets/img/mapthumbnail.png"
 													alt="Map View"
@@ -133,13 +112,7 @@
 											</div>
 											<p class="text-secondary">
 												Explore the area around
-												{{
-													place.title
-														? place.title[
-																$i18n.locale
-														  ]
-														: ""
-												}}
+												{{ place.title ? place.title[$i18n.locale] : "" }}
 											</p>
 										</div>
 									</slide>
@@ -151,9 +124,7 @@
 											@click="streatViewModalState = true"
 											class="custom-card"
 										>
-											<div
-												class="custom-card--imgWrapper"
-											>
+											<div class="custom-card--imgWrapper">
 												<img
 													src="@/assets/img/streatview-thumbnai.svg"
 													height="130px"
@@ -161,22 +132,15 @@
 												/>
 											</div>
 											<p class="text-secondary">
-												Take a virtual walk around the
-												neighborhood.
+												Take a virtual walk around the neighborhood.
 											</p>
 										</div>
 									</slide>
 									<!-- End MapView card -->
 
-									<hooper-navigation
-										slot="hooper-addons"
-									></hooper-navigation>
-									<hooper-progress
-										slot="hooper-addons"
-									></hooper-progress>
-									<hooper-pagination
-										slot="hooper-addons"
-									></hooper-pagination>
+									<hooper-navigation slot="hooper-addons"></hooper-navigation>
+									<hooper-progress slot="hooper-addons"></hooper-progress>
+									<hooper-pagination slot="hooper-addons"></hooper-pagination>
 								</hooper>
 							</section>
 							<!-- End Local Information -->
@@ -185,11 +149,7 @@
 							<section>
 								<h2 class="font-weight-bold">
 									Home Details for
-									{{
-										place.title
-											? place.title[$i18n.locale]
-											: ""
-									}}
+									{{ place.title ? place.title[$i18n.locale] : "" }}
 								</h2>
 								<ul class="row">
 									<li
@@ -220,14 +180,33 @@
 
 							<!-- Start Prices -->
 							<div>
-								<h2 class="font-weight-bold">
-									listing's priceing list
-								</h2>
-								<ul class="row list-unstyled">
+								<h2 class="font-weight-bold">listing's priceing list</h2>
+								<b-table
+									class="border-top normal"
+									:fields="['period', 'price']"
+									head-variant="light"
+									:items="$t('singleListing.info.priceList')"
+								>
+									<!-- A custom formatted data column cell -->
+									<template #cell(price)="data">
+										<span v-if="data.item !== 'prioteradpris'"
+											>{{ format(place[data.item]) }} Kr</span
+										>
+										<span v-else>
+											{{ data.item }}
+											{{ format(place[data.item].val) }} Kr /
+											{{ $t(place[data.item].period) }}</span
+										>
+									</template>
+
+									<template #cell(period)="data">
+										{{ data.item }}
+									</template>
+								</b-table>
+
+								<!-- <ul class="row list-unstyled">
 									<li
-										v-for="price in $t(
-											'singleListing.info.priceList'
-										)"
+										v-for="price in $t('singleListing.info.priceList')"
 										:key="price"
 										class="d-flex mb-1 col-12 col-md-6 justify-content-between align-items-center"
 									>
@@ -240,7 +219,7 @@
 											{{ $t(place[price].period) }}</span
 										>
 									</li>
-								</ul>
+								</ul> -->
 							</div>
 							<!-- End Prices -->
 
@@ -372,11 +351,7 @@
 									<b-col cols="12" md="6">
 										<b-form-group
 											class="my-2"
-											:label="
-												$t(
-													'singleListing.info.website'
-												) + ':'
-											"
+											:label="$t('singleListing.info.website') + ':'"
 											label-class="font-weight-bold"
 											label-for="Website"
 										>
@@ -394,9 +369,7 @@
 									<b-col cols="12" md="6">
 										<b-form-group
 											class="my-2"
-											:label="
-												$t('singleListing.form.from')
-											"
+											:label="$t('singleListing.form.from')"
 											label-class="font-weight-bold"
 											label-for="from"
 										>
@@ -417,9 +390,7 @@
 									<b-col cols="12" md="6">
 										<b-form-group
 											class="my-2"
-											:label="
-												$t('singleListing.form.empty')
-											"
+											:label="$t('singleListing.form.empty')"
 											label-class="font-weight-bold"
 											label-for="Empty"
 										>
@@ -440,16 +411,11 @@
 									<b-col cols="12">
 										<b-form-group
 											class="my-2"
-											:label="
-												$t('singleListing.form.details')
-											"
+											:label="$t('singleListing.form.details')"
 											label-class="font-weight-bold"
 											label-for="details"
 										>
-											<b-form-textarea
-												id="details"
-												size="sm"
-											/>
+											<b-form-textarea id="details" size="sm" />
 										</b-form-group>
 									</b-col>
 									<!-- End details -->
@@ -484,12 +450,7 @@
 		</div>
 
 		<!-- Modals -->
-		<b-modal
-			v-model="mapViewModalState"
-			size="xl"
-			centered
-			title="Map View"
-		>
+		<b-modal v-model="mapViewModalState" size="xl" centered title="Map View">
 			<gmap-map
 				style="width: 100%; height: 300px"
 				:center="map.center"
@@ -507,12 +468,7 @@
 			</gmap-map>
 		</b-modal>
 
-		<b-modal
-			v-model="streatViewModalState"
-			size="xl"
-			centered
-			title="Map View"
-		>
+		<b-modal v-model="streatViewModalState" size="xl" centered title="Map View">
 			<gmap-street-view-panorama
 				class="pano"
 				:position="map.markers[0]"
@@ -651,9 +607,7 @@ export default {
 			return [
 				{ name: "yta-1", text: this.place.yta || "" },
 				{
-					name: this.place.fasta
-						? "fasta-oppettider-1"
-						: "fasta-oppettider-2",
+					name: this.place.fasta ? "fasta-oppettider-1" : "fasta-oppettider-2",
 					text: this.$t("singleListing.feats.fasta"),
 				},
 				{

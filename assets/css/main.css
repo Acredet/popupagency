@@ -460,15 +460,20 @@ a.map-popup > div.cover div.overlay {
 	text-decoration: none;
 }
 
-table.b-table thead tr[role="row"] {
+table.b-table.normal {
+	border: 1px solid rgb(232, 233, 234);
+	border-radius: 8px !important;
+}
+
+table.b-table:not(.normal) thead tr[role="row"] {
 	background: #fff !important;
 }
 
-table.b-table tbody tr[role="row"]:nth-child(even) {
+table.b-table:not(.normal) tbody tr[role="row"]:nth-child(even) {
 	background: #eee !important;
 }
 
-table.b-table tbody tr[role="row"]:nth-child(odd) {
+table.b-table:not(.normal) tbody tr[role="row"]:nth-child(odd) {
 	background: #fff !important;
 }
 
