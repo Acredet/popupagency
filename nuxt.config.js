@@ -27,8 +27,7 @@ module.exports = {
 		link: [
 			{ rel: "icon", type: "image/x-icon", href: "/favo.png" },
 			{
-				href:
-					"https://fonts.googleapis.com/css2?family=Abel&display=swap",
+				href: "https://fonts.googleapis.com/css2?family=Abel&display=swap",
 				rel: "stylesheet",
 			},
 			{ href: "/css/animate.css", rel: "stylesheet" },
@@ -134,10 +133,7 @@ module.exports = {
 	 */
 	axios: {
 		// baseURL: '/api'
-		baseURL:
-			process.env.NODE_ENV !== "production"
-				? "http://localhost:3000/api"
-				: "https://popup.dk.se/api",
+		baseURL: "https://popup.dk.se/api",
 	},
 	router: {
 		linkActiveClass: "active",

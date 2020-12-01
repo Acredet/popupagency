@@ -3,10 +3,7 @@
 		<!-- <loading :state="loadingState" /> -->
 
 		<b-container class="mt-5">
-			<h2
-				v-if="!editCentrum"
-				v-text="$t('adminSidebar.center.add') + ':'"
-			/>
+			<h2 v-if="!editCentrum" v-text="$t('adminSidebar.center.add') + ':'" />
 			<h2 v-else v-text="$t('adminSidebar.center.edit') + ':'" />
 			<b-form id="add-centrum">
 				<titleInputsCard
@@ -17,10 +14,7 @@
 				<!-- hemsida -->
 				<b-card class="my-5" :title="$t('addListing.inputs.hemsida')">
 					<b-card-body>
-						<b-form-input
-							v-model="hemsida"
-							placeholder="https://vala.se"
-						/>
+						<b-form-input v-model="hemsida" placeholder="https://vala.se" />
 					</b-card-body>
 				</b-card>
 				<!-- hemsida -->
@@ -35,9 +29,7 @@
 
 				<textareasCard
 					:editCentrum="
-						centrumEdit
-							? centrumEdit.centrumtextarea
-							: { en: '', sv: '' }
+						centrumEdit ? centrumEdit.centrumtextarea : { en: '', sv: '' }
 					"
 					@centrumChanged="centrum = $event"
 				/>
@@ -48,15 +40,14 @@
 				/>
 
 				<routeGuidanceCard
-					:routeGuidance="
-						centrumEdit ? centrumEdit.routeGuidance : []
-					"
+					:routeGuidance="centrumEdit ? centrumEdit.routeGuidance : []"
 					@locationChanged="location = $event"
 				/>
 
 				<b-card :title="$t('addListing.inputs.stad')">
 					<b-card-body>
 						<b-form-select
+							key="city-select"
 							v-model="city"
 							:options="regions"
 							size="md"
@@ -203,7 +194,15 @@ export default {
 						});
 				}
 			})
-			.catch((err) => console.log(err));
+			.catch((err) => {
+				this.busy = false;
+				this.toast = {
+					title: this.$t("allListing.toast.error"),
+					variant: "danger",
+					visible: true,
+					text: err.responsed.data,
+				};
+			});
 	},
 	methods: {
 		async post() {
@@ -224,23 +223,20 @@ export default {
 							centrum: res.data._id,
 						})
 						.then((_) => {
-							this.$router.push(
-								`${this.$t("link")}admin/centrum`
-							);
+							this.$router.push(`${this.$t("link")}admin/centrum`);
 						})
 						.catch((err) => {
 							this.busy = false;
 						});
 				})
-				.catch((err) => console.log(err));
+				.catch((err) => {
+					this.busy = false;
+				});
 		},
 		async editCentrum() {
 			const centrum = await this.createCentrumForm();
 			const promises = [
-				await this.$axios.$patch(
-					`/centrum/${this.$route.params.id}`,
-					centrum
-				),
+				await this.$axios.$patch(`/centrum/${this.$route.params.id}`, centrum),
 				await this.$axios.patch(`/region/${this.city}`, {
 					centrum: this.$route.params.id,
 				}),
@@ -267,9 +263,7 @@ export default {
 		},
 		async createCentrumForm() {
 			this.busy = true;
-			const centrum = new FormData(
-				document.getElementById("add-centrum")
-			);
+			const centrum = new FormData(document.getElementById("add-centrum"));
 			const centrumgalleri =
 				this.centrumEdit && this.centrumEdit._id
 					? [...this.images.centrumgalleri]
@@ -299,7 +293,15 @@ export default {
 						await this.$axios
 							.$post("/centrum/images", data)
 							.then((res) => centrumgalleri.push(res))
-							.catch((err) => console.log(err));
+							.catch((err) => {
+								this.busy = false;
+								this.toast = {
+									title: this.$t("allListing.toast.error"),
+									variant: "danger",
+									visible: true,
+									text: err.responsed.data,
+								};
+							});
 					}
 				}
 			}

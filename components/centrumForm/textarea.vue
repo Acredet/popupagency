@@ -1,21 +1,19 @@
 <template>
-	<div>
-		<!-- centrumtextarea -->
-		<b-card class="my-5">
-			<b-card-body>
-				<h3>{{ $t("centrum.textarea") }} en:</h3>
-				<client-only>
-					<VueEditor v-model="centrum.en" />
-				</client-only>
-				<hr />
-				<h3>{{ $t("centrum.textarea") }} sw:</h3>
-				<client-only>
-					<VueEditor v-model="centrum.sv" />
-				</client-only>
-			</b-card-body>
-		</b-card>
-		<!-- centrumtextarea -->
-	</div>
+	<!-- centrumtextarea -->
+	<b-card class="my-5">
+		<b-card-body>
+			<h3>{{ $t("centrum.textarea") }} en:</h3>
+			<client-only>
+				<VueEditor v-model="textareaVal.en" />
+			</client-only>
+			<hr />
+			<h3>{{ $t("centrum.textarea") }} sw:</h3>
+			<client-only>
+				<VueEditor v-model="textareaVal.sv" />
+			</client-only>
+		</b-card-body>
+	</b-card>
+	<!-- centrumtextarea -->
 </template>
 
 <script>
@@ -40,20 +38,22 @@ export default {
 			immediate: true,
 			deep: true,
 			handler(newValue) {
-				this.centrum = newValue;
+				if (!!newValue.en && !!newValue.sv) {
+					this.textareaVal = newValue;
+				}
 			},
 		},
-		centrum: {
-			immediate: true,
+		textareaVal: {
 			deep: true,
 			handler(newValue) {
+				console.log(newValue);
 				this.$emit("centrumChanged", newValue);
 			},
 		},
 	},
 	data() {
 		return {
-			centrum: {
+			textareaVal: {
 				en: "",
 				sv: "",
 			},

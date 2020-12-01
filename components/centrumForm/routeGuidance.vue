@@ -97,14 +97,7 @@
 
 <script>
 export default {
-	props: {
-		routeGuidance: {
-			type: Object,
-			default: () => {
-				return { lng: 0, lat: 0 };
-			},
-		},
-	},
+	props: ["routeGuidance"],
 	data() {
 		return {
 			once: 0,
