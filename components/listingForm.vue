@@ -7,229 +7,47 @@
 			</h2>
 			<form id="listing" ref="listing-form" enctype="multipart/form-data">
 				<div>
-					<b-card :title="$t('addListing.inputs.title.label')">
-						<b-card-body>
-							<b-form-group
-								id="title-sv-group"
-								label="Swedish:"
-								label-for="title-sv"
-							>
-								<b-form-input
-									id="title-sv"
-									v-model="title.sv"
-									required
-									autocomplete="off"
-									:state="titleValidSv"
-									:placeholder="
-										$t('addListing.inputs.title.holder')
-									"
-								/>
-								<b-form-invalid-feedback :state="titleValidSv">
-									{{ $t("forms.required") }}
-								</b-form-invalid-feedback>
+					<titleInputsCard
+						:EditTitle="listing ? listing.title : {}"
+						@titleChanged="title = $event"
+					/>
 
-								<b-form-valid-feedback :state="titleValidSv">
-									{{ $t("forms.valid") }}
-								</b-form-valid-feedback>
-							</b-form-group>
+					<centrumGalleriCard
+						:details="{
+							title: $t('addListing.inputs.Bilgalleri'),
+							name: 'bildgalleri[]',
+						}"
+						:oldImages="listing ? images.bildgalleri : []"
+					/>
 
-							<b-form-group
-								id="title-en-group"
-								label="English:"
-								label-for="title-en"
-							>
-								<b-form-input
-									id="title-en"
-									v-model="title.en"
-									required
-									autocomplete="off"
-									:state="titleValidEn"
-									:placeholder="
-										$t('addListing.inputs.title.holder')
-									"
-								/>
-								<b-form-invalid-feedback :state="titleValidEn">
-									{{ $t("forms.required") }}
-								</b-form-invalid-feedback>
+					<centrumGalleriCard
+						:details="{
+							title: $t('addListing.inputs.Cover'),
+							name: 'cover[]',
+						}"
+						:oldImages="listing ? images.cover : []"
+					/>
 
-								<b-form-valid-feedback :state="titleValidEn">
-									{{ $t("forms.valid") }}
-								</b-form-valid-feedback>
-							</b-form-group>
-						</b-card-body>
-					</b-card>
+					<textareasCard
+						:editCentrum="article.beskreving"
+						@centrumChanged="article.beskreving = $event"
+					/>
 
-					<b-card :title="$t('addListing.inputs.beskrivning')">
-						<b-card-body>
-							<p class="p-0 m-0">Swedish:</p>
-							<client-only>
-								<VueEditor
-									v-model="article.beskreving.sv"
-									class="mb-3"
-								/>
-							</client-only>
-							<p class="p-0 m-0">English:</p>
-							<client-only>
-								<VueEditor v-model="article.beskreving.en" />
-							</client-only>
-						</b-card-body>
-					</b-card>
-
-					<b-card :title="$t('addListing.inputs.Bilgalleri')">
-						<b-card-body>
-							<our-uploader
-								:name="'bildgalleri[]'"
-								:show-btn="false"
-								:more="true"
-								:old-images="images.bildgalleri"
-								:max-number-of-inputs="999"
-								:max-file-size="64"
-							>
-								<template v-slot:old-Image>
-									<b-row
-										v-if="
-											thereIsListing &&
-											images.bildgalleri.length > 0
-										"
-										class="mb-1"
-									>
-										<b-col
-											v-for="(img,
-											index) in images.bildgalleri"
-											:key="index"
-											class="d-flex mb-1"
-											cols="12"
-											sm="6"
-										>
-											<div class="position-relative">
-												<b-btn
-													variant="danger"
-													class="delete-btn"
-													aria-label="Close"
-													@click="
-														deleteImageFromExistingArray(
-															index,
-															'bildgalleri'
-														)
-													"
-												>
-													<span aria-hidden="true"
-														>&times;</span
-													>
-												</b-btn>
-												<b-img
-													class="mx-2"
-													style="height: 150px"
-													:src="`https://popup.dk.se/_nuxt/img/${img}`"
-												/>
-											</div>
-										</b-col>
-									</b-row>
-								</template>
-							</our-uploader>
-						</b-card-body>
-						<template v-slot:footer>
-							<em>{{ $t("maxFileSize") }}</em>
-						</template>
-					</b-card>
-
-					<b-card :title="$t('addListing.inputs.Cover')">
-						<b-card-body>
-							<our-uploader
-								:name="'cover[]'"
-								:show-btn="false"
-								:more="true"
-								:old-images="images.cover"
-								:max-number-of-inputs="999"
-								:max-file-size="64"
-							>
-								<template v-slot:old-Image>
-									<b-row
-										v-if="
-											thereIsListing &&
-											images.cover.length > 0
-										"
-										class="mb-1"
-									>
-										<b-col
-											v-for="(img, index) in images.cover"
-											:key="index"
-											class="d-flex mb-1"
-											cols="12"
-											sm="6"
-										>
-											<div class="position-relative">
-												<b-btn
-													type="button"
-													variant="danger"
-													class="delete-btn"
-													aria-label="Close"
-													@click="
-														deleteImageFromExistingArray(
-															index,
-															'cover'
-														)
-													"
-												>
-													<span aria-hidden="true"
-														>&times;</span
-													>
-												</b-btn>
-												<b-img
-													class="mx-2"
-													style="height: 150px"
-													:src="`https://popup.dk.se/_nuxt/img/${img}`"
-												/>
-											</div>
-										</b-col>
-									</b-row>
-								</template>
-							</our-uploader>
-						</b-card-body>
-						<template v-slot:footer>
-							<em>{{ $t("maxFileSize") }}</em>
-						</template>
-					</b-card>
-
-					<!-- Start Prices -->
-					<b-card title="Prices:">
-						<b-card-body class="p-1">
-							<b-row no-gutters>
-								<b-col
-									v-for="(card, index) in renderInputs"
-									:key="index"
-									cols="12"
-									md="auto"
-								>
-									<div class="m-1 responsiveCol">
-										<label class="h5" for="card.title">{{
-											card.title
-										}}</label>
-										<b-form-checkbox
-											v-if="!card.noTemp"
-											v-model="price[card.model].temp"
-											class="mb-2"
-											@change="
-												setPrioteradPrice(card.model)
-											"
-										>
-											{{
-												$t(
-													"addListing.inputs.price.priority"
-												)
-											}}
-										</b-form-checkbox>
-										<b-form-input
-											v-model="price[card.model].val"
-											type="number"
-											:placeholder="card.placeholder"
-										/>
-									</div>
-								</b-col>
-							</b-row>
-						</b-card-body>
-					</b-card>
-					<!-- End Prices -->
+					<pricePeriods
+						:oldPrices="
+							listing
+								? {
+										prioteradpris: listing.prioteradpris,
+										prisperdag: listing.prisperdag,
+										prisperhelg: listing.prisperhelg,
+										prisperlanghelg: listing.prisperlanghelg,
+										prispermanad: listing.prispermanad,
+										prispervecka: listing.prispervecka,
+								  }
+								: {}
+						"
+						@pricePeriodsChanged="price = $event"
+					/>
 
 					<b-card :title="$t('addListing.inputs.egenskaper')">
 						<b-card-body>
@@ -250,25 +68,17 @@
 									<b-form-input
 										v-model="Yta"
 										type="number"
-										:placeholder="
-											$t('addListing.inputs.yta.holder')
-										"
+										:placeholder="$t('addListing.inputs.yta.holder')"
 									/>
 								</b-card-body>
 							</b-card>
 						</b-col>
 						<b-col cols="12" md="6">
-							<b-card
-								:title="$t('addListing.inputs.placering.label')"
-							>
+							<b-card :title="$t('addListing.inputs.placering.label')">
 								<b-card-body>
 									<b-form-input
 										v-model="markplan"
-										:placeholder="
-											$t(
-												'addListing.inputs.placering.holder'
-											)
-										"
+										:placeholder="$t('addListing.inputs.placering.holder')"
 									/>
 								</b-card-body>
 							</b-card>
@@ -304,96 +114,31 @@
 						</b-card-body>
 					</b-card>
 
-					<b-card :title="$t('addListing.inputs.planritning')">
-						<b-card-body>
-							<client-only>
-								<our-uploader
-									:name="'planritning[]'"
-									:show-btn="false"
-									:more="true"
-									:old-images="images.planritning"
-									:max-number-of-inputs="999"
-									:max-file-size="64"
-								>
-									<template v-slot:old-Image>
-										<b-row
-											v-if="
-												thereIsListing &&
-												images.planritning.length > 0
-											"
-											class="mb-1"
-										>
-											<b-col
-												v-for="(img,
-												index) in images.planritning"
-												:key="index"
-												class="d-flex mb-1"
-												cols="12"
-												sm="6"
-											>
-												<div class="position-relative">
-													<b-btn
-														type="button"
-														variant="danger"
-														class="delete-btn"
-														aria-label="Close"
-														@click="
-															deleteImageFromExistingArray(
-																index,
-																'planritning'
-															)
-														"
-													>
-														<span aria-hidden="true"
-															>&times;</span
-														>
-													</b-btn>
-													<b-img
-														class="mx-2"
-														style="height: 150px"
-														:src="`https://popup.dk.se/_nuxt/img/${img}`"
-													/>
-												</div>
-											</b-col>
-										</b-row>
-									</template>
-								</our-uploader>
-							</client-only>
-						</b-card-body>
-						<template v-slot:footer>
-							<em>{{ $t("maxFileSize") }}</em>
-						</template>
-					</b-card>
+					<centrumGalleriCard
+						:details="{
+							title: $t('addListing.inputs.planritning'),
+							name: 'planritning[]',
+						}"
+						:oldImages="editListing ? images.planritning : []"
+					/>
 
 					<b-row>
 						<b-col cols="12" md="6">
-							<b-card
-								:title="$t('addListing.inputs.minsta.label')"
-							>
+							<b-card :title="$t('addListing.inputs.minsta.label')">
 								<b-card-body>
 									<b-form-input
 										v-model="minsta"
-										:placeholder="
-											$t(
-												'addListing.inputs.minsta.holder'
-											)
-										"
+										:placeholder="$t('addListing.inputs.minsta.holder')"
 									/>
 								</b-card-body>
 							</b-card>
 						</b-col>
 						<b-col cols="12" md="6">
-							<b-card
-								:title="$t('addListing.inputs.langsta.label')"
-							>
+							<b-card :title="$t('addListing.inputs.langsta.label')">
 								<b-card-body>
 									<b-form-input
 										v-model="längsta"
-										:placeholder="
-											$t(
-												'addListing.inputs.langsta.holder'
-											)
-										"
+										:placeholder="$t('addListing.inputs.langsta.holder')"
 									/>
 								</b-card-body>
 							</b-card>
@@ -426,10 +171,7 @@
 						<b-col cols="12" md="6">
 							<b-card :title="$t('addListing.inputs.season')">
 								<b-card-body>
-									<b-form-select
-										v-model="sasong"
-										:options="sasongInputs"
-									/>
+									<b-form-select v-model="sasong" :options="sasongInputs" />
 								</b-card-body>
 							</b-card>
 						</b-col>
@@ -439,9 +181,7 @@
 								<b-card-body>
 									<b-form-input
 										v-model="vagvisningen"
-										:placeholder="
-											$t('addListing.inputs.vag')
-										"
+										:placeholder="$t('addListing.inputs.vag')"
 									/>
 								</b-card-body>
 							</b-card>
@@ -486,14 +226,10 @@
 										:options="lokalOpts"
 										:state="lokalensValid"
 									/>
-									<b-form-invalid-feedback
-										:state="lokalensValid"
-									>
+									<b-form-invalid-feedback :state="lokalensValid">
 										{{ $t("addListing.inputs.selectOne") }}
 									</b-form-invalid-feedback>
-									<b-form-valid-feedback
-										:state="lokalensValid"
-									>
+									<b-form-valid-feedback :state="lokalensValid">
 										{{ $t("addListing.inputs.choosed") }}
 										{{ lokal }}
 									</b-form-valid-feedback>
@@ -566,6 +302,11 @@
 
 <script>
 import { BootstrapVue, BIcon } from "bootstrap-vue";
+import titleInputsCard from "@/components/centrumForm/title";
+import centrumGalleriCard from "@/components/centrumForm/centrumGalleri";
+import textareasCard from "@/components/centrumForm/textarea";
+import pricePeriods from "@/components/lisitngForm/pricesCard";
+
 import ourUploader from "@/components/ourUploader";
 import toggleAllCheckBoxGroup from "@/components/admin/checkBoxGroup";
 
@@ -578,10 +319,12 @@ export default {
 	name: "ListingForm",
 	components: {
 		VueEditor,
-		// eslint-disable-next-line vue/no-unused-components
 		BootstrapVue,
-		// eslint-disable-next-line vue/no-unused-components
 		BIcon,
+		titleInputsCard,
+		centrumGalleriCard,
+		textareasCard,
+		pricePeriods,
 		toggleAllCheckBoxGroup,
 		ourUploader,
 	},
@@ -606,58 +349,9 @@ export default {
 					sv: null,
 				},
 			},
-			price: {
-				day: {
-					val: null,
-					temp: false,
-				},
-				helg: {
-					val: null,
-					temp: false,
-				},
-				langheig: {
-					val: null,
-					temp: false,
-				},
-				veckopris: {
-					val: null,
-					temp: false,
-				},
-				manad: {
-					val: null,
-					temp: false,
-				},
-				prioteradpris: {
-					val: null,
-				},
-			},
-			renderInputs: [
-				{
-					title: this.$t("addListing.inputs.price.dag"),
-					placeholder: this.$t("addListing.inputs.price.dag"),
-					model: "day",
-				},
-				{
-					title: this.$t("addListing.inputs.price.helg"),
-					placeholder: this.$t("addListing.inputs.price.helg"),
-					model: "helg",
-				},
-				{
-					title: this.$t("addListing.inputs.price.långhelg"),
-					placeholder: this.$t("addListing.inputs.price.långhelg"),
-					model: "langheig",
-				},
-				{
-					title: this.$t("addListing.inputs.price.vecka"),
-					placeholder: this.$t("addListing.inputs.price.vecka"),
-					model: "veckopris",
-				},
-				{
-					title: this.$t("addListing.inputs.price.manad"),
-					placeholder: this.$t("addListing.inputs.price.manad"),
-					model: "manad",
-				},
-			],
+			// Price per period
+			price: null,
+
 			allTags: [],
 			egenskaper: [],
 			renderEgensKaper: [],
@@ -740,6 +434,7 @@ export default {
 			return !!this.lokal;
 		},
 		valid() {
+			titleInputsCard;
 			return (
 				!!this.titleValidEn &&
 				!!this.titleValidSv &&
@@ -820,11 +515,6 @@ export default {
 				langstahyresperiod,
 				sasongBoxen,
 				beskreving,
-				prisperdag,
-				prisperhelg,
-				prisperlanghelg,
-				prispermanad,
-				prispervecka,
 				bildgalleri,
 				cover,
 				planritning,
@@ -845,32 +535,10 @@ export default {
 			this.article.beskreving.en = beskreving.en;
 			this.article.beskreving.sv = beskreving.sv;
 
-			// ASSIGN PRICES
-			this.price.day.val = prisperdag;
-			this.price.helg.val = prisperhelg;
-			this.price.langheig.val = prisperlanghelg;
-			this.price.manad.val = prispermanad;
-			this.price.veckopris.val = prispervecka;
-
 			// ASSIGN IMAGES
 			this.images.bildgalleri = bildgalleri;
 			this.images.cover = cover;
 			this.images.planritning = planritning;
-
-			// const prices = [
-			//   { text: 'day', val: prisperdag },
-			//   { text: 'helg', val: prisperhelg },
-			//   { text: 'langheig', val: prisperlanghelg },
-			//   { text: 'manad', val: prispermanad },
-			//   { text: 'veckopris', val: prispervecka }
-			// ]
-
-			// DETERMINE THE prispervecka
-			this.prioteradpris = prioteradpris;
-			if (this.price[prioteradpris.period]) {
-				this.price[prioteradpris.period].temp = true;
-			}
-			this.price.prioteradpris.val = prioteradpris.val;
 
 			// ADD TAGS
 			this.egenskaper = egenskaper;
@@ -886,16 +554,6 @@ export default {
 				this.yesNoInputsVal[input] = this.listing[input];
 			});
 			this.loadingState = false;
-		},
-		setPrioteradPrice(card) {
-			for (const key in this.price) {
-				const obj = this.price[key];
-				if (key !== card) {
-					obj.temp = false;
-				} else {
-					obj.temp = true;
-				}
-			}
 		},
 		createFormDate(draft) {
 			const listing = new FormData(document.getElementById("listing"));
@@ -928,23 +586,17 @@ export default {
 							this.price.prioteradpris.val = obj.val;
 							this.prioteradpris = { period: key, val: obj.val };
 						} else {
-							this.$bvToast.toast(
-								this.$t("addListing.errors.propteradpris"),
-								{
-									title: this.$t("region.toast.error"),
-									autoHideDelay: 5000,
-									appendToast: true,
-									variant: "danger",
-								}
-							);
+							this.$bvToast.toast(this.$t("addListing.errors.propteradpris"), {
+								title: this.$t("region.toast.error"),
+								autoHideDelay: 5000,
+								appendToast: true,
+								variant: "danger",
+							});
 							return false;
 						}
 					}
 				}
-				listing.append(
-					"prioteradpris",
-					JSON.stringify(this.prioteradpris)
-				);
+				listing.append("prioteradpris", JSON.stringify(this.prioteradpris));
 
 				for (const key in listing) {
 					console.log(key, listing[key]);
@@ -953,10 +605,7 @@ export default {
 					}
 				}
 
-				listing.append(
-					"beskreving",
-					JSON.stringify(this.article.beskreving)
-				);
+				listing.append("beskreving", JSON.stringify(this.article.beskreving));
 				listing.append("title", JSON.stringify(this.title));
 
 				listing.append("draft", draft);
@@ -1030,15 +679,11 @@ export default {
 					.then((res) => {
 						this.$nextTick(() => {
 							if (draft) {
-								this.$router.push(
-									this.localePath("/admin/listings/drafts")
-								);
+								this.$router.push(this.localePath("/admin/listings/drafts"));
 								// window.location.href = `https://popup.dk.se/${this.$i18n.locale === 'en' ? 'en/' : ''}admin/listings/drafts`
 							} else {
 								// window.location.href = `https://popup.dk.se/${this.$i18n.locale === 'en' ? 'en/' : ''}admin/listings/`
-								this.$router.push(
-									this.localePath("/admin/listings/")
-								);
+								this.$router.push(this.localePath("/admin/listings/"));
 							}
 						});
 					})
