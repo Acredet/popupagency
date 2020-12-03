@@ -2,12 +2,12 @@
 	<!-- centrumtextarea -->
 	<b-card class="my-5">
 		<b-card-body>
-			<h3>{{ $t("centrum.textarea") }} en:</h3>
+			<h3>{{ label.en }}</h3>
 			<client-only>
 				<VueEditor v-model="textareaVal.en" />
 			</client-only>
 			<hr />
-			<h3>{{ $t("centrum.textarea") }} sw:</h3>
+			<h3>{{ label.sv }}</h3>
 			<client-only>
 				<VueEditor v-model="textareaVal.sv" />
 			</client-only>
@@ -26,6 +26,12 @@ export default {
 		VueEditor,
 	},
 	props: {
+		label: {
+			type: Object,
+			defalut: () => {
+				return { en: null, sv: null };
+			},
+		},
 		editCentrum: {
 			type: Object,
 			default: () => {

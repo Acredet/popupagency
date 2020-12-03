@@ -28,6 +28,10 @@
 				/>
 
 				<textareasCard
+					:label="{
+						en: `${$t('centrum.textarea')} en:`,
+						sv: `${$t('centrum.textarea')} sv:`,
+					}"
 					:editCentrum="
 						centrumEdit ? centrumEdit.centrumtextarea : { en: '', sv: '' }
 					"

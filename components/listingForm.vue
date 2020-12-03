@@ -29,6 +29,10 @@
 					/>
 
 					<textareasCard
+						:label="{
+							en: `${$t('singleListing.info.description')} en:`,
+							sv: `${$t('singleListing.info.description')} sv:`,
+						}"
 						:editCentrum="article.beskreving"
 						@centrumChanged="article.beskreving = $event"
 					/>
