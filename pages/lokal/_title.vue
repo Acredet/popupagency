@@ -102,7 +102,7 @@
 								<h2>Local Information</h2>
 								<hooper :settings="hooperSettings">
 									<!-- Start MapView card -->
-									<slide>
+									<slide v-if="map.markers.length > 0">
 										<div @click="mapViewModalState = true" class="custom-card">
 											<div class="custom-card--imgWrapper">
 												<img
@@ -119,10 +119,10 @@
 									<!-- End MapView card -->
 
 									<!-- Start StreatView card -->
-									<slide>
+									<slide v-if="map.markers.length > 0">
 										<div
-											@click="streatViewModalState = true"
 											class="custom-card"
+											@click="streatViewModalState = true"
 										>
 											<div class="custom-card--imgWrapper">
 												<img
@@ -137,6 +137,57 @@
 										</div>
 									</slide>
 									<!-- End MapView card -->
+
+									<!-- Start planritningImages card -->
+									<slide>
+										<div
+											class="custom-card"
+											@click="showV('planritningImages', index)"
+										>
+											<div
+												class="custom-card--imgWrapper d-flex justify-content-center align-items-center"
+												style="height: 130px"
+											>
+												<b-icon scale="2" icon="image"></b-icon>
+											</div>
+											<p class="text-secondary">planritningImages.</p>
+										</div>
+									</slide>
+									<!-- End planritningImages card -->
+
+									<!-- Start bildgalleri card -->
+									<slide>
+										<div
+											class="custom-card"
+											@click="showV('bildgalleri', index)"
+										>
+											<div
+												class="custom-card--imgWrapper d-flex justify-content-center align-items-center"
+												style="height: 130px"
+											>
+												<b-icon scale="2" icon="image"></b-icon>
+											</div>
+											<p class="text-secondary">bildgalleri.</p>
+										</div>
+									</slide>
+									<!-- End bildgalleri card -->
+
+									<!-- Start centrumgalleri card -->
+									<slide v-if="this.centrumgalleri.length > 0">
+										<div
+											class="custom-card"
+											@click="showV('centrumgalleri', index)"
+										>
+											<div
+												class="custom-card--imgWrapper d-flex justify-content-center align-items-center"
+												style="height: 130px"
+											>
+												<b-icon scale="2" icon="image"></b-icon>
+											</div>
+											<p class="text-secondary">centrumgalleri.</p>
+										</div>
+									</slide>
+									<!-- End centrumgalleri card -->
 
 									<hooper-navigation slot="hooper-addons"></hooper-navigation>
 									<hooper-progress slot="hooper-addons"></hooper-progress>
@@ -265,8 +316,9 @@
 								height: 100%;
 								justify-self: flex-start;
 							"
-							class="d-none d-md-flex"
+							class="d-md-flex"
 							md="4"
+							cols="12"
 						>
 							<b-form class="py-5">
 								<h4
@@ -449,8 +501,58 @@
 			</main>
 		</div>
 
+		<!-- Start Viewers -->
+		<viewer
+			ref="viewer"
+			:images="planritningImages"
+			class="viewer"
+			@inited="initedV('planritningImages', $event)"
+		>
+			<img
+				v-for="src in planritningImages"
+				:key="src + '- planritningImages'"
+				:src="src"
+				class="d-none"
+			/>
+		</viewer>
+
+		<viewer
+			ref="viewer2"
+			:images="images"
+			class="viewer"
+			@inited="initedV('bildgalleri', $event)"
+		>
+			<img
+				v-for="src in images"
+				:key="`${src}-imaged-bildgalleri`"
+				:src="src"
+				class="d-none"
+			/>
+		</viewer>
+
+		<viewer
+			ref="viewer3"
+			:images="centrumgalleri"
+			class="viewer"
+			@inited="initedV('centrumgalleri', $event)"
+		>
+			<img
+				v-for="src in centrumgalleri"
+				:key="`${src}-imaged-centrumgalleri`"
+				:src="src"
+				class="d-none"
+			/>
+		</viewer>
+		<!-- End Viewers -->
+
 		<!-- Modals -->
-		<b-modal v-model="mapViewModalState" size="xl" centered title="Map View">
+		<b-modal
+			v-if="map.markers.length > 0"
+			v-model="mapViewModalState"
+			size="xl"
+			centered
+			title="Map View"
+		>
 			<gmap-map
 				style="width: 100%; height: 300px"
 				:center="map.center"
@@ -468,7 +570,13 @@
 			</gmap-map>
 		</b-modal>
 
-		<b-modal v-model="streatViewModalState" size="xl" centered title="Map View">
+		<b-modal
+			v-if="map.markers.length > 0"
+			v-model="streatViewModalState"
+			size="xl"
+			centered
+			title="Map View"
+		>
 			<gmap-street-view-panorama
 				class="pano"
 				:position="map.markers[0]"
@@ -489,6 +597,7 @@ import {
 	BIconPencilSquare,
 	BIconHeart,
 	BIconHeartFill,
+	BIconImage,
 } from "bootstrap-vue";
 import "viewerjs/dist/viewer.css";
 import Viewer from "v-viewer";
@@ -507,6 +616,7 @@ export default {
 		BIcon,
 		panorama,
 		BIconHeart,
+		BIconImage,
 		BIconHeartFill,
 		Hooper,
 		Slide,
@@ -636,8 +746,23 @@ export default {
 			(place) =>
 				place.title.sv === this.$route.params.title.replace(/[-]/g, " ")
 		);
+
+		console.log(placeFromStore);
 		if (placeFromStore.location) {
 			this.thereIsCentrum = true;
+			this.map = {
+				center: {
+					lng: placeFromStore.location.coordinates[0],
+					lat: placeFromStore.location.coordinates[1],
+				},
+				mapTypeId: "roadmap",
+				markers: [
+					{
+						lng: placeFromStore.location.coordinates[0],
+						lat: placeFromStore.location.coordinates[1],
+					},
+				],
+			};
 		}
 
 		// Increment views
@@ -646,19 +771,6 @@ export default {
 		this.similar = listings
 			.filter((place) => place.stad.sv === placeFromStore.stad.sv)
 			.filter((place) => place._id !== placeFromStore._id);
-		this.map = {
-			center: {
-				lng: placeFromStore.location.coordinates[0],
-				lat: placeFromStore.location.coordinates[1],
-			},
-			mapTypeId: "roadmap",
-			markers: [
-				{
-					lng: placeFromStore.location.coordinates[0],
-					lat: placeFromStore.location.coordinates[1],
-				},
-			],
-		};
 		this.loadingState = false;
 	},
 	methods: {
