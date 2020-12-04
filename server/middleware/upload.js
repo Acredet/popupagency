@@ -1,8 +1,8 @@
 const multer = require("multer");
-const path = require("path");
+
 const storage = multer.diskStorage({
 	destination(req, file, cb) {
-		cb(null, path.join(__dirname, "..", "client", "img"));
+		cb(null, `${__dirname}/../../.nuxt/dist/client/img/`);
 	},
 	filename(req, file, cb) {
 		cb(null, `${Date.now()}-${file.fieldname}-${file.originalname}`);
