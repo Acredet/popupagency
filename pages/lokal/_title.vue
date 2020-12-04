@@ -2,28 +2,7 @@
 	<div>
 		<loading :state="loadingState" />
 		<div v-if="place._id">
-			<!-- Login modal -->
-			<b-modal
-				id="modal-center"
-				v-model="modalShow"
-				centered
-				:title="$t('loginModal.title')"
-			>
-				<p class="my-4">
-					{{ $t("loginModal.text") }}
-				</p>
-				<template v-slot:modal-footer>
-					<div>
-						<b-btn variant="primary" to="/login">
-							{{ $t("loginModal.title") }}
-						</b-btn>
-						<b-btn variant="error" @click="modalShow = false">
-							{{ $t("actions.cancle") }}
-						</b-btn>
-					</div>
-				</template>
-			</b-modal>
-			<!-- End modal -->
+			<LoginModal :modalShow="modalShow" @close-modal="modalShow = false" />
 
 			<!-- Start cover -->
 			<div class="position-relative cover">
@@ -603,6 +582,7 @@ import "viewerjs/dist/viewer.css";
 import Viewer from "v-viewer";
 import Vue from "vue";
 import panorama from "@/components/panorama";
+import LoginModal from "@/components/loginModal";
 import { addToFav } from "@/mixins/utils/addToFav";
 import { mapGetters } from "vuex";
 import { Hooper, Slide, Pagination as HooperPagination } from "hooper";
@@ -618,6 +598,7 @@ export default {
 		BIconHeart,
 		BIconImage,
 		BIconHeartFill,
+		LoginModal,
 		Hooper,
 		Slide,
 		HooperPagination,
