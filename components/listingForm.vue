@@ -684,9 +684,7 @@ export default {
 						this.$nextTick(() => {
 							if (draft) {
 								this.$router.push(this.localePath("/admin/listings/drafts"));
-								// window.location.href = `https://popup.dk.se/${this.$i18n.locale === 'en' ? 'en/' : ''}admin/listings/drafts`
 							} else {
-								// window.location.href = `https://popup.dk.se/${this.$i18n.locale === 'en' ? 'en/' : ''}admin/listings/`
 								this.$router.push(this.localePath("/admin/listings/"));
 							}
 						});
@@ -770,13 +768,9 @@ export default {
 					.$patch(`/places/${this.listing._id}`, listing)
 					.then((res) => {
 						if (draft) {
-							window.location.href = `https://popup.dk.se/${
-								this.$i18n.locale === "en" ? "en/" : ""
-							}admin/listings/drafts`;
+							this.$router.push(this.localePath("/admin/listings/drafts"));
 						} else {
-							window.location.href = `https://popup.dk.se/${
-								this.$i18n.locale === "en" ? "en/" : ""
-							}admin/listings/`;
+							this.$router.push(this.localePath("/admin/listings/"));
 						}
 					})
 					.catch((err) => {
