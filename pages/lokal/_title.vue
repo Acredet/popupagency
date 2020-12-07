@@ -10,7 +10,7 @@
 				<section class="cover--details">
 					<b-container class="h-100 position-relative">
 						<div
-							class="text-center h-100 d-flex flex-column flex-lg-row align-items-lg-center justify-content-lg-between"
+							class="text-center h-100 d-flex flex-column justify-content-end align-items-start flex-lg-row align-items-lg-center justify-content-lg-between"
 						>
 							<h1 class="font-5">
 								{{ place.title ? place.title[$i18n.locale] : "" }}
@@ -116,58 +116,6 @@
 										</div>
 									</slide>
 									<!-- End MapView card -->
-
-									<!-- Start planritningImages card -->
-									<slide>
-										<div
-											class="custom-card"
-											@click="showV('planritningImages', index)"
-										>
-											<div
-												class="custom-card--imgWrapper d-flex justify-content-center align-items-center"
-												style="height: 130px"
-											>
-												<b-icon scale="2" icon="image"></b-icon>
-											</div>
-											<p class="text-secondary">planritningImages.</p>
-										</div>
-									</slide>
-									<!-- End planritningImages card -->
-
-									<!-- Start bildgalleri card -->
-									<slide>
-										<div
-											class="custom-card"
-											@click="showV('bildgalleri', index)"
-										>
-											<div
-												class="custom-card--imgWrapper d-flex justify-content-center align-items-center"
-												style="height: 130px"
-											>
-												<b-icon scale="2" icon="image"></b-icon>
-											</div>
-											<p class="text-secondary">bildgalleri.</p>
-										</div>
-									</slide>
-									<!-- End bildgalleri card -->
-
-									<!-- Start centrumgalleri card -->
-									<slide v-if="this.centrumgalleri.length > 0">
-										<div
-											class="custom-card"
-											@click="showV('centrumgalleri', index)"
-										>
-											<div
-												class="custom-card--imgWrapper d-flex justify-content-center align-items-center"
-												style="height: 130px"
-											>
-												<b-icon scale="2" icon="image"></b-icon>
-											</div>
-											<p class="text-secondary">centrumgalleri.</p>
-										</div>
-									</slide>
-									<!-- End centrumgalleri card -->
-
 									<hooper-navigation slot="hooper-addons"></hooper-navigation>
 									<hooper-progress slot="hooper-addons"></hooper-progress>
 									<hooper-pagination slot="hooper-addons"></hooper-pagination>
@@ -222,11 +170,11 @@
 										<span v-if="data.item !== 'prioteradpris'"
 											>{{ format(place[data.item]) }} Kr</span
 										>
-										<span v-else>
+										<!-- <span v-else>
 											{{ data.item }}
 											{{ format(place[data.item].val) }} Kr /
 											{{ $t(place[data.item].period) }}</span
-										>
+										> -->
 									</template>
 
 									<template #cell(period)="data">
@@ -252,6 +200,68 @@
 								</ul> -->
 							</div>
 							<!-- End Prices -->
+
+							<!-- Start Galleries -->
+							<section>
+								<h2>Galleries:</h2>
+								<hooper :settings="hooperSettings">
+									<!-- Start planritningImages card -->
+									<slide>
+										<div
+											class="custom-card"
+											@click="showV('planritningImages', index)"
+										>
+											<div
+												class="custom-card--imgWrapper d-flex justify-content-center align-items-center"
+												style="height: 130px"
+											>
+												<b-icon scale="2" icon="image"></b-icon>
+											</div>
+											<p class="text-secondary">Planritning.</p>
+										</div>
+									</slide>
+									<!-- End planritningImages card -->
+
+									<!-- Start bildgalleri card -->
+									<slide>
+										<div
+											class="custom-card"
+											@click="showV('bildgalleri', index)"
+										>
+											<div
+												class="custom-card--imgWrapper d-flex justify-content-center align-items-center"
+												style="height: 130px"
+											>
+												<b-icon scale="2" icon="image"></b-icon>
+											</div>
+											<p class="text-secondary">bildgalleri.</p>
+										</div>
+									</slide>
+									<!-- End bildgalleri card -->
+
+									<!-- Start centrumgalleri card -->
+									<slide v-if="this.centrumgalleri.length > 0">
+										<div
+											class="custom-card"
+											@click="showV('centrumgalleri', index)"
+										>
+											<div
+												class="custom-card--imgWrapper d-flex justify-content-center align-items-center"
+												style="height: 130px"
+											>
+												<b-icon scale="2" icon="image"></b-icon>
+											</div>
+											<p class="text-secondary">centrumgalleri.</p>
+										</div>
+									</slide>
+									<!-- End centrumgalleri card -->
+
+									<hooper-navigation slot="hooper-addons"></hooper-navigation>
+									<hooper-progress slot="hooper-addons"></hooper-progress>
+									<hooper-pagination slot="hooper-addons"></hooper-pagination>
+								</hooper>
+							</section>
+							<!-- End Galleries -->
 
 							<!-- Start similar listings -->
 							<section class="my-3">
