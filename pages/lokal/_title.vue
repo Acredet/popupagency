@@ -26,52 +26,11 @@
 							</section>
 							<!-- End Description -->
 
-							<!-- Start Local Information -->
-							<section v-if="map.markers.length > 0">
-								<h2>Local Information</h2>
-								<hooper :settings="hooperSettings">
-									<!-- Start MapView card -->
-									<slide v-if="map.markers.length > 0">
-										<div @click="mapViewModalState = true" class="custom-card">
-											<div class="custom-card--imgWrapper">
-												<img
-													src="@/assets/img/mapthumbnail.png"
-													alt="Map View"
-												/>
-											</div>
-											<p class="text-secondary">
-												Explore the area around
-												{{ place.title ? place.title[$i18n.locale] : "" }}
-											</p>
-										</div>
-									</slide>
-									<!-- End MapView card -->
-
-									<!-- Start StreatView card -->
-									<slide v-if="map.markers.length > 0">
-										<div
-											class="custom-card"
-											@click="streatViewModalState = true"
-										>
-											<div class="custom-card--imgWrapper">
-												<img
-													src="@/assets/img/streatview-thumbnai.svg"
-													height="130px"
-													alt="Streat View"
-												/>
-											</div>
-											<p class="text-secondary">
-												Take a virtual walk around the neighborhood.
-											</p>
-										</div>
-									</slide>
-									<!-- End MapView card -->
-									<hooper-navigation slot="hooper-addons"></hooper-navigation>
-									<hooper-progress slot="hooper-addons"></hooper-progress>
-									<hooper-pagination slot="hooper-addons"></hooper-pagination>
-								</hooper>
-							</section>
-							<!-- End Local Information -->
+							<localInfo
+								:map="map"
+								:hooperSettings="hooperSettings"
+								:title="place.title"
+							/>
 
 							<!-- Start Home Details -->
 							<section>
@@ -106,50 +65,7 @@
 							</section>
 							<!-- End Home Details -->
 
-							<!-- Start Prices -->
-							<div>
-								<h2 class="font-weight-bold">listing's priceing list</h2>
-								<b-table
-									class="border-top normal"
-									:fields="['period', 'price']"
-									head-variant="light"
-									:items="$t('singleListing.info.priceList')"
-								>
-									<!-- A custom formatted data column cell -->
-									<template #cell(price)="data">
-										<span v-if="data.item !== 'prioteradpris'"
-											>{{ format(place[data.item]) }} Kr</span
-										>
-										<!-- <span v-else>
-											{{ data.item }}
-											{{ format(place[data.item].val) }} Kr /
-											{{ $t(place[data.item].period) }}</span
-										> -->
-									</template>
-
-									<template #cell(period)="data">
-										{{ data.item }}
-									</template>
-								</b-table>
-
-								<!-- <ul class="row list-unstyled">
-									<li
-										v-for="price in $t('singleListing.info.priceList')"
-										:key="price"
-										class="d-flex mb-1 col-12 col-md-6 justify-content-between align-items-center"
-									>
-										<b>{{ price }}:</b>
-										<span v-if="price !== 'prioteradpris'"
-											>{{ format(place[price]) }} Kr</span
-										>
-										<span v-else
-											>{{ format(place[price].val) }} Kr /
-											{{ $t(place[price].period) }}</span
-										>
-									</li>
-								</ul> -->
-							</div>
-							<!-- End Prices -->
+							<pricesTable :place="place" />
 
 							<!-- Start Galleries -->
 							<section>
@@ -159,7 +75,7 @@
 									<slide>
 										<div
 											class="custom-card"
-											@click="showV('planritningImages', index)"
+											@click="showV('planritningImages', 0)"
 										>
 											<div
 												class="custom-card--imgWrapper d-flex justify-content-center align-items-center"
@@ -174,10 +90,7 @@
 
 									<!-- Start bildgalleri card -->
 									<slide>
-										<div
-											class="custom-card"
-											@click="showV('bildgalleri', index)"
-										>
+										<div class="custom-card" @click="showV('bildgalleri', 0)">
 											<div
 												class="custom-card--imgWrapper d-flex justify-content-center align-items-center"
 												style="height: 130px"
@@ -193,7 +106,7 @@
 									<slide v-if="this.centrumgalleri.length > 0">
 										<div
 											class="custom-card"
-											@click="showV('centrumgalleri', index)"
+											@click="showV('centrumgalleri', 0)"
 										>
 											<div
 												class="custom-card--imgWrapper d-flex justify-content-center align-items-center"
@@ -207,7 +120,6 @@
 									<!-- End centrumgalleri card -->
 
 									<hooper-navigation slot="hooper-addons"></hooper-navigation>
-									<hooper-progress slot="hooper-addons"></hooper-progress>
 									<hooper-pagination slot="hooper-addons"></hooper-pagination>
 								</hooper>
 							</section>
@@ -286,49 +198,6 @@
 			/>
 		</viewer>
 		<!-- End Viewers -->
-
-		<!-- Modals -->
-		<b-modal
-			v-if="map.markers.length > 0"
-			v-model="mapViewModalState"
-			size="xl"
-			centered
-			title="Map View"
-		>
-			<gmap-map
-				style="width: 100%; height: 300px"
-				:center="map.center"
-				:map-type-id="map.mapTypeId"
-				:zoom="7"
-			>
-				<gmap-cluster>
-					<gmap-marker
-						v-for="(mark, index) in map.markers"
-						:key="index"
-						:icon="require(`@/assets/img/marker.svg`)"
-						:position="mark"
-					/>
-				</gmap-cluster>
-			</gmap-map>
-		</b-modal>
-
-		<b-modal
-			v-if="map.markers.length > 0"
-			v-model="streatViewModalState"
-			size="xl"
-			centered
-			title="Map View"
-		>
-			<gmap-street-view-panorama
-				class="pano"
-				:position="map.markers[0]"
-				:pov="pov"
-				:zoom="1"
-				@pano_changed="updatePano"
-				@pov_changed="updatePov"
-			/>
-		</b-modal>
-		<!-- End modals -->
 	</div>
 </template>
 
@@ -337,34 +206,41 @@ import { BIcon, BIconImage } from "bootstrap-vue";
 import "viewerjs/dist/viewer.css";
 import Viewer from "v-viewer";
 import Vue from "vue";
-import panorama from "@/components/panorama";
 import LoginModal from "@/components/loginModal";
 import contactForm from "@/components/singleListing/contactFrom";
 import listingCover from "@/components/singleListing/listingCover";
+import pricesTable from "@/components/singleListing/prices";
+import localInfo from "@/components/singleListing/localInformation";
 
 import { mapGetters } from "vuex";
-import { Hooper, Slide, Pagination as HooperPagination } from "hooper";
+
+import {
+	Hooper,
+	Slide,
+	Navigation,
+	Pagination as HooperPagination,
+} from "hooper";
 
 Vue.use(Viewer);
 
 export default {
 	components: {
 		BIcon,
-		panorama,
 		BIconImage,
 		LoginModal,
 		Hooper,
 		Slide,
 		HooperPagination,
+		hooperNavigation: Navigation,
+		Slide,
+		HooperPagination,
 		contactForm,
 		listingCover,
+		pricesTable,
+		localInfo,
 	},
 	data() {
 		return {
-			pov: null,
-			pano: null,
-			mapViewModalState: false,
-			streatViewModalState: false,
 			hooperSettings: {
 				itemsToShow: 2,
 				autoPlay: false,
@@ -451,39 +327,11 @@ export default {
 		this.loadingState = false;
 	},
 	methods: {
-		updatePov(pov) {
-			this.pov = pov;
-		},
-		updatePano(pano) {
-			this.pano = pano;
-		},
 		initedV(name, viewer) {
 			this.$viewer[name] = viewer;
 		},
 		showV(name, index) {
 			this.$viewer[name].view(index);
-		},
-		format(num) {
-			const arr = String(num).split("").reverse();
-			const copy = [...arr];
-			const indexes = [];
-
-			for (let i = 1; i <= arr.length; i++) {
-				if (i % 3 === 0) {
-					indexes.push(i);
-				}
-			}
-
-			if (copy.length > 3) {
-				indexes.forEach((n, i) => copy.splice(n + i, 0, ","));
-			}
-
-			copy.reverse();
-			if (copy[0] === ",") {
-				copy.shift();
-			}
-			copy.join("");
-			return copy.join("");
 		},
 	},
 };

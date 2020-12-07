@@ -73,8 +73,8 @@ export default {
 			},
 		},
 		cover: {
-			type: String,
-			default: "",
+			type: Array,
+			default: () => [],
 		},
 	},
 	components: {

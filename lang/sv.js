@@ -146,8 +146,7 @@ export default {
 	},
 	resetPassword: {
 		thereIsNoUser: "Den här användaren avslutar inte!",
-		weSentThePassword:
-			"Vi skickade en länk för att återställa ditt lösenord",
+		weSentThePassword: "Vi skickade en länk för att återställa ditt lösenord",
 		resetPassword: "Återställ lösenord",
 		enterEmail: "Ange din e-post och instruktioner skickas till dig!",
 		enterOldEmail:
@@ -286,14 +285,14 @@ export default {
 			gallery: "Galleri",
 			website: "Hemsida",
 			directions: "Få vägbeskrivningar",
-			priceList: [
-				"prioteradpris",
-				"prisperdag",
-				"prisperhelg",
-				"prisperlanghelg",
-				"prispermanad",
-				"prispervecka",
-			],
+			pricePer: "Pris per",
+			priceList: {
+				day: "dag",
+				weekend: "helg",
+				month: "månad",
+				longWeekend: "langhelg",
+				week: "vecka",
+			},
 		},
 		form: {
 			sendUs: "Skicka en bokningsförfrågan till oss:",

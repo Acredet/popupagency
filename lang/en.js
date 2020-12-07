@@ -285,14 +285,14 @@ export default {
 			gallery: "Gallery",
 			website: "Homepage",
 			directions: "Get Directions",
-			priceList: [
-				"prioteradpris",
-				"prisperdag",
-				"prisperhelg",
-				"prisperlanghelg",
-				"prispermanad",
-				"prispervecka",
-			],
+			pricePer: "Price per",
+			priceList: {
+				day: "day",
+				weekend: "weekend",
+				month: "month",
+				longWeekend: "long weekend",
+				week: "week",
+			},
 		},
 		form: {
 			sendUs: "Send us a booking request:",
