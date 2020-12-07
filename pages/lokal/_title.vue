@@ -4,61 +4,11 @@
 		<div v-if="place._id">
 			<LoginModal :modalShow="modalShow" @close-modal="modalShow = false" />
 
-			<!-- Start cover -->
-			<div class="position-relative cover">
-				<div class="position-relative cover--overlay" :style="imgStyles" />
-				<section class="cover--details">
-					<b-container class="h-100 position-relative">
-						<div
-							class="text-center h-100 d-flex flex-column justify-content-end align-items-start flex-lg-row align-items-lg-center justify-content-lg-between"
-						>
-							<h1 class="font-5">
-								{{ place.title ? place.title[$i18n.locale] : "" }}
-								<b-btn
-									v-if="
-										$auth.loggedIn &&
-										['admin', 'manager'].includes($auth.user.role)
-									"
-									variant="icon"
-									:to="`${$t('link')}admin/listings/edit/${place.title.sv
-										.split(' ')
-										.join('-')}`"
-								>
-									<b-icon icon="pencil-square" class="text-white" />
-								</b-btn>
-							</h1>
-						</div>
-
-						<div class="bookmark-wrapper position-absolute">
-							<b-btn
-								class="bookmark-btn"
-								@click="
-									(e) => {
-										if (!this.$auth.loggedIn) {
-											this.modalShow = true;
-										} else {
-											this.AddToFav(e);
-										}
-									}
-								"
-								variant="icon"
-							>
-								<b-icon
-									scale="1.5"
-									:icon="
-										$auth.loggedIn &&
-										$auth.user.fav.findIndex((x) => x === place.title.sv) !== -1
-											? 'heart-fill'
-											: 'heart'
-									"
-									style="color: red"
-								/>
-							</b-btn>
-						</div>
-					</b-container>
-				</section>
-			</div>
-			<!-- End cover -->
+			<listingCover
+				:title="place.title"
+				:cover="place.cover"
+				@bookmarkWithoutLogin="modalShow = true"
+			/>
 
 			<main>
 				<b-container>
@@ -77,7 +27,7 @@
 							<!-- End Description -->
 
 							<!-- Start Local Information -->
-							<section>
+							<section v-if="map.markers.length > 0">
 								<h2>Local Information</h2>
 								<hooper :settings="hooperSettings">
 									<!-- Start MapView card -->
@@ -296,7 +246,6 @@
 						</b-col>
 						<!-- End Info col -->
 
-						<!-- Start Form -->
 						<b-col
 							style="
 								position: sticky;
@@ -309,182 +258,8 @@
 							md="4"
 							cols="12"
 						>
-							<b-form class="py-5">
-								<h4
-									class="font-weight-bold"
-									v-text="$t('singleListing.form.sendUs')"
-								/>
-								<b-row>
-									<!-- Start user name -->
-									<b-col cols="12">
-										<b-form-group
-											class="my-2"
-											:label="$t('forms.name.title')"
-											label-class="font-weight-bold"
-											label-for="username"
-										>
-											<b-form-input
-												id="username"
-												v-model="form.name"
-												autocomplete="off"
-												size="sm"
-											/>
-										</b-form-group>
-									</b-col>
-									<!-- End user name -->
-
-									<!-- Start email -->
-									<b-col cols="12" md="6">
-										<b-form-group
-											class="my-2"
-											:label="$t('forms.email.title')"
-											label-class="font-weight-bold"
-											label-for="email"
-										>
-											<b-form-input
-												id="email"
-												v-model="form.email"
-												type="email"
-												autocomplete="off"
-												size="sm"
-											/>
-										</b-form-group>
-									</b-col>
-									<!-- End email -->
-
-									<!-- Start Phone -->
-									<b-col cols="12" md="6">
-										<b-form-group
-											class="my-2"
-											:label="$t('forms.phone.title')"
-											label-class="font-weight-bold"
-											label-for="Phone"
-										>
-											<b-form-input
-												id="Phone"
-												v-model="form.phone"
-												autocomplete="off"
-												size="sm"
-											/>
-										</b-form-group>
-									</b-col>
-									<!-- End Phone -->
-
-									<!-- Start Business -->
-									<b-col cols="12" md="6">
-										<b-form-group
-											class="my-2"
-											:label="$t('forms.business.title')"
-											label-class="font-weight-bold"
-											label-for="Business"
-										>
-											<b-form-input
-												id="Business"
-												v-model="form.business"
-												autocomplete="off"
-												size="sm"
-											/>
-										</b-form-group>
-									</b-col>
-									<!-- End Business -->
-
-									<!-- Start Website -->
-									<b-col cols="12" md="6">
-										<b-form-group
-											class="my-2"
-											:label="$t('singleListing.info.website') + ':'"
-											label-class="font-weight-bold"
-											label-for="Website"
-										>
-											<b-form-input
-												id="Website"
-												v-model="form.website"
-												autocomplete="off"
-												size="sm"
-											/>
-										</b-form-group>
-									</b-col>
-									<!-- End Website -->
-
-									<!-- Start From -->
-									<b-col cols="12" md="6">
-										<b-form-group
-											class="my-2"
-											:label="$t('singleListing.form.from')"
-											label-class="font-weight-bold"
-											label-for="from"
-										>
-											<b-form-datepicker
-												id="from"
-												v-model="form.from"
-												today-button
-												reset-button
-												close-button
-												size="sm"
-												class="mb-2"
-											/>
-										</b-form-group>
-									</b-col>
-									<!-- End From -->
-
-									<!-- Start empty -->
-									<b-col cols="12" md="6">
-										<b-form-group
-											class="my-2"
-											:label="$t('singleListing.form.empty')"
-											label-class="font-weight-bold"
-											label-for="Empty"
-										>
-											<b-form-datepicker
-												id="Empty"
-												v-model="form.empty"
-												today-button
-												reset-button
-												close-button
-												size="sm"
-												class="mb-2"
-											/>
-										</b-form-group>
-									</b-col>
-									<!-- End empty -->
-
-									<!-- Start details -->
-									<b-col cols="12">
-										<b-form-group
-											class="my-2"
-											:label="$t('singleListing.form.details')"
-											label-class="font-weight-bold"
-											label-for="details"
-										>
-											<b-form-textarea id="details" size="sm" />
-										</b-form-group>
-									</b-col>
-									<!-- End details -->
-									<b-col cols="12">
-										<b-form-checkbox
-											id="GDPR"
-											v-model="form.GDPR"
-											name="GDPR"
-											:value="true"
-											:unchecked-value="false"
-										>
-											{{ $t("singleListing.form.GDPR") }}
-										</b-form-checkbox>
-									</b-col>
-
-									<b-btn
-										class="m-2"
-										size="lg"
-										type="button"
-										variant="primary"
-										@click="sendForm"
-									>
-										{{ $t("actions.submit") }}
-									</b-btn>
-								</b-row>
-							</b-form>
+							<contactForm />
 						</b-col>
-						<!-- End Form -->
 					</b-row>
 				</b-container>
 			</main>
@@ -492,42 +267,20 @@
 
 		<!-- Start Viewers -->
 		<viewer
-			ref="viewer"
-			:images="planritningImages"
+			v-for="(i, index) in [
+				{ images: planritningImages, ref: 'viewer', init: 'planritningImages' },
+				{ images: images, ref: 'viewer2', init: 'bildgalleri' },
+				{ images: centrumgalleri, ref: 'viewer3', init: 'centrumgalleri' },
+			]"
+			:key="`${index}-viewer`"
+			:ref="i.ref"
+			:images="i.images"
 			class="viewer"
-			@inited="initedV('planritningImages', $event)"
+			@inited="initedV(i.init, $event)"
 		>
 			<img
-				v-for="src in planritningImages"
-				:key="src + '- planritningImages'"
-				:src="src"
-				class="d-none"
-			/>
-		</viewer>
-
-		<viewer
-			ref="viewer2"
-			:images="images"
-			class="viewer"
-			@inited="initedV('bildgalleri', $event)"
-		>
-			<img
-				v-for="src in images"
-				:key="`${src}-imaged-bildgalleri`"
-				:src="src"
-				class="d-none"
-			/>
-		</viewer>
-
-		<viewer
-			ref="viewer3"
-			:images="centrumgalleri"
-			class="viewer"
-			@inited="initedV('centrumgalleri', $event)"
-		>
-			<img
-				v-for="src in centrumgalleri"
-				:key="`${src}-imaged-centrumgalleri`"
+				v-for="src in i.images"
+				:key="src + '- ' + i.init"
 				:src="src"
 				class="d-none"
 			/>
@@ -580,20 +333,15 @@
 </template>
 
 <script>
-import {
-	BootstrapVue,
-	BIcon,
-	BIconPencilSquare,
-	BIconHeart,
-	BIconHeartFill,
-	BIconImage,
-} from "bootstrap-vue";
+import { BIcon, BIconImage } from "bootstrap-vue";
 import "viewerjs/dist/viewer.css";
 import Viewer from "v-viewer";
 import Vue from "vue";
 import panorama from "@/components/panorama";
 import LoginModal from "@/components/loginModal";
-import { addToFav } from "@/mixins/utils/addToFav";
+import contactForm from "@/components/singleListing/contactFrom";
+import listingCover from "@/components/singleListing/listingCover";
+
 import { mapGetters } from "vuex";
 import { Hooper, Slide, Pagination as HooperPagination } from "hooper";
 
@@ -601,19 +349,16 @@ Vue.use(Viewer);
 
 export default {
 	components: {
-		BootstrapVue,
-		BIconPencilSquare,
 		BIcon,
 		panorama,
-		BIconHeart,
 		BIconImage,
-		BIconHeartFill,
 		LoginModal,
 		Hooper,
 		Slide,
 		HooperPagination,
+		contactForm,
+		listingCover,
 	},
-	mixins: [addToFav],
 	data() {
 		return {
 			pov: null,
@@ -646,31 +391,9 @@ export default {
 			place: {},
 			similar: [],
 			tabOpened: 0,
-			form: {
-				name: "",
-				email: "",
-				phone: "",
-				business: "",
-				website: "",
-				empty: "",
-				from: "",
-				details: "",
-				GDPR: false,
-			},
 		};
 	},
 	computed: {
-		tabs() {
-			const tabs = {
-				en: ["Information", "Center info", "Price", "Booking request"],
-				sv: ["Information", "Centruminfo", "Pris", "Bokningsförfrågan"],
-			};
-			if (!this.thereIsCentrum) {
-				tabs.en.splice(1, 1);
-				tabs.sv.splice(1, 1);
-			}
-			return tabs[this.$i18n.locale];
-		},
 		images() {
 			return !this.place.bildgalleri
 				? []
@@ -691,43 +414,6 @@ export default {
 				: this.place.planritning.map(
 						(x) => `https://popup.dk.se/_nuxt/img/${x}`
 				  );
-		},
-		imgStyles() {
-			return {
-				"min-height": "60vh",
-				"background-repeat": "no-repeat",
-				"background-image": `url('https://popup.dk.se/_nuxt/img/${
-					this.place.cover ? this.place.cover[0] : ""
-				}')`,
-				"background-position": "center center",
-				"background-attachment": "fixed",
-				"background-size": "cover",
-			};
-		},
-		feats() {
-			return [
-				{ name: "yta-1", text: this.place.yta || "" },
-				{
-					name: this.place.fasta ? "fasta-oppettider-1" : "fasta-oppettider-2",
-					text: this.$t("singleListing.feats.fasta"),
-				},
-				{
-					name: this.place.butik ? "butik-1" : "butik-2",
-					text: this.$t("singleListing.feats.butik"),
-				},
-				{
-					name: this.place.mat ? "matodrick-1" : "matodrick-2",
-					text: this.$t("singleListing.feats.mat"),
-				},
-				{
-					name: this.place.event ? "event-1" : "event-2",
-					text: this.$t("singleListing.feats.event"),
-				},
-				{
-					name: this.place.sasongBoxen ? "sol" : "solstol",
-					text: this.$t("singleListing.feats.sasong"),
-				},
-			];
 		},
 	},
 	async created() {
@@ -771,9 +457,6 @@ export default {
 		updatePano(pano) {
 			this.pano = pano;
 		},
-		sendForm() {
-			alert("Not working yet 😉");
-		},
 		initedV(name, viewer) {
 			this.$viewer[name] = viewer;
 		},
@@ -807,145 +490,9 @@ export default {
 </script>
 
 <style scoped>
-@media screen and (max-width: 576px) {
-	.row.tabs {
-		overflow-x: scroll;
-	}
-}
-
-.anime-tab {
-	margin: 10px;
-	padding: 10px 10px;
-	float: left;
-	box-sizing: border-box;
-	transition: 0.4s all ease-in-out;
-	position: relative;
-	cursor: pointer;
-}
-
-.anime-tab:before {
-	position: absolute;
-	bottom: 0;
-	background: var(--indigo);
-	height: 2px;
-	display: block;
-	content: "";
-	width: 0;
-	transition: 0.4s all ease-in-out;
-}
-
-.anime-tab:hover:before,
-.anime-tab.active:before {
-	width: 100%;
-}
-
-.anime-tab-fromLeft:before {
-	bottom: 0;
-	left: 0;
-}
-
-.cover .cover--details::before {
-	z-index: -1;
-	content: "";
-	background: rgb(0, 0, 0);
-	background: linear-gradient(
-		180deg,
-		rgba(0, 0, 0, 0) 0%,
-		rgba(0, 0, 0, 0.710504270067402) 71%
-	);
-	position: absolute;
-	opacity: 0.5;
-	bottom: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	display: flex;
-}
-
-.cover .cover--details {
-	z-index: 4;
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	height: 30%;
-	width: 100%;
-	padding: 5px;
-	color: white;
-}
-
-.cover .cover--details .bookmark-wrapper {
-	bottom: -22%;
-	right: 0;
-}
-
-.cover .cover--details .bookmark-btn,
-.cover .cover--details .bookmark-btn:hover,
-.cover .cover--details .bookmark-btn:focus {
-	outline: none !important;
-	box-shadow: 0 !important;
-	background: white;
-	width: 60px;
-	height: 60px;
-	border-radius: 50%;
-	box-shadow: 0px 0px 14px 0px rgba(50, 50, 50, 0.75);
-}
-
 p {
 	padding: 0;
 	margin: 0;
-}
-
-.gallery-images {
-	cursor: pointer;
-	position: relative;
-	overflow: hidden;
-}
-
-.gallery-images::before {
-	content: "\f00e";
-	color: white;
-	font-size: 12px;
-	font-family: "Font Awesome 5 Free";
-	font-weight: 900;
-	display: flex;
-	transform: scale(1);
-	justify-content: center;
-	align-items: center;
-	opacity: 0;
-	transition: all 0.4s ease;
-	width: 100%;
-	height: 100%;
-	background: rgba(0, 0, 0, 0.8);
-	position: absolute;
-}
-
-.gallery-images:hover::before {
-	opacity: 1;
-	transform: scale(1.2);
-}
-
-.planritning {
-	cursor: pointer;
-}
-
-.planritning i {
-	transition: all 0.4s ease;
-	border: 1px solid var(--dark);
-	padding: 10px;
-	border-radius: 50%;
-}
-
-.planritning:hover i {
-	color: white;
-	border: 1px solid var(--indigo);
-	background: var(--indigo);
-}
-
-.contact-us-img {
-	min-height: 400px;
-	background-image: url("~assets/img/contact-us-person.png");
-	background-size: cover;
-	background-position: center center;
 }
 
 main .container section {
