@@ -66,7 +66,9 @@
 							<template v-slot:button-content>
 								<b>{{ $t("actions.actions") }}</b>
 							</template>
-							<b-dropdown-item :to="`/admin/centrum/edit/${data.item._id}`">
+							<b-dropdown-item
+								:to="localePath(`/admin/centrum/edit/${data.item._id}`)"
+							>
 								{{ $t("actions.edit") }}
 							</b-dropdown-item>
 							<b-dropdown-item

@@ -153,8 +153,6 @@ export default {
               </a>
             `,
 					};
-				} else {
-					return;
 				}
 			});
 		},

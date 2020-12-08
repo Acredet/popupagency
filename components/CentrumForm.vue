@@ -103,7 +103,7 @@ import centrumGalleriCard from "@/components/centrumForm/centrumGalleri";
 import openTimesCard from "@/components/centrumForm/openTimes";
 import routeGuidanceCard from "@/components/centrumForm/routeGuidance";
 import textareasCard from "@/components/centrumForm/textarea";
-
+import { mapGetters } from "vuex";
 export default {
 	name: "CentrumForm",
 	layout: "admin",
@@ -151,6 +151,9 @@ export default {
 		stadValid() {
 			return !!this.city;
 		},
+		...mapGetters({
+			allRegions: "regions",
+		}),
 	},
 	watch: {
 		centrumEdit: {
@@ -170,43 +173,35 @@ export default {
 		) {
 			this.$router.push("/error");
 		}
-		await this.$axios
-			.get("/region")
-			.then((res) => {
-				if (this.centrumEdit) {
-					this.regions = res.data.data.map((x) => {
-						return {
-							text: x.name[this.$i18n.locale],
-							value: x._id,
-							centrum: x.centrum || null,
-						};
-					});
-					this.city = res.data.data.filter(
-						(x) => x.centrum && x.centrum === this.centrumEdit._id
-					)[0]._id;
-					this.oldCity = this.city;
-					this.$forceUpdate();
-				} else {
-					this.regions = res.data.data
-						.filter((j) => !j.centrum)
-						.map((x) => {
-							return {
-								text: x.name[this.$i18n.locale],
-								value: x._id,
-								centrum: x.centrum || null,
-							};
-						});
-				}
-			})
-			.catch((err) => {
-				this.busy = false;
-				this.toast = {
-					title: this.$t("allListing.toast.error"),
-					variant: "danger",
-					visible: true,
-					text: err,
+
+		if (this.centrumEdit) {
+			this.regions = [...this.allRegions].map((x) => {
+				return {
+					text: x.name[this.$i18n.locale],
+					value: x._id,
+					centrum: x.centrum || null,
 				};
 			});
+
+			const city = this.allRegions.filter(
+				(x) => x.centrum && x.centrum === this.centrumEdit._id
+			);
+
+			this.city = city.length > 0 ? city[0]._id : null;
+
+			this.oldCity = this.city;
+			this.$forceUpdate();
+		} else {
+			this.regions = this.allRegions
+				.filter((j) => !j.centrum)
+				.map((x) => {
+					return {
+						text: x.name[this.$i18n.locale],
+						value: x._id,
+						centrum: x.centrum || null,
+					};
+				});
+		}
 	},
 	methods: {
 		async post() {
