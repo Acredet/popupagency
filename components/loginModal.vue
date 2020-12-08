@@ -16,7 +16,7 @@
 				</b-btn>
 			</div>
 
-			<loginForm />
+			<loginForm @userLoggedIn="$emit('close-modal')" />
 		</b-modal>
 		<!-- End modal -->
 	</div>

@@ -56,7 +56,7 @@
 												display: inline-block;
 												height: 50px;
 												vertical-align: middle;
-												width: 50px;
+												width: 20px;
 											"
 										/>
 										<b>{{ tag.name[$i18n.locale] }}</b>
@@ -225,19 +225,22 @@ Vue.use(Viewer);
 
 export default {
 	components: {
+		// Icons
 		BIcon,
 		BIconImage,
+
+		// Page components
 		LoginModal,
-		Hooper,
-		Slide,
-		HooperPagination,
-		hooperNavigation: Navigation,
-		Slide,
-		HooperPagination,
 		contactForm,
 		listingCover,
 		pricesTable,
 		localInfo,
+
+		// Hooper
+		Hooper,
+		Slide,
+		HooperPagination,
+		hooperNavigation: Navigation,
 	},
 	data() {
 		return {
