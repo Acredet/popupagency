@@ -135,14 +135,16 @@ export default {
 						// <div style="z-index: 4;position: absolute;  bottom: 0;  left: 0; width: 100%;  padding: 5px;  background: rgba(0,0,0,0.8); color: black;" />
 						infoText: `
               <a class="map-popup px-2 d-block text-dark" href='${this.$t(
-					"link"
-				)}lokal/${x.title.sv}'>
+								"link"
+							)}lokal/${x.title.sv}'>
                 <div style="background-image: url('https://popup.dk.se/_nuxt/img/${
-					x.cover[0]
-				}')" class="cover flex-wrap d-flex justify-content-end flex-column align-items-start" />
+									x.cover[0]
+								}')" class="cover flex-wrap d-flex justify-content-end flex-column align-items-start" />
                   <div class="overlay">
                     <p class="text-white font-2 p-0 m-0">${x.title.sv}</p>
-                    <p class="text-white font-4 p-0 m-0">$${x.prioteradpris}</p>
+                    <p class="text-white font-4 p-0 m-0">$${
+											x.prioteradpris.val
+										}</p>
                   </div>
                 </div>
                 <div>
@@ -151,6 +153,8 @@ export default {
               </a>
             `,
 					};
+				} else {
+					return;
 				}
 			});
 		},
@@ -181,8 +185,7 @@ export default {
 			this.map.zoom = e;
 		},
 		getNearbyPlaces(lat, lng, placeType) {
-			let url =
-				"https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
+			let url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
 
 			url += `location=${lat},${lng}`;
 			url += "&radius=10000";

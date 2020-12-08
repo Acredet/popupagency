@@ -204,7 +204,7 @@ export default {
 					title: this.$t("allListing.toast.error"),
 					variant: "danger",
 					visible: true,
-					text: err.responsed.data,
+					text: err,
 				};
 			});
 	},
@@ -303,7 +303,7 @@ export default {
 									title: this.$t("allListing.toast.error"),
 									variant: "danger",
 									visible: true,
-									text: err.responsed.data,
+									text: err,
 								};
 							});
 					}

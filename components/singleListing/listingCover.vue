@@ -31,7 +31,7 @@
 								if (!this.$auth.loggedIn) {
 									this.$emit('bookmarkWithoutLogin');
 								} else {
-									this.AddToFav(e);
+									this.AddToFav(e, title.sv);
 								}
 							}
 						"
