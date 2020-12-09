@@ -131,7 +131,12 @@ export default {
 					this.price.veckopris.val = newVal.prispervecka;
 
 					this.prioteradpris = newVal.prioteradpris;
-					if (this.price[newVal.prioteradpris.period]) {
+					if (
+						newVal &&
+						newVal.prioteradpris &&
+						newVal.prioteradpris.period &&
+						this.price[newVal.prioteradpris.period]
+					) {
 						this.price[newVal.prioteradpris.period].temp = true;
 					}
 					// this.price.prioteradpris.val = prioteradpris.val;
