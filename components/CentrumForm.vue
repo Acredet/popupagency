@@ -103,7 +103,7 @@ import centrumGalleriCard from "@/components/centrumForm/centrumGalleri";
 import openTimesCard from "@/components/centrumForm/openTimes";
 import routeGuidanceCard from "@/components/centrumForm/routeGuidance";
 import textareasCard from "@/components/centrumForm/textarea";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
 	name: "CentrumForm",
 	layout: "admin",
@@ -162,11 +162,12 @@ export default {
 			handler(newValue) {
 				if (newValue && newValue._id) {
 					this.assignCentrumEdit();
+					this.assignStad();
 				}
 			},
 		},
 	},
-	async created() {
+	async beforeMount() {
 		if (
 			!this.$auth.loggedIn ||
 			!["manager", "admin"].includes(this.$auth.user.role)
@@ -174,36 +175,20 @@ export default {
 			this.$router.push("/error");
 		}
 
-		if (this.centrumEdit) {
-			this.regions = [...this.allRegions].map((x) => {
+		this.regions = this.allRegions
+			.filter((j) => !j.centrum)
+			.map((x) => {
 				return {
 					text: x.name[this.$i18n.locale],
 					value: x._id,
 					centrum: x.centrum || null,
 				};
 			});
-
-			const city = this.allRegions.filter(
-				(x) => x.centrum && x.centrum === this.centrumEdit._id
-			);
-
-			this.city = city.length > 0 ? city[0]._id : null;
-
-			this.oldCity = this.city;
-			this.$forceUpdate();
-		} else {
-			this.regions = this.allRegions
-				.filter((j) => !j.centrum)
-				.map((x) => {
-					return {
-						text: x.name[this.$i18n.locale],
-						value: x._id,
-						centrum: x.centrum || null,
-					};
-				});
-		}
 	},
 	methods: {
+		...mapActions({
+			updateStoreData: "updateStoreData",
+		}),
 		async post() {
 			const centrum = await this.createCentrumForm();
 			await this.$axios
@@ -222,6 +207,7 @@ export default {
 							centrum: res.data._id,
 						})
 						.then((_) => {
+							this.updateStoreData();
 							this.$router.push(`${this.$t("link")}admin/centrum`);
 						})
 						.catch((err) => {
@@ -236,7 +222,7 @@ export default {
 			const centrum = await this.createCentrumForm();
 			const promises = [
 				await this.$axios.$patch(`/centrum/${this.$route.params.id}`, centrum),
-				await this.$axios.patch(`/region/${this.city}`, {
+				await this.$axios.$patch(`/region/${this.city}`, {
 					centrum: this.$route.params.id,
 				}),
 			];
@@ -244,11 +230,12 @@ export default {
 			await Promise.all(promises)
 				.then(async (_) => {
 					if (this.oldCity) {
-						await this.$axios.patch(`/region/${this.oldCity}`, {
+						await this.$axios.$patch(`/region/${this.oldCity}`, {
 							centrum: null,
 						});
 					}
-					this.$router.push(`${this.$t("link")}admin/centrum`);
+					this.updateStoreData();
+					this.$router.push(this.localePath("/admin/centrum"));
 				})
 				.catch((err) => {
 					this.busy = false;
@@ -326,6 +313,23 @@ export default {
 				en: this.centrumEdit.centrumtextarea.en,
 				sv: this.centrumEdit.centrumtextarea.sv,
 			};
+		},
+		assignStad() {
+			this.regions = [...this.allRegions].map((x) => {
+				return {
+					text: x.name[this.$i18n.locale],
+					value: x._id,
+					centrum: x.centrum || null,
+				};
+			});
+
+			const city = this.allRegions.filter(
+				(x) => x.centrum && x.centrum === this.centrumEdit._id
+			);
+
+			this.city = city.length > 0 ? city[0]._id : null;
+
+			this.oldCity = this.city;
 		},
 	},
 };

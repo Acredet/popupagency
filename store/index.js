@@ -33,14 +33,12 @@ export const mutations = {
 		if (sortType === "latest") {
 			state.cards = state.cards.sort(
 				(a, b) =>
-					new Date(a.createdAt).getTime() -
-					new Date(b.createdAt).getTime()
+					new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
 			);
 		} else if (sortType === "oldest") {
 			state.cards = state.cards.sort(
 				(a, b) =>
-					new Date(b.createdAt).getTime() -
-					new Date(a.createdAt).getTime()
+					new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
 			);
 		} else if (sortType === "priceLowToHigh") {
 			state.cards = state.cards.sort(
@@ -55,7 +53,6 @@ export const mutations = {
 		} else if (sortType === "sizeHighToLow") {
 			state.cards = state.cards.sort((a, b) => b.yta - a.yta);
 		}
-		
 	},
 	cards(state, cards) {
 		state.cards = cards;
@@ -66,16 +63,19 @@ export const mutations = {
 };
 
 export const actions = {
-	async nuxtServerInit({ commit }, { $axios, redirect, app }) {
+	async updateStoreData({ commit }) {
+		const { listings, regions, tags, categories } = await this.$axios.$get(
+			"/availablePopups"
+		);
+		commit("categories", categories);
+		commit("tags", tags);
+		commit("regions", regions);
+		commit("listings", listings);
+		commit("sortCards", "latest");
+	},
+	async nuxtServerInit({ dispatch }, { $axios, redirect, app }) {
 		try {
-			const { listings, regions, tags, categories } = await $axios.$get(
-				"/availablePopups"
-			);
-			commit("categories", categories);
-			commit("tags", tags);
-			commit("regions", regions);
-			commit("listings", listings);
-			commit("sortCards", "latest");
+			await dispatch("updateStoreData");
 		} catch (e) {
 			redirect(app.localePath("/"));
 		}
@@ -90,26 +90,19 @@ export const actions = {
 				for (let i = 0; i < res.data.data.length; i++) {
 					const listing = res.data.data[i];
 					const listingRegion = state.regions.filter(
-						(x) =>
-							JSON.stringify(x.name) ===
-							JSON.stringify(listing.stad)
+						(x) => JSON.stringify(x.name) === JSON.stringify(listing.stad)
 					)[0];
 
 					if (listingRegion.centrum) {
-						
 						await this.$axios
 							.get(`/centrum/${listingRegion.centrum}`)
 							.then((centrum) => {
 								if (centrum.data) {
 									listing.hemsida = centrum.data.hemsida;
-									listing.centrumgalleri =
-										centrum.data.centrumgalleri;
-									listing.centrumtextarea =
-										centrum.data.centrumtextarea;
-									listing.oppettider =
-										centrum.data.oppettider;
-									listing.location =
-										centrum.data.routeGuidance;
+									listing.centrumgalleri = centrum.data.centrumgalleri;
+									listing.centrumtextarea = centrum.data.centrumtextarea;
+									listing.oppettider = centrum.data.oppettider;
+									listing.location = centrum.data.routeGuidance;
 								}
 							});
 					}
@@ -180,13 +173,9 @@ export const actions = {
 					if (country) {
 						country.forEach((city) => {
 							[...city.selected].forEach((x) =>
-								console.log(
-									`Unicode of ${x}: `,
-									String.fromCharCode(x)
-								)
+								console.log(`Unicode of ${x}: `, String.fromCharCode(x))
 							);
 							realUsed.push(...city.selected);
-							
 						});
 					}
 				}
@@ -237,9 +226,7 @@ export const actions = {
 					realUsed.length <= 1
 						? true
 						: realUsed.includes(x.stad[this.$i18n.locale]);
-				const thereIsSearch = !used.search
-					? true
-					: x.title.en.match(re);
+				const thereIsSearch = !used.search ? true : x.title.en.match(re);
 
 				// console.log('=====================START======================')
 				// console.log('x.stad', x.stad)
