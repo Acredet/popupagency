@@ -127,33 +127,32 @@ export default {
 			this.map.center = { lng: x[0], lat: x[1] };
 		},
 		pinMarkers(places) {
-			this.map.markers = places.map((x) => {
-				if (x.location) {
-					return {
-						lng: x.location.coordinates[0],
-						lat: x.location.coordinates[1],
-						// <div style="z-index: 4;position: absolute;  bottom: 0;  left: 0; width: 100%;  padding: 5px;  background: rgba(0,0,0,0.8); color: black;" />
-						infoText: `
-              <a class="map-popup px-2 d-block text-dark" href='${this.$t(
-								"link"
-							)}lokal/${x.title.sv}'>
-                <div style="background-image: url('https://popup.dk.se/_nuxt/img/${
-									x.cover[0]
-								}')" class="cover flex-wrap d-flex justify-content-end flex-column align-items-start" />
-                  <div class="overlay">
-                    <p class="text-white font-2 p-0 m-0">${x.title.sv}</p>
-                    <p class="text-white font-4 p-0 m-0">$${
-											x.prioteradpris.val
-										}</p>
-                  </div>
-                </div>
-                <div>
-                  <p class="p-0 m-0">${x.location.formattedAddress}</p>
-                </div>
-              </a>
-            `,
-					};
-				}
+			const correctValues = [...places].filter(
+				(x) => x.location && x.location.coordinates
+			);
+			this.map.markers = correctValues.map((x) => {
+				return {
+					lng: x.location.coordinates[0],
+					lat: x.location.coordinates[1],
+					// <div style="z-index: 4;position: absolute;  bottom: 0;  left: 0; width: 100%;  padding: 5px;  background: rgba(0,0,0,0.8); color: black;" />
+					infoText: `
+						<nuxt-link class="map-popup px-2 d-block text-dark" to='${this.$t(
+							"link"
+						)}lokal/${x.title.sv}'>
+						<div style="background-image: url('https://popup.dk.se/_nuxt/img/${
+							x.cover[0]
+						}')" class="cover flex-wrap d-flex justify-content-end flex-column align-items-start" />
+							<div class="overlay">
+							<p class="text-white font-2 p-0 m-0">${x.title.sv}</p>
+							<p class="text-white font-4 p-0 m-0">$${x.prioteradpris.val}</p>
+							</div>
+						</div>
+						<div>
+							<p class="p-0 m-0">${x.location.formattedAddress}</p>
+						</div>
+						</nuxt-link>
+					`,
+				};
 			});
 		},
 		refreshMap() {
