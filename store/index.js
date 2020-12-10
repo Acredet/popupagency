@@ -63,21 +63,19 @@ export const mutations = {
 };
 
 export const actions = {
-	async updateStoreData({ commit }) {
-		const { listings, regions, tags, categories } = await this.$axios.$get(
-			"/availablePopups"
-		);
-		commit("categories", categories);
-		commit("tags", tags);
-		commit("regions", regions);
-		commit("listings", listings);
-		commit("sortCards", "latest");
-	},
-	async nuxtServerInit({ dispatch }, { $axios, redirect, app }) {
+	async nuxtServerInit({ commit }, { $axios, redirect, app }) {
 		try {
-			await dispatch("updateStoreData");
+			const { listings, regions, tags, categories } = await this.$axios.$get(
+				"/availablePopups"
+			);
+			commit("categories", categories);
+			commit("tags", tags);
+			commit("regions", regions);
+			commit("listings", listings);
+			commit("sortCards", "latest");
 		} catch (e) {
-			redirect(app.localePath("/"));
+			console.log(`error while fetching data ${e}`);
+			// redirect(app.localePath("/"));
 		}
 	},
 	changeSidebarRenderKey({ commit }) {

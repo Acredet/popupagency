@@ -65,6 +65,11 @@
 						</b-card-body>
 					</b-card>
 
+					<routeGuidanceCard
+						:routeGuidance="listing ? listing.routeGuidance : []"
+						@locationChanged="location = $event"
+					/>
+
 					<b-row>
 						<b-col cols="12" md="6">
 							<b-card :title="$t('addListing.inputs.yta.label')">
@@ -123,7 +128,7 @@
 							title: $t('addListing.inputs.planritning'),
 							name: 'planritning[]',
 						}"
-						:oldImages="editListing ? images.planritning : []"
+						:oldImages="listing ? images.planritning : []"
 					/>
 
 					<b-row>
@@ -310,10 +315,11 @@ import titleInputsCard from "@/components/centrumForm/title";
 import centrumGalleriCard from "@/components/centrumForm/centrumGalleri";
 import textareasCard from "@/components/centrumForm/textarea";
 import pricePeriods from "@/components/lisitngForm/pricesCard";
+import routeGuidanceCard from "@/components/centrumForm/routeGuidance";
 
 import ourUploader from "@/components/ourUploader";
 import toggleAllCheckBoxGroup from "@/components/admin/checkBoxGroup";
-
+import { mapActions } from "vuex";
 let VueEditor;
 if (process.browser) {
 	VueEditor = require("vue2-editor").VueEditor;
@@ -323,6 +329,7 @@ export default {
 	name: "ListingForm",
 	components: {
 		VueEditor,
+		routeGuidanceCard,
 		BootstrapVue,
 		BIcon,
 		titleInputsCard,
@@ -368,6 +375,8 @@ export default {
 
 			minsta: null,
 			längsta: null,
+
+			location: null,
 
 			yesNoInputsVal: {
 				fasta: null,
@@ -460,6 +469,9 @@ export default {
 		}
 	},
 	methods: {
+		...mapActions({
+			updateStoreData: "updateStoreData",
+		}),
 		async preparePageData() {
 			const promises = [
 				this.$axios.$get("/users/all"),
@@ -521,8 +533,15 @@ export default {
 				beskreving,
 				bildgalleri,
 				cover,
+				routeGuidance,
 				planritning,
 			} = this.listing;
+
+			this.location = {
+				lng: routeGuidance.coordinates[0] || 0,
+				lat: routeGuidance.coordinates[1] || 0,
+			};
+
 			this.title.en = title.en;
 			this.title.sv = title.sv;
 			this.Yta = yta;
@@ -651,6 +670,8 @@ export default {
 				listing.append("fran", this.fran);
 				listing.append("till", this.till);
 
+				listing.append("routeGuidance", JSON.stringify(this.location));
+
 				listing.append("kontaktperson", this.lokal);
 				listing.append("expiry", this.expiry);
 
@@ -682,6 +703,8 @@ export default {
 					.$post("/places", listing)
 					.then((res) => {
 						this.$nextTick(() => {
+							this.updateStoreData();
+
 							if (draft) {
 								this.$router.push(this.localePath("/admin/listings/drafts"));
 							} else {
@@ -768,6 +791,7 @@ export default {
 					.$patch(`/places/${this.listing._id}`, listing)
 					.then((res) => {
 						if (draft) {
+							this.updateStoreData();
 							this.$router.push(this.localePath("/admin/listings/drafts"));
 						} else {
 							this.$router.push(this.localePath("/admin/listings/"));

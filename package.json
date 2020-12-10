@@ -4,6 +4,7 @@
 	"private": true,
 	"scripts": {
 		"commit": "git add . && git commit -m ",
+		"addDist": "cd .nuxt && sudo mkdir dist && cd dist && sudo mkdir client && cd client && sudo mkdir img",
 		"dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",
 		"generate": "nuxt generate",
 		"push": "git push origin master",

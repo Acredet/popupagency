@@ -133,7 +133,7 @@ export default {
 				if (val.lat && val.lng) {
 					const co = { lat: Number(val.lat), lng: Number(val.lng) };
 					this.$axios
-						.post("/centrum/address", { location: co })
+						.post("/places/address", { location: co })
 						.then((res) => {
 							this.formattedAddress = res.data.formattedAddress;
 						})

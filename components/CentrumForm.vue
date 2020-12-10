@@ -43,11 +43,6 @@
 					@daysChanged="days = $event"
 				/>
 
-				<routeGuidanceCard
-					:routeGuidance="centrumEdit ? centrumEdit.routeGuidance : []"
-					@locationChanged="location = $event"
-				/>
-
 				<b-card :title="$t('addListing.inputs.stad')">
 					<b-card-body>
 						<b-form-select
@@ -101,14 +96,12 @@
 import titleInputsCard from "@/components/centrumForm/title";
 import centrumGalleriCard from "@/components/centrumForm/centrumGalleri";
 import openTimesCard from "@/components/centrumForm/openTimes";
-import routeGuidanceCard from "@/components/centrumForm/routeGuidance";
 import textareasCard from "@/components/centrumForm/textarea";
 import { mapGetters, mapActions } from "vuex";
 export default {
 	name: "CentrumForm",
 	layout: "admin",
 	components: {
-		routeGuidanceCard,
 		titleInputsCard,
 		centrumGalleriCard,
 		openTimesCard,
@@ -125,7 +118,6 @@ export default {
 		return {
 			busy: false,
 			days: null,
-			location: null,
 			toast: {
 				title: null,
 				variant: null,
@@ -294,16 +286,11 @@ export default {
 
 			centrum.append("title", JSON.stringify(this.title));
 			centrum.append("centrumtextarea", JSON.stringify(this.centrum));
-			centrum.append("routeGuidance", JSON.stringify(this.location));
 			centrum.append("centrumgalleri", JSON.stringify(centrumgalleri));
 
 			return centrum;
 		},
 		assignCentrumEdit() {
-			this.location = {
-				lng: this.centrumEdit.routeGuidance.coordinates[0] || 0,
-				lat: this.centrumEdit.routeGuidance.coordinates[1] || 0,
-			};
 			this.images = {
 				centrumgalleri: this.centrumEdit.centrumgalleri,
 			};

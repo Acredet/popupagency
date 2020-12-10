@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import { gmapApi } from "vue2-google-maps";
 
 /** DOCS
@@ -38,10 +39,6 @@ import { gmapApi } from "vue2-google-maps";
  */
 export default {
 	props: {
-		allPlaces: {
-			type: Array,
-			default: () => [],
-		},
 		center: {
 			type: Object,
 			default: () => {
@@ -75,6 +72,9 @@ export default {
 		};
 	},
 	computed: {
+		...mapGetters({
+			allPlaces: "listings",
+		}),
 		renderKey() {
 			return this.$store.state.changeSidebarRenderKey;
 		},
