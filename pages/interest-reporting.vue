@@ -41,21 +41,14 @@
 											<b-form-checkbox
 												:key="renderKey"
 												v-model="tab.allSelected"
-												:indeterminate="
-													tab.indeterminate
-												"
+												:indeterminate="tab.indeterminate"
 												:aria-describedby="tab.name"
 												:aria-controls="tab.name"
 												size="md"
 												@change="toggleAll(index)"
 											>
 												<b class="font-2"
-													>{{
-														$t(
-															"interestReporting.all"
-														)
-													}}
-													{{ tab.name }}</b
+													>{{ $t("interestReporting.all") }} {{ tab.name }}</b
 												>
 											</b-form-checkbox>
 										</template>
@@ -207,9 +200,7 @@ export default {
 				sortedRegions.forEach((country) => {
 					// console.log(country)
 					if (!country.parent) {
-						this.filters.plats.tabs[
-							country.name[this.$i18n.locale]
-						] = [];
+						this.filters.plats.tabs[country.name[this.$i18n.locale]] = [];
 					}
 
 					if (country.cities) {
@@ -232,13 +223,9 @@ export default {
 								).length;
 							});
 
-							this.filters.plats.tabs[
-								country.name[this.$i18n.locale]
-							].push({
+							this.filters.plats.tabs[country.name[this.$i18n.locale]].push({
 								name: city.name[this.$i18n.locale],
-								text: `${
-									city.name[this.$i18n.locale]
-								} (${all})`,
+								text: `${city.name[this.$i18n.locale]} (${all})`,
 								allSelected: false, // Shape of the check
 								indeterminate: false, // Shape of the check
 								selected: [],
@@ -338,15 +325,13 @@ export default {
 			return copy.join("");
 		},
 		toggleAll(index) {
-			const arr = this.filters.plats.tabs[
-				this.filters.plats.currentCountry
-			][index];
+			const arr = this.filters.plats.tabs[this.filters.plats.currentCountry][
+				index
+			];
 
 			// Upadte the selected states in this country
 			const subcities =
-				arr.selected.length !== arr.subcity.length
-					? arr.subcity.slice()
-					: [];
+				arr.selected.length !== arr.subcity.length ? arr.subcity.slice() : [];
 			arr.selected = arr.selected.includes(arr.name)
 				? (arr.selected = [])
 				: (arr.selected = [arr.name, ...subcities]);
@@ -377,13 +362,12 @@ export default {
 
 			this.plats = finalArray;
 
-			this.$store.dispatch("changeSidebarRenderKey");
 			this.$forceUpdate();
 		},
 		placeChoose(index) {
-			const arr = this.filters.plats.tabs[
-				this.filters.plats.currentCountry
-			][index];
+			const arr = this.filters.plats.tabs[this.filters.plats.currentCountry][
+				index
+			];
 
 			this.$nextTick(() => {
 				if (arr.selected.length === 0) {
@@ -402,15 +386,14 @@ export default {
 
 				// Upadte the filters in vuex
 				const finalArray = [this.filters.plats.currentCountry];
-				this.filters.plats.tabs[
-					this.filters.plats.currentCountry
-				].forEach((x) => {
-					finalArray.push(...x.selected);
-				});
+				this.filters.plats.tabs[this.filters.plats.currentCountry].forEach(
+					(x) => {
+						finalArray.push(...x.selected);
+					}
+				);
 
 				this.plats = finalArray;
 
-				this.$store.dispatch("changeSidebarRenderKey");
 				this.$forceUpdate();
 			});
 		},

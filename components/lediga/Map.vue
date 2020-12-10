@@ -2,7 +2,6 @@
 	<!-- Start Map -->
 	<gmap-map
 		ref="mapRef"
-		:key="renderKey"
 		:center="map.center"
 		:map-type-id="map.mapTypeId"
 		:street-view-control="true"
@@ -75,9 +74,6 @@ export default {
 		...mapGetters({
 			allPlaces: "listings",
 		}),
-		renderKey() {
-			return this.$store.state.changeSidebarRenderKey;
-		},
 		google: gmapApi,
 	},
 	watch: {
@@ -154,9 +150,6 @@ export default {
 					`,
 				};
 			});
-		},
-		refreshMap() {
-			this.$store.commit("changeSidebarRenderKey");
 		},
 		toggleInfoWindow(marker, idx) {
 			this.infoWindowPos = {

@@ -184,7 +184,6 @@ export default {
 						// console.log('arr: dswa', arr)
 						arr.indeterminate = false;
 						arr.allSelected = false;
-						this.$store.dispatch("changeSidebarRenderKey");
 					}
 				);
 			}
@@ -277,8 +276,6 @@ export default {
 			);
 
 			this.filters.used.plats = finalArray;
-
-			this.$store.dispatch("changeSidebarRenderKey");
 		},
 		placeChoose(index) {
 			const arr = this.filters.plats.tabs[this.filters.plats.currentCountry][
@@ -309,8 +306,6 @@ export default {
 				);
 
 				this.filters.used.plats = finalArray;
-
-				this.$store.dispatch("changeSidebarRenderKey");
 			});
 		},
 		addProperty(button) {

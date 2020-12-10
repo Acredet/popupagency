@@ -42,11 +42,7 @@
 							<nuxt-link
 								exact
 								class="dropdown-item"
-								:to="
-									localePath(
-										`/admin/users/profile/${$auth.user._id}`
-									)
-								"
+								:to="localePath(`/admin/users/profile/${$auth.user._id}`)"
 							>
 								<i class="fas fa-user" />
 								{{ $t("adminHeader.profile") }}
@@ -92,21 +88,12 @@
 							>{{ $t("adminHeader.languages") }}</a
 						>
 
-						<div
-							class="py-0 dropdown-menu"
-							aria-labelledby="dropdownMenuLink"
-						>
-							<b-button
-								class="dropdown-item"
-								@click="changeLang('en')"
-							>
+						<div class="py-0 dropdown-menu" aria-labelledby="dropdownMenuLink">
+							<b-button class="dropdown-item" @click="changeLang('en')">
 								En-English
 							</b-button>
 							<div class="my-0 dropdown-divider" />
-							<b-button
-								class="dropdown-item"
-								@click="changeLang('sv')"
-							>
+							<b-button class="dropdown-item" @click="changeLang('sv')">
 								Sv-Swedish
 							</b-button>
 						</div>
@@ -120,17 +107,12 @@
 
 <script>
 export default {
-	mounted() {
-		this.$store.commit("changeSidebarRenderKey");
-	},
 	methods: {
 		changeLang(lang) {
 			this.$i18n.setLocale(lang);
 			this.$emit("changeLang");
-			this.$store.commit("changeSidebarRenderKey");
 		},
 		logout() {
-			this.$store.commit("changeSidebarRenderKey");
 			this.$auth.logout("local");
 		},
 	},

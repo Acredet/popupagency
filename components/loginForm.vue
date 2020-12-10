@@ -123,8 +123,6 @@ export default {
 			});
 
 			this.$emit("userLoggedIn"); // This emits userLoggedIn to the loginModal to close the modal
-
-			this.$store.commit("changeSidebarRenderKey");
 		},
 	},
 };

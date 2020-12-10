@@ -10,9 +10,6 @@ export const state = () => ({
 });
 
 export const mutations = {
-	changeSidebarRenderKey(state) {
-		state.sidebarRenderKey++;
-	},
 	listings(state, listings) {
 		state.listings = listings;
 	},
@@ -65,7 +62,7 @@ export const mutations = {
 export const actions = {
 	async nuxtServerInit({ commit }, { $axios, redirect, app }) {
 		try {
-			const { listings, regions, tags, categories } = await this.$axios.$get(
+			const { listings, regions, tags, categories } = await $axios.$get(
 				"/availablePopups"
 			);
 			commit("categories", categories);
@@ -74,12 +71,9 @@ export const actions = {
 			commit("listings", listings);
 			commit("sortCards", "latest");
 		} catch (e) {
-			console.log(`error while fetching data ${e}`);
-			// redirect(app.localePath("/"));
+			// console.log(`error while fetching data ${e}`);
+			redirect(app.localePath("/"));
 		}
-	},
-	changeSidebarRenderKey({ commit }) {
-		commit("changeSidebarRenderKey");
 	},
 	async getListings({ commit, state }) {
 		await this.$axios

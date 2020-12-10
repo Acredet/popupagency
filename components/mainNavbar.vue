@@ -36,10 +36,7 @@
 				<b-navbar-nav
 					class="w-100 d-sm-flex justify-content-sm-between align-items-sm-center"
 				>
-					<b-nav-item
-						v-if="!$auth.loggedIn"
-						:to="localePath('/login')"
-					>
+					<b-nav-item v-if="!$auth.loggedIn" :to="localePath('/login')">
 						login
 					</b-nav-item>
 					<!--          display only this navbar if the current user is the admin -->
@@ -116,9 +113,7 @@
 							{{ $t("mainNavbar.freePopups") }}
 						</b-dropdown-item>
 
-						<b-dropdown-item
-							:to="localePath('/interest-reporting')"
-						>
+						<b-dropdown-item :to="localePath('/interest-reporting')">
 							{{ $t("mainNavbar.interestReporting") }}
 						</b-dropdown-item>
 
@@ -133,22 +128,14 @@
 						{{ $t("mainNavbar.howDoesPopupWork") }}
 					</b-nav-item>
 
-					<b-nav-item
-						v-if="$i18n.locale == 'sv'"
-						@click="changeLang('en')"
-					>
+					<b-nav-item v-if="$i18n.locale == 'sv'" @click="changeLang('en')">
 						English
 					</b-nav-item>
-					<b-nav-item v-else @click="changeLang('sv')">
-						Swedish
-					</b-nav-item>
+					<b-nav-item v-else @click="changeLang('sv')"> Swedish </b-nav-item>
 					<b-nav-item v-if="$auth.loggedIn" @click="logout()">
 						{{ $t("adminHeader.logout") }}
 					</b-nav-item>
-					<b-nav-item
-						v-if="$auth.loggedIn"
-						:to="localePath('/bookmark')"
-					>
+					<b-nav-item v-if="$auth.loggedIn" :to="localePath('/bookmark')">
 						<b-icon-heart-fill />
 					</b-nav-item>
 				</b-navbar-nav>
@@ -181,9 +168,7 @@ export default {
 	},
 	computed: {
 		variant() {
-			return (
-				["/", "/en"].includes(this.$route.path) && this.scrollY === 0
-			);
+			return ["/", "/en"].includes(this.$route.path) && this.scrollY === 0;
 		},
 		isAdmin() {
 			return this.$auth.user && this.$auth.user.role === "admin";
@@ -197,10 +182,8 @@ export default {
 	methods: {
 		changeLang(lang) {
 			this.$i18n.setLocale(lang);
-			this.$store.commit("changeSidebarRenderKey");
 		},
 		logout() {
-			this.$store.commit("changeSidebarRenderKey");
 			this.$auth.logout("local");
 		},
 	},
