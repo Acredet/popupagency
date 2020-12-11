@@ -123,7 +123,10 @@ export default {
 			deep: true,
 			immediate: true,
 			handler(newVal) {
-				if (newVal.prioteradpris !== null) {
+				if (
+					Object.keys(newVal).length !== 0 &&
+					newVal.prioteradpris.val !== null
+				) {
 					this.price.day.val = newVal.prisperdag;
 					this.price.helg.val = newVal.prisperhelg;
 					this.price.langheig.val = newVal.prisperlanghelg;
