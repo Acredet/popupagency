@@ -2,17 +2,17 @@ const mongoose = require("mongoose");
 
 const PlaceSchema = new mongoose.Schema({
 	userId: mongoose.Schema.Types.ObjectId,
-	title: {
-		routeGuidance: {
-			coordinates: {
-				type: [Number],
-				index: "2dsphere",
-			},
-			formattedAddress: {
-				type: String,
-				required: true,
-			},
+	routeGuidance: {
+		coordinates: {
+			type: [Number],
+			index: "2dsphere",
 		},
+		formattedAddress: {
+			type: String,
+			required: true,
+		},
+	},
+	title: {
 		en: {
 			type: String,
 			// required: true,
