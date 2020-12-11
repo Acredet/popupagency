@@ -103,7 +103,7 @@ export const actions = {
 									listing.centrumgalleri = centrum.data.centrumgalleri;
 									listing.centrumtextarea = centrum.data.centrumtextarea;
 									listing.oppettider = centrum.data.oppettider;
-									listing.location = centrum.data.routeGuidance;
+									// listing.location = centrum.data.routeGuidance;
 								}
 							});
 					}

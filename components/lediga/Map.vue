@@ -13,6 +13,7 @@
 			:position="infoWindowPos"
 			:opened="infoWinOpen"
 			@closeclick="infoWinOpen = false"
+			@domready="ready"
 		/>
 		<gmap-cluster @click="singleClick">
 			<gmap-marker
@@ -96,14 +97,17 @@ export default {
 		}
 	},
 	methods: {
+		ready(e) {
+			console.log(`hey `, e);
+		},
 		createDynamicZooming() {
 			this.$refs.mapRef.$mapPromise.then((map) => {
 				const bounds = new this.google.maps.LatLngBounds();
 				this.allPlaces.forEach((place) => {
-					if (place.location) {
+					if (place.routeGuidance.coordinates) {
 						const bound = {
-							lng: place.location.coordinates[0],
-							lat: place.location.coordinates[1],
+							lng: place.routeGuidance.coordinates[0],
+							lat: place.routeGuidance.coordinates[1],
 						};
 						bounds.extend(bound);
 					}
@@ -124,17 +128,17 @@ export default {
 		},
 		pinMarkers(places) {
 			const correctValues = [...places].filter(
-				(x) => x.location && x.location.coordinates
+				(x) => x.routeGuidance && x.routeGuidance.coordinates
 			);
 			this.map.markers = correctValues.map((x) => {
 				return {
-					lng: x.location.coordinates[0],
-					lat: x.location.coordinates[1],
+					lng: x.routeGuidance.coordinates[0],
+					lat: x.routeGuidance.coordinates[1],
 					// <div style="z-index: 4;position: absolute;  bottom: 0;  left: 0; width: 100%;  padding: 5px;  background: rgba(0,0,0,0.8); color: black;" />
 					infoText: `
-						<nuxt-link class="map-popup px-2 d-block text-dark" to='${this.$t(
-							"link"
-						)}lokal/${x.title.sv}'>
+						<a class="map-popup px-2 d-block text-dark" href='${this.$t("link")}lokal/${
+						x.title.sv
+					}'>
 						<div style="background-image: url('https://popup.dk.se/_nuxt/img/${
 							x.cover[0]
 						}')" class="cover flex-wrap d-flex justify-content-end flex-column align-items-start" />
@@ -144,9 +148,9 @@ export default {
 							</div>
 						</div>
 						<div>
-							<p class="p-0 m-0">${x.location.formattedAddress}</p>
+							<p class="p-0 m-0">${x.routeGuidance.formattedAddress}</p>
 						</div>
-						</nuxt-link>
+						</a>
 					`,
 				};
 			});

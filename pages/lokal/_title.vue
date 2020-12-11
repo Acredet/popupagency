@@ -304,18 +304,18 @@ export default {
 		);
 
 		console.log(placeFromStore);
-		if (placeFromStore.location) {
+		if (placeFromStore.routeGuidance) {
 			this.thereIsCentrum = true;
 			this.map = {
 				center: {
-					lng: placeFromStore.location.coordinates[0],
-					lat: placeFromStore.location.coordinates[1],
+					lng: placeFromStore.routeGuidance.coordinates[0],
+					lat: placeFromStore.routeGuidance.coordinates[1],
 				},
 				mapTypeId: "roadmap",
 				markers: [
 					{
-						lng: placeFromStore.location.coordinates[0],
-						lat: placeFromStore.location.coordinates[1],
+						lng: placeFromStore.routeGuidance.coordinates[0],
+						lat: placeFromStore.routeGuidance.coordinates[1],
 					},
 				],
 			};
