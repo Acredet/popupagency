@@ -166,13 +166,13 @@ export default {
 	},
 	methods: {
 		...mapActions({
-			updateStoreData: "updateStoreData",
+			updateStore: "updateStore",
 		}),
 		async deleteListing() {
 			await this.$axios
 				.$delete(`/places/${this.editForm._id}`)
 				.then((res) => {
-					this.updateStoreData();
+					this.updateStore();
 					this.toast = {
 						title: this.$t("allListing.toast.delete"),
 						variant: "success",
