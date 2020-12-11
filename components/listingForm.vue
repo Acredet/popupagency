@@ -719,6 +719,7 @@ export default {
 							appendToast: true,
 							variant: "danger",
 						});
+						this.loadingState = false;
 					});
 			} else {
 				this.loadingState = false;
