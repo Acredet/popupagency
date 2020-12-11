@@ -36,7 +36,14 @@
 			</b-modal>
 
 			<b-container>
-				<h2>{{ $t("centrum.allCenterums") }}</h2>
+				<div class="d-flex align-items-center justify-content-between">
+					<h2>{{ $t("centrum.allCenterums") }}</h2>
+					<b-btn
+						variant="primary"
+						:to="localePath('/admin/centrum/add')"
+						v-text="$t('adminSidebar.center.add')"
+					/>
+				</div>
 				<b-table
 					:items="items"
 					:fields="fields"
