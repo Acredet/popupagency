@@ -179,7 +179,8 @@ export default {
 	},
 	methods: {
 		...mapActions({
-			updateStoreData: "updateStoreData",
+			getCentrums: "getCentrums",
+			getRegions: "getRegions",
 		}),
 		async post() {
 			const centrum = await this.createCentrumForm();
@@ -198,8 +199,8 @@ export default {
 						.patch(`/region/${this.city}`, {
 							centrum: res.data._id,
 						})
-						.then((_) => {
-							this.updateStoreData();
+						.then(async (_) => {
+							await Promise.all([this.getCentrums(), this.getRegions()]);
 							this.$router.push(`${this.$t("link")}admin/centrum`);
 						})
 						.catch((err) => {
@@ -226,7 +227,8 @@ export default {
 							centrum: null,
 						});
 					}
-					this.updateStoreData();
+					await Promise.all([this.getCentrums(), this.getRegions()]);
+
 					this.$router.push(this.localePath("/admin/centrum"));
 				})
 				.catch((err) => {

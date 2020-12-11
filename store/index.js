@@ -5,6 +5,7 @@ export const state = () => ({
 	cards: [],
 	regions: [],
 	tags: [],
+	centrums: [],
 	categories: [],
 	loginRedirectLink: "",
 });
@@ -21,6 +22,9 @@ export const mutations = {
 	},
 	categories(state, categories) {
 		state.categories = categories;
+	},
+	centrum(state, centrums) {
+		state.centrums = centrums;
 	},
 	sortCards(state, sortType) {
 		if (state.cards.length === 0) {
@@ -54,24 +58,29 @@ export const mutations = {
 	cards(state, cards) {
 		state.cards = cards;
 	},
-	saveRedirectLink(state, link) {
-		state.loginRedirectLink = link;
-	},
 };
 
 export const actions = {
-	async nuxtServerInit({ commit }, { $axios, redirect, app }) {
+	async updateStoreData({ commit }) {
+		const {
+			listings,
+			regions,
+			tags,
+			categories,
+			centrums,
+		} = await this.$axios.$get("/availablePopups");
+		commit("categories", categories);
+		commit("tags", tags);
+		commit("regions", regions);
+		commit("listings", listings);
+		commit("centrum", centrums);
+		commit("sortCards", "latest");
+	},
+	async nuxtServerInit({ dispatch }, { $axios, redirect, app }) {
 		try {
-			const { listings, regions, tags, categories } = await $axios.$get(
-				"/availablePopups"
-			);
-			commit("categories", categories);
-			commit("tags", tags);
-			commit("regions", regions);
-			commit("listings", listings);
-			commit("sortCards", "latest");
+			await dispatch("updateStoreData");
 		} catch (e) {
-			// console.log(`error while fetching data ${e}`);
+			console.log(e);
 			redirect(app.localePath("/"));
 		}
 	},
@@ -120,6 +129,12 @@ export const actions = {
 		await this.$axios
 			.get("/category")
 			.then((res) => commit("categories", res.data.data))
+			.catch((err) => console.log(err));
+	},
+	async getCentrums({ commit }) {
+		await this.$axios
+			.get("/centrum")
+			.then((res) => commit("centrum", res.data.data))
 			.catch((err) => console.log(err));
 	},
 	sortCards({ commit }, sortType) {
@@ -250,9 +265,6 @@ export const actions = {
 			commit("cards", cards);
 		}
 	},
-	redirectLink({ commit }, link) {
-		commit("saveRedirectLink", link);
-	},
 };
 
 export const getters = {
@@ -273,6 +285,9 @@ export const getters = {
 	},
 	categories(state) {
 		return state.categories;
+	},
+	centrums(state) {
+		return state.centrums;
 	},
 	loginRedirectLink(state) {
 		return state.loginRedirectLink;

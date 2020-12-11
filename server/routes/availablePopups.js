@@ -11,6 +11,7 @@ router.get("/", async (req, res) => {
 		const regions = await Region.find({}, { __v: 0 });
 		const tags = await Tag.find({}, { __v: 0 });
 		const categories = await Category.find({}, { __v: 0 });
+		const centrums = await Centrum.find({}, { __v: 0 });
 		const places = await Place.find({ draft: false }, { __v: -0 });
 		const listings = [];
 		for (let place of places) {
@@ -25,12 +26,12 @@ router.get("/", async (req, res) => {
 					newPlace.centrumgalleri = centrum.centrumgalleri;
 					newPlace.centrumtextarea = centrum.centrumtextarea;
 					newPlace.oppettider = centrum.oppettider;
-					newPlace.location = centrum.routeGuidance;
+					// newPlace.location = centrum.routeGuidance;
 				}
 			}
 			listings.push(newPlace);
 		}
-		res.status(200).json({ listings, tags, categories, regions });
+		res.status(200).json({ listings, tags, categories, regions, centrums });
 	} catch (e) {
 		res.status(401).json({
 			error: true,

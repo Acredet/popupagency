@@ -97,12 +97,13 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
 export default {
 	name: "Listings",
 	layout: "admin",
 	data() {
 		return {
-			loading: true,
+			loading: false,
 			toast: {
 				title: null,
 				variant: null,
@@ -122,23 +123,15 @@ export default {
 				},
 				{ key: "actions", label: this.$t("allListing.table.header.actions") },
 			],
-			items: null,
 		};
 	},
-	mounted() {
-		this.getListings();
+	computed: {
+		...mapGetters({
+			items: "centrums",
+		}),
 	},
-
 	methods: {
-		async getListings() {
-			await this.$axios
-				.$get("/centrum")
-				.then((res) => {
-					this.items = res.data;
-					this.loading = false;
-				})
-				.catch((err) => console.log(err));
-		},
+		...mapActions(["getCentrums"]),
 		async deleteListing() {
 			const regions = await this.$axios.get("/region");
 			const centrumRegion = regions.data.data.filter(
@@ -149,8 +142,8 @@ export default {
 				.then(async (res) => {
 					await this.$axios
 						.patch(`/region/${centrumRegion._id}`, { centrum: null })
-						.then((_) => {
-							this.getListings();
+						.then(async (_) => {
+							await this.getCentrums();
 							this.toast = {
 								title: this.$t("allListing.toast.delete"),
 								variant: "success",
