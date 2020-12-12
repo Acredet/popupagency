@@ -75,6 +75,9 @@ export const actions = {
 		commit("listings", listings);
 		commit("centrum", centrums);
 		commit("sortCards", "latest");
+
+		// TODO: CREATE MODULE IN VUEX FOR EACH MODULE IN DB.
+		// commit("listing/setListings", listings);
 	},
 	async nuxtServerInit({ dispatch }, { $axios, redirect, app }) {
 		try {

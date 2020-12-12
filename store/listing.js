@@ -40,6 +40,13 @@ export const mutations = {
 };
 
 export const actions = {
+	async nuxtServerInit({ dispatch }, { $axios, redirect, app }) {
+		try {
+			await dispatch("getListings");
+		} catch (e) {
+			console.log(e);
+		}
+	},
 	async getListings({ commit, state }) {
 		await this.$axios
 			.get("/places")
@@ -200,8 +207,8 @@ export const actions = {
 };
 
 export const getters = {
-	getOneListings(state, listingId) {
-		return state.listings.filter((x) => (x.id = listingId)) || [];
+	getOneListings: (state) => (listingId) => {
+		return state.listings.filter((x) => (x._id = listingId)) || [];
 	},
 	listings(state) {
 		return state.listings;
