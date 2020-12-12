@@ -115,8 +115,10 @@ export default {
 	},
 	watch: {
 		routeGuidance: {
+			immediate: true,
+			deep: true,
 			handler(val) {
-				if (this.once === 0) {
+				if (val && val.coordinates && this.once === 0) {
 					console.log("location in map is " + val);
 					this.location = {
 						lng: val && val.coordinates ? val.coordinates[0] : 0,
