@@ -319,7 +319,7 @@ import routeGuidanceCard from "@/components/centrumForm/routeGuidance";
 
 import ourUploader from "@/components/ourUploader";
 import toggleAllCheckBoxGroup from "@/components/admin/checkBoxGroup";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 let VueEditor;
 if (process.browser) {
 	VueEditor = require("vue2-editor").VueEditor;
@@ -428,6 +428,11 @@ export default {
 		};
 	},
 	computed: {
+		...mapGetters({
+			regions: "regions",
+			tags: "tags",
+			categories: "categories",
+		}),
 		thereIsListing() {
 			return !!this.$route.params.id;
 		},
@@ -473,45 +478,42 @@ export default {
 			updateStoreData: "updateStoreData",
 		}),
 		async preparePageData() {
-			const promises = [
-				this.$axios.$get("/users/all"),
-				this.$axios.$get("/region"),
-				this.$axios.$get("/category"),
-				this.$axios.$get("/tag"),
-			];
-			await Promise.all(promises)
+			let users;
+			await this.$axios
+				.$get("/users/all")
 				.then((res) => {
-					const users = res[0].data;
-					const regions = res[1].data.filter((x) => !!x.centrum);
-					const categories = res[2].data;
-					const tags = res[3].data;
-					const lang = this.$i18n.getLocaleCookie();
-
-					this.lokalOpts = users.map((x) => x.name);
-					this.allTags = tags;
-					this.renderEgensKaper = tags.map((x) => {
-						return {
-							text: x.name[lang],
-							value: { name: x.name, avatar: x.avatar },
-						};
-					});
-					this.cityOptions = regions.map((x) => {
-						return {
-							text: x.name[lang],
-							value: JSON.stringify(x.name),
-						};
-					});
-					this.kategoriOpts = categories.map((x) => {
-						return {
-							text: x.name[lang],
-							value: { name: x.name, avatar: x.avatar },
-						};
-					});
-					this.loadingState = false;
+					users = res.data;
 				})
 				.catch((err) => {
 					console.log(err);
 				});
+			const regions = this.regions.filter((x) => !!x.centrum);
+			const categories = this.categories;
+			const tags = this.tags;
+
+			const lang = this.$i18n.getLocaleCookie();
+
+			this.lokalOpts = users.map((x) => x.name);
+			this.allTags = tags;
+			this.renderEgensKaper = tags.map((x) => {
+				return {
+					text: x.name[lang],
+					value: { name: x.name, avatar: x.avatar },
+				};
+			});
+			this.cityOptions = regions.map((x) => {
+				return {
+					text: x.name[lang],
+					value: JSON.stringify(x.name),
+				};
+			});
+			this.kategoriOpts = categories.map((x) => {
+				return {
+					text: x.name[lang],
+					value: { name: x.name, avatar: x.avatar },
+				};
+			});
+			this.loadingState = false;
 		},
 		assignListingToEdit() {
 			const {
