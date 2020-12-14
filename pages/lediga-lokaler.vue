@@ -1,5 +1,7 @@
 <template>
 	<div style="overflow-x: hidden" class="mt-3">
+		<LoginModal :modalShow="modalShow" @close-modal="modalShow = false" />
+
 		<filter-sidebar />
 
 		<b-row class="mt-2">
@@ -66,7 +68,9 @@
 				{{ $t("ledigaLokaler.view") }}
 			</b-btn>
 
-			<b-btn pill variant="dark" class="w-50"> Save search </b-btn>
+			<b-btn pill variant="dark" class="w-50" @click="saveFilters">
+				Save search
+			</b-btn>
 		</div>
 		<!-- End Toggle Layout in small screens -->
 	</div>
@@ -77,16 +81,19 @@ import { mapGetters } from "vuex";
 import GMap from "@/components/lediga/Map";
 import filterSidebar from "@/components/lediga/fitlerSidebar";
 import filterBar from "@/components/lediga/filterBar";
+import LoginModal from "@/components/loginModal";
 
 export default {
 	name: "LedigaLokaler",
 	components: {
 		GMap,
 		filterBar,
+		LoginModal,
 		filterSidebar,
 	},
 	data() {
 		return {
+			modalShow: false,
 			center: { lat: 59.334591, lng: 18.06324 },
 			layout: this.$t("ledigaLokaler.list"),
 		};
@@ -102,7 +109,22 @@ export default {
 			this.layout = this.$t("ledigaLokaler.map");
 		}
 	},
-	methods: {},
+	methods: {
+		async saveFilters() {
+			if (!this.$auth.loggedIn) {
+				this.modalShow = true;
+			} else {
+				await this.$axios
+					.post("/filters/ad")
+					.then((res) => {
+						console.log(res);
+					})
+					.catch((err) => {
+						console.log(err);
+					});
+			}
+		},
+	},
 };
 </script>
 
