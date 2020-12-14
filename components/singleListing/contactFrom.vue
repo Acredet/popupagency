@@ -151,8 +151,12 @@ export default {
 		};
 	},
 	methods: {
-		sendForm() {
-			alert("Not working yet 😉");
+		async sendForm() {
+			// Todo
+			await this.$axios
+				.$post("/mail/bookingRequest", this.form)
+				.then((res) => console.log(res))
+				.catch((err) => console.log(err));
 		},
 	},
 };
