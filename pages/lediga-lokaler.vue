@@ -82,7 +82,7 @@ import GMap from "@/components/lediga/Map";
 import filterSidebar from "@/components/lediga/fitlerSidebar";
 import filterBar from "@/components/lediga/filterBar";
 import LoginModal from "@/components/loginModal";
-
+import toast from "@/mixins/utils/toast";
 export default {
 	name: "LedigaLokaler",
 	components: {
@@ -91,6 +91,7 @@ export default {
 		LoginModal,
 		filterSidebar,
 	},
+	mixins: [toast],
 	data() {
 		return {
 			modalShow: false,
@@ -100,6 +101,7 @@ export default {
 	},
 	computed: {
 		...mapGetters({
+			filtersUsed: "filters/used",
 			renderKey: "renderKey",
 			cards: "cards",
 		}),
@@ -115,13 +117,15 @@ export default {
 				this.modalShow = true;
 			} else {
 				await this.$axios
-					.post("/filters/ad")
-					.then((res) => {
-						console.log(res);
-					})
-					.catch((err) => {
-						console.log(err);
-					});
+					.$post("/users/filters/add", { filters: this.filtersUsed })
+					.then(() =>
+						this.makeToast(
+							"Filters saved successfully:",
+							"You successfully saved the used filters.",
+							"success"
+						)
+					)
+					.catch((err) => this.makeToast("Something wrong:", err, "danger"));
 			}
 		},
 	},
