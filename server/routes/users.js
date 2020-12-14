@@ -25,5 +25,5 @@ router.delete("/:id", auth, deleteUser);
 router.patch("/:id", auth, updateUser);
 router.patch("/password/:id", auth, changePassword);
 router.get("/:role", auth, getUsersByRole);
-router.post("/filters/add", addFilters);
+router.post("/filters/add", auth, addFilters);
 module.exports = router;

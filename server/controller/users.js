@@ -16,9 +16,13 @@ exports.getUser = async (req, res, next) => {
 
 exports.addFilters = async (req, res, next) => {
 	const user = await User.findById(req.user.id).select("-password");
-	user.savedFilters.push(req.body.filters);
-	await user.save();
-	res.status(201).json({ success: true });
+	try {
+		user.savedFilters.push(req.body.filters);
+		await user.save();
+		res.status(201).json({ success: true });
+	} catch (error) {
+		res.status(400).json(error);
+	}
 };
 
 // @desc  Get all users
