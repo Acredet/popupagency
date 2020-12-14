@@ -23,7 +23,7 @@
 			<!-- End user name -->
 
 			<!-- Start email -->
-			<b-col cols="12" md="6">
+			<b-col cols="12">
 				<b-form-group
 					class="my-2"
 					:label="$t('forms.email.title')"
@@ -42,7 +42,7 @@
 			<!-- End email -->
 
 			<!-- Start Phone -->
-			<b-col cols="12" md="6">
+			<b-col cols="12">
 				<b-form-group
 					class="my-2"
 					:label="$t('forms.phone.title')"
@@ -59,115 +59,69 @@
 			</b-col>
 			<!-- End Phone -->
 
-			<!-- Start Business -->
-			<b-col cols="12" md="6">
-				<b-form-group
-					class="my-2"
-					:label="$t('forms.business.title')"
-					label-class="font-weight-bold"
-					label-for="Business"
-				>
-					<b-form-input
-						id="Business"
-						v-model="form.business"
-						autocomplete="off"
-						size="sm"
-					/>
-				</b-form-group>
-			</b-col>
-			<!-- End Business -->
-
-			<!-- Start Website -->
-			<b-col cols="12" md="6">
-				<b-form-group
-					class="my-2"
-					:label="$t('singleListing.info.website') + ':'"
-					label-class="font-weight-bold"
-					label-for="Website"
-				>
-					<b-form-input
-						id="Website"
-						v-model="form.website"
-						autocomplete="off"
-						size="sm"
-					/>
-				</b-form-group>
-			</b-col>
-			<!-- End Website -->
-
-			<!-- Start From -->
-			<b-col cols="12" md="6">
-				<b-form-group
-					class="my-2"
-					:label="$t('singleListing.form.from')"
-					label-class="font-weight-bold"
-					label-for="from"
-				>
-					<b-form-datepicker
-						id="from"
-						v-model="form.from"
-						today-button
-						reset-button
-						close-button
-						size="sm"
-						class="mb-2"
-					/>
-				</b-form-group>
-			</b-col>
-			<!-- End From -->
-
-			<!-- Start empty -->
-			<b-col cols="12" md="6">
-				<b-form-group
-					class="my-2"
-					:label="$t('singleListing.form.empty')"
-					label-class="font-weight-bold"
-					label-for="Empty"
-				>
-					<b-form-datepicker
-						id="Empty"
-						v-model="form.empty"
-						today-button
-						reset-button
-						close-button
-						size="sm"
-						class="mb-2"
-					/>
-				</b-form-group>
-			</b-col>
-			<!-- End empty -->
-
-			<!-- Start details -->
+			<!-- Start messsage -->
 			<b-col cols="12">
 				<b-form-group
 					class="my-2"
-					:label="$t('singleListing.form.details')"
+					:label="$t('forms.subject.title')"
 					label-class="font-weight-bold"
-					label-for="details"
+					label-for="subject"
 				>
-					<b-form-textarea id="details" size="sm" />
+					<b-form-select
+						v-model="form.subject"
+						:options="options"
+						size="sm"
+						id="subject"
+					></b-form-select>
 				</b-form-group>
 			</b-col>
-			<!-- End details -->
+			<!-- End messsage -->
+
+			<!-- Start messsage -->
 			<b-col cols="12">
-				<b-form-checkbox
-					id="GDPR"
-					v-model="form.GDPR"
-					name="GDPR"
-					:value="true"
-					:unchecked-value="false"
+				<b-form-group
+					class="my-2"
+					:label="$t('forms.message.title')"
+					label-class="font-weight-bold"
+					label-for="messsage"
 				>
-					{{ $t("singleListing.form.GDPR") }}
-				</b-form-checkbox>
+					<b-form-textarea v-model="form.message" id="messsage" size="sm" />
+				</b-form-group>
+			</b-col>
+			<!-- End messsage -->
+
+			<b-col cols="12">
+				<b-form-group
+					class="my-2"
+					:label="$t('forms.message.title')"
+					label-class="font-weight-bold"
+					label-for="messsage"
+				>
+					<!-- :state="Boolean(form.file)" -->
+					<b-form-file
+						v-model="form.file"
+						placeholder="Choose a file or drop it here..."
+						drop-placeholder="Drop file here..."
+					/>
+				</b-form-group>
 			</b-col>
 
-			<b-btn
-				class="m-2"
-				size="lg"
-				type="button"
-				variant="primary"
-				@click="sendForm"
-			>
+			<b-col cols="12">
+				<!-- End messsage -->
+				<b-form-group
+					label="Inline radios (default)"
+					v-slot="{ ariaDescribedby }"
+				>
+					<b-form-radio-group
+						v-model="form.options"
+						:options="options"
+						:aria-describedby="ariaDescribedby"
+						name="radio-inline"
+					></b-form-radio-group>
+				</b-form-group>
+			</b-col>
+
+			<b-btn class="m-2" type="button" variant="primary" @click="sendForm">
 				{{ $t("actions.submit") }}
 			</b-btn>
 		</b-row>
@@ -179,16 +133,20 @@
 export default {
 	data() {
 		return {
+			options: [
+				{ text: "First radio", value: "first" },
+				{ text: "Second radio", value: "second" },
+				{ text: "Third radio", value: "third" },
+			],
 			form: {
 				name: "",
 				email: "",
 				phone: "",
-				business: "",
-				website: "",
-				empty: "",
-				from: "",
-				details: "",
-				GDPR: false,
+
+				subject: "",
+				message: "",
+				file: null,
+				options: "first",
 			},
 		};
 	},

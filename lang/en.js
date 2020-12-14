@@ -65,6 +65,12 @@ export default {
 			desc:
 				"The description isn't prominent by default; howerver, some themes may show it.",
 		},
+		subject: {
+			title: "Subject",
+		},
+		message: {
+			title: "Message",
+		},
 	},
 	tables: {
 		actions: "Actions",

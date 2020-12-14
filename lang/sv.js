@@ -65,6 +65,12 @@ export default {
 			desc:
 				"Beskrivningen är inte framträdande som standard; howerver, vissa teman kan visa det. ",
 		},
+		subject: {
+			title: "Ämne",
+		},
+		message: {
+			title: "meddelande",
+		},
 	},
 	tables: {
 		actions: "Åtgärder",
