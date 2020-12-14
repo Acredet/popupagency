@@ -60,8 +60,6 @@ export default {
 					val.yta[1] === this.filters.yta.max
 				) {
 					this.cards = this.AllPlaces;
-				} else {
-					this.$store.dispatch("filters/updateFilters", val);
 				}
 			},
 		},
@@ -150,6 +148,7 @@ export default {
 		doFilter() {
 			this.loadingCards = true;
 			this.$store.dispatch("filterPlaces", this.filters.plats);
+			this.$store.dispatch("filters/updateFilters", this.filters);
 			this.loadingCards = false;
 		},
 		sorting(sort) {
