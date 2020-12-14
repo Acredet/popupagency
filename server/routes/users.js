@@ -9,7 +9,7 @@ const {
 	deleteUser,
 	updateUser,
 	changePassword,
-	savedFilters,
+	addFilters,
 } = require("../controller/users");
 // const { User, validate } = require('../models/user')
 const router = express.Router();
@@ -25,5 +25,5 @@ router.delete("/:id", auth, deleteUser);
 router.patch("/:id", auth, updateUser);
 router.patch("/password/:id", auth, changePassword);
 router.get("/:role", auth, getUsersByRole);
-router.post("/filters/add", savedFilters);
+router.post("/filters/add", addFilters);
 module.exports = router;
