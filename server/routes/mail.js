@@ -1,70 +1,92 @@
-const express = require('express')
-const router = express.Router()
+const express = require("express");
+const router = express.Router();
 
-const jwt = require('jsonwebtoken')
-const bcrypt = require('bcryptjs')
-const { User } = require('../models/user')
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+const { User } = require("../models/user");
 const {
-  transporter,
-  getPasswordResetURL,
-  resetPasswordTemplate
-} = require('../config/mail')
+	transporter,
+	getPasswordResetURL,
+	resetPasswordTemplate,
+	bookingTemplate,
+} = require("../config/mail");
 
 // `secret` is passwordHash concatenated with user's registerDate,
 // so if someones gets a user token they still need a timestamp to intercept.
 const usePasswordHashToMakeToken = ({
-  password: passwordHash,
-  _id: userId,
-  registerDate
+	password: passwordHash,
+	_id: userId,
+	registerDate,
 }) => {
-  const secret = passwordHash + '-' + registerDate
-  const token = jwt.sign({ userId }, secret, {
-    expiresIn: 3600 // 1 hour
-  })
-  return token
-}
+	const secret = passwordHash + "-" + registerDate;
+	const token = jwt.sign({ userId }, secret, {
+		expiresIn: 3600, // 1 hour
+	});
+	return token;
+};
 
 /** * Calling this function with a registered user's email sends an email IRL ***/
 /** * I think Nodemail has a free service specifically designed for mocking   ***/
 
-router.post('/', (req, res) => {
-  const { email } = req.body
+router.post("/", (req, res) => {
+	const { email } = req.body;
 
+	User.findOne({ email })
 
-  User.findOne({ email })
+		.then((user) => {
+			const token = usePasswordHashToMakeToken(user);
+			const url = getPasswordResetURL(user, token);
+			const emailTemplate2 = resetPasswordTemplate(user, url);
 
-    .then((user) => {
-      
+			//     const emailTemplate = {
+			//       from: 'no-reply@acredit.se',
+			//       to: user.email,
+			//       subject: '🌻 Acredit Password Reset 🌻',
+			//       html: `
+			// <p>Hey ${user.name || user.email},</p>
+			// <p>We heard that you lost your Acredit password. Sorry about that!</p>
+			// <p>But don’t worry! You can use the following link to reset your password:</p>
+			// <a href=${url}>${url}</a>
+			// <p>If you don’t use this link within 1 hour, it will expire.</p>
+			// <p>Do something outside today! </p>
+			// <p>–Your friends at Acredit</p>
+			// `
+			//     }
 
-      const token = usePasswordHashToMakeToken(user)
-      const url = getPasswordResetURL(user, token)
-      const emailTemplate2 = resetPasswordTemplate(user, url)
+			transporter.sendMail(emailTemplate2, (err, info) => {
+				if (err) {
+					res.status(500).json(`Error sending email: ${err}`);
+				} else {
+					res.status(200).json("success  send email!");
+				}
+			});
+		})
+		.catch((err) => res.status(400).json({ msg: err }));
+});
 
-      //     const emailTemplate = {
-      //       from: 'no-reply@acredit.se',
-      //       to: user.email,
-      //       subject: '🌻 Acredit Password Reset 🌻',
-      //       html: `
-      // <p>Hey ${user.name || user.email},</p>
-      // <p>We heard that you lost your Acredit password. Sorry about that!</p>
-      // <p>But don’t worry! You can use the following link to reset your password:</p>
-      // <a href=${url}>${url}</a>
-      // <p>If you don’t use this link within 1 hour, it will expire.</p>
-      // <p>Do something outside today! </p>
-      // <p>–Your friends at Acredit</p>
-      // `
-      //     }
+/**
+ * @public
+ * @author Mohammed Ayman
+ * @method POST
+ * @route api/mail/bookingRequest
+ * @description Send Email to the contact email.
+ */
+router.post("/bookingRequest", async (req, res) => {
+	const { email } = req.body;
+	await User.findOne({ email })
+		.then((user) => {
+			const emailTemplate2 = bookingTemplate(user);
 
-      transporter.sendMail(emailTemplate2, (err, info) => {
-        if (err) {
-          res.status(500).json(`Error sending email: ${err}`)
-        } else {
-          res.status(200).json('success  send email!')
-        }
-      })
-    })
-    .catch(err => res.status(400).json({ msg: err }))
-})
+			transporter.sendMail(emailTemplate2, (err, info) => {
+				if (err) {
+					res.status(500).json(`Error sending email: ${err}`);
+				} else {
+					res.status(200).json("success  send email!");
+				}
+			});
+		})
+		.catch((err) => res.status(400).json({ msg: err }));
+});
 
 /**
  * @private
@@ -73,53 +95,60 @@ router.post('/', (req, res) => {
  * @route api/mail/validate/:userId/:token
  * @param { String } Email the email for the user.
  * @param { String } token the token made by the server.
- * @description Vakidate the userid and the token to open the password page.
+ * @description Validate the userid and the token to open the password page.
  * @returns { object } true
  */
-router.post('/validate/:userId/:token', (req, res) => {
-  const { userId, token } = req.params
+router.post("/validate/:userId/:token", (req, res) => {
+	const { userId, token } = req.params;
 
-  User.findOne({ _id: userId })
-    .then((user) => {
-      const secret = user.password + '-' + user.registerDate
-      const payload = jwt.decode(token, secret)
-      if (payload.userId === user.id) {
-        bcrypt.genSalt(10, function (err, salt) {
-          if (err) { return }
-          res.status(200).json({ msg: 'Valid token' })
-        })
-      }
-    })
-    .catch(() => {
-      res.status(404).json('Invalid user')
-    })
-})
+	User.findOne({ _id: userId })
+		.then((user) => {
+			const secret = user.password + "-" + user.registerDate;
+			const payload = jwt.decode(token, secret);
+			if (payload.userId === user.id) {
+				bcrypt.genSalt(10, function (err, salt) {
+					if (err) {
+						return;
+					}
+					res.status(200).json({ msg: "Valid token" });
+				});
+			}
+		})
+		.catch(() => {
+			res.status(404).json("Invalid user");
+		});
+});
 
-router.post('/newpassword/:userId/:token', (req, res) => { // middleware to protect
-  const { userId, token } = req.params
-  const { password } = req.body
+router.post("/newpassword/:userId/:token", (req, res) => {
+	// middleware to protect
+	const { userId, token } = req.params;
+	const { password } = req.body;
 
-  User.findOne({ _id: userId })
+	User.findOne({ _id: userId })
 
-    .then((user) => {
-      const secret = user.password + '-' + user.registerDate
-      const payload = jwt.decode(token, secret)
-      if (payload.userId === user.id) {
-        bcrypt.genSalt(10, function (err, salt) {
-          if (err) { return }
-          bcrypt.hash(password, salt, function (err, hash) {
-            if (err) { return }
-            User.findOneAndUpdate({ _id: userId }, { password: hash })
-              .then(() => res.status(202).json('Password changed accepted'))
-              .catch(err => res.status(500).json(err))
-          })
-        })
-      }
-    })
+		.then((user) => {
+			const secret = user.password + "-" + user.registerDate;
+			const payload = jwt.decode(token, secret);
+			if (payload.userId === user.id) {
+				bcrypt.genSalt(10, function (err, salt) {
+					if (err) {
+						return;
+					}
+					bcrypt.hash(password, salt, function (err, hash) {
+						if (err) {
+							return;
+						}
+						User.findOneAndUpdate({ _id: userId }, { password: hash })
+							.then(() => res.status(202).json("Password changed accepted"))
+							.catch((err) => res.status(500).json(err));
+					});
+				});
+			}
+		})
 
-    .catch(() => {
-      res.status(404).json('Invalid user')
-    })
-})
+		.catch(() => {
+			res.status(404).json("Invalid user");
+		});
+});
 
-module.exports = router
+module.exports = router;
