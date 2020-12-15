@@ -59,6 +59,48 @@
 			</b-col>
 			<!-- End Phone -->
 
+			<!-- Start From -->
+			<b-col cols="12" md="6">
+				<b-form-group
+					class="my-2"
+					:label="$t('singleListing.form.from')"
+					label-class="font-weight-bold"
+					label-for="from"
+				>
+					<b-form-datepicker
+						id="from"
+						v-model="form.from"
+						today-button
+						reset-button
+						close-button
+						size="sm"
+						class="mb-2"
+					/>
+				</b-form-group>
+			</b-col>
+			<!-- End From -->
+
+			<!-- Start empty -->
+			<b-col cols="12" md="6">
+				<b-form-group
+					class="my-2"
+					:label="$t('singleListing.form.to')"
+					label-class="font-weight-bold"
+					label-for="to"
+				>
+					<b-form-datepicker
+						id="to"
+						v-model="form.to"
+						today-button
+						reset-button
+						close-button
+						size="sm"
+						class="mb-2"
+					/>
+				</b-form-group>
+			</b-col>
+			<!-- End empty -->
+
 			<!-- Start messsage -->
 			<b-col cols="12">
 				<b-form-group
@@ -142,6 +184,8 @@ export default {
 				name: "",
 				email: "",
 				phone: "",
+				from: null,
+				to: null,
 
 				subject: "",
 				message: "",
@@ -154,7 +198,10 @@ export default {
 		async sendForm() {
 			// Todo
 			await this.$axios
-				.$post("/mail/bookingRequest", this.form)
+				.$post("/mail/bookingRequest", {
+					...this.form,
+					title: this.$route.params.title,
+				})
 				.then((res) => console.log(res))
 				.catch((err) => console.log(err));
 		},

@@ -302,9 +302,9 @@ export default {
 		},
 		form: {
 			sendUs: "Skicka en bokningsförfrågan till oss:",
-			from: "Fr.om",
-			empty: "Empty",
-			details: "What do you want to do in the room?",
+			from: "från",
+			to: "till",
+			details: "Vad vill du göra i rummet?",
 			GDPR:
 				"Jag accepterar att Popup Agency behandlar min personliga information i enlighet med GDPR-regler.",
 		},
