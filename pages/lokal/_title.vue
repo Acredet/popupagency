@@ -38,28 +38,28 @@
 									Home Details for
 									{{ place.title ? place.title[$i18n.locale] : "" }}
 								</h2>
-								<ul class="row">
+								<ul class="list-inline">
 									<li
 										v-for="tag in place.egenskaper"
 										:key="tag.name[$i18n.locale]"
-										class="col-12 col-md-6 col-lg-4"
+										class="list-inline-item"
 									>
 										<img
 											v-if="tag.avatar"
 											:src="`https://popup.dk.se/_nuxt/img/${tag.avatar}`"
-											width="50px"
+											width="30px"
 											:alt="tag.name[$i18n.locale]"
 										/>
 										<span
 											v-else
 											style="
 												display: inline-block;
-												height: 50px;
+												height: 30px;
 												vertical-align: middle;
-												width: 20px;
+												width: 30px;
 											"
 										/>
-										<b>{{ tag.name[$i18n.locale] }}</b>
+										<b>{{ tag.name[$i18n.locale] }}.</b>
 									</li>
 								</ul>
 							</section>
