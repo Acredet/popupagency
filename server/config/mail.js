@@ -50,7 +50,7 @@ const bookingTemplate = (user, details) => {
 	<p>Hi <b>${user.name}</b> you have a new listing booking:</p>
 	${
 		details.link
-			? `<p>Listing : <b>https://popup.dk.se/${details.link}</b></p>`
+			? `<p>Listing : <b>https://popup.dk.se${details.link}</b></p>`
 			: ""
 	} 
 	${details.name ? `<p>From : <b>${details.name}</b></p>` : ""} 

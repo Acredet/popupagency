@@ -14,6 +14,7 @@
 				>
 					<b-form-input
 						id="username"
+						class="styled"
 						v-model="form.name"
 						autocomplete="off"
 						size="sm"
@@ -31,6 +32,7 @@
 					label-for="email"
 				>
 					<b-form-input
+						class="styled"
 						id="email"
 						v-model="form.email"
 						type="email"
@@ -51,6 +53,7 @@
 				>
 					<b-form-input
 						id="Phone"
+						class="styled"
 						v-model="form.phone"
 						autocomplete="off"
 						size="sm"
@@ -111,6 +114,7 @@
 				>
 					<b-form-select
 						v-model="form.subject"
+						class="styled"
 						:options="options"
 						size="sm"
 						id="subject"
@@ -127,7 +131,12 @@
 					label-class="font-weight-bold"
 					label-for="messsage"
 				>
-					<b-form-textarea v-model="form.message" id="messsage" size="sm" />
+					<b-form-textarea
+						class="styled"
+						v-model="form.message"
+						id="messsage"
+						size="sm"
+					/>
 				</b-form-group>
 			</b-col>
 			<!-- End messsage -->
@@ -142,14 +151,14 @@
 					<!-- :state="Boolean(form.file)" -->
 					<b-form-file
 						v-model="form.file"
+						class="styled"
 						placeholder="Choose a file or drop it here..."
 						drop-placeholder="Drop file here..."
 					/>
 				</b-form-group>
 			</b-col>
 
-			<b-col cols="12">
-				<!-- End messsage -->
+			<!-- <b-col cols="12">
 				<b-form-group
 					label="Inline radios (default)"
 					v-slot="{ ariaDescribedby }"
@@ -161,9 +170,16 @@
 						name="radio-inline"
 					></b-form-radio-group>
 				</b-form-group>
-			</b-col>
+			</b-col> -->
 
-			<b-btn class="m-2" type="button" variant="primary" @click="sendForm">
+			<b-btn
+				class="m-2"
+				block
+				type="button"
+				pill
+				variant="primary"
+				@click="sendForm"
+			>
 				{{ $t("actions.submit") }}
 			</b-btn>
 		</b-row>
@@ -216,4 +232,14 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.styled {
+	border-radius: 40px !important;
+	background: #eee;
+}
+
+textarea.styled {
+	border-radius: 10px !important;
+	background: #eee;
+}
+</style>
