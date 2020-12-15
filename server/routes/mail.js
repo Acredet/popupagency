@@ -72,17 +72,15 @@ router.post("/", (req, res) => {
  * @description Send Email to the contact email.
  */
 router.post("/bookingRequest", async (req, res) => {
-	const { email } = req.body;
-	await User.findOne({ email })
+	const { sellerId } = req.body;
+
+	await User.findById(sellerId)
 		.then((user) => {
-			const emailTemplate2 = bookingTemplate(user);
+			const emailTemplate2 = bookingTemplate(user, req.body);
 
 			transporter.sendMail(emailTemplate2, (err, info) => {
-				if (err) {
-					res.status(500).json(`Error sending email: ${err}`);
-				} else {
-					res.status(200).json("success  send email!");
-				}
+				if (err) res.status(500).json(`Error sending email: ${err}`);
+				else res.status(200).json("success  send email!");
 			});
 		})
 		.catch((err) => res.status(400).json({ msg: err }));

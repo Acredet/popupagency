@@ -173,6 +173,12 @@
 
 <script>
 export default {
+	props: {
+		sellerId: {
+			type: String,
+			default: () => "",
+		},
+	},
 	data() {
 		return {
 			options: [
@@ -200,7 +206,8 @@ export default {
 			await this.$axios
 				.$post("/mail/bookingRequest", {
 					...this.form,
-					title: this.$route.params.title,
+					sellerId: this.sellerId,
+					link: this.$route.path,
 				})
 				.then((res) => console.log(res))
 				.catch((err) => console.log(err));

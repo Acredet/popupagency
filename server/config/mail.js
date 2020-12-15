@@ -42,14 +42,25 @@ const resetPasswordTemplate = (user, url) => {
 	return { from, to, subject, html };
 };
 
-const bookingTemplate = (user, url) => {
+const bookingTemplate = (user, details) => {
 	const from = "no-reply@Popup.se";
 	const to = user.email;
 	const subject = "🌻 Popup Booking Serivce 🌻";
 	const html = `
-  <p>Hey ${user.name || user.email},</p>
-  <p>You just made a booking request, Cheers!</p>
-  <p>–Your friends at Popup</p>
+	<p>Hi <b>${user.name}</b> you have a new listing booking:</p>
+	${
+		details.link
+			? `<p>Listing : <b>https://popup.dk.se/${details.link}</b></p>`
+			: ""
+	} 
+	${details.name ? `<p>From : <b>${details.name}</b></p>` : ""} 
+	${details.phone ? `<p>Telefon : <b>${details.phone}</b></p>` : ""} 
+	${details.email ? `<p>Email : <b>${details.email}</b></p>` : ""} 
+	${details.from ? `<p>From : <b>${details.from}</b></p>` : ""} 
+	${details.to ? `<p>To : <b>${details.to}</b></p>` : ""} 
+	${details.message ? `<p>Details : <b>${details.message}</b></p>` : ""} 
+	  
+	<p>–Your friends at Popup</p>
   `;
 
 	return { from, to, subject, html };

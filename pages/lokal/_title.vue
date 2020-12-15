@@ -170,7 +170,7 @@
 							md="4"
 							cols="12"
 						>
-							<contactForm />
+							<contactForm :sellerId="place.userId" />
 						</b-col>
 					</b-row>
 				</b-container>
@@ -303,7 +303,6 @@ export default {
 				place.title.sv === this.$route.params.title.replace(/[-]/g, " ")
 		);
 
-		console.log(placeFromStore);
 		if (placeFromStore.routeGuidance) {
 			this.thereIsCentrum = true;
 			this.map = {
