@@ -22,6 +22,7 @@ router.get("/", async (req, res) => {
 			if (listingRegion.centrum) {
 				const centrum = await Centrum.findById(listingRegion.centrum);
 				if (centrum) {
+					newPlace.centurmTitle = centrum.title;
 					newPlace.hemsida = centrum.hemsida;
 					newPlace.centrumgalleri = centrum.centrumgalleri;
 					newPlace.centrumtextarea = centrum.centrumtextarea;
