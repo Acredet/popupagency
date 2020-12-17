@@ -207,8 +207,10 @@ export const actions = {
 };
 
 export const getters = {
-	getOneListings: (state) => (listingId) => {
-		return state.listings.filter((x) => (x._id = listingId)) || [];
+	getOneListings: (state) => (listingTitle) => {
+		const listing = state.listings.filter((x) => (x.title.sv = listingTitle));
+
+		return listing[0] ? listing[0] : [];
 	},
 	listings(state) {
 		return state.listings;

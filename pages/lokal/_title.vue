@@ -26,47 +26,82 @@
 							</section>
 							<!-- End Description -->
 
-							<localInfo
-								:map="map"
-								:hooperSettings="hooperSettings"
-								:title="place.title"
-							/>
+							<b-row>
+								<b-col cols="12" md="6">
+									<!-- Start Home Details -->
+									<section>
+										<h2 class="font-weight-bold">
+											Home Details for
+											{{ place.title ? place.title[$i18n.locale] : "" }}
+										</h2>
+										<ul class="list-inline">
+											<li
+												v-for="tag in place.egenskaper"
+												:key="tag.name[$i18n.locale]"
+												class="list-inline-item"
+											>
+												<img
+													v-if="tag.avatar"
+													:src="`https://popup.dk.se/_nuxt/img/${tag.avatar}`"
+													width="30px"
+													:alt="tag.name[$i18n.locale]"
+												/>
+												<span
+													v-else
+													style="
+														display: inline-block;
+														height: 30px;
+														vertical-align: middle;
+														width: 30px;
+													"
+												/>
+												<b>{{ tag.name[$i18n.locale] }}.</b>
+											</li>
+										</ul>
+									</section>
+									<!-- End Home Details -->
+								</b-col>
 
-							<!-- Start Home Details -->
-							<section>
-								<h2 class="font-weight-bold">
-									Home Details for
-									{{ place.title ? place.title[$i18n.locale] : "" }}
-								</h2>
-								<ul class="list-inline">
-									<li
-										v-for="tag in place.egenskaper"
-										:key="tag.name[$i18n.locale]"
-										class="list-inline-item"
+								<b-col cols="12" md="6">
+									<gmap-map
+										style="width: 100%; height: 300px"
+										:center="map.center"
+										:map-type-id="map.mapTypeId"
+										:zoom="7"
 									>
-										<img
-											v-if="tag.avatar"
-											:src="`https://popup.dk.se/_nuxt/img/${tag.avatar}`"
-											width="30px"
-											:alt="tag.name[$i18n.locale]"
-										/>
-										<span
-											v-else
-											style="
-												display: inline-block;
-												height: 30px;
-												vertical-align: middle;
-												width: 30px;
-											"
-										/>
-										<b>{{ tag.name[$i18n.locale] }}.</b>
-									</li>
-								</ul>
+										<gmap-cluster>
+											<gmap-marker
+												v-for="(mark, index) in map.markers"
+												:key="index"
+												:icon="require(`@/assets/img/marker.svg`)"
+												:position="mark"
+											/>
+										</gmap-cluster>
+									</gmap-map>
+								</b-col>
+							</b-row>
+
+							<b-row>
+								<b-col cols="12" md="6">
+									<pricesTable :place="place" />
+								</b-col>
+
+								<!-- <b-col cols="12" md="6">
+									<localInfo
+										:map="map"
+										:hooperSettings="hooperSettings"
+										:title="place.title"
+									/>
+								</b-col> -->
+							</b-row>
+
+							<section v-if="place.centrumTitle">
+								<h1>Centrum info:</h1>
+								<p>title: {{ place.centrumTitle }}</p>
+								<p>title: {{ place.hemsida }}</p>
+								<p>title: {{ place.centrumtextarea }}</p>
+								<p>title: {{ place.oppettider }}</p>
 							</section>
-							<!-- End Home Details -->
-
-							<pricesTable :place="place" />
-
 							<!-- Start Galleries -->
 							<section>
 								<h2>Galleries:</h2>
@@ -273,6 +308,10 @@ export default {
 		};
 	},
 	computed: {
+		...mapGetters({
+			getOneListing: "listing/getOneListings",
+			listings: "listing/listings",
+		}),
 		images() {
 			return !this.place.bildgalleri
 				? []
@@ -297,12 +336,10 @@ export default {
 	},
 	async created() {
 		this.$viewer = {};
-		const listings = this.$store.getters.listings;
-		const placeFromStore = listings.find(
-			(place) =>
-				place.title.sv === this.$route.params.title.replace(/[-]/g, " ")
+		const placeFromStore = this.getOneListing(
+			this.$route.params.title.replace(/[-]/g, " ")
 		);
-
+		console.log(placeFromStore);
 		if (placeFromStore.routeGuidance) {
 			this.thereIsCentrum = true;
 			this.map = {
@@ -323,7 +360,7 @@ export default {
 		// Increment views
 		await this.$axios.patch(`/places/view/${placeFromStore._id}`);
 		this.place = placeFromStore;
-		this.similar = listings
+		this.similar = this.listings
 			.filter((place) => place.stad.sv === placeFromStore.stad.sv)
 			.filter((place) => place._id !== placeFromStore._id);
 		this.loadingState = false;
