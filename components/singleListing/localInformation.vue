@@ -5,7 +5,7 @@
 			<h2>Local Information</h2>
 			<hooper :settings="hooperSettings">
 				<!-- Start MapView card -->
-				<slide v-if="map.markers.length > 0">
+				<!-- <slide v-if="map.markers.length > 0">
 					<div @click="mapViewModalState = true" class="custom-card">
 						<div class="custom-card--imgWrapper">
 							<img src="@/assets/img/mapthumbnail.png" alt="Map View" />
@@ -15,7 +15,7 @@
 							{{ title ? title[$i18n.locale] : "" }}
 						</p>
 					</div>
-				</slide>
+				</slide> -->
 				<!-- End MapView card -->
 
 				<!-- Start StreatView card -->
@@ -42,7 +42,7 @@
 		<!-- End Local Information -->
 
 		<!-- Modals -->
-		<b-modal
+		<!-- <b-modal
 			v-if="map.markers.length > 0"
 			v-model="mapViewModalState"
 			size="xl"
@@ -64,7 +64,7 @@
 					/>
 				</gmap-cluster>
 			</gmap-map>
-		</b-modal>
+		</b-modal> -->
 
 		<b-modal
 			v-if="map.markers.length > 0"
