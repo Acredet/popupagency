@@ -1,7 +1,7 @@
 <template>
 	<!-- Start Prices -->
-	<div>
-		<h2 class="font-weight-bold">listing's priceing list</h2>
+	<div class="my-4">
+		<h2 class="font-weight-bold">listing's prices list</h2>
 		<b-table
 			class="border-top normal"
 			:fields="['period', 'price']"
