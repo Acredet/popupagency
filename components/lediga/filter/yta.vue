@@ -39,12 +39,6 @@ export default {
 	components: {
 		VueSlider,
 	},
-	data() {
-		return {
-			min: 0,
-			max: 1,
-		};
-	},
 	props: {
 		step: {
 			type: Number,
@@ -69,6 +63,8 @@ export default {
 		return {
 			value: [0, 0],
 			once: 0,
+			min: 0,
+			max: 1,
 		};
 	},
 	watch: {
