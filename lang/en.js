@@ -9,6 +9,7 @@ export default {
 	langheig: "weekend",
 	veckopris: "long weekend",
 	manad: "month",
+	title: "Title",
 	valdations: {
 		min8: "minimum 8 chars",
 		good: " Looks Good.",
@@ -281,6 +282,8 @@ export default {
 			sasong: "SEASON",
 		},
 		info: {
+			centrumInfo: "Center Info",
+			openingHours: "Opening hours",
 			description: "Description",
 			map: "Map",
 			details: "Details",

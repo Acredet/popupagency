@@ -12,8 +12,8 @@
 			/>
 
 			<main>
-				<b-container>
-					<!-- Start Feats -->
+				<!-- Start Feats -->
+				<b-container class="d-flex flex-column flex-nowrap my-5">
 					<b-row
 						no-gutters
 						class="d-flex flex-nowrap jsutify-content-center w-100 py-3 tabs"
@@ -35,8 +35,10 @@
 							<b v-else class="pt-1">{{ feat.text }}</b>
 						</b-col>
 					</b-row>
-					<!-- End Feats -->
+				</b-container>
+				<!-- End Feats -->
 
+				<b-container>
 					<b-row>
 						<!-- Start Info col -->
 						<b-col cols="12" md="8">
@@ -121,29 +123,32 @@
 							</b-row>
 
 							<section v-if="place.centurmTitle">
-								<h1>Centrum info:</h1>
+								<h1>{{ $t("singleListing.info.centrumInfo") }}:</h1>
 								<b-row>
 									<b-col cols="12" md="6">
 										<div>
-											<h4 class="d-inline-block">Title:</h4>
+											<h4 class="d-inline-block">{{ $t("title") }}:</h4>
 											<h5 class="d-inline-block">
 												{{ place.centurmTitle[$i18n.locale] }}
 											</h5>
 										</div>
 
 										<div>
-											<h4 class="d-inline-block">Hemsida:</h4>
+											<h4 class="d-inline-block">
+												{{ $t("singleListing.info.website") }}:
+											</h4>
 											<h5 class="d-inline-block">{{ place.hemsida }}</h5>
 										</div>
 
 										<section>
-											<h4>Description:</h4>
+											<h4>{{ $t("singleListing.info.description") }}:</h4>
 											<div v-html="place.centrumtextarea[$i18n.locale]" />
 										</section>
 									</b-col>
 
 									<!-- Start oppettider -->
 									<b-col cols="12" md="6">
+										<h4>{{ $t("singleListing.info.openingHours") }}:</h4>
 										<div v-for="day in place.oppettider" :key="day._id">
 											<b-row>
 												<b-col cols="6">
@@ -473,6 +478,12 @@ export default {
 </script>
 
 <style scoped>
+@media screen and (max-width: 576px) {
+	.row.tabs {
+		overflow-x: scroll;
+	}
+}
+
 p {
 	padding: 0;
 	margin: 0;

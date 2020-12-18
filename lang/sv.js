@@ -9,6 +9,7 @@ export default {
 	langheig: "helg",
 	veckopris: "lång helg",
 	manad: "mån",
+	title: "titel",
 	valdations: {
 		min8: "minst 8 tecken",
 		good: " Ser bra ut.",
@@ -281,6 +282,8 @@ export default {
 			sasong: "SÄSONG",
 		},
 		info: {
+			centrumInfo: "centruminformation",
+			openingHours: "öppettider",
 			description: "Beskrivning",
 			map: "Karta",
 			details: "Detaljer",
