@@ -7,11 +7,36 @@
 			<listingCover
 				:title="place.title"
 				:cover="place.cover"
+				:price-per-day="place.prisperdag"
 				@bookmarkWithoutLogin="modalShow = true"
 			/>
 
 			<main>
 				<b-container>
+					<!-- Start Feats -->
+					<b-row
+						no-gutters
+						class="d-flex flex-nowrap jsutify-content-center w-100 py-3 tabs"
+					>
+						<b-col
+							v-for="feat in feats"
+							:key="feat.name"
+							cols="auto"
+							class="d-flex flex-grow-1 flex-column justify-content-center mx-2 align-items-center"
+						>
+							<img
+								width="30px"
+								:src="require(`~/assets/img/feats/${feat.name}.png`)"
+								:alt="feat.name"
+							/>
+							<b v-if="feat.name === 'yta-1'" class="pt-1"
+								>{{ feat.text }} m<sup>3</sup>
+							</b>
+							<b v-else class="pt-1">{{ feat.text }}</b>
+						</b-col>
+					</b-row>
+					<!-- End Feats -->
+
 					<b-row>
 						<!-- Start Info col -->
 						<b-col cols="12" md="8">
@@ -95,70 +120,116 @@
 								</b-col> -->
 							</b-row>
 
-							<section v-if="place.centrumTitle">
+							<section v-if="place.centurmTitle">
 								<h1>Centrum info:</h1>
-								<p>title: {{ place.centrumTitle }}</p>
-								<p>title: {{ place.hemsida }}</p>
-								<p>title: {{ place.centrumtextarea }}</p>
-								<p>title: {{ place.oppettider }}</p>
+								<b-row>
+									<b-col cols="12" md="6">
+										<div>
+											<h4 class="d-inline-block">Title:</h4>
+											<h5 class="d-inline-block">
+												{{ place.centurmTitle[$i18n.locale] }}
+											</h5>
+										</div>
+
+										<div>
+											<h4 class="d-inline-block">Hemsida:</h4>
+											<h5 class="d-inline-block">{{ place.hemsida }}</h5>
+										</div>
+
+										<section>
+											<h4>Description:</h4>
+											<div v-html="place.centrumtextarea[$i18n.locale]" />
+										</section>
+									</b-col>
+
+									<!-- Start oppettider -->
+									<b-col cols="12" md="6">
+										<div v-for="day in place.oppettider" :key="day._id">
+											<b-row>
+												<b-col cols="6">
+													<p class="m-0 p-0" v-text="day.day + ':'" />
+												</b-col>
+												<b-col cols="6">
+													<p
+														v-for="time in day.times"
+														:key="time._id"
+														class="m-0 p-0 text-right"
+														v-text="
+															`${time.opening.substr(
+																0,
+																5
+															)} - ${time.closing.substr(0, 5)}`
+														"
+													/>
+												</b-col>
+											</b-row>
+											<hr />
+										</div>
+									</b-col>
+									<!-- End oppettider -->
+								</b-row>
 							</section>
-							<!-- Start Galleries -->
-							<section>
-								<h2>Galleries:</h2>
-								<hooper :settings="hooperSettings">
-									<!-- Start planritningImages card -->
-									<slide>
-										<div
-											class="custom-card"
-											@click="showV('planritningImages', 0)"
+
+							<!-- Start Galleri -->
+							<b-col class="my-3" cols="12">
+								<div
+									class="my-gallery"
+									itemscope
+									itemtype="http://schema.org/ImageGallery"
+								>
+									<b class="font-4 mb-2">{{
+										$t("singleListing.info.gallery")
+									}}</b>
+									<!-- component -->
+									<b-row no-gutters>
+										<b-col
+											v-for="(src, index) in images"
+											:key="src"
+											cols="12"
+											md="6"
+											@click="showV('bildgalleri', index)"
 										>
-											<div
-												class="custom-card--imgWrapper d-flex justify-content-center align-items-center"
-												style="height: 130px"
-											>
-												<b-icon scale="2" icon="image"></b-icon>
+											<div class="gallery-images" style="height: 320px">
+												<img width="100%" :src="src" style="height: 320px" />
 											</div>
-											<p class="text-secondary">Planritning.</p>
-										</div>
-									</slide>
-									<!-- End planritningImages card -->
+										</b-col>
+										<b-col v-if="images.length === 0" cols="12">
+											<p class="text-center text-secondary">
+												{{ $t("notProvided") }}
+											</p>
+										</b-col>
+									</b-row>
 
-									<!-- Start bildgalleri card -->
-									<slide>
-										<div class="custom-card" @click="showV('bildgalleri', 0)">
-											<div
-												class="custom-card--imgWrapper d-flex justify-content-center align-items-center"
-												style="height: 130px"
-											>
-												<b-icon scale="2" icon="image"></b-icon>
-											</div>
-											<p class="text-secondary">bildgalleri.</p>
-										</div>
-									</slide>
-									<!-- End bildgalleri card -->
+									<viewer
+										ref="viewer2"
+										:images="images"
+										class="viewer"
+										@inited="initedV('bildgalleri', $event)"
+									>
+										<img
+											v-for="src in images"
+											:key="`${src}-imaged`"
+											:src="src"
+											class="d-none"
+										/>
+									</viewer>
+								</div>
+							</b-col>
+							<!-- End Galleri -->
 
-									<!-- Start centrumgalleri card -->
-									<slide v-if="this.centrumgalleri.length > 0">
-										<div
-											class="custom-card"
-											@click="showV('centrumgalleri', 0)"
-										>
-											<div
-												class="custom-card--imgWrapper d-flex justify-content-center align-items-center"
-												style="height: 130px"
-											>
-												<b-icon scale="2" icon="image"></b-icon>
-											</div>
-											<p class="text-secondary">centrumgalleri.</p>
-										</div>
-									</slide>
-									<!-- End centrumgalleri card -->
-
-									<hooper-navigation slot="hooper-addons"></hooper-navigation>
-									<hooper-pagination slot="hooper-addons"></hooper-pagination>
-								</hooper>
-							</section>
-							<!-- End Galleries -->
+							<!-- contact us -->
+							<b-row style="min-height: 200px">
+								<b-col cols="6" class="contact-us-img" />
+								<b-col
+									cols="6"
+									class="d-flex justify-content-center align-items-center"
+								>
+									<b-btn squared variant="primary" @click="tabOpened = 3">
+										{{ $t("contactUs") }}
+									</b-btn>
+								</b-col>
+							</b-row>
+							<!-- contact us -->
 
 							<!-- Start similar listings -->
 							<section class="my-3">
@@ -213,7 +284,7 @@
 		</div>
 
 		<!-- Start Viewers -->
-		<viewer
+		<!-- <viewer
 			v-for="(i, index) in [
 				{ images: planritningImages, ref: 'viewer', init: 'planritningImages' },
 				{ images: images, ref: 'viewer2', init: 'bildgalleri' },
@@ -231,7 +302,7 @@
 				:src="src"
 				class="d-none"
 			/>
-		</viewer>
+		</viewer> -->
 		<!-- End Viewers -->
 	</div>
 </template>
@@ -312,6 +383,31 @@ export default {
 			getOneListing: "listing/getOneListings",
 			listings: "listing/listings",
 		}),
+		feats() {
+			return [
+				{ name: "yta-1", text: this.place.yta || "" },
+				{
+					name: this.place.fasta ? "fasta-oppettider-1" : "fasta-oppettider-2",
+					text: this.$t("singleListing.feats.fasta"),
+				},
+				{
+					name: this.place.butik ? "butik-1" : "butik-2",
+					text: this.$t("singleListing.feats.butik"),
+				},
+				{
+					name: this.place.mat ? "matodrick-1" : "matodrick-2",
+					text: this.$t("singleListing.feats.mat"),
+				},
+				{
+					name: this.place.event ? "event-1" : "event-2",
+					text: this.$t("singleListing.feats.event"),
+				},
+				{
+					name: this.place.sasongBoxen ? "sol" : "solstol",
+					text: this.$t("singleListing.feats.sasong"),
+				},
+			];
+		},
 		images() {
 			return !this.place.bildgalleri
 				? []
@@ -402,5 +498,12 @@ main .container section {
 .custom-card .custom-card--imgWrapper img {
 	width: 100%;
 	height: 130px;
+}
+
+.contact-us-img {
+	min-height: 400px;
+	background-image: url("~assets/img/contact-us-person.png");
+	background-size: cover;
+	background-position: center center;
 }
 </style>

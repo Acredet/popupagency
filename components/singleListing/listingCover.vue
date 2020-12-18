@@ -21,6 +21,9 @@
 							<b-icon icon="pencil-square" class="text-white" />
 						</b-btn>
 					</h1>
+					<h2>
+						{{ $t("interestReporting.price") }} {{ format(pricePerDay) }} Kr/dag
+					</h2>
 				</div>
 
 				<div class="bookmark-wrapper position-absolute">
@@ -63,6 +66,7 @@ import {
 	BIconPencilSquare,
 } from "bootstrap-vue";
 import { addToFav } from "@/mixins/utils/addToFav";
+import { format } from "@/mixins/utils/formatNo";
 
 export default {
 	props: {
@@ -76,6 +80,10 @@ export default {
 			type: Array,
 			default: () => [],
 		},
+		pricePerDay: {
+			type: Number,
+			default: () => 0,
+		},
 	},
 	components: {
 		BIconPencilSquare,
@@ -83,7 +91,7 @@ export default {
 		BIconHeart,
 		BIconHeartFill,
 	},
-	mixins: [addToFav],
+	mixins: [addToFav, format],
 	computed: {
 		imgStyles() {
 			return {
