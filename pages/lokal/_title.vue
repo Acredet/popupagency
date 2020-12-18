@@ -221,51 +221,6 @@
 								</div>
 							</b-col>
 							<!-- End Galleri -->
-
-							<!-- contact us -->
-							<b-row style="min-height: 200px">
-								<b-col cols="6" class="contact-us-img" />
-								<b-col
-									cols="6"
-									class="d-flex justify-content-center align-items-center"
-								>
-									<b-btn squared variant="primary" @click="tabOpened = 3">
-										{{ $t("contactUs") }}
-									</b-btn>
-								</b-col>
-							</b-row>
-							<!-- contact us -->
-
-							<!-- Start similar listings -->
-							<section class="my-3">
-								<h4 class="font-font-weight-bold">
-									{{ $t("singleListing.intersedIn") }}
-								</h4>
-
-								<p
-									v-if="similar.length === 0"
-									class="text-secondary text-center"
-								>
-									{{ $t("singleListing.noSimilar") }}
-								</p>
-								<b-row v-else>
-									<b-col
-										v-for="(card, index) in similar"
-										:key="String(index)"
-										class="my-2"
-										cols="12"
-										md="6"
-										lg="4"
-									>
-										<listing-card
-											:place="card"
-											:layout="'list'"
-											@notAuthBookmark="modalShow = true"
-										/>
-									</b-col>
-								</b-row>
-							</section>
-							<!-- End similar listings -->
 						</b-col>
 						<!-- End Info col -->
 
@@ -284,6 +239,48 @@
 							<contactForm :sellerId="place.userId" />
 						</b-col>
 					</b-row>
+
+					<!-- contact us -->
+					<b-row style="min-height: 200px">
+						<b-col
+							cols="6"
+							class="d-flex justify-content-center align-items-center"
+						>
+							<b-btn squared variant="primary" @click="goUp">
+								{{ $t("contactUs") }}
+							</b-btn>
+						</b-col>
+						<b-col cols="6" class="contact-us-img" />
+					</b-row>
+					<!-- contact us -->
+
+					<!-- Start similar listings -->
+					<section class="my-3">
+						<h4 class="font-font-weight-bold">
+							{{ $t("singleListing.intersedIn") }}
+						</h4>
+
+						<p v-if="similar.length === 0" class="text-secondary text-center">
+							{{ $t("singleListing.noSimilar") }}
+						</p>
+						<b-row v-else>
+							<b-col
+								v-for="(card, index) in similar"
+								:key="String(index)"
+								class="my-2"
+								cols="12"
+								md="6"
+								lg="4"
+							>
+								<listing-card
+									:place="card"
+									:layout="'list'"
+									@notAuthBookmark="modalShow = true"
+								/>
+							</b-col>
+						</b-row>
+					</section>
+					<!-- End similar listings -->
 				</b-container>
 			</main>
 		</div>
@@ -467,6 +464,13 @@ export default {
 		this.loadingState = false;
 	},
 	methods: {
+		goUp() {
+			const el = document.getElementById("contactForm");
+			const rect = el.getBoundingClientRect();
+
+			document.body.scrollTop = rect.top + window.scrollY - 15;
+			document.documentElement.scrollTop = rect.top + window.scrollY - 15;
+		},
 		initedV(name, viewer) {
 			this.$viewer[name] = viewer;
 		},

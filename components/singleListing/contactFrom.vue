@@ -1,7 +1,7 @@
 <template>
 	<!-- Start Form -->
 
-	<b-form class="py-5">
+	<b-form class="py-5" id="contactForm">
 		<h4 class="font-weight-bold" v-text="$t('singleListing.form.sendUs')" />
 		<b-row>
 			<!-- Start user name -->
