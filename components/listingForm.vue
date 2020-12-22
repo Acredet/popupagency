@@ -5,7 +5,11 @@
 			<h2 class="my-3">
 				{{ $t("addListing.title") }}
 			</h2>
-			<form id="listing" ref="listing-form" enctype="multipart/form-data">
+			<FormulateForm
+				id="listing"
+				ref="listing-form"
+				enctype="multipart/form-data"
+			>
 				<div>
 					<titleInputsCard
 						:EditTitle="listing ? listing.title : {}"
@@ -18,6 +22,7 @@
 							name: 'bildgalleri[]',
 						}"
 						:oldImages="listing ? images.bildgalleri : []"
+						@delete-images-from-gallery="deleteImageFromExistingArray($event)"
 					/>
 
 					<centrumGalleriCard
@@ -26,6 +31,7 @@
 							name: 'cover[]',
 						}"
 						:oldImages="listing ? images.cover : []"
+						@delete-images-from-gallery="deleteImageFromExistingArray($event)"
 					/>
 
 					<textareasCard
@@ -129,6 +135,7 @@
 							name: 'planritning[]',
 						}"
 						:oldImages="listing ? images.planritning : []"
+						@delete-images-from-gallery="deleteImageFromExistingArray($event)"
 					/>
 
 					<b-row>
@@ -260,7 +267,7 @@
 						</b-col>
 					</b-row>
 				</div>
-			</form>
+			</FormulateForm>
 
 			<!-- Start Alert -->
 			<b-alert :show="!valid" variant="danger">
@@ -727,8 +734,9 @@ export default {
 				this.loadingState = false;
 			}
 		},
-		deleteImageFromExistingArray(index, name) {
-			this.images[name].splice(index, 1);
+		deleteImageFromExistingArray(obj) {
+			console.log(obj);
+			this.images[obj.name.replace("[]", "")].splice(obj.index, 1);
 		},
 		async editListing(draft) {
 			this.loadingState = true;

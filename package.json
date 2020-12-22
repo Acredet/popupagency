@@ -16,6 +16,7 @@
 		"format": "prettier -write **/**/.[js,vue]"
 	},
 	"dependencies": {
+		"@braid/vue-formulate": "^2.4.5",
 		"@nuxtjs/auth": "^4.9.1",
 		"@nuxtjs/axios": "^5.12.2",
 		"@nuxtjs/dotenv": "^1.4.1",

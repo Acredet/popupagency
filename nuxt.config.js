@@ -45,6 +45,7 @@ module.exports = {
 	plugins: [
 		{ src: "~/plugins/vue2-editor", mode: "client" },
 		{ src: "~/plugins/gmaps", mode: "client", ssr: true },
+		{ src: "~/plugins/vueformulate", mode: "client", ssr: true },
 		{
 			src: "~plugins/vue-slider-component.js",
 			ssr: false,
