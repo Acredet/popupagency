@@ -20,7 +20,16 @@
             <b-col cols="12" md="8">
               <!-- Start Description -->
               <section>
-                <h2 class="font-weight-bold">Description</h2>
+                <h4>{{ place.title ? place.title[$i18n.locale] : "" }}</h4>
+                <p>
+                  <b-icon icon="geo-alt-fill" />
+                  {{ place.routeGuidance.formattedAddress }}
+                </p>
+                <hr />
+
+                <pricesTable :place="place" />
+
+                <h2 class="font-weight-bold">Description:</h2>
                 <div
                   v-html="
                     place.beskreving ? place.beskreving[$i18n.locale] : ''
@@ -28,39 +37,12 @@
                 />
               </section>
               <!-- End Description -->
-
-              <b-row>
-                <b-col cols="12" md="6">
-                  <home-details
-                    :title="place.title"
-                    :egenskaper="place.egenskaper"
-                  />
-                </b-col>
-
-                <b-col cols="12" md="6">
-                  <gmap-map
-                    style="width: 100%; height: 300px"
-                    :center="map.center"
-                    :map-type-id="map.mapTypeId"
-                    :zoom="15"
-                  >
-                    <gmap-cluster>
-                      <gmap-marker
-                        v-for="(mark, index) in map.markers"
-                        :key="index"
-                        :icon="require(`@/assets/img/marker.svg`)"
-                        :position="mark"
-                      />
-                    </gmap-cluster>
-                  </gmap-map>
-                </b-col>
-              </b-row>
-
-              <b-row>
-                <b-col cols="12" md="6">
-                  <pricesTable :place="place" />
-                </b-col>
-              </b-row>
+              <hr />
+              <home-details
+                :title="place.title"
+                :egenskaper="place.egenskaper"
+              />
+              <hr />
 
               <centrum-details
                 :centrumtextarea="place.centrumtextarea"
@@ -68,12 +50,6 @@
                 :hemsida="place.hemsida"
                 :oppettider="place.oppettider"
               />
-
-              <!-- Start Galleri -->
-              <b-col class="my-3" cols="12">
-                <Gallery :galleryName="'bildgalleri'" :images="images" />
-              </b-col>
-              <!-- End Galleri -->
             </b-col>
             <!-- End Info col -->
 
@@ -92,6 +68,35 @@
               <contactForm :sellerId="place.userId" />
             </b-col>
           </b-row>
+
+          <!-- Start Galleri -->
+          <b-col class="my-3" cols="12">
+            <Gallery :galleryName="'bildgalleri'" :images="images" />
+          </b-col>
+          <!-- End Galleri -->
+
+          <b-col cols="12">
+            <section>
+              <h4 class="text-secondary">
+                {{ $t("singleListing.mapTitle") }}:
+              </h4>
+              <gmap-map
+                style="width: 100%; height: 300px"
+                :center="map.center"
+                :map-type-id="map.mapTypeId"
+                :zoom="15"
+              >
+                <gmap-cluster>
+                  <gmap-marker
+                    v-for="(mark, index) in map.markers"
+                    :key="index"
+                    :icon="require(`@/assets/img/marker.svg`)"
+                    :position="mark"
+                  />
+                </gmap-cluster>
+              </gmap-map>
+            </section>
+          </b-col>
 
           <!-- contact us -->
           <b-row style="min-height: 200px">
@@ -137,7 +142,7 @@
 </template>
 
 <script>
-import { BIcon, BIconImage } from "bootstrap-vue";
+import { BIcon, BIconImage, BIconGeoAltFill } from "bootstrap-vue";
 import LoginModal from "@/components/loginModal";
 import Gallery from "@/components/singleListing/gallery";
 import HomeDetails from "@/components/singleListing/HomeDetails";
@@ -156,6 +161,7 @@ export default {
     // Icons
     BIcon,
     BIconImage,
+    BIconGeoAltFill,
 
     // Page components
     LoginModal,

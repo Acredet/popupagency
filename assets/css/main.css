@@ -1,295 +1,295 @@
 body {
-	display: flex;
-	flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .page-content {
-	flex-grow: 1;
+  flex-grow: 1;
 }
 
 * {
-	font-family: "Abel", sans-serif;
-	scrollbar-width: thin;
+  font-family: "Abel", sans-serif;
+  scrollbar-width: thin;
 }
 
 /* Customize bootstrap colors */
 :root {
-	--primary: #6c4d92 !important;
-	--primary-hover: #877c94;
-	--black: #000;
+  --primary: #6c4d92 !important;
+  --primary-hover: #877c94;
+  --black: #000;
 }
 
 .bg-black {
-	background: var(--black) !important;
+  background: var(--black) !important;
 }
 
 .center-image {
-	background-position: center center;
-	background-size: cover;
+  background-position: center center;
+  background-size: cover;
 }
 
 /* Dynamic Font size */
 .font-small {
-	font-size: 11px !important;
+  font-size: 11px !important;
 }
 
 .font-1 {
-	font-size: 14px !important;
+  font-size: 14px !important;
 }
 
 .font-2 {
-	font-size: 17px !important;
+  font-size: 17px !important;
 }
 
 .font-3 {
-	font-size: 21px !important;
+  font-size: 21px !important;
 }
 
 .font-4 {
-	font-size: 25px !important;
+  font-size: 25px !important;
 }
 
 .font-5 {
-	font-size: 30px !important;
+  font-size: 30px !important;
 }
 
 .font-6 {
-	font-size: 35px !important;
+  font-size: 35px !important;
 }
 
 .font-7 {
-	font-size: 40px !important;
+  font-size: 40px !important;
 }
 
 .font-8 {
-	font-size: 45px !important;
+  font-size: 45px !important;
 }
 
 .font-9 {
-	font-size: 50px !important;
+  font-size: 50px !important;
 }
 
 .font-10 {
-	font-size: 60px !important;
+  font-size: 60px !important;
 }
 
 .font-11 {
-	font-size: 70px !important;
+  font-size: 70px !important;
 }
 
 .font-12 {
-	font-size: 80px !important;
+  font-size: 80px !important;
 }
 
 @media (min-width: 544px) {
-	.font-sm-1 {
-		font-size: 14px !important;
-	}
+  .font-sm-1 {
+    font-size: 14px !important;
+  }
 
-	.font-sm-2 {
-		font-size: 17px !important;
-	}
+  .font-sm-2 {
+    font-size: 17px !important;
+  }
 
-	.font-sm-3 {
-		font-size: 21px !important;
-	}
+  .font-sm-3 {
+    font-size: 21px !important;
+  }
 
-	.font-sm-4 {
-		font-size: 25px !important;
-	}
+  .font-sm-4 {
+    font-size: 25px !important;
+  }
 
-	.font-sm-5 {
-		font-size: 30px !important;
-	}
+  .font-sm-5 {
+    font-size: 30px !important;
+  }
 
-	.font-sm-6 {
-		font-size: 35px !important;
-	}
+  .font-sm-6 {
+    font-size: 35px !important;
+  }
 
-	.font-sm-7 {
-		font-size: 40px !important;
-	}
+  .font-sm-7 {
+    font-size: 40px !important;
+  }
 
-	.font-sm-8 {
-		font-size: 45px !important;
-	}
+  .font-sm-8 {
+    font-size: 45px !important;
+  }
 
-	.font-sm-9 {
-		font-size: 50px !important;
-	}
+  .font-sm-9 {
+    font-size: 50px !important;
+  }
 
-	.font-sm-10 {
-		font-size: 60px !important;
-	}
+  .font-sm-10 {
+    font-size: 60px !important;
+  }
 
-	.font-sm-11 {
-		font-size: 70px !important;
-	}
+  .font-sm-11 {
+    font-size: 70px !important;
+  }
 
-	.font-sm-12 {
-		font-size: 80px !important;
-	}
+  .font-sm-12 {
+    font-size: 80px !important;
+  }
 }
 
 @media (min-width: 768px) {
-	.font-md-1 {
-		font-size: 14px !important;
-	}
+  .font-md-1 {
+    font-size: 14px !important;
+  }
 
-	.font-md-2 {
-		font-size: 17px !important;
-	}
+  .font-md-2 {
+    font-size: 17px !important;
+  }
 
-	.font-md-3 {
-		font-size: 21px !important;
-	}
+  .font-md-3 {
+    font-size: 21px !important;
+  }
 
-	.font-md-4 {
-		font-size: 25px !important;
-	}
+  .font-md-4 {
+    font-size: 25px !important;
+  }
 
-	.font-md-5 {
-		font-size: 30px !important;
-	}
+  .font-md-5 {
+    font-size: 30px !important;
+  }
 
-	.font-md-6 {
-		font-size: 35px !important;
-	}
+  .font-md-6 {
+    font-size: 35px !important;
+  }
 
-	.font-md-7 {
-		font-size: 40px !important;
-	}
+  .font-md-7 {
+    font-size: 40px !important;
+  }
 
-	.font-md-8 {
-		font-size: 45px !important;
-	}
+  .font-md-8 {
+    font-size: 45px !important;
+  }
 
-	.font-md-9 {
-		font-size: 50px !important;
-	}
+  .font-md-9 {
+    font-size: 50px !important;
+  }
 
-	.font-md-10 {
-		font-size: 60px !important;
-	}
+  .font-md-10 {
+    font-size: 60px !important;
+  }
 
-	.font-md-11 {
-		font-size: 70px !important;
-	}
+  .font-md-11 {
+    font-size: 70px !important;
+  }
 
-	.font-md-12 {
-		font-size: 80px !important;
-	}
+  .font-md-12 {
+    font-size: 80px !important;
+  }
 }
 
 @media (min-width: 992px) {
-	.font-lg-1 {
-		font-size: 14px !important;
-	}
+  .font-lg-1 {
+    font-size: 14px !important;
+  }
 
-	.font-lg-2 {
-		font-size: 17px !important;
-	}
+  .font-lg-2 {
+    font-size: 17px !important;
+  }
 
-	.font-lg-3 {
-		font-size: 21px !important;
-	}
+  .font-lg-3 {
+    font-size: 21px !important;
+  }
 
-	.font-lg-4 {
-		font-size: 25px !important;
-	}
+  .font-lg-4 {
+    font-size: 25px !important;
+  }
 
-	.font-lg-5 {
-		font-size: 30px !important;
-	}
+  .font-lg-5 {
+    font-size: 30px !important;
+  }
 
-	.font-lg-6 {
-		font-size: 35px !important;
-	}
+  .font-lg-6 {
+    font-size: 35px !important;
+  }
 
-	.font-lg-7 {
-		font-size: 40px !important;
-	}
+  .font-lg-7 {
+    font-size: 40px !important;
+  }
 
-	.font-lg-8 {
-		font-size: 45px !important;
-	}
+  .font-lg-8 {
+    font-size: 45px !important;
+  }
 
-	.font-lg-9 {
-		font-size: 50px !important;
-	}
+  .font-lg-9 {
+    font-size: 50px !important;
+  }
 
-	.font-lg-10 {
-		font-size: 60px !important;
-	}
+  .font-lg-10 {
+    font-size: 60px !important;
+  }
 
-	.font-lg-11 {
-		font-size: 70px !important;
-	}
+  .font-lg-11 {
+    font-size: 70px !important;
+  }
 
-	.font-lg-12 {
-		font-size: 80px !important;
-	}
+  .font-lg-12 {
+    font-size: 80px !important;
+  }
 }
 
 @media (min-width: 992px) {
-	.font-xl-1 {
-		font-size: 14px !important;
-	}
+  .font-xl-1 {
+    font-size: 14px !important;
+  }
 
-	.font-xl-2 {
-		font-size: 17px !important;
-	}
+  .font-xl-2 {
+    font-size: 17px !important;
+  }
 
-	.font-xl-3 {
-		font-size: 21px !important;
-	}
+  .font-xl-3 {
+    font-size: 21px !important;
+  }
 
-	.font-xl-4 {
-		font-size: 25px !important;
-	}
+  .font-xl-4 {
+    font-size: 25px !important;
+  }
 
-	.font-xl-5 {
-		font-size: 30px !important;
-	}
+  .font-xl-5 {
+    font-size: 30px !important;
+  }
 
-	.font-xl-6 {
-		font-size: 35px !important;
-	}
+  .font-xl-6 {
+    font-size: 35px !important;
+  }
 
-	.font-xl-7 {
-		font-size: 40px !important;
-	}
+  .font-xl-7 {
+    font-size: 40px !important;
+  }
 
-	.font-xl-8 {
-		font-size: 45px !important;
-	}
+  .font-xl-8 {
+    font-size: 45px !important;
+  }
 
-	.font-xl-9 {
-		font-size: 50px !important;
-	}
+  .font-xl-9 {
+    font-size: 50px !important;
+  }
 
-	.font-xl-10 {
-		font-size: 60px !important;
-	}
+  .font-xl-10 {
+    font-size: 60px !important;
+  }
 
-	.font-xl-11 {
-		font-size: 70px !important;
-	}
+  .font-xl-11 {
+    font-size: 70px !important;
+  }
 
-	.font-xl-12 {
-		font-size: 80px !important;
-	}
+  .font-xl-12 {
+    font-size: 80px !important;
+  }
 }
 
 .btn-primary {
-	color: #fff;
-	background-color: var(--primary);
-	border-color: var(--primary);
+  color: #fff;
+  background-color: var(--primary);
+  border-color: var(--primary);
 }
 
 .btn-outline-primary {
-	color: var(--primary);
-	border-color: var(--primary);
+  color: var(--primary);
+  border-color: var(--primary);
 }
 
 .btn-outline-primary:not(:disabled):not(.disabled):active,
@@ -297,217 +297,218 @@ body {
 .show > .btn-outline-primary.dropdown-toggle,
 .btn-primary:not(:disabled):not(.disabled):active,
 .btn-outline-primary:not(:disabled):not(.disabled).active {
-	background-color: var(--primary);
-	border-color: var(--primary);
-	color: white;
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: white;
 }
 
 .btn-outline-primary:focus,
 .btn-primary:focus {
-	background-color: var(--primary);
-	border-color: var(--primary);
-	color: white;
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: white;
 }
 
 .btn-outline-primary:hover,
 .btn-primary:hover {
-	background-color: var(--primary-hover);
-	border-color: var(--primary-hover);
+  background-color: var(--primary-hover);
+  border-color: var(--primary-hover);
 
-	color: white;
+  color: white;
 }
 
 /* Skeleton */
 
 .skeleton {
-	height: 400px;
+  height: 400px;
 }
 
 div.sticky {
-	top: 0;
-	z-index: 10;
-	background: white;
-	position: sticky;
+  top: 0;
+  z-index: 10;
+  background: white;
+  position: sticky;
 }
 
 .skeleton:empty::after {
-	content: "";
-	display: block;
-	width: 100%;
-	height: 100%;
-	background-repeat: no-repeat;
-	background-image:
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-image:
     /* layer 2: header */ -webkit-gradient(
-			linear,
-			left top,
-			right top,
-			color-stop(0, rgba(211, 211, 211, 0)),
-			color-stop(50%, rgba(211, 211, 211, 0.8)),
-			to(rgba(211, 211, 211, 0))
-		),
-		linear-gradient(#ccc 245px, transparent 0),
-		linear-gradient(#bbb 40px, transparent 0),
-		/* Title */ linear-gradient(#bbb 80px, transparent 0),
-		/* description */ linear-gradient(#bbb 80px, transparent 0),
-		/* description */ linear-gradient(#bbb 80px, transparent 0),
-		/* description */ linear-gradient(#bbb 40px, transparent 0),
-		/* button */ /* layer 0: card bg */
-			/* gray rectangle that covers whole element */
-			linear-gradient(#eee 100%, transparent 0);
+      linear,
+      left top,
+      right top,
+      color-stop(0, rgba(211, 211, 211, 0)),
+      color-stop(50%, rgba(211, 211, 211, 0.8)),
+      to(rgba(211, 211, 211, 0))
+    ),
+    linear-gradient(#ccc 245px, transparent 0),
+    linear-gradient(#bbb 40px, transparent 0),
+    /* Title */ linear-gradient(#bbb 80px, transparent 0),
+    /* description */ linear-gradient(#bbb 80px, transparent 0),
+    /* description */ linear-gradient(#bbb 80px, transparent 0),
+    /* description */ linear-gradient(#bbb 40px, transparent 0),
+    /* button */ /* layer 0: card bg */
+      /* gray rectangle that covers whole element */
+      linear-gradient(#eee 100%, transparent 0);
 
-	background-size: 200px 100%, /* anim */ 100% 250px,
-		/* header */ /* width height */ 70px 20px, /* title */ 180px 15px,
-		/* description */ 150px 15px, /* description */ 120px 15px,
-		/* description */ 80px 25px, /* button */ 100% 100%;
-	/* card bg */
+  background-size: 200px 100%, /* anim */ 100% 250px,
+    /* header */ /* width height */ 70px 20px, /* title */ 180px 15px,
+    /* description */ 150px 15px, /* description */ 120px 15px,
+    /* description */ 80px 25px, /* button */ 100% 100%;
+  /* card bg */
 
-	background-position:
+  background-position:
     /* x y */ -150% 10px, /* anim */ 0 0,
-		/* header */ 10px 255px, /* title */ 10px 290px,
-		/* description */ 10px 310px, /* description */ 10px 330px,
-		/* description */ 10px 365px, /* button */ 0 0;
-	/* card bg */
-	animation: loading 1.5s infinite;
+    /* header */ 10px 255px, /* title */ 10px 290px,
+    /* description */ 10px 310px, /* description */ 10px 330px,
+    /* description */ 10px 365px, /* button */ 0 0;
+  /* card bg */
+  animation: loading 1.5s infinite;
 }
 
 @keyframes loading {
-	to {
-		background-position: 350% 0, 0 0, /* header */ 10px 255px,
-			/* title */ 10px 290px, /* description */ 10px 310px,
-			/* description */ 10px 330px, /* description */ 10px 365px,
-			/* button */ 0 0;
-		/* card bg */
-	}
+  to {
+    background-position: 350% 0, 0 0, /* header */ 10px 255px,
+      /* title */ 10px 290px, /* description */ 10px 310px,
+      /* description */ 10px 330px, /* description */ 10px 365px,
+      /* button */ 0 0;
+    /* card bg */
+  }
 }
 
 /* map-popup */
 a.map-popup {
-	overflow-x: hidden;
-	width: 200px;
-	height: 200px;
+  overflow-x: hidden;
+  width: 200px;
+  height: 200px;
 }
 
 a.map-popup:hover {
-	text-decoration: none;
+  text-decoration: none;
 }
 
 a.map-popup > div.cover {
-	width: 200px;
-	height: 150px;
-	background-size: cover;
-	background-repeat: no-repeat;
+  width: 200px;
+  height: 150px;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 a.map-popup > div.cover div.overlay {
-	opacity: 0.7;
-	padding: 5px;
-	width: 100%;
-	background-color: rgba(0, 0, 0, 0.8);
+  opacity: 0.7;
+  padding: 5px;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
 /* Scrollbar */
 ::-webkit-scrollbar {
-	width: 6px;
-	/* width of the entire scrollbar */
+  width: 6px;
+  /* width of the entire scrollbar */
 }
 
 ::-webkit-scrollbar-track {
-	background-color: silver;
-	/* color of the tracking area */
+  background-color: silver;
+  /* color of the tracking area */
 }
 
 ::-webkit-scrollbar-thumb {
-	background-color: var(--indigo);
-	/* color of the scroll thumb */
-	border-radius: 20px;
-	/* roundness of the scroll thumb */
-	border: 1px solid var(--indigo);
-	/* creates padding around scroll thumb */
+  background-color: var(--indigo);
+  /* color of the scroll thumb */
+  border-radius: 20px;
+  /* roundness of the scroll thumb */
+  border: 1px solid var(--indigo);
+  /* creates padding around scroll thumb */
 }
 
 /* Removes padding from map cards */
 .gm-style-iw.gm-style-iw-c {
-	padding: 0 !important;
+  padding: 0 !important;
 }
 
 .tabBtn {
-	border-radius: 0;
-	background-color: white;
-	border-top: 1px solid #eee;
+  border-radius: 0;
+  background-color: white;
+  border-top: 1px solid #eee;
 }
 
 .bg-our-primary {
-	background: #6c4d92;
+  background: #6c4d92;
 }
 
 .text-primary {
-	color: #6c4d92;
+  color: #6c4d92;
 }
 
 .tabBtn a.active {
-	background-color: #6c4d92 !important;
-	color: white;
+  background-color: #6c4d92 !important;
+  color: white;
 }
 
 .tabBtn a {
-	color: black;
-	border-radius: 0;
-	transition: all 0.4s ease;
+  color: black;
+  border-radius: 0;
+  transition: all 0.4s ease;
 }
 
 .tabBtn:hover a {
-	color: #6c4d92;
-	text-decoration: none;
+  color: #6c4d92;
+  text-decoration: none;
 }
 
 table.b-table.normal {
-	border: 1px solid rgb(232, 233, 234);
-	border-radius: 8px !important;
+  border: 1px solid rgb(232, 233, 234);
+  border-radius: 8px !important;
+  background: #eee;
 }
 
 table.b-table:not(.normal) thead tr[role="row"] {
-	background: #fff !important;
+  background: #fff !important;
 }
 
 table.b-table:not(.normal) tbody tr[role="row"]:nth-child(even) {
-	background: #eee !important;
+  background: #eee !important;
 }
 
 table.b-table:not(.normal) tbody tr[role="row"]:nth-child(odd) {
-	background: #fff !important;
+  background: #fff !important;
 }
 
 .link-main {
-	color: var(--indigo);
+  color: var(--indigo);
 }
 
 .link-main:hover {
-	text-decoration: none;
+  text-decoration: none;
 }
 
 /* Start Card Like */
 .like {
-	position: absolute;
-	z-index: 3;
-	top: -10px;
-	right: 0;
+  position: absolute;
+  z-index: 3;
+  top: -10px;
+  right: 0;
 
-	width: 70px;
-	height: 70px;
-	background: url("https://abs.twimg.com/a/1446542199/img/t1/web_heart_animation.png")
-		no-repeat;
-	background-position: -15px;
-	cursor: pointer;
+  width: 70px;
+  height: 70px;
+  background: url("https://abs.twimg.com/a/1446542199/img/t1/web_heart_animation.png")
+    no-repeat;
+  background-position: -15px;
+  cursor: pointer;
 }
 
 .anim-like {
-	background-position: -2816px -14px;
-	transition: background 1s steps(28);
+  background-position: -2816px -14px;
+  transition: background 1s steps(28);
 }
 
 .anim {
-	background-position: -3529px 0;
-	transition: background 1s steps(55);
+  background-position: -3529px 0;
+  transition: background 1s steps(55);
 }
 
 /* End Card Like */
@@ -516,7 +517,7 @@ table.b-table:not(.normal) tbody tr[role="row"]:nth-child(odd) {
 .hooper-pagination [type="button"]:not(:disabled),
 .hooper-pagination [type="reset"]:not(:disabled),
 .hooper-pagination [type="submit"]:not(:disabled) {
-	background-color: #aaa;
+  background-color: #aaa;
 }
 
 .hooper-pagination button:not(:disabled):hover,
@@ -527,5 +528,5 @@ table.b-table:not(.normal) tbody tr[role="row"]:nth-child(odd) {
 .hooper-pagination [type="button"]:not(:disabled).is-active,
 .hooper-pagination [type="reset"]:not(:disabled).is-active,
 .hooper-pagination [type="submit"]:not(:disabled).is-active {
-	background-color: #4285f4;
+  background-color: #4285f4;
 }
