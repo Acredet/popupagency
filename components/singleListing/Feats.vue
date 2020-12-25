@@ -16,10 +16,10 @@
           :src="require(`~/assets/img/feats/${feat.name}.png`)"
           :alt="feat.name"
         />
-        <b v-if="feat.name === 'yta-1'" class="pt-1"
-          >{{ feat.text }} m<sup>3</sup>
-        </b>
-        <b v-else class="pt-1">{{ feat.text }}</b>
+        <p v-if="feat.name === 'yta-1'" class="pt-1">
+          {{ feat.text }} m<sup>3</sup>
+        </p>
+        <p v-else class="pt-1">{{ feat.text }}</p>
       </b-col>
     </b-row>
   </b-container>

@@ -1,10 +1,10 @@
 <template>
   <!-- Start Home Details -->
   <section>
-    <h2 class="font-weight-bold">
+    <h6 class="text-secondary">
       Home Details for
       {{ title ? title[$i18n.locale] : "" }}
-    </h2>
+    </h6>
     <ul class="list-inline">
       <li
         v-for="tag in egenskaper"
@@ -26,7 +26,7 @@
             width: 30px;
           "
         />
-        <b>{{ tag.name[$i18n.locale] }}.</b>
+        <p class="d-inline-block">{{ tag.name[$i18n.locale] }}.</p>
       </li>
     </ul>
   </section>

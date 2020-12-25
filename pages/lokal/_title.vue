@@ -20,28 +20,33 @@
             <b-col cols="12" md="8">
               <!-- Start Description -->
               <section>
-                <h4>{{ place.title ? place.title[$i18n.locale] : "" }}</h4>
+                <h6 class="text-secondary">
+                  {{ place.title ? place.title[$i18n.locale] : "" }}
+                </h6>
                 <p>
                   <b-icon icon="geo-alt-fill" />
                   {{ place.routeGuidance.formattedAddress }}
                 </p>
-                <hr />
+              </section>
 
-                <pricesTable :place="place" />
-
-                <h2 class="font-weight-bold">Description:</h2>
+              <hr />
+              <section>
+                <h6 class="text-secondary">Description</h6>
                 <div
                   v-html="
                     place.beskreving ? place.beskreving[$i18n.locale] : ''
                   "
                 />
               </section>
-              <!-- End Description -->
               <hr />
+
               <home-details
                 :title="place.title"
                 :egenskaper="place.egenskaper"
               />
+              <!-- End Description -->
+              <hr />
+              <pricesTable :place="place" />
               <hr />
 
               <centrum-details
@@ -74,14 +79,14 @@
             <Gallery :galleryName="'bildgalleri'" :images="images" />
           </b-col>
           <!-- End Galleri -->
-
+          <hr />
           <b-col cols="12">
             <section>
-              <h4 class="text-secondary">
-                {{ $t("singleListing.mapTitle") }}:
-              </h4>
+              <h6 class="text-secondary">
+                {{ $t("singleListing.mapTitle") }}
+              </h6>
               <gmap-map
-                style="width: 100%; height: 300px"
+                style="width: 100%; height: 500px"
                 :center="map.center"
                 :map-type-id="map.mapTypeId"
                 :zoom="15"
@@ -97,7 +102,7 @@
               </gmap-map>
             </section>
           </b-col>
-
+          <hr />
           <!-- contact us -->
           <b-row style="min-height: 200px">
             <b-col
@@ -111,6 +116,7 @@
             <b-col cols="6" class="contact-us-img" />
           </b-row>
           <!-- contact us -->
+          <hr />
 
           <similar-listings :similar="similar" />
         </b-container>
@@ -297,7 +303,7 @@ p {
 }
 
 main .container section {
-  padding: 30px 0;
+  padding: 10px 0;
 }
 
 .hooper {

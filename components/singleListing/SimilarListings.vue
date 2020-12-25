@@ -1,9 +1,9 @@
 <template>
   <!-- Start similar listings -->
   <section class="my-5">
-    <h4 class="font-font-weight-bold mb-5">
-      {{ $t("singleListing.intersedIn") }}:
-    </h4>
+    <h6 class="text-secondary mb-5">
+      {{ $t("singleListing.intersedIn") }}
+    </h6>
 
     <p v-if="similar.length === 0" class="text-secondary text-center">
       {{ $t("singleListing.noSimilar") }}

@@ -1,6 +1,6 @@
 <template>
   <section itemscope itemtype="http://schema.org/ImageGallery">
-    <h2>{{ $t("singleListing.info.gallery") }}:</h2>
+    <h6 class="text-secondary">{{ $t("singleListing.info.gallery") }}</h6>
     <b-row>
       <!--  First 4 pics -->
       <b-col

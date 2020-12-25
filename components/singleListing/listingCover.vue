@@ -35,9 +35,7 @@
               <b-icon icon="pencil-square" class="text-white" />
             </b-btn>
           </h1>
-          <h2>
-            {{ $t("interestReporting.price") }} {{ format(pricePerDay) }} Kr/dag
-          </h2>
+          <h2>{{ format(pricePerDay) }} Kr/dag</h2>
         </div>
 
         <div class="bookmark-wrapper position-absolute">
