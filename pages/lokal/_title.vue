@@ -39,6 +39,17 @@
                 />
               </section>
               <hr />
+              <details-table
+                :place="{
+                  yta: place.yta,
+                  placering: place.placering,
+                  minstahyresperiod: place.minstahyresperiod,
+                  langstahyresperiod: place.langstahyresperiod,
+                  fran: place.fran,
+                  till: place.till,
+                }"
+              />
+              <hr />
 
               <home-details
                 :title="place.title"
@@ -158,6 +169,7 @@ import SimilarListings from "~/components/singleListing/SimilarListings.vue";
 import contactForm from "@/components/singleListing/contactFrom";
 import listingCover from "@/components/singleListing/listingCover";
 import pricesTable from "@/components/singleListing/prices";
+import DetailsTable from "@/components/singleListing/DetailsTable";
 // import localInfo from "@/components/singleListing/localInformation";
 
 import { mapGetters } from "vuex";
@@ -180,6 +192,7 @@ export default {
     listingFeats,
     CentrumDetails,
     SimilarListings,
+    DetailsTable,
   },
   data() {
     return {

@@ -2,14 +2,14 @@
   <!-- Start Prices -->
   <div class="my-4">
     <b-table
-      class="border-top normal"
+      class="border-top"
       :fields="['period', 'price']"
       head-variant="light"
       :items="priceList"
     >
       <!-- A custom formatted data column cell -->
       <template #cell(price)="data">
-        <span v-if="data.item !== 'prioteradpris'"
+        <span v-if="data.item !== 'prioteradpris' && place[data.item.val] !== 0"
           >{{ format(place[data.item.val]) }} Kr</span
         >
       </template>
