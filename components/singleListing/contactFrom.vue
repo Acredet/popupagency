@@ -104,7 +104,7 @@
         <!-- End empty -->
 
         <!-- Start messsage -->
-        <b-col cols="12">
+        <!-- <b-col cols="12">
           <b-form-group class="my-2">
             <b-form-select
               v-model="form.subject"
@@ -113,7 +113,7 @@
               id="subject"
             ></b-form-select>
           </b-form-group>
-        </b-col>
+        </b-col> -->
         <!-- End messsage -->
 
         <!-- Start messsage -->
@@ -123,15 +123,15 @@
               :placeholder="$t('singleListing.form.message')"
               v-model="form.message"
               id="messsage"
+              rows="8"
               size="sm"
             />
           </b-form-group>
         </b-col>
         <!-- End messsage -->
 
-        <b-col cols="12">
+        <!-- <b-col cols="12">
           <b-form-group class="my-2">
-            <!-- :state="Boolean(form.file)" -->
             <b-form-file
               name="file[]"
               :placeholder="$t('singleListing.form.files')"
@@ -139,7 +139,7 @@
               multiple
             />
           </b-form-group>
-        </b-col>
+        </b-col> -->
 
         <b-btn
           class="m-2"
