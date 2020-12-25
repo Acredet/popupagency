@@ -1,3 +1,4 @@
+@import url(//db.onlinewebfonts.com/c/fdd40b399610a1e015242521427561b1?family=Fakt+Pro+Normal);
 body {
   display: flex;
   flex-direction: column;
@@ -6,9 +7,23 @@ body {
 .page-content {
   flex-grow: 1;
 }
+@font-face {
+  font-family: "Fakt Pro Normal";
+  src: url("//db.onlinewebfonts.com/t/fdd40b399610a1e015242521427561b1.eot");
+  src: url("//db.onlinewebfonts.com/t/fdd40b399610a1e015242521427561b1.eot?#iefix")
+      format("embedded-opentype"),
+    url("//db.onlinewebfonts.com/t/fdd40b399610a1e015242521427561b1.woff2")
+      format("woff2"),
+    url("//db.onlinewebfonts.com/t/fdd40b399610a1e015242521427561b1.woff")
+      format("woff"),
+    url("//db.onlinewebfonts.com/t/fdd40b399610a1e015242521427561b1.ttf")
+      format("truetype"),
+    url("//db.onlinewebfonts.com/t/fdd40b399610a1e015242521427561b1.svg#Fakt Pro Normal")
+      format("svg");
+}
 
 * {
-  font-family: "Abel", sans-serif;
+  /* font-family: "Abel", sans-serif; */
   scrollbar-width: thin;
 }
 
