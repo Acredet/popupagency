@@ -304,9 +304,11 @@ export default {
       },
     },
     form: {
-      sendUs: "Send us a booking request:",
-      from: "From:",
-      to: "To:",
+      sendUs: "Send us a booking request",
+      from: "From",
+      message: "Message",
+      files: "Files",
+      to: "To",
       details: "What do you want to do in the room?",
       GDPR:
         "I accept that the Popup Agency processes my personal information in accordance with GDPR rules.",

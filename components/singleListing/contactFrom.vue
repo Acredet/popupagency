@@ -1,200 +1,175 @@
 <template>
   <!-- Start Form -->
+  <aside class="form py-3 px-3">
+    <header>
+      <h6 class="text-secondary" v-text="$t('singleListing.form.sendUs')" />
+    </header>
 
-  <b-form class="py-5" id="contactForm" enctype="multipart/form-data">
-    <h4 class="font-weight-bold" v-text="$t('singleListing.form.sendUs')" />
-    <b-row>
-      <!-- Start user name -->
-      <b-col cols="12">
-        <b-form-group
-          class="my-2"
-          :label="$t('forms.name.title')"
-          label-class="font-weight-bold"
-          label-for="username"
+    <b-form id="contactForm" enctype="multipart/form-data">
+      <b-row>
+        <!-- Start user name -->
+        <b-col cols="12">
+          <b-form-group class="my-2">
+            <b-input-group size="sm">
+              <template #prepend>
+                <b-input-group-text>
+                  <b-icon-person-fill></b-icon-person-fill>
+                </b-input-group-text>
+              </template>
+
+              <b-form-input
+                id="username"
+                :placeholder="$t('forms.name.title')"
+                v-model="form.name"
+                autocomplete="off"
+              />
+            </b-input-group>
+          </b-form-group>
+        </b-col>
+        <!-- End user name -->
+
+        <!-- Start email -->
+        <b-col cols="12">
+          <b-form-group class="my-2">
+            <b-input-group size="sm">
+              <template #prepend>
+                <b-input-group-text>@</b-input-group-text>
+              </template>
+
+              <b-form-input
+                id="email"
+                :placeholder="$t('forms.email.holder')"
+                v-model="form.email"
+                type="email"
+                autocomplete="off"
+              />
+            </b-input-group>
+          </b-form-group>
+        </b-col>
+        <!-- End email -->
+
+        <!-- Start Phone -->
+        <b-col cols="12">
+          <b-form-group class="my-2">
+            <b-input-group size="sm">
+              <template #prepend>
+                <b-input-group-text>
+                  <b-icon-telephone-fill></b-icon-telephone-fill>
+                </b-input-group-text>
+              </template>
+
+              <b-form-input
+                id="Phone"
+                :placeholder="$t('forms.phone.holder')"
+                v-model="form.phone"
+                autocomplete="off"
+              />
+            </b-input-group>
+          </b-form-group>
+        </b-col>
+        <!-- End Phone -->
+
+        <!-- Start From -->
+        <b-col cols="12" md="6">
+          <b-form-group class="my-2">
+            <b-form-datepicker
+              id="from"
+              :placeholder="$t('singleListing.form.from')"
+              v-model="form.from"
+              today-button
+              reset-button
+              close-button
+              size="sm"
+              class="mb-2"
+            />
+          </b-form-group>
+        </b-col>
+        <!-- End From -->
+
+        <!-- Start empty -->
+        <b-col cols="12" md="6">
+          <b-form-group class="my-2">
+            <b-form-datepicker
+              id="to"
+              v-model="form.to"
+              today-button
+              :placeholder="$t('singleListing.form.to')"
+              reset-button
+              close-button
+              size="sm"
+              class="mb-2"
+            />
+          </b-form-group>
+        </b-col>
+        <!-- End empty -->
+
+        <!-- Start messsage -->
+        <b-col cols="12">
+          <b-form-group class="my-2">
+            <b-form-select
+              v-model="form.subject"
+              :options="options"
+              size="sm"
+              id="subject"
+            ></b-form-select>
+          </b-form-group>
+        </b-col>
+        <!-- End messsage -->
+
+        <!-- Start messsage -->
+        <b-col cols="12">
+          <b-form-group class="my-2">
+            <b-form-textarea
+              :placeholder="$t('singleListing.form.message')"
+              v-model="form.message"
+              id="messsage"
+              size="sm"
+            />
+          </b-form-group>
+        </b-col>
+        <!-- End messsage -->
+
+        <b-col cols="12">
+          <b-form-group class="my-2">
+            <!-- :state="Boolean(form.file)" -->
+            <b-form-file
+              name="file[]"
+              :placeholder="$t('singleListing.form.files')"
+              drop-placeholder="Drop here..."
+              multiple
+            />
+          </b-form-group>
+        </b-col>
+
+        <b-btn
+          class="m-2"
+          block
+          type="button"
+          pill
+          variant="primary"
+          @click="sendForm"
         >
-          <b-form-input
-            id="username"
-            class="styled"
-            v-model="form.name"
-            autocomplete="off"
-            size="sm"
-          />
-        </b-form-group>
-      </b-col>
-      <!-- End user name -->
+          {{ $t("actions.submit") }}
+        </b-btn>
+      </b-row>
+    </b-form>
+  </aside>
 
-      <!-- Start email -->
-      <b-col cols="12">
-        <b-form-group
-          class="my-2"
-          :label="$t('forms.email.title')"
-          label-class="font-weight-bold"
-          label-for="email"
-        >
-          <b-form-input
-            class="styled"
-            id="email"
-            v-model="form.email"
-            type="email"
-            autocomplete="off"
-            size="sm"
-          />
-        </b-form-group>
-      </b-col>
-      <!-- End email -->
-
-      <!-- Start Phone -->
-      <b-col cols="12">
-        <b-form-group
-          class="my-2"
-          :label="$t('forms.phone.title')"
-          label-class="font-weight-bold"
-          label-for="Phone"
-        >
-          <b-form-input
-            id="Phone"
-            class="styled"
-            v-model="form.phone"
-            autocomplete="off"
-            size="sm"
-          />
-        </b-form-group>
-      </b-col>
-      <!-- End Phone -->
-
-      <!-- Start From -->
-      <b-col cols="12" md="6">
-        <b-form-group
-          class="my-2"
-          :label="$t('singleListing.form.from')"
-          label-class="font-weight-bold"
-          label-for="from"
-        >
-          <b-form-datepicker
-            id="from"
-            v-model="form.from"
-            today-button
-            reset-button
-            close-button
-            size="sm"
-            class="mb-2"
-          />
-        </b-form-group>
-      </b-col>
-      <!-- End From -->
-
-      <!-- Start empty -->
-      <b-col cols="12" md="6">
-        <b-form-group
-          class="my-2"
-          :label="$t('singleListing.form.to')"
-          label-class="font-weight-bold"
-          label-for="to"
-        >
-          <b-form-datepicker
-            id="to"
-            v-model="form.to"
-            today-button
-            reset-button
-            close-button
-            size="sm"
-            class="mb-2"
-          />
-        </b-form-group>
-      </b-col>
-      <!-- End empty -->
-
-      <!-- Start messsage -->
-      <b-col cols="12">
-        <b-form-group
-          class="my-2"
-          :label="$t('forms.subject.title')"
-          label-class="font-weight-bold"
-          label-for="subject"
-        >
-          <b-form-select
-            v-model="form.subject"
-            class="styled"
-            :options="options"
-            size="sm"
-            id="subject"
-          ></b-form-select>
-        </b-form-group>
-      </b-col>
-      <!-- End messsage -->
-
-      <!-- Start messsage -->
-      <b-col cols="12">
-        <b-form-group
-          class="my-2"
-          :label="$t('forms.message.title')"
-          label-class="font-weight-bold"
-          label-for="messsage"
-        >
-          <b-form-textarea
-            class="styled"
-            v-model="form.message"
-            id="messsage"
-            size="sm"
-          />
-        </b-form-group>
-      </b-col>
-      <!-- End messsage -->
-
-      <b-col cols="12">
-        <b-form-group
-          class="my-2"
-          :label="$t('forms.message.title')"
-          label-class="font-weight-bold"
-          label-for="messsage"
-        >
-          <!-- :state="Boolean(form.file)" -->
-          <b-form-file
-            name="file[]"
-            class="styled"
-            multiple
-            placeholder="Choose files"
-            drop-placeholder="Drop here..."
-          />
-        </b-form-group>
-      </b-col>
-
-      <!-- <b-col cols="12">
-				<b-form-group
-					label="Inline radios (default)"
-					v-slot="{ ariaDescribedby }"
-				>
-					<b-form-radio-group
-						v-model="form.options"
-						:options="options"
-						:aria-describedby="ariaDescribedby"
-						name="radio-inline"
-					></b-form-radio-group>
-				</b-form-group>
-			</b-col> -->
-
-      <b-btn
-        class="m-2"
-        block
-        type="button"
-        pill
-        variant="primary"
-        @click="sendForm"
-      >
-        {{ $t("actions.submit") }}
-      </b-btn>
-    </b-row>
-  </b-form>
   <!-- End Form -->
 </template>
 
 <script>
+import { BIconPersonFill, BIconTelephoneFill } from "bootstrap-vue";
 export default {
   props: {
     sellerId: {
       type: String,
       default: () => "",
     },
+  },
+  components: {
+    BIconPersonFill,
+    BIconTelephoneFill,
   },
   data() {
     return {
@@ -243,6 +218,11 @@ export default {
 </script>
 
 <style scoped>
+.form {
+  box-shadow: 0 4px 22px 0 rgba(28, 51, 59, 0.15);
+  border-radius: 5px;
+}
+
 .styled {
   border-radius: 40px !important;
   background: #eee;

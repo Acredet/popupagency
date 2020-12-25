@@ -304,7 +304,9 @@ export default {
       },
     },
     form: {
-      sendUs: "Skicka en bokningsförfrågan till oss:",
+      sendUs: "Skicka en bokningsförfrågan till oss",
+      message: "meddelande",
+      files: "filer",
       from: "från",
       to: "till",
       details: "Vad vill du göra i rummet?",
