@@ -37,4 +37,10 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+@media screen and (max-width: 576px) {
+  .row.tabs {
+    overflow-x: scroll;
+  }
+}
+</style>
