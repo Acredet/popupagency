@@ -77,7 +77,7 @@
                 height: 100%;
                 justify-self: flex-start;
               "
-              class="d-md-flex"
+              class="d-none d-md-flex"
               md="4"
               cols="12"
             >
@@ -120,7 +120,20 @@
               cols="6"
               class="d-flex justify-content-center align-items-center"
             >
-              <b-btn squared variant="primary" @click="goUp">
+              <b-btn
+                squared
+                variant="primary"
+                class="d-none d-md-block"
+                @click="goUp"
+              >
+                {{ $t("contactUs") }}
+              </b-btn>
+              <b-btn
+                squared
+                variant="primary"
+                class="d-block d-md-none"
+                @click="modalShowForm = true"
+              >
                 {{ $t("contactUs") }}
               </b-btn>
             </b-col>
@@ -134,6 +147,9 @@
       </main>
     </div>
 
+    <b-modal v-model="modalShowForm">
+      <contactForm :sellerId="place.userId" />
+    </b-modal>
     <!-- Start Viewers -->
     <!-- <viewer
         v-for="(i, index) in [
@@ -173,6 +189,7 @@ import DetailsTable from "@/components/singleListing/DetailsTable";
 // import localInfo from "@/components/singleListing/localInformation";
 
 import { mapGetters } from "vuex";
+import ContactFrom from "~/components/singleListing/contactFrom.vue";
 
 export default {
   components: {
@@ -193,11 +210,13 @@ export default {
     CentrumDetails,
     SimilarListings,
     DetailsTable,
+    ContactFrom,
   },
   data() {
     return {
       loadingState: true,
       modalShow: false,
+      modalShowForm: false,
       thereIsCentrum: false,
       map: {
         center: { lat: 59.334591, lng: 18.06324 },
