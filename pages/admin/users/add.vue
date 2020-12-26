@@ -2,11 +2,21 @@
   <div class="content">
     <b-container>
       <h2 class="font-weight-bold">
-        {{ $t('addUser.title') }}
+        {{ $t("addUser.title") }}
       </h2>
-      <b-form>
-        <b-form-group id="name-group" :label="$t('addUser.inputs.name.label')" label-for="name">
-          <b-form-input id="name" v-model="form.name" autocomplete="off" required :placeholder="$t('addUser.inputs.name.holder')" />
+      <FormulateForm id="userForm">
+        <b-form-group
+          id="name-group"
+          :label="$t('addUser.inputs.name.label')"
+          label-for="name"
+        >
+          <b-form-input
+            id="name"
+            v-model="form.name"
+            autocomplete="off"
+            required
+            :placeholder="$t('addUser.inputs.name.holder')"
+          />
         </b-form-group>
 
         <b-form-group
@@ -24,7 +34,11 @@
           />
         </b-form-group>
 
-        <b-form-group id="password-group" :label="$t('addUser.inputs.password.label')" label-for="password">
+        <b-form-group
+          id="password-group"
+          :label="$t('addUser.inputs.password.label')"
+          label-for="password"
+        >
           <b-form-input
             id="password"
             v-model="form.password"
@@ -35,14 +49,18 @@
           />
 
           <b-form-invalid-feedback :state="passwordValid">
-            {{ $t('forms.atLeast8') }}
+            {{ $t("forms.atLeast8") }}
           </b-form-invalid-feedback>
           <b-form-valid-feedback :state="passwordValid">
-            {{ $t('forms.valid') }}
+            {{ $t("forms.valid") }}
           </b-form-valid-feedback>
         </b-form-group>
 
-        <b-form-group id="confirm-password-group" :label="$t('addUser.inputs.confirmPass.label')" label-for="confirm-password">
+        <b-form-group
+          id="confirm-password-group"
+          :label="$t('addUser.inputs.confirmPass.label')"
+          label-for="confirm-password"
+        >
           <b-form-input
             id="confirm-password"
             v-model="form.confirmPassword"
@@ -53,23 +71,30 @@
           />
 
           <b-form-invalid-feedback :state="validation">
-            {{ $t('forms.notMatch') }}
+            {{ $t("forms.notMatch") }}
           </b-form-invalid-feedback>
           <b-form-valid-feedback :state="validation">
-            {{ $t('forms.match') }}
+            {{ $t("forms.match") }}
           </b-form-valid-feedback>
         </b-form-group>
 
-        <b-form-group id="confirm-password-group" :label="$t('addUser.inputs.confirmPass.label')" label-for="confirm-password">
+        <b-form-group
+          id="confirm-password-group"
+          :label="$t('addUser.inputs.confirmPass.label')"
+          label-for="confirm-password"
+        >
           <b-form-select v-model="form.role" :options="options" class="mt-3" />
 
           <b-form-invalid-feedback :state="!!form.role">
-            {{ $t('forms.required') }}
+            {{ $t("forms.required") }}
           </b-form-invalid-feedback>
           <b-form-valid-feedback :state="!!form.role">
-            {{ $t('forms.valid') }}
+            {{ $t("forms.valid") }}
           </b-form-valid-feedback>
         </b-form-group>
+
+        <FormulateInput type="image" name="avatar" />
+
         <b-overlay
           :show="busy"
           rounded
@@ -89,70 +114,85 @@
             v-text="$t('actions.submit')"
           />
         </b-overlay>
-      </b-form>
+      </FormulateForm>
     </b-container>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'AddUser',
-  layout: 'admin',
-  data () {
+  name: "AddUser",
+  layout: "admin",
+  data() {
     return {
       busy: false,
       options: [
-        { value: 'admin', text: 'Admin' },
-        { value: 'listingOwner', text: 'Listing Owner' },
-        { value: 'spaceOwner', text: 'Space Owner' },
-        { value: 'manager', text: 'Manager' },
-        { value: 'searcher', text: 'Searcher' }
+        { value: "admin", text: "Admin" },
+        { value: "listingOwner", text: "Listing Owner" },
+        { value: "spaceOwner", text: "Space Owner" },
+        { value: "manager", text: "Manager" },
+        { value: "searcher", text: "Searcher" },
       ],
       form: {
-        email: '',
-        name: '',
-        role: 'searcher',
-        password: '',
-        confirmPassword: ''
-      }
-    }
+        email: "me@gmail.com",
+        name: "avatar",
+        role: "searcher",
+        password: "123456789",
+        confirmPassword: "123456789",
+      },
+    };
   },
   computed: {
-    validation () {
-      return !!(this.form.password && (this.form.password === this.form.confirmPassword) && this.form.password.length >= 8)
+    validation() {
+      return !!(
+        this.form.password &&
+        this.form.password === this.form.confirmPassword &&
+        this.form.password.length >= 8
+      );
     },
-    passwordValid () {
-      return this.form.password.length >= 8
-    }
+    passwordValid() {
+      return this.form.password.length >= 8;
+    },
   },
   methods: {
-    onSubmit (evt) {
-      this.busy = true
-      const data = Object.assign({}, this.form)
-      delete data.confirmPassword
-      this.$axios.$post('/users', data)
+    onSubmit(evt) {
+      this.busy = true;
+      const data = new FormData(document.getElementById("userForm"));
+      data.append("email", this.form.email);
+      data.append("name", this.form.name);
+      data.append("role", this.form.role);
+      data.append("password", this.form.password);
+
+      for (var pair of data.entries()) {
+        console.log(pair[0] + " - " + pair[1]);
+      }
+
+      this.$axios
+        .$post("/users", data)
         .then((res) => {
-          this.$bvToast.toast(`${this.$t('addUser.toast.justAdded')} ${this.form.name}.`, {
-            title: this.$t('addUser.toast.add'),
-            autoHideDelay: 5000,
-            appendToast: true,
-            variant: 'success'
-          })
-          this.busy = false
+          this.$bvToast.toast(
+            `${this.$t("addUser.toast.justAdded")} ${this.form.name}.`,
+            {
+              title: this.$t("addUser.toast.add"),
+              autoHideDelay: 5000,
+              appendToast: true,
+              variant: "success",
+            }
+          );
+          this.busy = false;
         })
         .catch((err) => {
           this.$bvToast.toast(err.response.data, {
-            title: this.$t('category.toast.err'),
+            title: this.$t("category.toast.err"),
             autoHideDelay: 5000,
             appendToast: true,
-            variant: 'error'
-          })
-          this.busy = false
-        })
-    }
-  }
-}
+            variant: "error",
+          });
+          this.busy = false;
+        });
+    },
+  },
+};
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
