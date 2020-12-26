@@ -50,13 +50,8 @@
           />
         </b-form-group>
 
-        <b-form-group
-          id="Role-group"
-          :label="$t('allUsers.editModal.role.label')"
-          label-for="role"
-        >
+        <b-form-group id="avatar-group" label="avatar" label-for="avatar">
           <our-uploader
-            v-if="user.avatar"
             :name="'avatar'"
             :old-images="user.avatar ? [user.avatar] : []"
           />
