@@ -1,8 +1,21 @@
 <template>
   <!-- Start Form -->
   <aside class="form py-3 px-3">
-    <header>
+    <header class="my-3">
       <h6 class="text-secondary" v-text="$t('singleListing.form.sendUs')" />
+      <b-row v-if="user._id" class="my-3">
+        <b-col v-if="user.avatar" cols="4">
+          <img
+            width="100"
+            style="border-radius: 20px"
+            :src="`https://popup.dk.se/_nuxt/img/${user.avatar}`"
+            alt="avatar"
+          />
+        </b-col>
+        <b-col cols="8">
+          <p class="font-weight-bold">{{ user.name }}</p>
+        </b-col>
+      </b-row>
     </header>
 
     <b-form id="contactForm" enctype="multipart/form-data">
@@ -173,6 +186,7 @@ export default {
   },
   data() {
     return {
+      user: {},
       options: [
         { text: "First radio", value: "first" },
         { text: "Second radio", value: "second" },
@@ -190,6 +204,14 @@ export default {
         options: "first",
       },
     };
+  },
+  watch: {
+    sellerId: {
+      immediate: true,
+      handler: function (val) {
+        this.getUser();
+      },
+    },
   },
   methods: {
     async sendForm() {
@@ -211,6 +233,15 @@ export default {
       await this.$axios
         .$post("/mail/bookingRequest", form)
         .then((res) => console.log(res))
+        .catch((err) => console.log(err));
+    },
+    async getUser() {
+      this.$axios
+        .$get(`/users/one/${this.sellerId}`)
+        .then((res) => {
+          console.log("hey", res);
+          this.user = res.data;
+        })
         .catch((err) => console.log(err));
     },
   },

@@ -13,6 +13,15 @@ exports.getUser = async (req, res, next) => {
   });
 };
 
+exports.getOneById = async (req, res, nex) => {
+  const user = await User.findById(req.params.id).select("-password");
+  res.status(200).json({
+    success: true,
+    ResultsNumber: user.length,
+    data: user,
+  });
+};
+
 exports.addFilters = async (req, res, next) => {
   const user = await User.findById(req.user.id).select("-password");
   try {

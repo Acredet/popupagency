@@ -11,6 +11,7 @@ const {
   updateUser,
   changePassword,
   addFilters,
+  getOneById,
 } = require("../controller/users");
 // const { User, validate } = require('../models/user')
 const router = express.Router();
@@ -27,4 +28,5 @@ router.patch("/:id", multer.single("avatar"), auth, updateUser);
 router.patch("/password/:id", auth, changePassword);
 router.get("/:role", auth, getUsersByRole);
 router.post("/filters/add", auth, addFilters);
+router.get("/one/:id", getOneById);
 module.exports = router;
