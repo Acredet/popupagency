@@ -32,10 +32,15 @@
 
               <b-form-input
                 id="username"
+                :state="!!form.name"
                 :placeholder="$t('forms.name.title')"
                 v-model="form.name"
                 autocomplete="off"
               />
+
+              <b-form-invalid-feedback id="username-feedback">
+                required*
+              </b-form-invalid-feedback>
             </b-input-group>
           </b-form-group>
         </b-col>
@@ -53,9 +58,13 @@
                 id="email"
                 :placeholder="$t('forms.email.holder')"
                 v-model="form.email"
+                :state="!!form.email"
                 type="email"
                 autocomplete="off"
               />
+              <b-form-invalid-feedback id="email-feedback">
+                required*
+              </b-form-invalid-feedback>
             </b-input-group>
           </b-form-group>
         </b-col>
@@ -74,9 +83,14 @@
               <b-form-input
                 id="Phone"
                 :placeholder="$t('forms.phone.holder')"
+                :state="!!form.phone"
                 v-model="form.phone"
                 autocomplete="off"
               />
+
+              <b-form-invalid-feedback id="phone-feedback">
+                required*
+              </b-form-invalid-feedback>
             </b-input-group>
           </b-form-group>
         </b-col>
@@ -115,20 +129,6 @@
           </b-form-group>
         </b-col>
         <!-- End empty -->
-
-        <!-- Start messsage -->
-        <!-- <b-col cols="12">
-          <b-form-group class="my-2">
-            <b-form-select
-              v-model="form.subject"
-              :options="options"
-              size="sm"
-              id="subject"
-            ></b-form-select>
-          </b-form-group>
-        </b-col> -->
-        <!-- End messsage -->
-
         <!-- Start messsage -->
         <b-col cols="12">
           <b-form-group class="my-2">
@@ -136,30 +136,25 @@
               :placeholder="$t('singleListing.form.message')"
               v-model="form.message"
               id="messsage"
+              :state="!!form.message"
               rows="8"
               size="sm"
             />
+
+            <b-form-invalid-feedback id="message-feedback">
+              required*
+            </b-form-invalid-feedback>
           </b-form-group>
         </b-col>
         <!-- End messsage -->
-
-        <!-- <b-col cols="12">
-          <b-form-group class="my-2">
-            <b-form-file
-              name="file[]"
-              :placeholder="$t('singleListing.form.files')"
-              drop-placeholder="Drop here..."
-              multiple
-            />
-          </b-form-group>
-        </b-col> -->
 
         <b-btn
           class="m-2"
           block
           type="button"
           pill
-          variant="primary"
+          style="background: #495057"
+          :disabled="!valid"
           @click="sendForm"
         >
           {{ $t("actions.submit") }}
@@ -204,6 +199,11 @@ export default {
         options: "first",
       },
     };
+  },
+  computed: {
+    valid() {
+      return !!this.name && !!this.email && !!this.phone && !!this.message;
+    },
   },
   watch: {
     sellerId: {
