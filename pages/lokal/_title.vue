@@ -8,28 +8,20 @@
         :title="place.title"
         :cover="place.cover"
         :price-per-day="place.prisperdag"
+        :location="place.routeGuidance.formattedAddress"
         @bookmarkWithoutLogin="modalShow = true"
       />
 
       <main>
-        <listing-feats :feats="feats" />
-
+        <section class="mx-md-5">
+          <listing-feats :feats="feats" />
+        </section>
+        <hr />
         <b-container>
           <b-row>
             <!-- Start Info col -->
             <b-col cols="12" md="8">
               <!-- Start Description -->
-              <section>
-                <h6 class="text-secondary">
-                  {{ place.title ? place.title[$i18n.locale] : "" }}
-                </h6>
-                <p>
-                  <b-icon icon="geo-alt-fill" />
-                  {{ place.routeGuidance.formattedAddress }}
-                </p>
-              </section>
-
-              <hr />
               <section>
                 <h6 class="text-secondary">Description</h6>
                 <div
@@ -57,7 +49,13 @@
               />
               <!-- End Description -->
               <hr />
-              <pricesTable :place="place" />
+              <b-row>
+                <b-col cols="12" md="6">
+                  <pricesTable :place="place" />
+                </b-col>
+
+                <b-col cols="12" md="6"></b-col>
+              </b-row>
               <hr />
 
               <centrum-details
@@ -175,7 +173,7 @@
 </template>
 
 <script>
-import { BIcon, BIconImage, BIconGeoAltFill } from "bootstrap-vue";
+import { BIcon, BIconImage } from "bootstrap-vue";
 import LoginModal from "@/components/loginModal";
 import Gallery from "@/components/singleListing/gallery";
 import HomeDetails from "@/components/singleListing/HomeDetails";
@@ -196,7 +194,6 @@ export default {
     // Icons
     BIcon,
     BIconImage,
-    BIconGeoAltFill,
 
     // Page components
     LoginModal,

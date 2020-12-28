@@ -3,7 +3,7 @@
   <b-container class="d-flex flex-column flex-nowrap my-5">
     <b-row
       no-gutters
-      class="d-flex flex-nowrap jsutify-content-center w-100 py-3 tabs"
+      class="d-flex flex-nowrap jsutify-content-center justify-content-md-center w-100 py-3 tabs"
     >
       <b-col
         v-for="feat in feats"

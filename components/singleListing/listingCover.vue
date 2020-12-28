@@ -21,20 +21,28 @@
         <div
           class="text-center h-100 d-flex flex-column justify-content-end align-items-start flex-lg-row align-items-lg-center justify-content-lg-between"
         >
-          <h1 class="font-5">
-            {{ title ? title[$i18n.locale] : "" }}
-            <b-btn
-              v-if="
-                $auth.loggedIn && ['admin', 'manager'].includes($auth.user.role)
-              "
-              variant="icon"
-              :to="`${$t('link')}admin/listings/edit/${title.sv
-                .split(' ')
-                .join('-')}`"
-            >
-              <b-icon icon="pencil-square" class="text-white" />
-            </b-btn>
-          </h1>
+          <div>
+            <h1 class="text-left font-6 mb-2">
+              {{ title ? title[$i18n.locale] : "" }}
+              <b-btn
+                v-if="
+                  $auth.loggedIn &&
+                  ['admin', 'manager'].includes($auth.user.role)
+                "
+                variant="icon"
+                :to="`${$t('link')}admin/listings/edit/${title.sv
+                  .split(' ')
+                  .join('-')}`"
+              >
+                <b-icon icon="pencil-square" class="text-white" />
+              </b-btn>
+            </h1>
+
+            <p class="text-left">
+              <b-icon icon="geo-alt-fill" />
+              {{ location }}
+            </p>
+          </div>
           <h2>{{ format(pricePerDay) }} Kr/dag</h2>
         </div>
 
@@ -76,12 +84,17 @@ import {
   BIconHeart,
   BIconHeartFill,
   BIconPencilSquare,
+  BIconGeoAltFill,
 } from "bootstrap-vue";
 import { addToFav } from "@/mixins/utils/addToFav";
 import { format } from "@/mixins/utils/formatNo";
 
 export default {
   props: {
+    location: {
+      type: String,
+      default: () => "",
+    },
     title: {
       type: Object,
       default: () => {
@@ -102,6 +115,7 @@ export default {
     BIcon,
     BIconHeart,
     BIconHeartFill,
+    BIconGeoAltFill,
   },
   data() {
     return {
