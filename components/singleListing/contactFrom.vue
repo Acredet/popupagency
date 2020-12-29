@@ -239,7 +239,6 @@ export default {
       this.$axios
         .$get(`/users/one/${this.sellerId}`)
         .then((res) => {
-          console.log("hey", res);
           this.user = res.data;
         })
         .catch((err) => console.log(err));
