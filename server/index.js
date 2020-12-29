@@ -14,6 +14,7 @@ const statistics = require("./routes/statistics");
 const centrum = require("./routes/centrum");
 const mail = require("./routes/mail");
 const availablePopups = require("./routes/availablePopups");
+const pathForImages = require("./utils/pathForImages");
 const app = express();
 
 // Bodyparser Middleware  cors
@@ -23,7 +24,7 @@ const connectDB = require("./config/db");
 connectDB();
 // a simple logger
 app.use((req, res, next) => {
-	next();
+  next();
 });
 app.use("/api/places", places);
 app.use("/api/users", users);
@@ -34,6 +35,7 @@ app.use("/api/centrum", centrum);
 app.use("/api/statistics", statistics);
 app.use("/api/mail", mail);
 app.use("/api/availablePopups", availablePopups);
+app.use("/api/files", pathForImages);
 
 // Import and Set Nuxt.js options
 nuxtConfig.dev = process.env.NODE_ENV !== "production";
@@ -41,22 +43,22 @@ app.use(express.json({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
 
 async function start() {
-	// Init Nuxt.js
-	const nuxt = new Nuxt(nuxtConfig);
-	// const { host, port } = nuxt.options.server;
-	await nuxt.ready();
-	// Build only in dev mode
-	if (nuxtConfig.dev) {
-		console.log("building");
-		const builder = new Builder(nuxt);
-		await builder.build();
-	}
-	// Give nuxt middleware to express
-	app.use(nuxt.render);
-	// Listen the server
-	const port = process.env.PORT || 3000;
-	app.listen(port);
+  // Init Nuxt.js
+  const nuxt = new Nuxt(nuxtConfig);
+  // const { host, port } = nuxt.options.server;
+  await nuxt.ready();
+  // Build only in dev mode
+  if (nuxtConfig.dev) {
+    console.log("building");
+    const builder = new Builder(nuxt);
+    await builder.build();
+  }
+  // Give nuxt middleware to express
+  app.use(nuxt.render);
+  // Listen the server
+  const port = process.env.PORT || 3000;
+  app.listen(port);
 
-	console.log(`Server listening on port:${port}`);
+  console.log(`Server listening on port:${port}`);
 }
 start();

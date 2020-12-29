@@ -6,7 +6,7 @@
 
       <listingCover
         :title="place.title"
-        :cover="place.cover"
+        :cover="listingImages.cover"
         :price-per-day="place.prisperdag"
         :location="place.routeGuidance.formattedAddress"
         @bookmarkWithoutLogin="modalShow = true"
@@ -85,7 +85,10 @@
 
           <!-- Start Galleri -->
           <b-col class="my-3" cols="12">
-            <Gallery :galleryName="'bildgalleri'" :images="images" />
+            <Gallery
+              :galleryName="'bildgalleri'"
+              :images="listingImages.bildgalleri"
+            />
           </b-col>
           <!-- End Galleri -->
           <hr />
@@ -211,6 +214,7 @@ export default {
   },
   data() {
     return {
+      testImage: [],
       loadingState: true,
       modalShow: false,
       modalShowForm: false,
@@ -221,6 +225,12 @@ export default {
         markers: [],
       },
       place: {},
+      listingImages: {
+        cover: [],
+        centrumgalleri: [],
+        bildgalleri: [],
+        planritning: [],
+      },
       similar: [],
       tabOpened: 0,
     };
@@ -255,35 +265,15 @@ export default {
         },
       ];
     },
-    images() {
-      return !this.place.bildgalleri
-        ? []
-        : this.place.bildgalleri.map(
-            (x) => `https://popup.dk.se/_nuxt/img/${x}`
-          );
-    },
-    centrumgalleri() {
-      return !this.place.centrumgalleri
-        ? []
-        : this.place.centrumgalleri.map(
-            (x) => `https://popup.dk.se/_nuxt/img/${x}`
-          );
-    },
-    planritningImages() {
-      return !this.place.planritning
-        ? []
-        : this.place.planritning.map(
-            (x) => `https://popup.dk.se/_nuxt/img/${x}`
-          );
-    },
   },
+
   async created() {
     const placeFromStore = this.getOneListing(
       this.$route.params.title.replace(/[-]/g, " ")
     );
-    console.log(placeFromStore);
     if (placeFromStore.routeGuidance) {
       this.thereIsCentrum = true;
+      this.listingImages.centrumgalleri = placeFromStore.centrumgalleri;
       this.map = {
         center: {
           lng: placeFromStore.routeGuidance.coordinates[0],
@@ -298,16 +288,40 @@ export default {
         ],
       };
     }
+    this.place = placeFromStore;
 
+    this.listingImages.cover = this.place.cover;
+    this.listingImages.bildgalleri = this.place.bildgalleri;
+    this.listingImages.planritning = this.place.planritning;
+    this.getImages();
     // Increment views
     await this.$axios.patch(`/places/view/${placeFromStore._id}`);
-    this.place = placeFromStore;
+
     this.similar = this.listings
       .filter((place) => place.stad.sv === placeFromStore.stad.sv)
       .filter((place) => place._id !== placeFromStore._id);
     this.loadingState = false;
   },
   methods: {
+    async getImages() {
+      for (const key in this.listingImages) {
+        if (Object.hasOwnProperty.call(this.listingImages, key)) {
+          const element = this.listingImages[key];
+          const alt = [];
+
+          for (let i = 0; i < element.length; i++) {
+            const imgName = element[i];
+            await this.$axios
+              .get(`/files/${imgName}`)
+              .then((res) => {
+                alt[i] = res.data;
+              })
+              .catch((err) => console.log(err));
+          }
+          this.listingImages[key] = alt;
+        }
+      }
+    },
     goUp() {
       const el = document.getElementById("contactForm");
       const rect = el.getBoundingClientRect();

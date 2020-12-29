@@ -7,7 +7,7 @@
           <img
             style="height: 60vh"
             class="d-block img-fluid w-100"
-            :src="`https://popup.dk.se/_nuxt/img/${img}`"
+            :src="img"
             alt="image slot"
           />
         </template>
