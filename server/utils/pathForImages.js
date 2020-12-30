@@ -8,6 +8,7 @@ const mime = {
   css: "text/css",
   gif: "image/gif",
   jpg: "image/jpeg",
+  jpeg: "image/jpeg",
   png: "image/png",
   svg: "image/svg+xml",
   pdf: "application/pdf",
@@ -20,7 +21,7 @@ router.get("/:name", (req, res) => {
     const filePath = `${__dirname}/../uploads/images/${filename}`;
     var imageAsBase64 = fs.readFileSync(filePath, "base64");
     const type = mime[path.extname(filePath).slice(1)] || "text/plain";
-    res.setHeader("Content-Type", type);
+    // res.setHeader("Content-Type", type);
 
     return res.send(`data:${type};base64,${imageAsBase64}`);
   } catch (err) {
