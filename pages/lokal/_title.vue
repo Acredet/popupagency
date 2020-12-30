@@ -54,7 +54,20 @@
                   <pricesTable :place="place" />
                 </b-col>
 
-                <b-col cols="12" md="6"></b-col>
+                <b-col cols="12" md="6">
+                  <section>
+                    <h4>Plentring:</h4>
+                    <nuxt-link
+                      v-for="(pdf, i) in place.planritning"
+                      :key="i"
+                      target="_blank"
+                      class="d-block"
+                      :to="localePath(`/pdf/${pdf}`)"
+                    >
+                      {{ pdf }}
+                    </nuxt-link>
+                  </section>
+                </b-col>
               </b-row>
               <hr />
 
