@@ -13,7 +13,6 @@
       :position="infoWindowPos"
       :opened="infoWinOpen"
       @closeclick="infoWinOpen = false"
-      @domready="ready"
     />
     <gmap-cluster @click="singleClick">
       <gmap-marker
