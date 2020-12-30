@@ -19,6 +19,7 @@
 
       <!-- show last One -->
       <b-col
+        v-if="images.length > 5"
         cols="12"
         md="4"
         class="mb-3 position-relative"
