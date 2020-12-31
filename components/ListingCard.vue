@@ -39,8 +39,8 @@
           </b-carousel-slide>
         </b-carousel>
 
-        <div class="listing-card--header---overlay px-3">
-          <p class="p-0 m-0 text-white" v-text="place.title[$i18n.locale]" />
+        <div class="listing-card--header---overlay p-3">
+          <h2 class="p-0 m-0 text-dark" v-text="place.title[$i18n.locale]" />
         </div>
       </div>
       <!-- End header -->
