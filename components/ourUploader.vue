@@ -56,7 +56,7 @@ export default {
       deep: true,
       immediate: true,
       handler: async function (val) {
-        if (val.length > 0) {
+        if (val && val.length > 0) {
           for (let i = 0; i < val.length; i++) {
             const img = val[i];
             await this.getImage(img)
