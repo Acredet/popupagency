@@ -1,15 +1,7 @@
 <template>
   <div>
     <!-- Login modal -->
-    <b-modal id="modal-center" v-model="modalShow" centered title="Login">
-      <p class="my-4">You must login to be able to have bookmarks!</p>
-      <template v-slot:modal-footer>
-        <div>
-          <b-btn variant="primary" :to="localePath('/login')"> Login </b-btn>
-          <b-btn variant="error" @click="modalShow = false"> cancel </b-btn>
-        </div>
-      </template>
-    </b-modal>
+    <LoginModal :modalShow="modalShow" @close-modal="modalShow = false" />
     <!-- End modal -->
 
     <!-- start lodaing -->
@@ -116,9 +108,16 @@
 <script>
 import { mapActions } from "vuex";
 import listingCard from "@/components/ListingCard";
+import LoginModal from "@/components/loginModal";
 export default {
+  data() {
+    return {
+      modalShow: false,
+    };
+  },
   components: {
     listingCard,
+    LoginModal,
   },
   props: {
     cards: {
