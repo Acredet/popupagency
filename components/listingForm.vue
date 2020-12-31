@@ -132,6 +132,23 @@
           <section>
             <b-card class="my-5" :title="$t('addListing.inputs.planritning')">
               <b-card-body>
+                <div v-if="listing && listing._id && listing.planritning">
+                  <div
+                    v-for="(file, index) in listing.planritning"
+                    :key="index"
+                    class="border p-2 mb-2"
+                  >
+                    <b-btn-close
+                      @click="
+                        deleteImageFromExistingArray({
+                          index,
+                          name: 'planritning[]',
+                        })
+                      "
+                    />
+                    <span>{{ file.slice(file.indexOf("[]-") + 3) }}</span>
+                  </div>
+                </div>
                 <b-form-file
                   name="planritning[]"
                   accept="application/pdf"
@@ -239,6 +256,7 @@
           </b-row>
 
           <b-row>
+            <!-- Start User -->
             <b-col cols="12" md="6">
               <b-card :title="$t('addListing.inputs.Lokalens')">
                 <b-card-body>
@@ -251,12 +269,14 @@
                     {{ $t("addListing.inputs.selectOne") }}
                   </b-form-invalid-feedback>
                   <b-form-valid-feedback :state="lokalensValid">
-                    {{ $t("addListing.inputs.choosed") }}
-                    {{ lokal }}
+                    {{ $t("forms.valid") }}
                   </b-form-valid-feedback>
                 </b-card-body>
               </b-card>
             </b-col>
+            <!-- End User -->
+
+            <!-- Start Expiry date -->
             <b-col cols="12" md="6">
               <b-card :title="$t('addListing.inputs.expiry')">
                 <b-card-body>
@@ -270,6 +290,7 @@
                 </b-card-body>
               </b-card>
             </b-col>
+            <!-- End Expiry date -->
           </b-row>
         </div>
       </FormulateForm>
@@ -505,7 +526,9 @@ export default {
 
       const lang = this.$i18n.getLocaleCookie();
 
-      this.lokalOpts = users.map((x) => x.name);
+      this.lokalOpts = users.map((x) => {
+        return { text: x.name, value: x._id };
+      });
       this.allTags = tags;
       this.renderEgensKaper = tags.map((x) => {
         return {
