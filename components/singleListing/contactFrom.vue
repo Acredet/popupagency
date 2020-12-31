@@ -4,11 +4,20 @@
     <header class="my-3">
       <h6 class="text-secondary" v-text="$t('singleListing.form.sendUs')" />
       <b-row v-if="user._id" class="my-3">
-        <b-col v-if="user.avatar" cols="4">
+        <b-col cols="4">
           <img
+            v-if="user.avatar"
             width="100"
             style="border-radius: 20px"
             :src="`https://popup.dk.se/_nuxt/img/${user.avatar}`"
+            alt="avatar"
+          />
+
+          <img
+            v-else
+            width="100"
+            style="border-radius: 20px"
+            src="@/assets/img/user-placeholder.jpeg"
             alt="avatar"
           />
         </b-col>
@@ -32,15 +41,11 @@
 
               <b-form-input
                 id="username"
-                :state="!!form.name"
-                :placeholder="$t('forms.name.title')"
+                :placeholder="$t('forms.name.title') + '*'"
                 v-model="form.name"
+                required
                 autocomplete="off"
               />
-
-              <b-form-invalid-feedback id="username-feedback">
-                required*
-              </b-form-invalid-feedback>
             </b-input-group>
           </b-form-group>
         </b-col>
@@ -56,15 +61,12 @@
 
               <b-form-input
                 id="email"
-                :placeholder="$t('forms.email.holder')"
+                lazy
+                :placeholder="$t('forms.email.holder') + '*'"
                 v-model="form.email"
-                :state="!!form.email"
                 type="email"
                 autocomplete="off"
               />
-              <b-form-invalid-feedback id="email-feedback">
-                required*
-              </b-form-invalid-feedback>
             </b-input-group>
           </b-form-group>
         </b-col>
@@ -82,15 +84,10 @@
 
               <b-form-input
                 id="Phone"
-                :placeholder="$t('forms.phone.holder')"
-                :state="!!form.phone"
+                :placeholder="$t('forms.phone.holder') + '*'"
                 v-model="form.phone"
                 autocomplete="off"
               />
-
-              <b-form-invalid-feedback id="phone-feedback">
-                required*
-              </b-form-invalid-feedback>
             </b-input-group>
           </b-form-group>
         </b-col>
@@ -136,14 +133,9 @@
               :placeholder="$t('singleListing.form.message')"
               v-model="form.message"
               id="messsage"
-              :state="!!form.message"
               rows="8"
               size="sm"
             />
-
-            <b-form-invalid-feedback id="message-feedback">
-              required*
-            </b-form-invalid-feedback>
           </b-form-group>
         </b-col>
         <!-- End messsage -->
@@ -202,7 +194,12 @@ export default {
   },
   computed: {
     valid() {
-      return !!this.name && !!this.email && !!this.phone && !!this.message;
+      return (
+        !!this.form.name &&
+        !!this.form.email &&
+        !!this.form.phone &&
+        !!this.form.message
+      );
     },
   },
   watch: {
@@ -240,6 +237,7 @@ export default {
         .$get(`/users/one/${this.sellerId}`)
         .then((res) => {
           this.user = res.data;
+          console.log(res.data);
         })
         .catch((err) => console.log(err));
     },

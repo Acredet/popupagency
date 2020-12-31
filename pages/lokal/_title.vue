@@ -92,7 +92,7 @@
               md="4"
               cols="12"
             >
-              <contactForm :sellerId="place.userId" />
+              <contactForm :sellerId="place.kontaktperson" />
             </b-col>
           </b-row>
 
