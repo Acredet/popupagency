@@ -10,7 +10,7 @@
       <!-- A custom formatted data column cell -->
       <template #cell(price)="data">
         <span v-if="data.item.text === $t('addListing.inputs.yta.label')">
-          {{ data.item.val }} m<sup>3</sup>
+          {{ data.item.val }} m<sup>2</sup>
         </span>
 
         <span

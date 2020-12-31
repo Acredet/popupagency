@@ -17,7 +17,7 @@
           :alt="feat.name"
         />
         <p v-if="feat.name === 'yta-1'" class="pt-1">
-          {{ feat.text }} m<sup>3</sup>
+          {{ feat.text }} m<sup>2</sup>
         </p>
         <p v-else class="pt-1">{{ feat.text }}</p>
       </b-col>
