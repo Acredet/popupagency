@@ -61,9 +61,9 @@
 
               <b-form-input
                 id="email"
-                lazy
                 :placeholder="$t('forms.email.holder') + '*'"
                 v-model="form.email"
+                required
                 type="email"
                 autocomplete="off"
               />
@@ -86,6 +86,7 @@
                 id="Phone"
                 :placeholder="$t('forms.phone.holder') + '*'"
                 v-model="form.phone"
+                required
                 autocomplete="off"
               />
             </b-input-group>
@@ -130,8 +131,9 @@
         <b-col cols="12">
           <b-form-group class="my-2">
             <b-form-textarea
-              :placeholder="$t('singleListing.form.message')"
+              :placeholder="$t('singleListing.form.message') + '*'"
               v-model="form.message"
+              required
               id="messsage"
               rows="8"
               size="sm"
