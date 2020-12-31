@@ -31,7 +31,7 @@
         >
           <!-- Start first horizontal tab -->
           <b-dropdown-group class="px-2 custom-tab plats">
-            <div class="d-flex">
+            <div class="d-flex" style="overflow-x: scroll">
               <b-btn
                 v-for="(country, key) in filters.plats.tabs"
                 :key="key"
