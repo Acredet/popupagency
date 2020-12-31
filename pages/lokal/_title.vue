@@ -61,10 +61,12 @@
                       v-for="(pdf, i) in place.planritning"
                       :key="i"
                       target="_blank"
-                      class="d-block"
+                      class="d-block text-dark"
+                      download
                       :to="localePath(`/pdf/${pdf}`)"
                     >
-                      {{ pdf }}
+                      <b-icon-file-arrow-down />
+                      {{ pdf.slice(pdf.indexOf("[]-") + 3) }}
                     </nuxt-link>
                   </section>
                 </b-col>
@@ -189,7 +191,7 @@
 </template>
 
 <script>
-import { BIcon, BIconImage } from "bootstrap-vue";
+import { BIcon, BIconImage, BIconFileArrowDown } from "bootstrap-vue";
 import LoginModal from "@/components/loginModal";
 import Gallery from "@/components/singleListing/gallery";
 import HomeDetails from "@/components/singleListing/HomeDetails";
@@ -210,6 +212,7 @@ export default {
     // Icons
     BIcon,
     BIconImage,
+    BIconFileArrowDown,
 
     // Page components
     LoginModal,
