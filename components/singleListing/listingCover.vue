@@ -43,7 +43,7 @@
               {{ location }}
             </p>
           </div>
-          <h2>{{ format(pricePerDay) }} Kr/dag</h2>
+          <h2>{{ ` ${format(pricePerDay)} kr / ${$t(period)}` }}</h2>
         </div>
 
         <div class="bookmark-wrapper position-absolute">
@@ -108,6 +108,10 @@ export default {
     pricePerDay: {
       type: Number,
       default: () => 0,
+    },
+    period: {
+      type: String,
+      default: () => "Day",
     },
   },
   components: {

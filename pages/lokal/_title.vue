@@ -7,7 +7,8 @@
       <listingCover
         :title="place.title"
         :cover="listingImages.cover"
-        :price-per-day="place.prisperdag"
+        :price-per-day="place.prioteradpris.val"
+        :period="place.prioteradpris.period"
         :location="place.routeGuidance.formattedAddress"
         @bookmarkWithoutLogin="modalShow = true"
       />
@@ -22,9 +23,24 @@
             <!-- Start Info col -->
             <b-col cols="12" md="8">
               <!-- Start Description -->
-              <section>
-                <h6 class="text-secondary">Description</h6>
+              <section class="main-text-color-grey">
+                <h6 class="text-secondary main-text-color-grey titles-font">
+                  Description
+                </h6>
                 <div
+                  class="main-text-color-grey"
+                  v-if="!readMoreActivated"
+                  v-html="
+                    place.beskreving
+                      ? place.beskreving[$i18n.locale].slice(0, 600)
+                      : ''
+                  "
+                />
+                <a class="" v-if="!readMoreActivated" @click="activateReadMore">
+                  Read more...
+                </a>
+                <div
+                  v-if="readMoreActivated"
                   v-html="
                     place.beskreving ? place.beskreving[$i18n.locale] : ''
                   "
@@ -56,7 +72,7 @@
 
                 <b-col cols="12" md="6">
                   <section>
-                    <h4>Plentring:</h4>
+                    <h4 class="main-text-color-grey titles-font">Plentring</h4>
                     <nuxt-link
                       v-for="(pdf, i) in place.planritning"
                       :key="i"
@@ -109,7 +125,7 @@
           <hr />
           <b-col cols="12">
             <section>
-              <h6 class="text-secondary">
+              <h6 class="main-text-color-grey titles-font">
                 {{ $t("singleListing.mapTitle") }}
               </h6>
               <gmap-map
@@ -231,6 +247,7 @@ export default {
   data() {
     return {
       testImage: [],
+      readMoreActivated: false,
       loadingState: true,
       modalShow: false,
       modalShowForm: false,
@@ -338,6 +355,9 @@ export default {
         }
       }
     },
+    activateReadMore() {
+      this.readMoreActivated = true;
+    },
     goUp() {
       const el = document.getElementById("contactForm");
       const rect = el.getBoundingClientRect();
@@ -359,6 +379,10 @@ export default {
 p {
   padding: 0;
   margin: 0;
+  color: #4a4a4a !important ;
+}
+span {
+  color: #4a4a4a !important ;
 }
 
 main .container section {

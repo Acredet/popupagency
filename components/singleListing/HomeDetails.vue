@@ -1,7 +1,9 @@
 <template>
   <!-- Start Home Details -->
   <section>
-    <h6 class="text-secondary">
+    <h6
+      class="text-secondary titles-font titles-font mb-4 main-text-color-grey"
+    >
       Home Details for
       {{ title ? title[$i18n.locale] : "" }}
     </h6>
