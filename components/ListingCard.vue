@@ -40,7 +40,10 @@
         </b-carousel>
 
         <div class="listing-card--header---overlay p-3">
-          <h2 class="p-0 m-0 text-dark" v-text="place.title[$i18n.locale]" />
+          <h2
+            class="p-0 m-0 font-xl-2 main-text-color-grey"
+            v-text="place.title[$i18n.locale]"
+          />
         </div>
       </div>
       <!-- End header -->
