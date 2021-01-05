@@ -32,7 +32,7 @@
                   v-if="!readMoreActivated"
                   v-html="
                     place.beskreving
-                      ? place.beskreving[$i18n.locale].slice(0, 600)
+                      ? place.beskreving[$i18n.locale].slice(0, 500)
                       : ''
                   "
                 />

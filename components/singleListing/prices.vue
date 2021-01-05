@@ -52,17 +52,17 @@ export default {
           text: `${pricePer} ${this.$t(
             "singleListing.info.priceList.weekend"
           )}`,
-          val: "prispermanad",
+          val: "prisperhelg",
         },
         {
           text: `${pricePer} ${this.$t("singleListing.info.priceList.month")}`,
-          val: "prisperlanghelg",
+          val: "prispermanad",
         },
         {
           text: `${pricePer} ${this.$t(
             "singleListing.info.priceList.longWeekend"
           )}`,
-          val: "prisperhelg",
+          val: "prisperlanghelg",
         },
         {
           text: `${pricePer} ${this.$t("singleListing.info.priceList.week")}`,

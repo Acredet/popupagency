@@ -2,14 +2,13 @@
   <!-- Start Form -->
   <aside class="form py-3 px-3">
     <header class="my-3">
-      <h6 class="text-secondary" v-text="$t('singleListing.form.sendUs')" />
       <b-row v-if="user._id" class="my-3">
         <b-col cols="4">
           <img
             v-if="user.avatar"
             width="100"
             style="border-radius: 20px"
-            :src="`https://popup.dk.se/_nuxt/img/${user.avatar}`"
+            :src="`data:images/${user.avatar}`"
             alt="avatar"
           />
 
@@ -23,6 +22,9 @@
         </b-col>
         <b-col cols="8">
           <p class="font-weight-bold">{{ user.name }}</p>
+        </b-col>
+        <b-col cols="8">
+          <h6 class="text-secondary" v-text="$t('singleListing.form.sendUs')" />
         </b-col>
       </b-row>
     </header>
