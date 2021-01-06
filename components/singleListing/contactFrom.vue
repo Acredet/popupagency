@@ -8,7 +8,7 @@
             v-if="user.avatar"
             width="100"
             style="border-radius: 20px"
-            :src="`data:images/${user.avatar}`"
+            :src="avatarimage"
             alt="avatar"
           />
 
@@ -22,8 +22,6 @@
         </b-col>
         <b-col cols="8">
           <p class="font-weight-bold">{{ user.name }}</p>
-        </b-col>
-        <b-col cols="8">
           <h6 class="text-secondary" v-text="$t('singleListing.form.sendUs')" />
         </b-col>
       </b-row>
@@ -108,6 +106,11 @@
               close-button
               size="sm"
               class="mb-2"
+              :date-format-options="{
+                year: 'numeric',
+                month: 'numeric',
+                day: 'numeric',
+              }"
             />
           </b-form-group>
         </b-col>
@@ -125,6 +128,11 @@
               close-button
               size="sm"
               class="mb-2"
+              :date-format-options="{
+                year: 'numeric',
+                month: 'numeric',
+                day: 'numeric',
+              }"
             />
           </b-form-group>
         </b-col>
@@ -164,6 +172,7 @@
 
 <script>
 import { BIconPersonFill, BIconTelephoneFill } from "bootstrap-vue";
+import { getImages } from "@/mixins/utils/getImage";
 export default {
   props: {
     sellerId: {
@@ -175,9 +184,11 @@ export default {
     BIconPersonFill,
     BIconTelephoneFill,
   },
+
   data() {
     return {
       user: {},
+      avatarimage: [],
       options: [
         { text: "First radio", value: "first" },
         { text: "Second radio", value: "second" },
@@ -196,7 +207,20 @@ export default {
       },
     };
   },
+  mixins: [getImages],
   computed: {
+    async perseonimage() {
+      await this.getImage(this.user.avatar)
+        .then((res) => {
+          this.avatarimage.push(res);
+        })
+        .catch((err) =>
+          this.$bvToast.toast(err, {
+            title: "Something is wrong",
+            autoHideDelay: 5000,
+          })
+        );
+    },
     valid() {
       return (
         !!this.form.name &&
