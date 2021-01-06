@@ -32,11 +32,28 @@
                   v-if="!readMoreActivated"
                   v-html="
                     place.beskreving
-                      ? place.beskreving[$i18n.locale].slice(0, 500)
+                      ? place.beskreving[$i18n.locale].slice(0, 400)
                       : ''
                   "
                 />
-                <a class="" v-if="!readMoreActivated" @click="activateReadMore">
+                <div
+                  style="
+                    display: block;
+                    width: 100%;
+                    height: 30px;
+                    background-color: white;
+                    position: relative;
+                    top: -30px;
+                    opacity: 0.6;
+                  "
+                  v-if="!readMoreActivated"
+                ></div>
+                <a
+                  style="position: relative; top: -30px"
+                  class=""
+                  v-if="!readMoreActivated"
+                  @click="activateReadMore"
+                >
                   Read more...
                 </a>
                 <div
