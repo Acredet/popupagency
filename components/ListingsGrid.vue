@@ -90,7 +90,7 @@
         cols="12"
         :md="6"
         :lg="layout === $t('ledigaLokaler.map') ? 6 : 4"
-        :xl="layout === $t('ledigaLokaler.map') ? 6 : 3"
+        :xl="layout === $t('ledigaLokaler.map') ? 6 : 4"
       >
         <listing-card
           :place="card"

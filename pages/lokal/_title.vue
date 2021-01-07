@@ -43,7 +43,7 @@
                     height: 30px;
                     background-color: white;
                     position: relative;
-                    top: -30px;
+                    top: -40px;
                     opacity: 0.6;
                   "
                   v-if="!readMoreActivated"

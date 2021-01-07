@@ -32,7 +32,7 @@
                 :src="img"
                 width="100%"
                 class="img-fluid"
-                style="height: 200px"
+                style="height: 235px"
                 :alt="place.title[$i18n.locale]"
               />
             </template>
@@ -41,7 +41,7 @@
 
         <div class="listing-card--header---overlay p-3">
           <h2
-            class="p-0 m-0 font-xl-2 main-text-color-grey"
+            class="p-0 m-0 font-xl-3 price-row"
             v-text="place.title[$i18n.locale]"
           />
         </div>
@@ -181,5 +181,45 @@ export default {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.listing-card--header---overlay {
+  position: absolute;
+  bottom: 0;
+  z-index: 1;
+}
+.price-row {
+  font-size: 20px;
+  line-height: 1;
+  color: #fff;
+  text-shadow: 0 1px #444;
+  display: inline-block;
+  font-weight: 700;
+}
+.listing-card--header:after {
+  content: "";
+  display: block;
+  height: 30%;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  pointer-events: none;
+  background-image: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    from(rgba(0, 0, 0, 0)),
+    to(rgba(0, 0, 0, 0.5))
+  );
+  background-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
+  background-repeat: repeat-x;
+  -webkit-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000',endColorstr='#80000000',GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000',endColorstr='#80000000',GradientType=0);
 }
 </style>
