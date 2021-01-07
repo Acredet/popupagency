@@ -188,7 +188,7 @@ export default {
   data() {
     return {
       user: {},
-      avatarimage: [],
+      avatarimage: null,
       options: [
         { text: "First radio", value: "first" },
         { text: "Second radio", value: "second" },
@@ -209,18 +209,6 @@ export default {
   },
   mixins: [getImages],
   computed: {
-    async perseonimage() {
-      await this.getImage(this.user.avatar)
-        .then((res) => {
-          this.avatarimage.push(res);
-        })
-        .catch((err) =>
-          this.$bvToast.toast(err, {
-            title: "Something is wrong",
-            autoHideDelay: 5000,
-          })
-        );
-    },
     valid() {
       return (
         !!this.form.name &&
@@ -263,9 +251,9 @@ export default {
     async getUser() {
       this.$axios
         .$get(`/users/one/${this.sellerId}`)
-        .then((res) => {
+        .then(async (res) => {
           this.user = res.data;
-          console.log(res.data);
+          this.avatarimage = await this.getImage(this.user.avatar);
         })
         .catch((err) => console.log(err));
     },
