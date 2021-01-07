@@ -49,7 +49,7 @@
                   v-if="!readMoreActivated"
                 ></div>
                 <a
-                  style="position: relative; top: -30px"
+                  style="position: relative; top: -30px; cursor: pointer"
                   class=""
                   v-if="!readMoreActivated"
                   @click="activateReadMore"
