@@ -5,7 +5,7 @@
       <b-carousel-slide v-for="img in cover" :key="img">
         <template #img>
           <img
-            style="height: 60vh"
+            style="height: 65vh; object-fit: cover"
             class="d-block img-fluid w-100"
             :src="img"
             alt="image slot"
@@ -45,34 +45,34 @@
           </div>
           <h2>{{ ` ${format(pricePerDay)} kr / ${$t(period)}` }}</h2>
         </div>
-
-        <div class="bookmark-wrapper position-absolute">
-          <b-btn
-            class="bookmark-btn"
-            @click="
-              (e) => {
-                if (!this.$auth.loggedIn) {
-                  this.$emit('bookmarkWithoutLogin');
-                } else {
-                  this.AddToFav(e, title.sv);
-                }
-              }
-            "
-            variant="icon"
-          >
-            <b-icon
-              scale="1.5"
-              :icon="
-                $auth.loggedIn &&
-                $auth.user.fav.findIndex((x) => x === title.sv) !== -1
-                  ? 'heart-fill'
-                  : 'heart'
-              "
-              style="color: red"
-            />
-          </b-btn>
-        </div>
       </b-container>
+
+      <div class="bookmark-wrapper position-absolute">
+        <b-btn
+          class="bookmark-btn"
+          @click="
+            (e) => {
+              if (!this.$auth.loggedIn) {
+                this.$emit('bookmarkWithoutLogin');
+              } else {
+                this.AddToFav(e, title.sv);
+              }
+            }
+          "
+          variant="icon"
+        >
+          <b-icon
+            scale="1.5"
+            :icon="
+              $auth.loggedIn &&
+              $auth.user.fav.findIndex((x) => x === title.sv) !== -1
+                ? 'heart-fill'
+                : 'heart'
+            "
+            style="color: red"
+          />
+        </b-btn>
+      </div>
     </section>
   </div>
   <!-- End cover -->
@@ -176,7 +176,7 @@ export default {
 
 .cover .cover--details .bookmark-wrapper {
   bottom: -22%;
-  right: 0;
+  right: 20px;
 }
 
 .cover .cover--details .bookmark-btn,
