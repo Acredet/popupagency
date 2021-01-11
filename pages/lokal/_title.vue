@@ -90,17 +90,26 @@
                 <b-col cols="12" md="6">
                   <section>
                     <h4 class="main-text-color-grey titles-font">Plentring</h4>
-                    <nuxt-link
-                      v-for="(pdf, i) in place.planritning"
-                      :key="i"
-                      target="_blank"
-                      class="d-block text-dark"
-                      download
-                      :to="localePath(`/pdf/${pdf}`)"
-                    >
-                      <b-icon-file-arrow-down />
-                      {{ pdf.slice(pdf.indexOf("[]-") + 3) }}
-                    </nuxt-link>
+                    <ul class="files">
+                      <li
+                        class="file-element"
+                        v-for="(pdf, i) in place.planritning"
+                        :key="i"
+                      >
+                        <nuxt-link
+                          target="_blank"
+                          class="d-block text-dark"
+                          download
+                          :to="localePath(`/pdf/${pdf}`)"
+                        >
+                          <img
+                            :src="pdf.substring(0, pdf.length - 3) + 'png'"
+                            width="150"
+                            height="150"
+                          />
+                        </nuxt-link>
+                      </li>
+                    </ul>
                   </section>
                 </b-col>
               </b-row>
@@ -343,6 +352,10 @@ export default {
     this.listingImages.cover = this.place.cover;
     this.listingImages.bildgalleri = this.place.bildgalleri;
     this.listingImages.planritning = this.place.planritning;
+    const previews = this.listingImages.planritning.map((pdf) => {
+      (pdf) => pdf.substring(0, pdf.length - 3) + "png";
+    });
+    this.listingImages.planritning.concat(previews);
     this.getImages();
     // Increment views
     await this.$axios.patch(`/places/view/${placeFromStore._id}`);
@@ -429,5 +442,23 @@ main .container section {
   background-image: url("~assets/img/contact-us-person.png");
   background-size: cover;
   background-position: center center;
+}
+
+.files {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -0.9375rem;
+}
+.file-element {
+  padding: 0.9375rem;
+}
+.file-element img {
+  border: thin solid #0ba174;
+  width: 100%;
+  height: auto;
+  padding: 0.5rem;
 }
 </style>
