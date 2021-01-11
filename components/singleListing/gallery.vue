@@ -6,15 +6,15 @@
     <b-row>
       <!--  First 4 pics -->
       <b-col
-        v-for="(src, index) in images.slice(0, 4)"
+        v-for="(src, index) in images.slice(0, 5)"
         :key="src"
         cols="12"
-        :md="index <= 1 ? 6 : 4"
+        :md="index <= 1 ? 4 : 4"
         class="mb-3 position-relative"
         @click="showV(gallryName, index)"
       >
-        <div class="gallery-images" style="height: 320px">
-          <img width="100%" :src="src" style="height: 320px" />
+        <div class="gallery-images" style="height: 300px">
+          <img width="100%" :src="src" style="height: 300px" />
         </div>
       </b-col>
       <!--  First 4 pics -->
@@ -27,11 +27,11 @@
         class="mb-3 position-relative"
         @click="showV(gallryName, 4)"
       >
-        <div class="showMore" style="height: 320px">
+        <div class="showMore" style="height: 300px">
           <div class="showMore--overlay">
             <p>See All {{ images.length }} images</p>
           </div>
-          <img width="100%" :src="images[4]" style="height: 320px" />
+          <img width="100%" :src="images[4]" style="height: 300px" />
         </div>
       </b-col>
       <!-- show last One -->
