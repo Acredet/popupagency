@@ -159,6 +159,7 @@ export default {
         },
         { key: "actions", label: this.$t("allListing.table.header.actions") },
       ],
+      covers: [],
     };
   },
   computed: {
@@ -170,10 +171,9 @@ export default {
     ...mapActions({
       updateStore: "updateStore",
     }),
-    async getCover(link) {
-      await this.getImage(link).then((res) => {
-        return res;
-      });
+    getCover(link) {
+      const cover = this.covers.filter((cover) => cover.link === link)[0];
+      if (cover) return cover.img;
     },
     async deleteListing() {
       await this.$axios
@@ -199,6 +199,16 @@ export default {
           };
         });
     },
+    async createCovers(link) {
+      const cover = {
+        link,
+        img: await this.getImage(link),
+      };
+      this.covers.push(cover);
+    },
+  },
+  mounted: async function () {
+    this.items.forEach((item) => this.createCovers(item.cover[0]));
   },
 };
 </script>
