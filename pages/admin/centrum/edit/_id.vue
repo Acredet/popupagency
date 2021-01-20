@@ -5,24 +5,25 @@
 </template>
 
 <script>
-import CentrumForm from '@/components/CentrumForm'
+import CentrumForm from "@/components/CentrumForm";
 export default {
-  name: 'EdtiCentrum',
-  layout: 'admin',
+  name: "EdtiCentrum",
+  layout: "admin",
   components: {
-    CentrumForm
+    CentrumForm,
   },
-  data () {
+  data() {
     return {
-      centrum: {}
-    }
+      centrum: {},
+    };
   },
-  async created () {
-    await this.$axios.get(`/centrum/${this.$route.params.id}`)
+  async created() {
+    await this.$axios
+      .get(`/centrum/${this.$route.params.id}`)
       .then((res) => {
-        this.centrum = res.data
+        this.centrum = res.data;
       })
-      .catch(err => console.log(err))
-  }
-}
+      .catch((err) => console.log(err));
+  },
+};
 </script>

@@ -6,13 +6,13 @@ const Centrum = require("../models/centrum");
  * @access Public
  */
 exports.getOneCentrum = async (req, res, next) => {
-	try {
-		const centrum = await Centrum.findById(req.params.id);
-		return res.status(200).json(centrum);
-	} catch (err) {
-		console.error(err);
-		res.status(500).json({ error: "Server error" });
-	}
+  try {
+    const centrum = await Centrum.findById(req.params.id);
+    return res.status(200).json(centrum);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
 };
 
 /**
@@ -21,17 +21,17 @@ exports.getOneCentrum = async (req, res, next) => {
  * @access Public
  */
 exports.getCentrums = async (req, res, next) => {
-	try {
-		const centrum = await Centrum.find();
-		return res.status(200).json({
-			success: true,
-			ResultsNumber: centrum.length,
-			data: centrum,
-		});
-	} catch (err) {
-		console.error(err);
-		res.status(500).json({ error: "Server error" });
-	}
+  try {
+    const centrum = await Centrum.find();
+    return res.status(200).json({
+      success: true,
+      ResultsNumber: centrum.length,
+      data: centrum,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
 };
 
 /**
@@ -44,33 +44,33 @@ exports.getCentrums = async (req, res, next) => {
  * @access Public
  */
 exports.addCentrum = async (req, res, next) => {
-	const {
-		centrumtextarea,
-		centrumgalleri,
-		oppettider,
-		hemsida,
-		title,
-	} = req.body;
+  const {
+    centrumtextarea,
+    centrumgalleri,
+    oppettider,
+    hemsida,
+    title,
+  } = req.body;
 
-	try {
-		const centrum = new Centrum({
-			centrumgalleri: JSON.parse(centrumgalleri),
-			oppettider: oppettider.map((x) => JSON.parse(x)),
-			centrumtextarea: JSON.parse(centrumtextarea),
-			title: JSON.parse(title),
-			hemsida,
-		});
-		await centrum
-			.save()
-			.then((_) => res.status(201).json({ success: true, data: centrum }))
-			.catch((err) => res.status(400).json(err));
-	} catch (err) {
-		console.error(err);
-		if (err.code === 11000) {
-			return res.status(400).json({ error: "This centrum already exists" });
-		}
-		res.status(500).json({ error: "Server error" });
-	}
+  try {
+    const centrum = new Centrum({
+      centrumgalleri: JSON.parse(centrumgalleri),
+      oppettider: oppettider.map((x) => JSON.parse(x)),
+      centrumtextarea: JSON.parse(centrumtextarea),
+      title: JSON.parse(title),
+      hemsida,
+    });
+    await centrum
+      .save()
+      .then((_) => res.status(201).json({ success: true, data: centrum }))
+      .catch((err) => res.status(400).json(err));
+  } catch (err) {
+    console.error(err);
+    if (err.code === 11000) {
+      return res.status(400).json({ error: "This centrum already exists" });
+    }
+    res.status(500).json({ error: "Server error" });
+  }
 };
 
 /**
@@ -79,9 +79,9 @@ exports.addCentrum = async (req, res, next) => {
  * @access Private
  */
 exports.deleteCentrum = (req, res) => {
-	Centrum.findById(req.params.id)
-		.then((centrum) => centrum.remove().then(() => res.json({ success: true })))
-		.catch((err) => res.status(404).json(err.message));
+  Centrum.findById(req.params.id)
+    .then((centrum) => centrum.remove().then(() => res.json({ success: true })))
+    .catch((err) => res.status(404).json(err.message));
 };
 
 /**
@@ -90,29 +90,29 @@ exports.deleteCentrum = (req, res) => {
  * @access Private
  */
 exports.updateCentrum = async (req, res) => {
-	for (const key in req.body) {
-		const element = req.body[key];
-		req.body[key] = element !== "null" ? element : null;
-	}
-	const updata = req.body;
+  for (const key in req.body) {
+    const element = req.body[key];
+    req.body[key] = element !== "null" ? element : null;
+  }
+  const updata = req.body;
 
-	if (updata.centrumgalleri) {
-		updata.centrumgalleri = JSON.parse(updata.centrumgalleri);
-	}
+  if (updata.centrumgalleri) {
+    updata.centrumgalleri = JSON.parse(updata.centrumgalleri);
+  }
 
-	if (updata.oppettider) {
-		updata.oppettider = updata.oppettider.map((x) => JSON.parse(x));
-	}
+  if (updata.oppettider) {
+    updata.oppettider = updata.oppettider.map((x) => JSON.parse(x));
+  }
 
-	if (updata.centrumtextarea) {
-		updata.centrumtextarea = JSON.parse(updata.centrumtextarea);
-	}
+  if (updata.centrumtextarea) {
+    updata.centrumtextarea = JSON.parse(updata.centrumtextarea);
+  }
 
-	if (updata.title) {
-		updata.title = JSON.parse(updata.title);
-	}
+  if (updata.title) {
+    updata.title = JSON.parse(updata.title);
+  }
 
-	await Centrum.updateOne({ _id: req.params.id }, { $set: updata })
-		.then((centrum) => res.json({ success: true }))
-		.catch((err) => res.status(404).json(err.message));
+  await Centrum.updateOne({ _id: req.params.id }, { $set: updata })
+    .then((centrum) => res.json({ success: true }))
+    .catch((err) => res.status(404).json(err.message));
 };

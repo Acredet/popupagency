@@ -15,19 +15,17 @@ export default {
   props: {
     toast: {
       type: Object,
-      default () {
+      default() {
         return {
           title: null,
           variant: null,
           visible: false,
-          text: null
-        }
-      }
-    }
-  }
-}
+          text: null,
+        };
+      },
+    },
+  },
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

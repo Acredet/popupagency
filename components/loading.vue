@@ -1,6 +1,6 @@
 <template>
   <div v-if="state" class="loading">
-    <img src="/images/logo-white.svg" alt style="height: 100px">
+    <img src="/images/logo-white.svg" alt style="height: 100px" />
     <b-spinner class="mt-3 mr-1" variant="light" type="grow" label="Spinning" />
   </div>
 </template>
@@ -10,10 +10,10 @@ export default {
   props: {
     state: {
       type: Boolean,
-      default: () => false
-    }
-  }
-}
+      default: () => false,
+    },
+  },
+};
 </script>
 
 <style>

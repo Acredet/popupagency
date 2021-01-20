@@ -5,12 +5,12 @@
 </template>
 
 <script>
-import CentrumForm from '@/components/CentrumForm'
+import CentrumForm from "@/components/CentrumForm";
 export default {
-  name: 'AddCentrum',
-  layout: 'admin',
+  name: "AddCentrum",
+  layout: "admin",
   components: {
-    CentrumForm
-  }
-}
+    CentrumForm,
+  },
+};
 </script>

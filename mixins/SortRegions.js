@@ -1,90 +1,83 @@
 exports.sortItems = {
-	methods: {
-		sortItems(regions, withNameSpace) {
-			const countries = JSON.parse(
-				JSON.stringify(regions.filter((x) => !x.parent))
-			); // Get countries
-			
-			const cities = regions.filter((x) =>
-				countries.map((x) => x._id).includes(x.parent)
-			); // get cities
-			const subCities = regions.filter((x) =>
-				cities.map((x) => x._id).includes(x.parent)
-			); // get subCities
+  methods: {
+    sortItems(regions, withNameSpace) {
+      const countries = JSON.parse(
+        JSON.stringify(regions.filter((x) => !x.parent))
+      ); // Get countries
 
-			const vm = this;
-			this.parentOpts = [...countries, ...cities].map(function (x) {
-				return {
-					text:
-						vm.$i18n.getLocaleCookie() === "en"
-							? x.name.en
-							: x.name.sv,
-					value: x._id,
-				};
-			});
-			this.parentOpts.unshift({
-				text: this.$t("chooseParent"),
-				value: null,
-			});
+      const cities = regions.filter((x) =>
+        countries.map((x) => x._id).includes(x.parent)
+      ); // get cities
+      const subCities = regions.filter((x) =>
+        cities.map((x) => x._id).includes(x.parent)
+      ); // get subCities
 
-			countries.forEach((x) => {
-				x.cities = [];
+      const vm = this;
+      this.parentOpts = [...countries, ...cities].map(function (x) {
+        return {
+          text: vm.$i18n.getLocaleCookie() === "en" ? x.name.en : x.name.sv,
+          value: x._id,
+        };
+      });
+      this.parentOpts.unshift({
+        text: this.$t("chooseParent"),
+        value: null,
+      });
 
-				cities.forEach((city) => {
-					const currentCity = JSON.parse(JSON.stringify(city));
-					currentCity.subCities = [];
+      countries.forEach((x) => {
+        x.cities = [];
 
-					subCities.forEach((subCity) => {
-						const currentSubCity = JSON.parse(
-							JSON.stringify(subCity)
-						);
-						if (city._id === subCity.parent) {
-							if (withNameSpace && subCity.name.en[0] !== "-") {
-								currentSubCity.name.en =
-									"---" + subCity.name.en;
-								currentSubCity.name.sv =
-									"---" + subCity.name.sv;
-							}
+        cities.forEach((city) => {
+          const currentCity = JSON.parse(JSON.stringify(city));
+          currentCity.subCities = [];
 
-							currentCity.subCities.push(currentSubCity);
-						}
-					});
+          subCities.forEach((subCity) => {
+            const currentSubCity = JSON.parse(JSON.stringify(subCity));
+            if (city._id === subCity.parent) {
+              if (withNameSpace && subCity.name.en[0] !== "-") {
+                currentSubCity.name.en = "---" + subCity.name.en;
+                currentSubCity.name.sv = "---" + subCity.name.sv;
+              }
 
-					if (x._id === city.parent) {
-						if (withNameSpace && city.name.en[0] !== "-") {
-							currentCity.name.en = "--" + city.name.en;
-							currentCity.name.sv = "--" + city.name.sv;
-						}
-						x.cities.push(currentCity);
-					}
-				});
-			});
+              currentCity.subCities.push(currentSubCity);
+            }
+          });
 
-			const all = [];
-			// console.log(all)
-			for (let i = 0; i < countries.length; i++) {
-				const country = countries[i];
+          if (x._id === city.parent) {
+            if (withNameSpace && city.name.en[0] !== "-") {
+              currentCity.name.en = "--" + city.name.en;
+              currentCity.name.sv = "--" + city.name.sv;
+            }
+            x.cities.push(currentCity);
+          }
+        });
+      });
 
-				// console.log('country: ', country.name.sv)
-				all.push(country);
+      const all = [];
+      // console.log(all)
+      for (let i = 0; i < countries.length; i++) {
+        const country = countries[i];
 
-				for (let j = 0; j < country.cities.length; j++) {
-					const city = country.cities[j];
+        // console.log('country: ', country.name.sv)
+        all.push(country);
 
-					// console.log('city: ', city.name.sv)
-					all.push(city);
+        for (let j = 0; j < country.cities.length; j++) {
+          const city = country.cities[j];
 
-					// console.log('city.subCities: ', ...city.subCities)
-					all.push(...city.subCities);
-				}
-			}
+          // console.log('city: ', city.name.sv)
+          all.push(city);
 
-			// console.log('regions: ', regions)
-			// console.log('all: ', all)
-			// const difference = [...regions].filter(x => !all.includes(x))
-			// console.log('Spent: ', difference)
+          // console.log('city.subCities: ', ...city.subCities)
+          all.push(...city.subCities);
+        }
+      }
 
-			return all;
-		},
-	},
+      // console.log('regions: ', regions)
+      // console.log('all: ', all)
+      // const difference = [...regions].filter(x => !all.includes(x))
+      // console.log('Spent: ', difference)
+
+      return all;
+    },
+  },
 };

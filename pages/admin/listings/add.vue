@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'AddListing',
-  layout: 'admin'
-}
+  name: "AddListing",
+  layout: "admin",
+};
 </script>

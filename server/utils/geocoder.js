@@ -1,13 +1,13 @@
-const NodeGeocoder = require('node-geocoder')
-require('dotenv')
+const NodeGeocoder = require("node-geocoder");
+require("dotenv");
 
 const options = {
-  provider: 'google',
+  provider: "google",
   // httpAdapter: 'https',
   apiKey: process.env.VUE_APP_GOOGLE_MAPS_API_KEY, // for Mapquest, OpenCage, Google Premier
-  formatter: null
-}
+  formatter: null,
+};
 
-const geocoder = NodeGeocoder(options)
+const geocoder = NodeGeocoder(options);
 
-module.exports = geocoder
+module.exports = geocoder;

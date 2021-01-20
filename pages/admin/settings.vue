@@ -6,11 +6,9 @@
 
 <script>
 export default {
-  name: 'AddUser',
-  layout: 'admin'
-}
+  name: "AddUser",
+  layout: "admin",
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

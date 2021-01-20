@@ -4,10 +4,10 @@
  * we need to prevent him from entering this page
  *  */
 export default function ({ app, redirect }) {
-	const { $auth, localePath } = app;
-	// if the user is loggedIn don't go to the loggin page
-	if ($auth.loggedIn) {
-		// redirect to the home page
-		redirect(localePath("/"));
-	}
+  const { $auth, localePath } = app;
+  // if the user is loggedIn don't go to the loggin page
+  if ($auth.loggedIn) {
+    // redirect to the home page
+    redirect(localePath("/"));
+  }
 }

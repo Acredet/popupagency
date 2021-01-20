@@ -12,20 +12,27 @@
         <img
           src="https://raw.githubusercontent.com/buefy/buefy/dev/static/img/buefy-logo.png"
           alt="Lightweight UI components for Vue.js based on Bulma"
-        >
+        />
         <b-menu>
           <b-menu-list label="Menu">
             <b-menu-item icon="information-outline" label="Info" />
             <b-menu-item icon="settings">
               <template slot="label" slot-scope="props">
                 Administrator
-                <b-icon class="is-pulled-right" :icon="props.expanded ? 'menu-down' : 'menu-up'" />
+                <b-icon
+                  class="is-pulled-right"
+                  :icon="props.expanded ? 'menu-down' : 'menu-up'"
+                />
               </template>
               <b-menu-item icon="account" label="Users" />
               <b-menu-item icon="cellphone-link">
                 <template slot="label">
                   Devices
-                  <b-dropdown aria-role="list" class="is-pulled-right" position="is-bottom-left">
+                  <b-dropdown
+                    aria-role="list"
+                    class="is-pulled-right"
+                    position="is-bottom-left"
+                  >
                     <b-icon slot="trigger" icon="dots-vertical" />
                     <b-dropdown-item aria-role="listitem">
                       Action
@@ -47,7 +54,13 @@
             </b-menu-item>
           </b-menu-list>
           <b-menu-list>
-            <b-menu-item label="Expo" icon="link" tag="router-link" target="_blank" to="/expo" />
+            <b-menu-item
+              label="Expo"
+              icon="link"
+              tag="router-link"
+              target="_blank"
+              to="/expo"
+            />
           </b-menu-list>
           <b-menu-list label="Actions">
             <b-menu-item label="Logout" />
@@ -58,30 +71,20 @@
     <div class="block">
       <b-field grouped group-multiline>
         <div class="control">
-          <b-switch v-model="overlay">
-            Overlay
-          </b-switch>
+          <b-switch v-model="overlay"> Overlay </b-switch>
         </div>
         <div class="control">
-          <b-switch v-model="fullheight">
-            Fullheight
-          </b-switch>
+          <b-switch v-model="fullheight"> Fullheight </b-switch>
         </div>
         <div class="control">
-          <b-switch v-model="fullwidth">
-            Fullwidth
-          </b-switch>
+          <b-switch v-model="fullwidth"> Fullwidth </b-switch>
         </div>
         <div class="control">
-          <b-switch v-model="right">
-            Right
-          </b-switch>
+          <b-switch v-model="right"> Right </b-switch>
         </div>
       </b-field>
     </div>
-    <b-button @click="open = true">
-      Show
-    </b-button>
+    <b-button @click="open = true"> Show </b-button>
   </section>
 </template>
 
@@ -92,16 +95,16 @@
 
 // Vue.use(buefy)
 export default {
-  data () {
+  data() {
     return {
       open: false,
       overlay: true,
       fullheight: true,
       fullwidth: false,
-      right: false
-    }
-  }
-}
+      right: false,
+    };
+  },
+};
 </script>
 
 <style>

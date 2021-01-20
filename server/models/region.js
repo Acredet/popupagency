@@ -1,23 +1,23 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 const regionSchema = new mongoose.Schema({
   name: {
     en: {
       type: String,
-      required: true
+      required: true,
     },
     sv: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   parent: {
-    type: mongoose.ObjectId
+    type: mongoose.ObjectId,
   },
   description: {
     en: String,
-    sv: String
+    sv: String,
   },
-  centrum: String
-})
+  centrum: String,
+});
 
-module.exports = mongoose.model('Region', regionSchema)
+module.exports = mongoose.model("Region", regionSchema);

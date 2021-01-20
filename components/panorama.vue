@@ -16,24 +16,26 @@ export default {
   props: {
     pos: {
       type: Object,
-      default: () => { return { lat: 52.201272, lng: 0.118720 } }
-    }
+      default: () => {
+        return { lat: 52.201272, lng: 0.11872 };
+      },
+    },
   },
-  data () {
+  data() {
     return {
       pov: null,
-      pano: null
-    }
+      pano: null,
+    };
   },
   methods: {
-    updatePov (pov) {
-      this.pov = pov
+    updatePov(pov) {
+      this.pov = pov;
     },
-    updatePano (pano) {
-      this.pano = pano
-    }
-  }
-}
+    updatePano(pano) {
+      this.pano = pano;
+    },
+  },
+};
 </script>
 
 <style>

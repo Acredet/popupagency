@@ -19,29 +19,28 @@
 
 <script>
 export default {
-  layout: 'admin',
-  name: 'UserProfile',
-  data () {
+  layout: "admin",
+  name: "UserProfile",
+  data() {
     return {
       user: {
-        name: '',
-        email: '',
-        createdAt: ''
-      }
-    }
+        name: "",
+        email: "",
+        createdAt: "",
+      },
+    };
   },
-  async mounted () {
-    await this.$axios.$get('/users/me')
+  async mounted() {
+    await this.$axios
+      .$get("/users/me")
       .then((res) => {
-        this.user = res.data
+        this.user = res.data;
       })
       .catch((err) => {
-        console.log(err)
-      })
-  }
-}
+        console.log(err);
+      });
+  },
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

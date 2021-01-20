@@ -6,15 +6,20 @@
 
 <script>
 export default {
-  name: 'AuthLayout',
-  head () {
+  name: "AuthLayout",
+  head() {
     return {
       link: [
-        { href: '/css/admin-styles.css', rel: 'stylesheet', type: 'text/css', body: true }
-      ]
-    }
-  }
-}
+        {
+          href: "/css/admin-styles.css",
+          rel: "stylesheet",
+          type: "text/css",
+          body: true,
+        },
+      ],
+    };
+  },
+};
 </script>
 
 <style scoped>

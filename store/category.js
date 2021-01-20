@@ -1,24 +1,24 @@
 export const state = () => ({
-	categories: [],
+  categories: [],
 });
 
 export const mutations = {
-	setCategories(state, categories) {
-		state.categories = categories;
-	},
+  setCategories(state, categories) {
+    state.categories = categories;
+  },
 };
 
 export const actions = {
-	async getCategories({ commit }) {
-		await this.$axios
-			.get("/category")
-			.then((res) => commit("setCategories", res.data.data))
-			.catch((err) => console.log(err));
-	},
+  async getCategories({ commit }) {
+    await this.$axios
+      .get("/category")
+      .then((res) => commit("setCategories", res.data.data))
+      .catch((err) => console.log(err));
+  },
 };
 
 export const getters = {
-	categories(state) {
-		return state.categories;
-	},
+  categories(state) {
+    return state.categories;
+  },
 };

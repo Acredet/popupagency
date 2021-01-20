@@ -1,7 +1,18 @@
 <template>
   <div class="content">
     <loading :state="loadingState" />
-    <b-modal id="edit-modal" centered :title="$t('category.editModal.title')" @close="editForm = {name: {en: '',sv: ''},parent: null,description: {en: '',sv: ''}}">
+    <b-modal
+      id="edit-modal"
+      centered
+      :title="$t('category.editModal.title')"
+      @close="
+        editForm = {
+          name: { en: '', sv: '' },
+          parent: null,
+          description: { en: '', sv: '' },
+        }
+      "
+    >
       <b-form id="edit-category" enctype="multipart/form-data">
         <b-form-group
           id="name-sv-group"
@@ -19,9 +30,15 @@
             :placeholder="$t('forms.name.holder')"
           />
 
-          <b-form-invalid-feedback :state="editNameValidSv" v-text="$t('forms.required')" />
+          <b-form-invalid-feedback
+            :state="editNameValidSv"
+            v-text="$t('forms.required')"
+          />
 
-          <b-form-valid-feedback :state="editNameValidSv" v-text="$t('forms.valid')" />
+          <b-form-valid-feedback
+            :state="editNameValidSv"
+            v-text="$t('forms.valid')"
+          />
         </b-form-group>
 
         <b-form-group
@@ -40,9 +57,15 @@
             :placeholder="$t('forms.name.holder')"
           />
 
-          <b-form-invalid-feedback :state="editNameValidEn" v-text="$t('forms.required')" />
+          <b-form-invalid-feedback
+            :state="editNameValidEn"
+            v-text="$t('forms.required')"
+          />
 
-          <b-form-valid-feedback :state="editNameValidEn" v-text="$t('forms.valid')" />
+          <b-form-valid-feedback
+            :state="editNameValidEn"
+            v-text="$t('forms.valid')"
+          />
         </b-form-group>
 
         <b-form-group
@@ -95,13 +118,23 @@
           <our-uploader
             :responsivness="{ cols: 12, sm: 12, md: 12, lg: 12 }"
             :name="'edit-avatar'"
-            :old-images="(editForm.avatar && editForm.avatar.length > 0) ? [editForm.avatar] : []"
+            :old-images="
+              editForm.avatar && editForm.avatar.length > 0
+                ? [editForm.avatar]
+                : []
+            "
             :max-number-of-inputs="1"
             :max-file-size="64"
           >
             <template v-slot:old-Image>
-              <div v-if="editForm && editForm.avatar && editForm.avatar.length > 0" class="d-flex justify-content-center">
-                <b-img style="height: 150px" :src="`https://popup.dk.se/_nuxt/img/${editForm.avatar}`" />
+              <div
+                v-if="editForm && editForm.avatar && editForm.avatar.length > 0"
+                class="d-flex justify-content-center"
+              >
+                <b-img
+                  style="height: 150px"
+                  :src="`https://popup.dk.se/_nuxt/img/${editForm.avatar}`"
+                />
               </div>
             </template>
           </our-uploader>
@@ -109,35 +142,70 @@
       </b-form>
 
       <template v-slot:modal-footer="{ ok, cancel }">
-        <b-btn variant="primary" :disabled="!editForm.name.en || !editForm.name.sv" @click="editItem('category'); ok()">
+        <b-btn
+          variant="primary"
+          :disabled="!editForm.name.en || !editForm.name.sv"
+          @click="
+            editItem('category');
+            ok();
+          "
+        >
           Edit
         </b-btn>
         <b-btn
           variant="danger"
-          @click="cancel(); editForm = { name: {en: '',sv: ''}, parent: null, description: {en: '',sv: ''} }"
+          @click="
+            cancel();
+            editForm = {
+              name: { en: '', sv: '' },
+              parent: null,
+              description: { en: '', sv: '' },
+            };
+          "
         >
           Close
         </b-btn>
       </template>
     </b-modal>
 
-    <b-modal id="delete-modal" centered :title="$t('category.deleteModal.title')">
+    <b-modal
+      id="delete-modal"
+      centered
+      :title="$t('category.deleteModal.title')"
+    >
       <p class="my-4">
-        {{ $t('actions.deleteConfimrMessage') }} {{ editForm.name[$i18n.locale] }}?
+        {{ $t("actions.deleteConfimrMessage") }}
+        {{ editForm.name[$i18n.locale] }}?
       </p>
 
       <template v-slot:modal-footer="{ ok, cancel }">
-        <b-btn variant="danger" @click="deleteItem('category'); ok()">
-          {{ $t('actions.delete') }}
+        <b-btn
+          variant="danger"
+          @click="
+            deleteItem('category');
+            ok();
+          "
+        >
+          {{ $t("actions.delete") }}
         </b-btn>
-        <b-btn variant="primary" @click="cancel(); editForm = {name: {en: '',sv: ''},parent: null,description: {en: '',sv: ''}}">
-          {{ $t('actions.cancle') }}
+        <b-btn
+          variant="primary"
+          @click="
+            cancel();
+            editForm = {
+              name: { en: '', sv: '' },
+              parent: null,
+              description: { en: '', sv: '' },
+            };
+          "
+        >
+          {{ $t("actions.cancle") }}
         </b-btn>
       </template>
     </b-modal>
 
     <b-container>
-      <h2>{{ $t('category.title') }}</h2>
+      <h2>{{ $t("category.title") }}</h2>
       <b-row>
         <b-col cols="12" md="4">
           <b-form id="add-category">
@@ -157,9 +225,15 @@
                 :placeholder="$t('forms.name.holder')"
               />
 
-              <b-form-invalid-feedback :state="nameValidSv" v-text="$t('forms.required')" />
+              <b-form-invalid-feedback
+                :state="nameValidSv"
+                v-text="$t('forms.required')"
+              />
 
-              <b-form-valid-feedback :state="nameValidSv" v-text="$t('forms.valid')" />
+              <b-form-valid-feedback
+                :state="nameValidSv"
+                v-text="$t('forms.valid')"
+              />
             </b-form-group>
 
             <b-form-group
@@ -178,9 +252,15 @@
                 :placeholder="$t('forms.name.holder')"
               />
 
-              <b-form-invalid-feedback :state="nameValidEn" v-text="$t('forms.required')" />
+              <b-form-invalid-feedback
+                :state="nameValidEn"
+                v-text="$t('forms.required')"
+              />
 
-              <b-form-valid-feedback :state="nameValidEn" v-text="$t('forms.valid')" />
+              <b-form-valid-feedback
+                :state="nameValidEn"
+                v-text="$t('forms.valid')"
+              />
             </b-form-group>
 
             <b-form-group
@@ -225,14 +305,21 @@
               />
             </b-form-group>
 
-            <b-form-group
-              id="avatar-group"
-              label="Avatar:"
-            >
-              <our-uploader :responsivness="{ cols: 12, sm: 12, md: 12, lg: 12 }" :name="'avatar'" :max-number-of-inputs="1" :max-file-size="64" />
+            <b-form-group id="avatar-group" label="Avatar:">
+              <our-uploader
+                :responsivness="{ cols: 12, sm: 12, md: 12, lg: 12 }"
+                :name="'avatar'"
+                :max-number-of-inputs="1"
+                :max-file-size="64"
+              />
             </b-form-group>
 
-            <b-btn variant="primary" :disabled="!form.name.en || !form.name.sv" @click="addItem('category')" v-text="$t('category.addBtn')" />
+            <b-btn
+              variant="primary"
+              :disabled="!form.name.en || !form.name.sv"
+              @click="addItem('category')"
+              v-text="$t('category.addBtn')"
+            />
           </b-form>
         </b-col>
 
@@ -258,9 +345,7 @@
               <p v-if="data.item.description && $i18n.locale == 'en'">
                 {{ data.item.description.en }}
               </p>
-              <p v-else-if="!data.item.description">
-                -
-              </p>
+              <p v-else-if="!data.item.description">-</p>
               <p v-else>
                 {{ data.item.description.sv }}
               </p>
@@ -268,27 +353,41 @@
 
             <template v-slot:cell(parent)="data">
               <p class="text-center font-wight-bold">
-                {{ getParent(data.item.parent).length > 0 ? getParent(data.item.parent)[0].name[$i18n.locale] : '-' }}
+                {{
+                  getParent(data.item.parent).length > 0
+                    ? getParent(data.item.parent)[0].name[$i18n.locale]
+                    : "-"
+                }}
               </p>
             </template>
 
             <template v-slot:cell(actions)="data">
               <b-dropdown variant="light">
                 <template v-slot:button-content>
-                  <b>{{ $t('actions.actions') }}</b>
+                  <b>{{ $t("actions.actions") }}</b>
                 </template>
-                <b-dropdown-item v-b-modal.edit-modal @click="Object.assign(editForm, data.item)">
-                  {{ $t('actions.edit') }}
+                <b-dropdown-item
+                  v-b-modal.edit-modal
+                  @click="Object.assign(editForm, data.item)"
+                >
+                  {{ $t("actions.edit") }}
                 </b-dropdown-item>
-                <b-dropdown-item v-b-modal.delete-modal @click="Object.assign(editForm, data.item)">
-                  {{ $t('actions.delete') }}
+                <b-dropdown-item
+                  v-b-modal.delete-modal
+                  @click="Object.assign(editForm, data.item)"
+                >
+                  {{ $t("actions.delete") }}
                 </b-dropdown-item>
               </b-dropdown>
             </template>
           </b-table>
 
           <b-row class="justify-content-center align-items-center">
-            <b-col cols="12" md="8" class="d-flex justify-content-center align-items-center">
+            <b-col
+              cols="12"
+              md="8"
+              class="d-flex justify-content-center align-items-center"
+            >
               <b-pagination
                 v-model="currentPage"
                 :total-rows="items.length"
@@ -297,7 +396,11 @@
               />
             </b-col>
             <b-col cols="12" md="4">
-              <b-form-group id="per-page-group" :label="$t('tables.pagenation.perPage')" label-for="per-page">
+              <b-form-group
+                id="per-page-group"
+                :label="$t('tables.pagenation.perPage')"
+                label-for="per-page"
+              >
                 <b-form-select
                   id="per-page"
                   v-model="perPage"
@@ -307,8 +410,13 @@
             </b-col>
           </b-row>
           <div>
-            {{ $t('tables.sort.by') }} <b>{{ sortBy }}</b>, {{ $t('tables.sort.direction') }}
-            <b>{{ sortDesc ? $t('tables.sort.descending') : $t('tables.sort.ascending') }}</b>
+            {{ $t("tables.sort.by") }} <b>{{ sortBy }}</b
+            >, {{ $t("tables.sort.direction") }}
+            <b>{{
+              sortDesc
+                ? $t("tables.sort.descending")
+                : $t("tables.sort.ascending")
+            }}</b>
           </div>
         </b-col>
       </b-row>
@@ -319,20 +427,19 @@
 </template>
 
 <script>
-import ourUploader from '@/components/ourUploader'
-import { ListingDepedancies } from '@/mixins/ListingDepedancies'
+import ourUploader from "@/components/ourUploader";
+import { ListingDepedancies } from "@/mixins/ListingDepedancies";
 
 export default {
-  name: 'Listingcategorys',
+  name: "Listingcategorys",
   components: {
-    ourUploader
+    ourUploader,
   },
   mixins: [ListingDepedancies],
-  mounted () {
-    this.getItems('category')
-  }
-}
+  mounted() {
+    this.getItems("category");
+  },
+};
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

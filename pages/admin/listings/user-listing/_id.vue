@@ -1,12 +1,12 @@
 <template>
   <div class="content">
     <b-container>
-      <h2>{{ $t('userListings.myPlaces') }}</h2>
+      <h2>{{ $t("userListings.myPlaces") }}</h2>
 
       <!-- start if Listing -->
       <b-row>
         <b-col v-if="!items || items.length === 0">
-          <p>{{ $t('userListings.noListings') }}</p>
+          <p>{{ $t("userListings.noListings") }}</p>
         </b-col>
         <!-- Start Listing -->
         <b-col
@@ -38,52 +38,56 @@
 
 <script>
 export default {
-  name: 'UsersAdmins',
-  layout: 'admin',
-  data () {
+  name: "UsersAdmins",
+  layout: "admin",
+  data() {
     return {
       toast: {
         title: null,
         variant: null,
         visible: false,
-        text: null
+        text: null,
       },
-      items: null
-    }
+      items: null,
+    };
   },
-  mounted () {
-    this.getListings()
+  mounted() {
+    this.getListings();
   },
   methods: {
-    async getListings () {
-      await this.$axios.$get(`/places/user/${this.$route.params.id}`)
+    async getListings() {
+      await this.$axios
+        .$get(`/places/user/${this.$route.params.id}`)
         .then((res) => {
-          this.items = res
-          this.loading = false
+          this.items = res;
+          this.loading = false;
         })
-        .catch(err => console.log(err))
+        .catch((err) => console.log(err));
     },
-    async deleteListing () {
-      await this.$axios.$delete(`/places/${this.editForm._id}`)
+    async deleteListing() {
+      await this.$axios
+        .$delete(`/places/${this.editForm._id}`)
         .then((res) => {
-          this.getListings()
+          this.getListings();
           this.toast = {
-            title: this.$t('allListing.toast.delete'),
-            variant: 'success',
+            title: this.$t("allListing.toast.delete"),
+            variant: "success",
             visible: true,
-            text: `${this.$t('allListing.toast.justDeleted')} ${this.editForm.name} from Listings.`
-          }
-          this.editForm = {}
+            text: `${this.$t("allListing.toast.justDeleted")} ${
+              this.editForm.name
+            } from Listings.`,
+          };
+          this.editForm = {};
         })
         .catch((err) => {
           this.toast = {
-            title: this.$t('allListing.toast.error'),
-            variant: 'danger',
+            title: this.$t("allListing.toast.error"),
+            variant: "danger",
             visible: true,
-            text: err.message
-          }
-        })
-    }
-  }
-}
+            text: err.message,
+          };
+        });
+    },
+  },
+};
 </script>

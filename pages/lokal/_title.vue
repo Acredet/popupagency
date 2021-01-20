@@ -296,9 +296,13 @@ export default {
   },
   computed: {
     ...mapGetters({
-      getOneListing: "listing/getOneListings",
       listings: "listing/listings",
     }),
+    getOneListing() {
+      return this.$store.getters["listing/getOneListings"](
+        this.$route.params.title.replace(/[-]/g, " ")
+      );
+    },
     feats() {
       return [
         { name: "yta-1", text: this.place.yta || "" },
@@ -327,9 +331,8 @@ export default {
   },
 
   async created() {
-    const placeFromStore = this.getOneListing(
-      this.$route.params.title.replace(/[-]/g, " ")
-    );
+    const placeFromStore = this.getOneListing;
+
     if (placeFromStore.routeGuidance) {
       this.thereIsCentrum = true;
       this.listingImages.centrumgalleri = placeFromStore.centrumgalleri;

@@ -5,59 +5,67 @@ export const state = () => ({
     plats: [],
     property: [],
     category: [],
-    yta: []
-  }
-})
+    yta: [],
+  },
+});
 
 export const mutations = {
-  changeProp (state, propAndValObj) {
-    state.used[propAndValObj.prop] = propAndValObj.val
+  changeProp(state, propAndValObj) {
+    state.used[propAndValObj.prop] = propAndValObj.val;
   },
-  usedFilters (state, filters) {
-    Object.assign(state.used, filters)
+  usedFilters(state, filters) {
+    Object.assign(state.used, filters);
   },
-  resetFilters (state) {
+  resetFilters(state) {
     state.used = {
       search: null,
       price: [],
       plats: [],
       property: [],
       category: [],
-      yta: []
-    }
+      yta: [],
+    };
   },
-  changeStateOfPropertInput (state, obj) {
+  changeStateOfPropertInput(state, obj) {
     state.used.property = obj.icons.filter((x) => {
-      if (x.text === obj.button.text) { x.state = !x.state }
-      return x.state
-    })
+      if (x.text === obj.button.text) {
+        x.state = !x.state;
+      }
+      return x.state;
+    });
   },
-  changeStateOfCategoryInput (state, obj) {
+  changeStateOfCategoryInput(state, obj) {
     state.used.category = obj.icons.filter((x) => {
-      if (x.text === obj.button.text) { x.state = !x.state }
-      return x.state
-    })
+      if (x.text === obj.button.text) {
+        x.state = !x.state;
+      }
+      return x.state;
+    });
   },
-  clearFilter (state, icons) {
-    state.used.property = icons.property.forEach((x) => { x.state = false })
-    state.used.category = icons.category.forEach((x) => { x.state = false })
-  }
-}
+  clearFilter(state, icons) {
+    state.used.property = icons.property.forEach((x) => {
+      x.state = false;
+    });
+    state.used.category = icons.category.forEach((x) => {
+      x.state = false;
+    });
+  },
+};
 
 export const actions = {
-  updateFilterProperty ({ commit }, propAndValObj) {
-    commit('changeProp', propAndValObj)
+  updateFilterProperty({ commit }, propAndValObj) {
+    commit("changeProp", propAndValObj);
   },
-  updateFilters ({ commit }, fitlers) {
-    commit('usedFilters', fitlers)
+  updateFilters({ commit }, fitlers) {
+    commit("usedFilters", fitlers);
   },
-  clearFilters ({ commit, dispatch }, icons) {
-    commit('clearFilter', icons)
-  }
-}
+  clearFilters({ commit, dispatch }, icons) {
+    commit("clearFilter", icons);
+  },
+};
 
 export const getters = {
-  used (state) {
-    return state.used
-  }
-}
+  used(state) {
+    return state.used;
+  },
+};
