@@ -16,14 +16,12 @@
     <nav class="navbar-custom">
       <ul class="navbar-right d-flex list-inline float-right mb-0">
         <li class="dropdown notification-list">
-          <div
-            @click="showUserDropdown = !showUserDropdown"
-            class="dropdown notification-list nav-pro-img"
-          >
+          <div class="dropdown notification-list nav-pro-img">
             <a
               v-if="$auth.loggedIn"
+              @click="showDropDown"
               class="dropdown-toggle nav-link arrow-none waves-effect nav-user"
-              data-toggle="dropdown"
+              data-toggle="dropdowProfileLink"
               href="#"
               role="button"
               aria-haspopup="false"
@@ -38,7 +36,8 @@
               v-text="$t('adminHeader.login')"
             />
             <div
-              v-if="$auth.loggedIn && showUserDropdown"
+              v-if="$auth.loggedIn"
+              aria-labelledby="dropdowProfileLink"
               class="dropdown-menu dropdown-menu-right profile-dropdown"
             >
               <!-- item-->
@@ -83,25 +82,18 @@
           </button>
         </li>
         <li class="d-block">
-          <div
-            @click="showLangMenu = !showLangMenu"
-            class="dropdown pt-3 d-inline-block"
-          >
+          <div @click="showDropDown" class="dropdown pt-3 d-inline-block">
             <a
               id="dropdownMenuLink"
               class="btn btn-light dropdown-toggle"
               role="button"
-              data-toggle="dropdown"
+              data-toggle="dropdownMenuLink"
               aria-haspopup="true"
               aria-expanded="false"
               >{{ $t("adminHeader.languages") }}</a
             >
 
-            <div
-              v-if="showLangMenu"
-              class="py-0 dropdown-menu"
-              aria-labelledby="dropdownMenuLink"
-            >
+            <div class="py-0 dropdown-menu" aria-labelledby="dropdownMenuLink">
               <b-button class="dropdown-item" @click="changeLang('en')">
                 En-English
               </b-button>
@@ -122,13 +114,18 @@
 export default {
   data() {
     return {
-      showLangMenu: false,
-      showUserDropdown: false,
+      show: false,
     };
   },
   methods: {
     toggleBodyClass(className) {
       document.body.classList.toggle(className);
+    },
+    showDropDown(e) {
+      const dropdown = e.target.getAttribute("data-toggle");
+      const el = document.querySelector(`div[aria-labelledby=${dropdown}]`);
+
+      el.classList.toggle("d-block");
     },
     changeLang(lang) {
       this.$i18n.setLocale(lang);

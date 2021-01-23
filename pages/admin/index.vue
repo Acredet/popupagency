@@ -180,9 +180,9 @@ import {
   BIconMap,
   BIconPeopleFill,
 } from "bootstrap-vue";
-import { AdminPanelDependancies } from "@/mixins/AdminPanelDependancies";
+
 export default {
-  name: "AddUser",
+  name: "Dashboard",
   layout: "admin",
   components: {
     BIcon,
@@ -197,7 +197,7 @@ export default {
     // eslint-disable-next-line vue/no-unused-components
     BootstrapVueIcons,
   },
-  mixins: [AdminPanelDependancies, getImages],
+  mixins: [getImages],
   data() {
     return {
       loadingState: true,
@@ -357,11 +357,6 @@ export default {
 
       return { mostViewsListings, leatestListings, leatestCentrums };
     },
-  },
-  head() {
-    return {
-      script: [{ src: "/js/dashboard.js", defer: false }],
-    };
   },
 };
 </script>
