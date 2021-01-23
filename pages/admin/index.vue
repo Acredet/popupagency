@@ -129,14 +129,19 @@
                         @click="
                           () => {
                             if (row.url) {
-                              $router.push(`${$t('link')}${row.url}`);
+                              $router.push(row.url);
                             }
                           }
                         "
                       >
                         <td>{{ row.title }}</td>
                         <td>
-                          <b-img v-if="row.img" width="100" :src="row.img" />
+                          <b-img
+                            v-if="row.img"
+                            v-cloak
+                            width="100"
+                            :src="row.img"
+                          />
                           <p v-else class="text-center" v-text="'-'" />
                         </td>
                         <td v-text="row.stad" />
@@ -164,6 +169,7 @@
 </template>
 
 <script>
+import { getImages } from "@/mixins/utils/getImage";
 import {
   BIcon,
   BootstrapVue,
@@ -191,7 +197,7 @@ export default {
     // eslint-disable-next-line vue/no-unused-components
     BootstrapVueIcons,
   },
-  mixins: [AdminPanelDependancies],
+  mixins: [AdminPanelDependancies, getImages],
   data() {
     return {
       loadingState: true,
@@ -202,52 +208,29 @@ export default {
   async created() {
     await this.$axios
       .$get("/statistics")
-      .then((res) => {
+      .then(async (res) => {
+        const {
+          mostViewsListings,
+          leatestListings,
+          leatestCentrums,
+        } = await this.prepareTable(res);
+
         this.tableRows = [
           {
             title: "Leatest Listings",
             views: false,
             date: true,
-            rows: res.leatestListings.map((x) => {
-              return {
-                url: `lokal/${x.title.en}`,
-                title: x.title[this.$i18n.locale],
-                stad: x.title[this.$i18n.locale],
-                img: x.cover[0]
-                  ? `https://popup.dk.se/_nuxt/img/${x.cover[0]}`
-                  : undefined,
-                date: x.createdAt,
-              };
-            }),
+            rows: leatestListings,
           },
           {
             title: "Most Viewed Listings",
             views: true,
-            rows: res.mostViewsListings.map((x) => {
-              return {
-                url: `lokal/${x.title.en}`,
-                title: x.title[this.$i18n.locale],
-                stad: x.title[this.$i18n.locale],
-                img: x.cover[0]
-                  ? `https://popup.dk.se/_nuxt/img/${x.cover[0]}`
-                  : undefined,
-                views: x.views,
-              };
-            }),
+            rows: mostViewsListings,
           },
           {
             title: "Leatest Centrums",
             views: false,
-            rows: res.leatestCentrums.map((x) => {
-              return {
-                // url: `lokal/${x.title.en}`,
-                title: x.title[this.$i18n.locale],
-                stad: x.title[this.$i18n.locale],
-                img: x.centrumgalleri[0]
-                  ? `https://popup.dk.se/_nuxt/img/${x.centrumgalleri[0]}`
-                  : undefined,
-              };
-            }),
+            rows: leatestCentrums,
           },
         ];
         this.rows = [
@@ -330,6 +313,50 @@ export default {
         this.loadingState = false;
       })
       .catch((err) => console.log(err));
+  },
+  methods: {
+    async prepareTable(res) {
+      let leatestListings = [];
+      let mostViewsListings = [];
+      let leatestCentrums = [];
+
+      for (let i = 0; i < res.leatestListings.length; i++) {
+        let x = res.leatestListings[i];
+        const y = {
+          url: this.localePath(`/lokal/${x.title.sv.split(" ").join("-")}`),
+          title: x.title[this.$i18n.locale],
+          stad: x.title[this.$i18n.locale],
+          img: await this.getImage(x.cover[0]),
+          date: x.createdAt,
+        };
+        leatestListings.push(y);
+      }
+
+      for (let i = 0; i < res.mostViewsListings.length; i++) {
+        let x = res.mostViewsListings[i];
+        const y = {
+          url: this.localePath(`/lokal/${x.title.sv.split(" ").join("-")}`),
+          title: x.title[this.$i18n.locale],
+          stad: x.title[this.$i18n.locale],
+          img: await this.getImage(x.cover[0]),
+          views: x.views,
+        };
+        mostViewsListings.push(y);
+      }
+
+      for (let i = 0; i < res.leatestCentrums.length; i++) {
+        let x = res.leatestCentrums[i];
+        const y = {
+          // url: `lokal/${x.title.en}`,
+          title: x.title[this.$i18n.locale],
+          stad: x.title[this.$i18n.locale],
+          img: x.centrumgalleri[0],
+        };
+        leatestCentrums.push(y);
+      }
+
+      return { mostViewsListings, leatestListings, leatestCentrums };
+    },
   },
   head() {
     return {
