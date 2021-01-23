@@ -16,7 +16,10 @@
     <nav class="navbar-custom">
       <ul class="navbar-right d-flex list-inline float-right mb-0">
         <li class="dropdown notification-list">
-          <div class="dropdown notification-list nav-pro-img">
+          <div
+            @click="showUserDropdown = !showUserDropdown"
+            class="dropdown notification-list nav-pro-img"
+          >
             <a
               v-if="$auth.loggedIn"
               class="dropdown-toggle nav-link arrow-none waves-effect nav-user"
@@ -35,7 +38,7 @@
               v-text="$t('adminHeader.login')"
             />
             <div
-              v-if="$auth.loggedIn"
+              v-if="$auth.loggedIn && showUserDropdown"
               class="dropdown-menu dropdown-menu-right profile-dropdown"
             >
               <!-- item-->
@@ -72,12 +75,18 @@
 
       <ul class="list-inline menu-left mb-0">
         <li class="float-left">
-          <button class="button-menu-mobile open-left waves-effect">
+          <button
+            class="button-menu-mobile open-left waves-effect"
+            @click="toggleBodyClass('enlarged')"
+          >
             <i class="fas fa-bars" />
           </button>
         </li>
         <li class="d-block">
-          <div class="dropdown pt-3 d-inline-block">
+          <div
+            @click="showLangMenu = !showLangMenu"
+            class="dropdown pt-3 d-inline-block"
+          >
             <a
               id="dropdownMenuLink"
               class="btn btn-light dropdown-toggle"
@@ -88,7 +97,11 @@
               >{{ $t("adminHeader.languages") }}</a
             >
 
-            <div class="py-0 dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <div
+              v-if="showLangMenu"
+              class="py-0 dropdown-menu"
+              aria-labelledby="dropdownMenuLink"
+            >
               <b-button class="dropdown-item" @click="changeLang('en')">
                 En-English
               </b-button>
@@ -107,7 +120,16 @@
 
 <script>
 export default {
+  data() {
+    return {
+      showLangMenu: false,
+      showUserDropdown: false,
+    };
+  },
   methods: {
+    toggleBodyClass(className) {
+      document.body.classList.toggle(className);
+    },
     changeLang(lang) {
       this.$i18n.setLocale(lang);
       this.$emit("changeLang");

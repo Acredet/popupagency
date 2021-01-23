@@ -148,6 +148,34 @@ export default {
     ...mapGetters({
       renderKey: "renderKey",
     }),
+
+    updated() {
+      if (document) {
+        [...document.querySelectorAll("#sidebar-menu a")].forEach((el) => {
+          const pageUrl = window.location.href.split(/[?#]/)[0];
+          if (el.href === pageUrl) {
+            el.classList.add("active");
+            $(this).classList.add("active");
+            $(this).parentElement.classList.add("active"); // add active to li of the current link
+            $(this).parentElement.parentElement.classList.add("in");
+            $(this).parentElement.parentElement.prev().classList.add("active"); // add active class to an anchor
+            $(this).parentElement.parentElement.parentElement.classList.add(
+              "active"
+            );
+            $(
+              this
+            ).parentElement.parentElement.parentElement.parentElement.classList.add(
+              "in"
+            ); // add active to li of the current link
+            $(
+              this
+            ).parentElement.parentElement.parentElement.parentElement.parentElement.classList.add(
+              "active"
+            );
+          }
+        });
+      }
+    },
   },
 };
 </script>

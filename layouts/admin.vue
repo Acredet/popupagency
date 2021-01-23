@@ -34,6 +34,12 @@ export default {
       this.$router.push("/login");
     } else {
       this.thereIsUser = true;
+
+      if (window.innerWidth < 1025) {
+        document.body.classList.add("enlarged");
+      } else {
+        document.body.classList.remove("enlarged");
+      }
     }
   },
 };
