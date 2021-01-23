@@ -1,5 +1,4 @@
 <template>
-  <!-- Start Map -->
   <gmap-map
     ref="mapRef"
     :center="map.center"
@@ -31,6 +30,7 @@
 <script>
 import { mapGetters } from "vuex";
 import { gmapApi } from "vue2-google-maps";
+import { getImages } from "@/mixins/utils/getImage";
 
 /** DOCS
  * This component takes all listing and pin them in the map
@@ -45,11 +45,10 @@ export default {
       },
     },
   },
-  mounted() {
-    this.createDynamicZooming();
-  },
+  mixins: [getImages],
   data() {
     return {
+      loading: true,
       map: {
         mapTypeId: "roadmap",
         center: { lat: 59.334591, lng: 18.06324 },
@@ -95,6 +94,9 @@ export default {
       this.pinMarkers(this.allPlaces);
     }
   },
+  mounted() {
+    this.createDynamicZooming();
+  },
   methods: {
     createDynamicZooming() {
       this.$refs.mapRef.$mapPromise.then((map) => {
@@ -122,12 +124,17 @@ export default {
       this.$emit("setCenter");
       this.map.center = { lng: x[0], lat: x[1] };
     },
-    pinMarkers(places) {
+    async pinMarkers(places) {
       const correctValues = [...places].filter(
         (x) => x.routeGuidance && x.routeGuidance.coordinates
       );
-      this.map.markers = correctValues.map((x) => {
-        return {
+
+      const markers = [];
+
+      for (let i = 0; i < correctValues.length; i++) {
+        const x = correctValues[i];
+        const img = await this.getImage(x.cover[0]);
+        const marker = {
           lng: x.routeGuidance.coordinates[0],
           lat: x.routeGuidance.coordinates[1],
           // <div style="z-index: 4;position: absolute;  bottom: 0;  left: 0; width: 100%;  padding: 5px;  background: rgba(0,0,0,0.8); color: black;" />
@@ -135,9 +142,10 @@ export default {
 						<a class="map-popup px-2 d-block text-dark" href='${this.$t("link")}lokal/${
             x.title.sv
           }'>
-						<div style="background-image: url('https://popup.dk.se/_nuxt/img/${
-              x.cover[0]
-            }')" class="cover flex-wrap d-flex justify-content-end flex-column align-items-start" />
+            <div
+              style="background-image: url(${img}); background-size: cover; background-repeat: no-repeat; background-position: center center;"
+              class="cover flex-wrap d-flex justify-content-end flex-column align-items-start"
+            />
 							<div class="overlay">
 							<p class="text-white font-2 p-0 m-0">${x.title.sv}</p>
 							<p class="text-white font-4 p-0 m-0">$${x.prioteradpris.val}</p>
@@ -149,7 +157,12 @@ export default {
 						</a>
 					`,
         };
-      });
+
+        markers.push(marker);
+      }
+
+      this.map.markers = markers;
+      this.loading = false;
     },
     toggleInfoWindow(marker, idx) {
       this.infoWindowPos = {
@@ -196,4 +209,10 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.cover {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+</style>
