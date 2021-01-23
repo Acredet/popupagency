@@ -3,7 +3,7 @@
     <b-row v-if="fetchedOldImages && fetchedOldImages.length > 0">
       <b-col
         v-for="(img, index) in fetchedOldImages"
-        :key="img"
+        :key="`img-${index}`"
         cols="12"
         md="2"
       >
@@ -55,13 +55,15 @@ export default {
     oldImages: {
       deep: true,
       immediate: true,
-      handler: async function (val) {
+      handler: async function (val, oldVal) {
         if (val && val.length > 0) {
-          for (let i = 0; i < val.length; i++) {
-            const img = val[i];
-            await this.getImage(img)
-              .then((res) => this.fetchedOldImages.push(res))
-              .catch((err) => console.log(err));
+          if (!oldVal || val.length > oldVal.length) {
+            for (let i = 0; i < val.length; i++) {
+              const img = val[i];
+              await this.getImage(img)
+                .then((res) => this.fetchedOldImages.push(res))
+                .catch((err) => console.log(err));
+            }
           }
         }
       },

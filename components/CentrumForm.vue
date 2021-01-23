@@ -24,7 +24,8 @@
             title: $t('addListing.inputs.centerGallery'),
             name: 'centrumgalleri[]',
           }"
-          :oldImages="centrumEdit ? centrumEdit.centrumgalleri : []"
+          :oldImages="centrumEdit ? images.centrumgalleri : []"
+          @delete-images-from-gallery="deleteImageFromExistingArray($event)"
         />
 
         <textareasCard
@@ -240,6 +241,10 @@ export default {
             text: err.message,
           };
         });
+    },
+    deleteImageFromExistingArray(obj) {
+      console.log(obj);
+      this.images[obj.name.replace("[]", "")].splice(obj.index, 1);
     },
     async createCentrumForm() {
       this.busy = true;

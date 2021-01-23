@@ -186,7 +186,7 @@ export default {
       const gallery = this.galleries.filter(
         (gallery) => gallery.link === link
       )[0];
-      if (gallery) return gallery.img.path;
+      if (gallery) return gallery.img;
     },
     async createGallery(link) {
       const gallery = {
@@ -197,7 +197,10 @@ export default {
     },
   },
   mounted: async function () {
-    this.items.forEach((item) => this.createGallery(item.centrumgalleri[0]));
+    this.items.forEach((item) => {
+      this.createGallery(item.centrumgalleri[0]);
+      console.log(item.centrumgalleri[0]);
+    });
   },
 };
 </script>
