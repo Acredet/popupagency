@@ -4,25 +4,9 @@
     <LoginModal :modalShow="modalShow" @close-modal="modalShow = false" />
     <!-- End modal -->
 
-    <!-- start lodaing -->
-
-    <b-row v-if="loadingCards">
-      <b-col
-        v-for="(card, index) in 5"
-        :key="String(index)"
-        class="my-2"
-        cols="12"
-        :md="layout === $t('ledigaLokaler.map') ? 12 : 6"
-        :lg="layout === $t('ledigaLokaler.map') ? 6 : 4"
-      >
-        <b-skeleton-img />
-      </b-col>
-    </b-row>
-    <!-- End lodaing -->
-
     <!-- Start if empty -->
     <b-row
-      v-else-if="cards.length === 0 && !loadingCards"
+      v-if="cards.length === 0"
       align-h="center"
       align-content="center"
       class="h-100"
@@ -130,7 +114,7 @@ export default {
     },
     loadingCards: {
       type: Boolean,
-      default: () => false,
+      default: () => true,
     },
   },
   data() {

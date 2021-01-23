@@ -1,79 +1,85 @@
 <template>
-  <div v-if="place && place._id" :key="`place-card-${place._id}`">
-    <section
-      class="like"
-      :class="{
-        'anim-like':
-          $auth.loggedIn &&
-          $auth.user.fav.findIndex((x) => x === place.title.sv) !== -1,
-      }"
-      @click="
-        (e) => {
-          AddToFav(e, place.title.sv);
-        }
-      "
-    />
-    <!-- </b-btn> -->
+  <div>
+    <b-skeleton-img v-if="loading" />
+    <div v-else :key="`place-card-${place._id}`">
+      <section
+        class="like"
+        :class="{
+          'anim-like':
+            $auth.loggedIn &&
+            $auth.user.fav.findIndex((x) => x === place.title.sv) !== -1,
+        }"
+        @click="
+          (e) => {
+            AddToFav(e, place.title.sv);
+          }
+        "
+      />
+      <!-- </b-btn> -->
 
-    <nuxt-link
-      :to="`${$t('link')}lokal/${place.title.sv.split(' ').join('-')}`"
-      class="listing-card"
-    >
-      <!-- Start header -->
-      <div class="listing-card--header">
-        <b-carousel :id="`${place.title[$i18n.locale]}-cover`" :interval="3500">
-          <b-carousel-slide
-            v-for="(img, index) in images"
-            :key="String(index)"
-            :img-src="img"
+      <nuxt-link
+        :to="`${$t('link')}lokal/${place.title.sv.split(' ').join('-')}`"
+        class="listing-card"
+      >
+        <!-- Start header -->
+        <div class="listing-card--header">
+          <b-carousel
+            :id="`${place.title[$i18n.locale]}-cover`"
+            :interval="3500"
           >
-            <template v-slot:img>
-              <img
-                :src="img"
-                width="100%"
-                class="img-fluid"
-                style="height: 235px"
-                :alt="place.title[$i18n.locale]"
-              />
-            </template>
-          </b-carousel-slide>
-        </b-carousel>
+            <b-carousel-slide
+              v-for="(img, index) in images"
+              :key="String(index)"
+              :img-src="img"
+            >
+              <template v-slot:img>
+                <img
+                  :src="img"
+                  width="100%"
+                  class="img-fluid"
+                  style="height: 235px"
+                  :alt="place.title[$i18n.locale]"
+                />
+              </template>
+            </b-carousel-slide>
+          </b-carousel>
 
-        <div class="listing-card--header---overlay p-3">
-          <h2
-            class="p-0 m-0 font-xl-3 price-row"
-            v-text="place.title[$i18n.locale]"
-          />
+          <div class="listing-card--header---overlay p-3">
+            <h2
+              class="p-0 m-0 font-xl-3 price-row"
+              v-text="place.title[$i18n.locale]"
+            />
+          </div>
         </div>
-      </div>
-      <!-- End header -->
+        <!-- End header -->
 
-      <!-- Start card Info -->
-      <div class="listing-card--content pt-1">
-        <b-row no-gutters>
-          <b-col class="border-bottom px-1" cols="5">
-            <!-- Add this to focus on the place on map: @click="showPlace(place.location.coordinates)" -->
-            <small class="text-muted" style="cursor: pointer">
-              <!-- <BIconGeoAlt class="text-dark mr-1" />{{ place.location.formattedAddress }} -->
-              <BIconGeoAlt class="text-dark mr-1" />{{
-                place.stad[$i18n.locale]
-              }}
-            </small>
-          </b-col>
+        <!-- Start card Info -->
+        <div class="listing-card--content pt-1">
+          <b-row no-gutters>
+            <b-col class="border-bottom px-1" cols="5">
+              <!-- Add this to focus on the place on map: @click="showPlace(place.location.coordinates)" -->
+              <small class="text-muted" style="cursor: pointer">
+                <!-- <BIconGeoAlt class="text-dark mr-1" />{{ place.location.formattedAddress }} -->
+                <BIconGeoAlt class="text-dark mr-1" />{{
+                  place.stad[$i18n.locale]
+                }}
+              </small>
+            </b-col>
 
-          <b-col cols="7" class="border-left border-bottom pl-1 pr-3">
-            <small v-if="place && place.prioteradpris" class="text-muted">
-              <BIconWallet class="text-dark mr-1" />{{
-                `fr ${format(place.prioteradpris.val)} kr / ${$t(
-                  place.prioteradpris.period
-                )}`
-              }}
-            </small>
-          </b-col>
-        </b-row>
-      </div>
-      <!-- End card Info -->
-    </nuxt-link>
+            <b-col cols="7" class="border-left border-bottom pl-1 pr-3">
+              <small v-if="place && place.prioteradpris" class="text-muted">
+                <BIconWallet class="text-dark mr-1" />{{
+                  `fr ${format(place.prioteradpris.val)} kr / ${$t(
+                    place.prioteradpris.period
+                  )}`
+                }}
+              </small>
+            </b-col>
+          </b-row>
+        </div>
+        <!-- End card Info -->
+      </nuxt-link>
+    </div>
   </div>
 </template>
 
@@ -110,7 +116,7 @@ export default {
   },
   data() {
     return {
-      loading: false,
+      loading: true,
       images: [],
     };
   },
@@ -122,7 +128,10 @@ export default {
         if (val && val.cover.length > 0) {
           for (let i = 0; i < val.cover.length; i++) {
             await this.getImage(val.cover[i])
-              .then((res) => this.images.push(res))
+              .then((res) => {
+                this.loading = false;
+                this.images.push(res);
+              })
               .catch((err) =>
                 this.$bvToast.toast(err, {
                   title: "Something is wrong",
