@@ -58,33 +58,41 @@ exports.addUser = async (req, res) => {
   try {
     const { error } = validate(req.body);
     if (error) {
-      return res.status(400).send(error.details[0].message);
+      return res.status(400).json(error);
     }
     let user = await User.findOne({ email: req.body.email });
     if (user) {
       return res.status(400).send("User already registered.");
     }
 
+    console.log(req.file);
+
     user = new User({
-      avatar: req.file.filename,
+      avatar: req.file ? req.file.fileanme : "",
       password: req.body.password,
       name: req.body.name,
       email: req.body.email,
       role: req.body.role,
     });
 
+    console.log(user);
+
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(user.password, salt);
-    await user.save();
-    const token = user.generateAuthToken();
-    res.header("x-auth-token", token).send({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      avatar: user.avatar,
-    });
+    await user
+      .save()
+      .then(() => {
+        const token = user.generateAuthToken();
+        res.header("x-auth-token", token).send({
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          avatar: user.avatar,
+        });
+      })
+      .catch((err) => res.status(400).json({ err }));
   } catch (err) {
-    console.log(err);
+    return res.status(400).json({ err });
   }
 };
 // @desc  Create a User

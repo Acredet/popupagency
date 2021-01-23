@@ -93,7 +93,9 @@
           </b-form-valid-feedback>
         </b-form-group>
 
-        <FormulateInput type="image" name="avatar" />
+        <b-form-group id="image-group" label="Avatar" label-for="image">
+          <FormulateInput type="image" name="avatar" />
+        </b-form-group>
 
         <b-overlay
           :show="busy"
@@ -134,11 +136,11 @@ export default {
         { value: "searcher", text: "Searcher" },
       ],
       form: {
-        email: "me@gmail.com",
-        name: "avatar",
-        role: "searcher",
-        password: "123456789",
-        confirmPassword: "123456789",
+        email: "",
+        name: "",
+        role: "",
+        password: "",
+        confirmPassword: "",
       },
     };
   },
@@ -163,10 +165,6 @@ export default {
       data.append("role", this.form.role);
       data.append("password", this.form.password);
 
-      for (var pair of data.entries()) {
-        console.log(pair[0] + " - " + pair[1]);
-      }
-
       this.$axios
         .$post("/users", data)
         .then((res) => {
@@ -179,6 +177,13 @@ export default {
               variant: "success",
             }
           );
+          this.form = {
+            email: "",
+            name: "",
+            role: "",
+            password: "",
+            confirmPassword: "",
+          };
           this.busy = false;
         })
         .catch((err) => {
