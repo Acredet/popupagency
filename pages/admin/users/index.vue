@@ -112,7 +112,16 @@
     </b-modal>
 
     <b-container>
-      <h2>{{ $t("allUsers.title") }}</h2>
+      <h2>
+        <!-- To render the right title -->
+        {{
+          role
+            ? $t(`adminSidebar.users.role.${role}`).charAt(0).toUpperCase() +
+              $t(`adminSidebar.users.role.${role}`).slice(1)
+            : $t("allUsers.title")
+        }}
+        {{ role ? $t("adminSidebar.users.text") : "" }}
+      </h2>
 
       <b-table
         :items="items"

@@ -135,10 +135,10 @@ export default {
       allUsers: "All Users",
       addUser: "Add User",
       role: {
-        admins: "Admins",
-        manger: "Listing Managers",
-        owener: "Listing Owners",
-        space: "Space Owners",
+        admin: "Admins",
+        manager: "Listing Managers",
+        listingOwner: "Listing Owners",
+        spaceOwner: "Space Owners",
         searcher: "Searchers",
       },
     },
@@ -531,7 +531,7 @@ export default {
     },
   },
   addUser: {
-    title: "All Users",
+    title: "Add Users",
     inputs: {
       name: {
         label: "Name:",

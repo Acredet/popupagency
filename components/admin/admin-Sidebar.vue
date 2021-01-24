@@ -94,19 +94,19 @@ export default {
             { url: "/users/add", text: this.$t("adminSidebar.users.addUser") },
             {
               url: "/users?role=admin",
-              text: this.$t("adminSidebar.users.role.admins"),
+              text: this.$t("adminSidebar.users.role.admin"),
             },
             {
               url: "/users?role=manager",
-              text: this.$t("adminSidebar.users.role.manger"),
+              text: this.$t("adminSidebar.users.role.manager"),
             },
             {
               url: "/users?role=listingOwner",
-              text: this.$t("adminSidebar.users.role.owener"),
+              text: this.$t("adminSidebar.users.role.spaceOwner"),
             },
             {
               url: "/users?role=spaceOwner",
-              text: this.$t("adminSidebar.users.role.space"),
+              text: this.$t("adminSidebar.users.role.spaceOwner"),
             },
             {
               url: "/users?role=searcher",
