@@ -110,7 +110,13 @@
                 <h4 class="mt-0 m-b-30 header-title">
                   {{ table.title }}
                 </h4>
-                <div class="table-responsive">
+                <b-skeleton-table
+                  v-if="table.isLoading"
+                  :rows="5"
+                  :columns="4"
+                  :table-props="{ bordered: true, striped: true }"
+                />
+                <div class="table-responsive" v-else>
                   <table class="table mb-1">
                     <thead>
                       <tr>
@@ -209,30 +215,30 @@ export default {
     await this.$axios
       .$get("/statistics")
       .then(async (res) => {
-        const {
-          mostViewsListings,
-          leatestListings,
-          leatestCentrums,
-        } = await this.prepareTable(res);
-
+        this.loadingState = false;
         this.tableRows = [
           {
             title: "Leatest Listings",
             views: false,
             date: true,
-            rows: leatestListings,
+            rows: [],
+            isLoading: true,
           },
           {
             title: "Most Viewed Listings",
             views: true,
-            rows: mostViewsListings,
+            rows: [],
+            isLoading: true,
           },
           {
             title: "Leatest Centrums",
             views: false,
-            rows: leatestCentrums,
+            rows: [],
+            isLoading: true,
           },
         ];
+
+        this.prepareTable(res);
         this.rows = [
           {
             title: "Overview:",
@@ -309,8 +315,6 @@ export default {
             ],
           },
         ];
-
-        this.loadingState = false;
       })
       .catch((err) => console.log(err));
   },
@@ -331,6 +335,8 @@ export default {
         };
         leatestListings.push(y);
       }
+      this.tableRows[1].rows = leatestListings;
+      this.tableRows[1].isLoading = false;
 
       for (let i = 0; i < res.mostViewsListings.length; i++) {
         let x = res.mostViewsListings[i];
@@ -343,6 +349,8 @@ export default {
         };
         mostViewsListings.push(y);
       }
+      this.tableRows[0].rows = mostViewsListings;
+      this.tableRows[0].isLoading = false;
 
       for (let i = 0; i < res.leatestCentrums.length; i++) {
         let x = res.leatestCentrums[i];
@@ -354,6 +362,8 @@ export default {
         };
         leatestCentrums.push(y);
       }
+      this.tableRows[2].rows = leatestCentrums;
+      this.tableRows[2].isLoading = false;
 
       return { mostViewsListings, leatestListings, leatestCentrums };
     },
