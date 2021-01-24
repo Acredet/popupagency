@@ -133,16 +133,22 @@ export default {
     },
     checkValid() {
       const length = this.newPassword.length;
-      if (length >= 1 && length < 4) {
-        return { backgroundColor: "#e63948" };
+      const unvalid = "#e63948";
+      const valid = "#f7c223";
+      const strong = "#28cdaa";
+
+      if (length == 1 && length < 4) {
+        return { backgroundColor: unvalid }; // unvalid
+      } else if (length == 0) {
+        return { display: "none" };
       } else if (length >= 4 && length < 8) {
-        return { backgroundColor: "#f7c223" };
+        return { backgroundColor: valid }; // valid
       } else if (length >= 8 && length < 12) {
-        return { backgroundColor: "#28cdaa" };
+        return { backgroundColor: strong }; // strong
       } else if (length >= 12) {
-        return { backgroundColor: "#28cdaa" };
+        return { backgroundColor: strong }; // strong
       }
-      return { backgroundColor: "#e63948" };
+      return { backgroundColor: unvalid }; // unvalid
     },
   },
   created() {
@@ -155,7 +161,7 @@ export default {
       const data = { password: this.newPassword };
       await this.$axios
         .$patch(`/users/password/${this.$auth.user._id}`, data)
-        .then((res) => this.$router.push(this.$t("link") + "/login"))
+        .then(async () => await this.$auth.logout())
         .catch((err) => {
           this.alert = true;
           this.alertMessage = err;
