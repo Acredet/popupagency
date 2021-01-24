@@ -490,8 +490,8 @@ export default {
       cover: "You should add at least cover image",
     },
     btns: {
-      add: "Add Listing",
-      edit: "Edit Listing",
+      add: "Create",
+      edit: "Update",
     },
   },
   allUsers: {

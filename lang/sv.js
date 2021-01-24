@@ -489,8 +489,8 @@ export default {
       cover: "Du bör lägga till åtminstone omslagsbild",
     },
     btns: {
-      add: "Lägg till lista",
-      edit: "Redigera lista",
+      add: "skapa",
+      edit: "uppdatering",
     },
   },
   allUsers: {
