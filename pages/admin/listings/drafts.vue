@@ -73,7 +73,7 @@
             <b-img
               v-if="data.item.cover && data.item.cover[0]"
               width="100"
-              :src="`https://popup.dk.se/_nuxt/img/${data.item.cover[0]}`"
+              :src="getCover(data.item.cover[0])"
             />
             <p v-else class="text-center">-</p>
           </template>
@@ -126,12 +126,16 @@
 </template>
 
 <script>
+import { getImages } from "@/mixins/utils/getImage";
+
 export default {
   name: "Listings",
   layout: "admin",
+  mixins: [getImages],
   data() {
     return {
       loading: true,
+      covers: [],
       toast: {
         title: null,
         variant: null,
@@ -171,11 +175,23 @@ export default {
     this.getListings();
   },
   methods: {
+    getCover(link) {
+      const cover = this.covers.filter((cover) => cover.link === link)[0];
+      if (cover) return cover.img;
+    },
+    async createCovers(link) {
+      const cover = {
+        link,
+        img: await this.getImage(link),
+      };
+      this.covers.push(cover);
+    },
     async getListings() {
       await this.$axios
         .$get("/places/listings/drafts")
         .then((res) => {
           this.items = res.data;
+          this.items.forEach((item) => this.createCovers(item.cover[0]));
           this.loading = false;
         })
         .catch((err) => console.log(err));

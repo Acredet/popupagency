@@ -358,7 +358,7 @@ export default {
           // url: `lokal/${x.title.en}`,
           title: x.title[this.$i18n.locale],
           stad: x.title[this.$i18n.locale],
-          img: x.centrumgalleri[0],
+          img: await this.getImage(x.centrumgalleri[0]),
         };
         leatestCentrums.push(y);
       }
