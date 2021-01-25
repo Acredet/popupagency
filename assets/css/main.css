@@ -1,7 +1,17 @@
 @import url(//db.onlinewebfonts.com/c/fdd40b399610a1e015242521427561b1?family=Fakt+Pro+Normal);
-body {
+.body-wrapper {
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
   display: flex;
   flex-direction: column;
+}
+
+body,
+html,
+#__nuxt,
+#__layout {
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
 }
 
 table,
@@ -9,9 +19,6 @@ table * {
   font-size: 12px !important;
 }
 
-.page-content {
-  flex-grow: 1;
-}
 @font-face {
   font-family: "Fakt Pro Normal";
   src: url("//db.onlinewebfonts.com/t/fdd40b399610a1e015242521427561b1.eot");
