@@ -125,6 +125,7 @@ export default {
       deep: true,
       immediate: true,
       handler: async function (val) {
+        // this.loading = true
         if (val && val.cover.length > 0) {
           for (let i = 0; i < val.cover.length; i++) {
             await this.getImage(val.cover[i])
