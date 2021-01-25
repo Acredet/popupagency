@@ -44,7 +44,14 @@
             v-text="$t('adminSidebar.listing.addNewListing')"
           />
         </div>
+        <b-skeleton-table
+          v-if="covers.length !== items.length"
+          :rows="5"
+          :columns="4"
+          :table-props="{ bordered: true, striped: true }"
+        />
         <b-table
+          v-else
           :items="items"
           :fields="fields"
           :sort-by.sync="sortBy"
@@ -127,6 +134,7 @@ export default {
   data() {
     return {
       loading: false,
+      tableIsLoading: true,
       toast: {
         title: null,
         variant: null,
@@ -207,8 +215,8 @@ export default {
       this.covers.push(cover);
     },
   },
-  mounted: async function () {
-    this.items.forEach((item) => this.createCovers(item.cover[0]));
+  created: async function () {
+    await this.items.forEach((item) => this.createCovers(item.cover[0]));
   },
 };
 </script>

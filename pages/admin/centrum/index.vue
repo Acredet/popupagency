@@ -44,7 +44,14 @@
             v-text="$t('adminSidebar.center.add')"
           />
         </div>
+        <b-skeleton-table
+          v-if="galleries.length !== items.length"
+          :rows="5"
+          :columns="4"
+          :table-props="{ bordered: true, striped: true }"
+        />
         <b-table
+          v-else
           :items="items"
           :fields="fields"
           :sort-by.sync="sortBy"
