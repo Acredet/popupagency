@@ -31,7 +31,7 @@
 import { mapGetters } from "vuex";
 import { gmapApi } from "vue2-google-maps";
 import { getImages } from "@/mixins/utils/getImage";
-
+import { format } from "@/mixins/utils/formatNo";
 /** DOCS
  * This component takes all listing and pin them in the map
  * and add popup to the markers when it's clicked.
@@ -45,7 +45,7 @@ export default {
       },
     },
   },
-  mixins: [getImages],
+  mixins: [getImages, format],
   data() {
     return {
       loading: true,
@@ -148,7 +148,7 @@ export default {
             />
 							<div class="overlay">
 							<p class="text-white font-2 p-0 m-0">${x.title.sv}</p>
-							<p class="text-white font-4 p-0 m-0">$${x.prioteradpris.val}</p>
+							<p class="text-white font-4 p-0 m-0">${this.format(x.prioteradpris.val)} Kr</p>
 							</div>
 						</div>
 						<div>
