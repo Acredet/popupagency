@@ -1,7 +1,7 @@
 exports.addToFav = {
   methods: {
     async AddToFav(e, title) {
-      this.loading = true;
+      // this.loading = true;
       const like = e.target;
       if (!this.$auth.loggedIn) {
         this.$emit("notAuthBookmark");
