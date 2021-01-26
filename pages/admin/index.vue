@@ -218,15 +218,14 @@ export default {
         this.loadingState = false;
         this.tableRows = [
           {
-            title: "Leatest Listings",
-            views: false,
-            date: true,
+            title: "Most Viewed Listings",
+            views: true,
             rows: [],
             isLoading: true,
           },
           {
-            title: "Most Viewed Listings",
-            views: true,
+            title: "Leatest Listings",
+            date: true,
             rows: [],
             isLoading: true,
           },
