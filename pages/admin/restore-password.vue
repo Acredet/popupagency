@@ -4,7 +4,7 @@
       {{ $t("resetPassword.thereIsNoUser") }}
     </b-alert>
 
-    <b-modal id="email-sent" title="Check your inbox" @ok="weOk">
+    <b-modal id="email-sent" title="Check your inbox" @hide="weOk">
       <p class="my-4">
         {{ $t("resetPassword.weSentThePassword") }}
       </p>
@@ -26,7 +26,7 @@
             {{ $t("resetPassword.enterEmail") }}
           </div>
 
-          <b-form class="form-horizontal m-t-30" action="index.html">
+          <b-form class="form-horizontal m-t-30">
             <div class="form-group">
               <p>{{ $t("resetPassword.enterOldEmail") }}</p>
               <label for="useremail">{{
@@ -56,8 +56,8 @@
     <div class="m-t-40 text-center">
       <p>
         {{ $t("resetPassword.rememberIt") }}
-        <nuxt-link to="/login" class="text-primary">
-          {{ $t("signInHere") }}
+        <nuxt-link :to="localePath('/login')" class="text-primary">
+          {{ $t("resetPassword.signInHere") }}
         </nuxt-link>
       </p>
     </div>
@@ -76,7 +76,7 @@ export default {
   },
   methods: {
     weOk() {
-      this.$router.push(`${this.$t("link")}admin/login`);
+      this.$router.push(this.localePath("/login"));
     },
     async getuserEmail() {
       await this.$axios
