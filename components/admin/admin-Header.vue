@@ -124,8 +124,9 @@ export default {
     showDropDown(e) {
       const dropdown = e.target.getAttribute("data-toggle");
       const el = document.querySelector(`div[aria-labelledby=${dropdown}]`);
-
-      el.classList.toggle("d-block");
+      if (el) {
+        el.classList.toggle("d-block");
+      }
     },
     changeLang(lang) {
       this.$i18n.setLocale(lang);

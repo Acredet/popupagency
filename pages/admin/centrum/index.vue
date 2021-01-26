@@ -1,6 +1,6 @@
 <template>
   <div>
-    <loading :state="loading" />
+    <!-- <loading :state="loading" /> -->
 
     <div class="content">
       <b-modal
