@@ -60,9 +60,12 @@
           show-empty
         >
           <template v-slot:cell(title)="data">
-            <p class="text-center">
+            <nuxt-link
+              :to="localePath(`/lokal/${data.item.title.sv}`)"
+              class="text-center"
+            >
               {{ data.item.title[$i18n.locale] }}
-            </p>
+            </nuxt-link>
           </template>
 
           <template v-slot:cell(expiry)="data">
@@ -215,7 +218,7 @@ export default {
       this.covers.push(cover);
     },
   },
-  created: async function () {
+  mounted: async function () {
     await this.items.forEach((item) => this.createCovers(item.cover[0]));
   },
 };
