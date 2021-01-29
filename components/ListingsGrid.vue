@@ -61,7 +61,12 @@
         </b-dropdown>
 
         <p class="p-0 m-0">
-          {{ cards.length }} {{ $t("ledigaLokaler.lsiting") }}
+          {{ cards.length }}
+          {{
+            cards.length > 2
+              ? $t(`ledigaLokaler.sorting.countList.2`)
+              : $t(`ledigaLokaler.sorting.countList.${cards.length}`)
+          }}
         </p>
       </b-col>
       <!-- End Listing header -->

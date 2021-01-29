@@ -132,6 +132,8 @@ exports.addPlace = async (req, res, next) => {
 
     const newPlace = req.body;
 
+    console.log(req.files);
+
     newPlace.userId = req.user.id;
     newPlace.title = JSON.parse(newPlace.title);
     newPlace.beskreving = JSON.parse(newPlace.beskreving);

@@ -11,6 +11,9 @@ export const state = () => ({
 });
 
 export const mutations = {
+  updateSideBar(state) {
+    state.sidebarRenderKey++;
+  },
   listings(state, listings) {
     state.listings = listings;
   },

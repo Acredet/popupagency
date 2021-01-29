@@ -269,6 +269,11 @@ export default {
     moreDetails: "Fler detaljer",
     lsiting: "Lista",
     list: "Lista",
+    countList: {
+      0: "det finns inga listor",
+      1: "lokal",
+      2: "lokaler",
+    },
     map: "Karta",
     view: "Se",
   },

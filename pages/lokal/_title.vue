@@ -91,12 +91,13 @@
                   <section>
                     <h4 class="main-text-color-grey titles-font">Plentring</h4>
                     <ul class="files">
+                      <canvas id="the-canvas"></canvas>
                       <li
                         class="file-element"
                         v-for="(pdf, i) in place.planritning"
                         :key="i"
                       >
-                        <nuxt-link
+                        <!-- <nuxt-link
                           target="_blank"
                           class="d-block text-dark"
                           download
@@ -107,7 +108,7 @@
                             width="150"
                             height="150"
                           />
-                        </nuxt-link>
+                        </nuxt-link> -->
                       </li>
                     </ul>
                   </section>
@@ -154,7 +155,7 @@
               <h6 class="main-text-color-grey titles-font">
                 {{ $t("singleListing.mapTitle") }}
               </h6>
-              <gmap-map
+              <!-- <gmap-map
                 style="width: 100%; height: 500px"
                 :center="map.center"
                 :map-type-id="map.mapTypeId"
@@ -168,7 +169,7 @@
                     :position="mark"
                   />
                 </gmap-cluster>
-              </gmap-map>
+              </gmap-map> -->
             </section>
           </b-col>
           <hr />
@@ -248,6 +249,7 @@ import DetailsTable from "@/components/singleListing/DetailsTable";
 
 import { mapGetters } from "vuex";
 import ContactFrom from "~/components/singleListing/contactFrom.vue";
+// import pdfjsLib from "pdfjs-dist";
 
 export default {
   components: {
@@ -332,42 +334,53 @@ export default {
 
   async created() {
     const placeFromStore = this.getOneListing;
-
-    if (placeFromStore.routeGuidance) {
-      this.thereIsCentrum = true;
-      this.listingImages.centrumgalleri = placeFromStore.centrumgalleri;
-      this.map = {
-        center: {
-          lng: placeFromStore.routeGuidance.coordinates[0],
-          lat: placeFromStore.routeGuidance.coordinates[1],
-        },
-        mapTypeId: "roadmap",
-        markers: [
-          {
+    if (!Array.isArray(placeFromStore)) {
+      if (placeFromStore.routeGuidance) {
+        this.thereIsCentrum = true;
+        this.listingImages.centrumgalleri = placeFromStore.centrumgalleri;
+        this.map = {
+          center: {
             lng: placeFromStore.routeGuidance.coordinates[0],
             lat: placeFromStore.routeGuidance.coordinates[1],
           },
-        ],
-      };
+          mapTypeId: "roadmap",
+          markers: [
+            {
+              lng: placeFromStore.routeGuidance.coordinates[0],
+              lat: placeFromStore.routeGuidance.coordinates[1],
+            },
+          ],
+        };
+      }
+      this.place = placeFromStore;
+
+      this.listingImages.cover = this.place.cover;
+      this.listingImages.bildgalleri = this.place.bildgalleri;
+
+      console.log("hey", this.place);
+      // if (
+      //   this.listingImages.planritning &&
+      //   this.listingImages.planritning.length > 0
+      // ) {
+      //   this.listingImages.planritning = this.place.planritning;
+      //   // const previews = this.listingImages.planritning.map(
+      //   //   (pdf) => pdf.substring(0, pdf.length - 3) + "png"
+      //   // );
+      //   this.listingImages.planritning.concat(previews);
+      // }
+      this.getImages();
+      // Increment views
+      await this.$axios.patch(`/places/view/${placeFromStore._id}`);
+
+      this.similar = this.listings
+        .filter((place) => place.stad.sv === placeFromStore.stad.sv)
+        .filter((place) => place._id !== placeFromStore._id);
+      this.loadingState = false;
     }
-    this.place = placeFromStore;
-
-    this.listingImages.cover = this.place.cover;
-    this.listingImages.bildgalleri = this.place.bildgalleri;
-    this.listingImages.planritning = this.place.planritning;
-    const previews = this.listingImages.planritning.map((pdf) => {
-      (pdf) => pdf.substring(0, pdf.length - 3) + "png";
-    });
-    this.listingImages.planritning.concat(previews);
-    this.getImages();
-    // Increment views
-    await this.$axios.patch(`/places/view/${placeFromStore._id}`);
-
-    this.similar = this.listings
-      .filter((place) => place.stad.sv === placeFromStore.stad.sv)
-      .filter((place) => place._id !== placeFromStore._id);
-    this.loadingState = false;
   },
+  // async mounted() {
+  //   await this.convertFirstPdfPageToImage();
+  // },
   methods: {
     async getImages() {
       for (const key in this.listingImages) {
@@ -398,6 +411,67 @@ export default {
       document.body.scrollTop = rect.top + window.scrollY - 15;
       document.documentElement.scrollTop = rect.top + window.scrollY - 15;
     },
+    // async convertFirstPdfPageToImage() {
+    //   const file = await this.$axios.get(`/files/1611857375867-planritning[]-Home page.pdf`);
+
+    //   const pdfData = Buffer.from(file);
+    //   // The workerSrc property shall be specified.
+    //   // pdfjsLib.GlobalWorkerOptions.workerSrc =
+    //   //   "//mozilla.github.io/pdf.js/build/pdf.worker.js";
+
+    //   // Using DocumentInitParameters object to load binary data.
+    //   var loadingTask = pdfjsLib.getDocument({ data: pdfData });
+    //   loadingTask.promise
+    //     .then(
+    //       function (pdf) {
+    //         console.log("PDF loaded");
+
+    //         // Fetch the first page
+    //         var pageNumber = 1;
+    //         pdf
+    //           .getPage(pageNumber)
+    //           .then(function (page) {
+    //             console.log("First Page loaded");
+
+    //             var scale = 1.5;
+    //             var viewport = page.getViewport({ scale: scale });
+
+    //             // Prepare canvas using PDF page dimensions
+    //             var canvas = document.getElementById("the-canvas");
+    //             var context = canvas.getContext("2d");
+    //             canvas.height = viewport.height;
+    //             canvas.width = viewport.width;
+
+    //             // Render PDF page into canvas context
+    //             var renderContext = {
+    //               canvasContext: context,
+    //               viewport: viewport,
+    //             };
+    //             var renderTask = page.render(renderContext);
+    //             renderTask.promise
+    //               .then(function () {
+    //                 console.log("Page rendered");
+    //               })
+    //               .catch(function (reason) {
+    //                 // PDF loading error
+    //                 console.error(reason);
+    //               });
+    //           })
+    //           .catch(function (reason) {
+    //             // PDF loading error
+    //             console.error(reason);
+    //           });
+    //       },
+    //       function (reason) {
+    //         // PDF loading error
+    //         console.error(reason);
+    //       }
+    //     )
+    //     .catch(function (reason) {
+    //       // PDF loading error
+    //       console.error(reason);
+    //     });
+    // },
   },
 };
 </script>

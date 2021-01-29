@@ -21,7 +21,7 @@
             ].includes(data.item.text)
           "
         >
-          {{ data.item.val.substr(0, 10) }}
+          {{ data.item.val ? data.item.val.substr(0, 10) : "" }}
         </span>
 
         <span v-else>

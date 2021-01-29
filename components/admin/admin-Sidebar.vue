@@ -148,34 +148,48 @@ export default {
     ...mapGetters({
       renderKey: "renderKey",
     }),
+  },
+  updated() {
+    if (document) {
+      [...document.querySelectorAll("#sidebar-menu a")].forEach((el) => {
+        const pageUrl = window.location.href.split(/[?#]/)[0];
 
-    updated() {
-      if (document) {
-        [...document.querySelectorAll("#sidebar-menu a")].forEach((el) => {
-          const pageUrl = window.location.href.split(/[?#]/)[0];
-          if (el.href === pageUrl) {
-            el.classList.add("active");
-            $(this).classList.add("active");
-            $(this).parentElement.classList.add("active"); // add active to li of the current link
-            $(this).parentElement.parentElement.classList.add("in");
-            $(this).parentElement.parentElement.prev().classList.add("active"); // add active class to an anchor
-            $(this).parentElement.parentElement.parentElement.classList.add(
-              "active"
-            );
-            $(
-              this
-            ).parentElement.parentElement.parentElement.parentElement.classList.add(
-              "in"
-            ); // add active to li of the current link
-            $(
-              this
-            ).parentElement.parentElement.parentElement.parentElement.parentElement.classList.add(
-              "active"
-            );
-          }
-        });
-      }
-    },
+        if (el.href === pageUrl) {
+          console.log(`${el.href} => ${pageUrl}`);
+          el.classList.add("active");
+          // el.classList.add("active");
+          el.parentElement.classList.add("active"); // add active to li of the current link
+          el.parentElement.parentElement.classList.add("in");
+          el.parentElement.parentElement.previousElementSibling.classList.add(
+            "active"
+          ); // add active class to an anchor
+          el.parentElement.parentElement.parentElement.classList.add("active");
+          el.parentElement.parentElement.parentElement.parentElement.classList.add(
+            "in"
+          ); // add active to li of the current link
+          el.parentElement.parentElement.parentElement.parentElement.parentElement.classList.add(
+            "active"
+          );
+        } else {
+          el.classList.remove("active");
+          // el.classList.add("active");
+          el.parentElement.classList.remove("active"); // add active to li of the current link
+          el.parentElement.parentElement.classList.remove("in");
+          el.parentElement.parentElement.previousElementSibling.classList.remove(
+            "active"
+          ); // add active class to an anchor
+          el.parentElement.parentElement.parentElement.classList.remove(
+            "active"
+          );
+          el.parentElement.parentElement.parentElement.parentElement.classList.remove(
+            "in"
+          ); // add active to li of the current link
+          el.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove(
+            "active"
+          );
+        }
+      });
+    }
   },
 };
 </script>

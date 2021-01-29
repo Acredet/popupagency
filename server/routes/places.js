@@ -15,7 +15,7 @@ const {
   getAddressByCountryName,
   addWatch,
 } = require("../controller/places");
-const createPreview = require("../utils/createPDFPreview");
+// const createPreview = require("../utils/createPDFPreview");
 const fields = [
   { name: "bildgalleri[]" },
   { name: "cover[]" },
@@ -45,11 +45,11 @@ router.post("/address-by-country-name", getAddressByCountryName);
 router.post("/images", multer.fields(fields), (req, res) => {
   const names = req.files[req.body.name].map((file) => file.filename);
   // create png preview for each pdf
-  if (names[0].slice(-3).toLowerCase() === "pdf") {
-    names.forEach((name) => {
-      createPreview(name);
-    });
-  }
+  // if (names[0].slice(-3).toLowerCase() === "pdf") {
+  //   names.forEach((name, index) => {
+  //     createPreview(req.files[req.body.name][index]);
+  //   });
+  // }
   return res.status(200).json(...names);
 });
 module.exports = router;

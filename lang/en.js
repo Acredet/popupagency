@@ -249,6 +249,11 @@ export default {
       priceHighToLow: "Price (High to Low)",
       sizeLowToHigh: "Size (Low to High)",
       sizeHighToLow: "Size (High to Low)",
+      countList: {
+        0: "There is no Listings",
+        1: "Local",
+        2: "Listings",
+      },
     },
     moreDetails: "More Details",
     lsiting: "Listing",

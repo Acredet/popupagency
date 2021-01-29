@@ -130,7 +130,7 @@ export default {
     },
     changeLang(lang) {
       this.$i18n.setLocale(lang);
-      this.$emit("changeLang");
+      this.$store.commit("updateSideBar");
     },
     logout() {
       this.$auth.logout("local");
