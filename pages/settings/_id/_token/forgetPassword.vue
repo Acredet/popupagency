@@ -162,9 +162,7 @@ export default {
             password: this.newPassword,
           }
         )
-        .then((res) => {
-          this.$router.push(this.$t("link") + "/login");
-        })
+        .then((res) => this.$router.push(this.localePath("/login")))
         .catch((err) => {
           this.alert = true;
           this.alertMessage = err;
