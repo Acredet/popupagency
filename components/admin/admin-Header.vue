@@ -129,8 +129,10 @@ export default {
       }
     },
     changeLang(lang) {
-      this.$i18n.setLocale(lang);
-      this.$store.commit("updateSideBar");
+      if (lang != this.$i18n.locale) {
+        this.$i18n.setLocale(lang);
+        this.$store.commit("updateSideBar");
+      }
     },
     logout() {
       this.$auth.logout("local");

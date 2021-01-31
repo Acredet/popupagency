@@ -149,47 +149,59 @@ export default {
       renderKey: "renderKey",
     }),
   },
-  updated() {
-    if (document) {
-      [...document.querySelectorAll("#sidebar-menu a")].forEach((el) => {
-        const pageUrl = window.location.href.split(/[?#]/)[0];
+  watch: {
+    renderKey() {
+      this.fixSideBar();
+    },
+  },
+  methods: {
+    fixSideBar() {
+      if (document) {
+        [...document.querySelectorAll("#sidebar-menu a")].forEach((el) => {
+          const pageUrl = window.location.href.split(/[?#]/)[0];
 
-        if (el.href === pageUrl) {
-          console.log(`${el.href} => ${pageUrl}`);
-          el.classList.add("active");
-          // el.classList.add("active");
-          el.parentElement.classList.add("active"); // add active to li of the current link
-          el.parentElement.parentElement.classList.add("in");
-          el.parentElement.parentElement.previousElementSibling.classList.add(
-            "active"
-          ); // add active class to an anchor
-          el.parentElement.parentElement.parentElement.classList.add("active");
-          el.parentElement.parentElement.parentElement.parentElement.classList.add(
-            "in"
-          ); // add active to li of the current link
-          el.parentElement.parentElement.parentElement.parentElement.parentElement.classList.add(
-            "active"
-          );
-        } else {
-          el.classList.remove("active");
-          // el.classList.add("active");
-          el.parentElement.classList.remove("active"); // add active to li of the current link
-          el.parentElement.parentElement.classList.remove("in");
-          el.parentElement.parentElement.previousElementSibling.classList.remove(
-            "active"
-          ); // add active class to an anchor
-          el.parentElement.parentElement.parentElement.classList.remove(
-            "active"
-          );
-          el.parentElement.parentElement.parentElement.parentElement.classList.remove(
-            "in"
-          ); // add active to li of the current link
-          el.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove(
-            "active"
-          );
-        }
-      });
-    }
+          console.log(`${el.href} => ${pageUrl} => ${el.href === pageUrl}`);
+          if (el.href === pageUrl) {
+            el.classList.add("active");
+            // el.classList.add("active");
+            el.parentElement.classList.add("active"); // add active to li of the current link
+            el.parentElement.parentElement.classList.add("in");
+            el.parentElement.parentElement.previousElementSibling.classList.add(
+              "active"
+            ); // add active class to an anchor
+            el.parentElement.parentElement.parentElement.classList.add(
+              "active"
+            );
+            el.parentElement.parentElement.parentElement.parentElement.classList.add(
+              "in"
+            ); // add active to li of the current link
+            el.parentElement.parentElement.parentElement.parentElement.parentElement.classList.add(
+              "active"
+            );
+          } else {
+            el.classList.remove("active");
+            // el.classList.add("active");
+            el.parentElement.classList.remove("active"); // add active to li of the current link
+            el.parentElement.parentElement.classList.remove("in");
+            el.parentElement.parentElement.previousElementSibling.classList.remove(
+              "active"
+            ); // add active class to an anchor
+            el.parentElement.parentElement.parentElement.classList.remove(
+              "active"
+            );
+            el.parentElement.parentElement.parentElement.parentElement.classList.remove(
+              "in"
+            ); // add active to li of the current link
+            el.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove(
+              "active"
+            );
+          }
+        });
+      }
+    },
+  },
+  updated() {
+    this.fixSideBar();
   },
 };
 </script>
