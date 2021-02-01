@@ -55,7 +55,7 @@ export default {
           icon: "far fa-map",
           subMenu: [
             {
-              url: "/listings/",
+              url: "/listings",
               text: this.$t("adminSidebar.listing.allListings"),
             },
             {
@@ -81,7 +81,7 @@ export default {
           text: "Centrums",
           icon: "fas fa-store-alt",
           subMenu: [
-            { url: "/centrum/", text: this.$t("adminSidebar.center.all") },
+            { url: "/centrum", text: this.$t("adminSidebar.center.all") },
             { url: "/centrum/add", text: this.$t("adminSidebar.center.add") },
           ],
         },
@@ -120,7 +120,7 @@ export default {
           icon: "fas fa-cog",
           subMenu: [
             {
-              url: "/settings/",
+              url: "/settings",
               text: this.$t("adminSidebar.siteSettings.text"),
             },
           ],
@@ -160,48 +160,52 @@ export default {
         [...document.querySelectorAll("#sidebar-menu a")].forEach((el) => {
           const pageUrl = window.location.href.split(/[?#]/)[0];
 
-          console.log(`${el.href} => ${pageUrl} => ${el.href === pageUrl}`);
-          if (el.href === pageUrl) {
+          const parent = el.parentElement;
+          const parent2 = el.parentElement.parentElement;
+          const parent3 = el.parentElement.parentElement.previousElementSibling;
+          const parent4 = el.parentElement.parentElement.parentElement;
+          const parent5 =
+            el.parentElement.parentElement.parentElement.parentElement;
+          const parent6 =
+            el.parentElement.parentElement.parentElement.parentElement
+              .parentElement;
+
+          let x = el.href;
+
+          if (!x.endsWith("/")) {
+            x = x + "/";
+          }
+
+          console.log(`${x} => ${pageUrl + "/"} => ${x === pageUrl + "/"}`);
+
+          if (x === pageUrl + "/") {
             el.classList.add("active");
             // el.classList.add("active");
-            el.parentElement.classList.add("active"); // add active to li of the current link
-            el.parentElement.parentElement.classList.add("in");
-            el.parentElement.parentElement.previousElementSibling.classList.add(
-              "active"
-            ); // add active class to an anchor
-            el.parentElement.parentElement.parentElement.classList.add(
-              "active"
-            );
-            el.parentElement.parentElement.parentElement.parentElement.classList.add(
-              "in"
-            ); // add active to li of the current link
-            el.parentElement.parentElement.parentElement.parentElement.parentElement.classList.add(
-              "active"
-            );
-          } else {
-            el.classList.remove("active");
-            // el.classList.add("active");
-            el.parentElement.classList.remove("active"); // add active to li of the current link
-            el.parentElement.parentElement.classList.remove("in");
-            el.parentElement.parentElement.previousElementSibling.classList.remove(
-              "active"
-            ); // add active class to an anchor
-            el.parentElement.parentElement.parentElement.classList.remove(
-              "active"
-            );
-            el.parentElement.parentElement.parentElement.parentElement.classList.remove(
-              "in"
-            ); // add active to li of the current link
-            el.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove(
-              "active"
-            );
+            if (parent) {
+              parent.classList.add("active"); // add active to li of the current link
+            }
+            if (parent2) {
+              parent2.classList.add("in");
+            }
+            if (parent3) {
+              parent3.classList.add("active"); // add active class to an anchor
+            }
+            if (parent4) {
+              parent4.classList.add("active");
+            }
+            if (parent5) {
+              parent5.classList.add("in"); // add active to li of the current link
+            }
+            if (parent6) {
+              parent6.classList.add("active");
+            }
           }
         });
       }
     },
   },
-  updated() {
-    this.fixSideBar();
+  mounted() {
+    setTimeout(this.fixSideBar(), 1500);
   },
 };
 </script>
